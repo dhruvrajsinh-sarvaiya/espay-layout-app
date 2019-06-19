@@ -1,0 +1,1900 @@
+.tradingdashboard{
+    background: #f2f3f8;
+}
+.logo-normal{
+    padding: 0 0 10px;
+}
+.userprofile{
+    button{
+     min-width:100px;
+     span{
+        p{
+            padding: 18px 0 0 0;
+            text-overflow: ellipsis;
+            width:100px;
+            overflow: hidden;
+            white-space:nowrap;
+            font-size:12px;
+        }
+      }
+    }
+}
+//Cooldex Header And Footer
+.cooldex-header{
+    header{
+        background-color:$coolblue !important;
+        ul{
+            li{
+                .header-icon{
+                    color:$coolblue;
+                }
+                a{
+                    color:$white;
+                    span{
+                        color:$white !important;
+                    }
+                }
+                span{
+                    color:$white !important;
+                }
+                i{
+                    color:$white !important;
+                }
+                button:hover{
+                    background:transparent !important;
+                }
+            }
+        }
+    }
+    .list-inline-item{
+        .list-unstyled {
+            li{
+                a{
+                    i{
+                        color:$coolblue  !important;
+                    }
+                    span{
+                        color:$coolblue  !important;
+                    }
+                }
+            }
+            .border-top{
+                a{
+                    i{
+                        color:$coolred !important;
+                    }
+                }
+            }
+        }
+    }
+    
+}
+.cooldextrading-menu{
+    background-color:$coolblue;
+    ul{
+        li{
+            a{
+                color:$white;
+                    span{
+                    color:$white !important;
+                }
+            }
+
+            &:hover{
+                a{
+                    background-color:$white;
+                    color:$coolblue;
+                        span{
+                        color:$coolblue !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.cooldex-footer{
+    background-color:$coolblue !important;
+    ul{
+        li{
+            a{
+                color:$white;
+                    span{
+                    color:$white !important;
+                }
+            }
+        }
+    }
+    h5{
+        color:$white;
+    }
+}
+
+.coinbasicmain{
+    background:$white;
+    border:1px solid $coolblue;
+    border-radius: 5px;
+    margin:15px 0 8px;
+    font-family: 'HindMadurai-Regular';
+    .highcharts-container {
+       // top:35px !important;
+        left: -10px;
+    }
+    .coinbasicbox{
+        padding: 20px 15px 8px;
+        margin: 0;
+        h3{
+            color:$github;
+            font-size:20px;
+            text-transform:uppercase;
+            font-family:'Montserrat-Regular';
+            span{
+                color:$tumblr;
+                font-size:20px;
+                font-family: 'HindMadurai-Regular';
+                text-transform:uppercase;
+                padding:0 0 0 10px;
+            }
+        }
+        p{
+            color:$github;
+            font-size:14px;
+            font-family: 'HindMadurai-Regular';
+        }
+        span, strong{
+            font-size:13px;
+            font-family: 'HindMadurai-Regular';
+        }
+    }
+}    
+
+.newstitle{
+    h3{
+        font-size: 18px;
+        padding:7.5px 5px;
+        font-weight: bold;
+        border-bottom: 1px solid $coolblue;
+        margin: 2px 10px;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+}
+
+.coinbasetitle{
+    font-size:22px;
+    padding:5px 0 0px;
+    font-weight: normal;
+    border-bottom:1px solid $coolblue;
+    margin:2px 10px;
+    font-family: 'Montserrat-Regular';
+    text-transform: uppercase;
+}
+.marketdepthbox{
+    padding:20px 0 0 0;
+    img{
+        display:inline-block;
+        width: 245.3px;
+    }
+}
+
+
+//Open Order 
+.cooldexopenorder{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:0 10px;
+    margin:11px 0 0 0;
+    .cooldexopentitle{
+        border-bottom:1px solid $coolblue;
+        margin:5px 0px;
+        label{
+            margin-left:0;
+            margin-right:0;
+            margin-bottom:0;
+            position: relative;
+            left:0px;
+        }
+        span{
+            height:auto !important;
+        }
+    }
+    h3{
+        font-size:22px;
+        font-weight:normal;
+        padding:5px 0px;
+        margin:0px;
+        font-family:'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+     table{
+        tr{
+            th{
+                font-family:'HindMadurai-Regular';
+                background:#f7f7f7;
+                width:12%;
+                text-align:center;
+                border:none;
+                span{
+                    color:$github;
+                    font-size:14px;
+                    font-family: 'Mako';
+                }
+            }
+            td{
+                border-top:none;
+                font-family:'HindMadurai-Regular';
+                font-size:14px !important;
+                width:12%;
+                text-align:center;
+            }
+        }
+    }
+}
+
+//Market Trade Left Panel
+
+.cooldexmarkettrade{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:10px;
+    margin:0 0 15px 0;
+    .material-icons {
+        font-size: 16px;
+        padding: 0 2px 0 0;
+        vertical-align: middle;
+        margin-top: -4px !important;
+      }
+    h3{
+        font-size:22px;
+        font-weight:normal;
+        border-bottom:1px solid $coolblue;
+        padding-bottom: 5px;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+   .table-responsive-design{
+       table{
+           tr{
+               th:first-child, td:first-child{
+                width:30%;
+                text-align:left;
+               }
+               th{
+                background:$white;
+                border:none;
+                font-size:14px;
+                font-family: 'HindMadurai-Regular';
+                text-align:right;
+                width:23%;
+                padding-left: 0 !important;
+               }
+               td{
+                border:none;
+                font-family: 'HindMadurai-Regular';
+                text-align:right;
+                width:23%;
+                padding-left: 0 !important;
+               }
+           }
+       }
+   }
+   input{
+       height:35px;
+   } 
+}
+.marketsmenu{
+    border-bottom:none;
+    li{
+        .nav-link{
+            color:$black;
+        }
+        .nav-link, .nav-link.active{
+            color:$github;
+            // background-color:transparent;
+            border-color:transparent;
+            font-size: 14px !important;
+            font-family: 'Mako';
+            margin: 0 !important;
+        }
+    }
+}
+
+//Cooldex Graph Start
+.cooldexgraph{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:0 0 0;
+    margin:0 0 11px 0;
+    
+    svg{
+        rect{
+            fill:$white !important;
+        }
+    }
+  
+}
+.cooldexgraphpadding{
+    padding:0;
+}
+.cooldexgraphpl{
+    padding:0;
+}
+
+
+//Cooldex News List Start
+.newslistmain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:0 10px;
+    margin:0 0 11px 0;
+    font-family: 'HindMadurai-Regular';
+    h3{
+        span{
+            font-size:22px;
+            padding:5px 0 5px;
+            font-weight:normal;
+            border-bottom:1px solid $coolblue;
+            padding-bottom: 5px;
+            font-family: 'Montserrat-Regular';
+            text-transform:uppercase;
+            }
+        font-size:22px;
+        padding:5px 0 5px;
+        font-weight:normal;
+        border-bottom:1px solid $coolblue;
+        padding-bottom: 5px;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+    p{
+        font-size:13px;
+        color:$github;
+        padding:0;
+        text-align:justify;
+        font-family: 'HindMadurai-Regular';
+    }
+    span{
+        font-size:13px;
+        color:$github;
+        padding:0;
+        text-align:justify;
+        font-family: 'HindMadurai-Regular';
+    }
+}
+
+//Cooldex Invite List Start
+.invitelistmain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:30px;
+    margin:0 0 15px 0;
+    text-align:center;
+    span{
+        font-size:26px;
+        padding: 15px 0 0;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+}
+
+//Cooldex Token Value Start
+.tokenvaluemain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    text-align:left;
+    height:auto;
+    p{
+        font-size: 30px;
+        padding:15px 0 0;
+    }
+    h3{
+        text-align:left;
+        border-bottom:1px solid $coolblue;
+        padding:0;
+        font-size:13px;
+        width:auto;
+        display:inline-block;
+        margin:25px 30px 0;
+    }
+    ul{
+        list-style:none;
+        width:100%;
+        text-align:left;
+        margin:10px 0 0;
+        li{
+            display: inline-block;
+            padding: 0 30px 0;
+        }
+        li:last-child{
+            color:$green;
+        }
+    }
+}
+
+.activetitleTrade{
+    border-bottom:1px solid $coolblue;
+}
+
+//Active Trades
+.activetrades{
+    border:1px solid $coolblue;
+    border-radius: 5px;
+    padding:0 10px;
+    font-family: 'HindMadurai-Regular';
+    // .activetitle{
+    //     > span{
+    //         font-size:26px;
+    //         padding:5px 0;
+    //         font-weight:normal;
+    //         border-bottom:1px solid $coolblue;
+    //         width: 100%;
+    //         margin:0 0 20px;
+    //         padding: 0;
+    //     }
+    //     >h5{
+    //         margin: 0;
+    //         padding: 0;
+    //     }
+    // }
+    h5{
+        margin: 10px 0 0;
+    }
+    h3{
+        font-size:22px;
+        padding:5px 0;
+        font-weight:normal;
+        //border-bottom:1px solid $coolblue;
+        padding-bottom:5px;
+        margin:0;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+        span{
+            font-size:22px;
+            padding:5px 0;
+            font-weight:normal;
+           // border-bottom:1px solid $coolblue;
+            padding-bottom:5px;
+            margin:0;
+            font-family: 'Montserrat-Regular';
+            text-transform:uppercase;
+        }
+    }
+    span{
+        font-size:12px;
+        display:inline-block;
+        padding:5px 0;
+    }
+    table{        
+        tr{
+            display:flex;
+            th{
+                padding:0;
+                border-top:none;
+                border-bottom:none;
+                background:$white;
+                text-align:right;
+                font-family: 'HindMadurai-Regular';
+                width:100%;
+                font-size:13px;
+                text-transform: uppercase;
+            }
+            td{
+                padding:0px 0;
+                border:none;
+                font-size:13px;
+                text-align:right;
+                font-family: 'HindMadurai-Regular';
+                width:100%;
+            }
+        }
+    }
+    ul{
+        list-style: none;
+        padding:3px 0 0;
+        margin:3px 0px 5px;
+        text-align:right;
+        li{
+          display:inline-block;
+          a.active, a:hover{
+            border:1px solid #357ce1;
+            border-radius:3px;
+            padding:0 2px;
+          }
+          a{
+            border:1px solid transparent;
+            border-radius:3px;
+            padding:2px;
+            img{
+              width:20px;
+            }
+          }
+        }
+      }
+}
+
+.buyactive-bg{
+    background:$coolactivebuy-gradient;
+    cursor:pointer;
+    background-repeat:no-repeat;
+    background-position:right;
+}
+.sellactive-bg{
+    background:$coolactivesell-gradient;
+    cursor:pointer;
+    background-repeat:no-repeat;
+    background-position:right;
+}
+
+//cooldex place order header
+.TabIndicator-colorSecondary-190{
+   background-color:$coolblue !important;
+}
+
+.cooldexbuysellmain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:0 0 0;
+    .comminborderright{
+        border-right:1px solid $coolblue;
+    }
+    .tab-pane{
+        border-top:1px solid $coolblue;
+    }
+}
+.cooldexplsheader{
+    header{
+        background-color:$white !important;
+        box-shadow:none;
+        border-radius:5px 5px 0 0;
+    }
+}
+
+.cooldexplstebmenu{
+    button.active{
+        color:$coolblue;
+    }
+    button{
+        min-height:44px;
+        > span{
+            > span{
+                padding-left:0 !important;
+                padding-right:0  !important;
+                padding-top:0  !important;
+                padding-bottom:0  !important;
+                > span{
+                    font-size:20px;
+                }
+            }
+        }
+    }
+    z-index: 1050 !important;
+}
+
+.btnbuysell{
+    color:$white;
+    border:none;
+    padding:10px 0;
+    font-size:20px;
+    border-radius:30px;
+    font-family: 'Montserrat-Regular';
+    margin-top:17px !important;
+    span{
+        text-transform:uppercase;
+    }
+}
+.btnbuysellstop{
+    color:$white;
+    border:none;
+    padding:10px 0;
+    font-size:20px;
+    border-radius:30px;
+    font-family: 'Montserrat-Regular';
+    margin-top:6px !important;
+}
+.btn-buy, .btn-buy:hover{
+    background:$coolgreen;
+}
+.btn-sell, .btn-sell:hover{
+    background:$coolred;
+}
+
+.btnbuy-per{
+    background:$white;
+    border: 1px solid $coolgreen;
+    color: $coolgreen;
+    border-radius: 0;
+    padding:3px 0 0 !important;
+    font-size: 12px !important;
+    min-height: 20px !important;
+    width:36px !important;
+    &:hover {
+        background:$coolgreen;
+        color: $white;
+        border: 1px solid $coolgreen;
+    }
+}
+.btnsell-per{
+    background:$white;
+    border: 1px solid $coolred;
+    color: $coolred;
+    border-radius: 0;
+    padding:3px 0 0 !important;
+    font-size: 12px !important;
+    min-height: 20px !important;
+    width:36px !important;
+    &:hover {
+        background:$coolred;
+        color:$white;
+        border:1px solid $coolred;
+    }
+}
+
+.cooldexcurrentmarkettop{
+    list-style:none;
+    margin:0;
+    padding:5px 0 0;
+    text-align:center;
+    li{
+        display:inline-block;
+        padding:0 10px;
+        font-family: 'HindMadurai-Regular';
+        h3{
+            font-size:12px;
+            font-family: 'HindMadurai-Regular';
+            margin:0;
+        }
+    }
+}
+.groupbox{
+    font-size:12px;
+    color:$coolblue;
+    padding:0px 0 0 0;
+}
+
+.buysellbox{
+    padding:15px 30px 0;
+    font-family:'HindMadurai-Regular';
+    .justify-content-between{
+        border-bottom:1px solid $coolblue;
+    }
+    button{
+        width:100%;
+        margin:0 auto;
+        position: relative;
+    }
+    label{
+        span{
+            font-family:'HindMadurai-Regular';
+            font-size: 14px;
+        }
+    }
+    input{
+        font-family:'HindMadurai-Regular';
+        font-size: 14px;
+    }
+}
+
+.markettradehis{
+    table{
+        tbody{
+            tr{
+                td{
+                    padding:2px 5px !important;
+                }
+            }
+        }
+    }
+
+    table{
+        tr{
+            th:first-child, td:first-child{
+                width:15%;
+                text-align:center;
+            }
+            th,td{                
+                text-align:right;
+            }
+            th{
+                font-size:13px !important;
+                font-family:'Mako';
+                background:$white !important;
+                border:none;
+                text-transform:uppercase;
+            }
+            td{
+                font-size:13px  !important;
+                font-family: 'HindMadurai-Regular'  !important;
+                border:none;
+                padding:0 0 !important;
+            }
+        }
+    }
+}
+
+
+
+//cooldex fiat left Start
+.cooldexfiattitle{
+    span{
+        font-size:36px;
+        color:$coolblue;
+    }
+    p{
+        font-size:18px;
+        color:$github;
+    }
+}
+.cooldexfiatlist{
+    list-style:none;
+    li{
+        padding:10px 0;
+    }
+    i{
+        background:$coolgradients-icon;
+        width:40px;
+        height:40px;
+        display:inline-block;
+        color:$white;
+        text-align:center;
+        border-radius:50%;
+        font-size:30px;
+        margin:5px 0 0;
+        padding:0 5px 0 0
+    }
+    span{
+        font-size:24px;
+        color:$github;
+    }
+    p{
+        font-size:14px;
+        color:$github;
+    }
+}
+
+//Buy Sell Form Start
+.fiatmenu{
+    border-bottom:1px solid $github !important;
+    margin:0 0 20px 0;
+    a{
+        border:none !important;
+        background-color:transparent  !important;
+        font-size:24px;
+        color:$github;
+        border-bottom:2px solid transparent !important; 
+    }
+    .nav-link.active{
+        color:$black !important;
+        border-bottom:2px solid $github !important; 
+    }
+}
+.cooldexfiat-buyform{
+    label{
+        font-weight:bold;
+    }
+    input,select{
+        box-shadow:0 1px 15px 1px rgba(69, 65, 78, 0.08) !important;
+        width:100%;
+    }
+    .bitcoinbtnbuybtn{
+        background:$coolgreen;
+        color:$white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 0 5px;
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+    }
+    .bitcoinbtnsellbtn{
+        background:$coolred;
+        color:$white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 0 5px;
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+    }
+}
+.paymentbox{
+    text-align:center;
+}
+.saveaddress{
+    color:$github;
+    padding: 5px 10px;
+    border: 1px solid $github;
+    margin: 10px 0;
+}
+.buytitleborder{
+    border-bottom:1px solid $instagram; 
+    margin: 0 0 15px;
+    label,p{
+        margin: 0 0 0px;
+    }
+    p{
+        font-size:12px;
+    }
+}
+
+
+//Cooldex Funding Page Start
+.cooldexbuysellfun{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    margin:0;
+    padding:0 10px;
+    .card{
+        border:none;
+        border-radius:5px;
+    }
+}
+
+.CooldexHigherLowerbox{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    margin:0 0 30px 0;
+    padding:0 15px 30px 15px;
+
+    span{
+        color:$github;
+        font-size:20px;
+        font-weight:bold;
+        padding: 20px 0;
+    }
+    a{
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-size: 25px;
+        text-align: center;
+    }
+    .higherbtn{
+        border: 2px solid $coolgreen;
+        color: $coolgreen;
+        &:hover{
+            color:$white;
+            background:$coolgreen;
+        }
+    }
+    .lowerbtn{
+        border:2px solid $coolred;
+        color:$coolred;
+        &:hover{
+            color:$white;
+            background:$coolred;
+        }
+    }
+}
+
+.buyCheckoutbox{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    margin:0 0 0 0;
+    padding:30px 50px;
+    position:relative;
+
+    input{
+        border:1px solid $tumblr;
+        background:$white;
+        border-radius:3px !important;
+        margin:50px 0;
+        padding-right:55px;
+    }
+    span{
+        text-align:right;
+        position:absolute;
+        right:68px;
+        bottom:133px;
+        color:$coolblue;
+    }
+    .bitcoinbtn{
+        background:$coolgreen;
+        color:$white;
+        border:none;
+        border-radius:30px;
+        padding:10px 30px 6px;
+        font-size:22px;
+        margin:0 auto;
+        width:80%;
+        text-align:center;
+        display:block;
+    }
+    .checkoutbtn{
+        background:$coolblue;
+        color:$white;
+        border:none;
+        border-radius:30px;
+        font-size:22px;
+        padding:10px 30px 6px;
+        margin:0 auto;
+        width:80%;
+        text-align:center;
+        display:block;
+    }
+}
+
+.tooltipslidermain{
+    border:1px solid $coolblue;
+    background:$white;
+    border-radius:3px;
+    margin: 0 0 30px 0;
+    padding: 10px 0 30px;
+    .tooltipslider{
+        border-bottom:2px solid $coolblue;
+        text-align: center;
+        margin:0 20px;
+
+        &::after{
+            background:$coolblue;
+            padding:10px;
+            position:absolute;
+        }
+
+        a{
+            position:relative;
+            top:17px;
+            background:$coolgradients-icon;
+            margin:0 50px;
+            border-radius:50%;
+            width:20px;
+            height:20px;
+            padding:3px 0 0;
+            text-align: center;
+        }
+    }
+    .place-top{
+        border:1px solid $coolblue !important;
+        background:$white !important;
+        color:$github !important;
+    }
+}
+.dividerbuyselltrade{
+    //border:1px solid !important;
+    margin: 3px !important;
+}
+
+
+//Trading Footer
+.cooldexfooterbg{
+    background:$coolblue;
+    padding:30px 20px 10px;
+    .footerlogo{
+        width:150px;
+        padding:0 0 20px;
+    }
+    .footerlist{
+        span{
+            color:$white;
+            font-weight: 600;
+            font-size:16px;
+            padding: 0 0 0px;
+            display: inline-block;
+
+            text-overflow: ellipsis;
+            width: 115px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        ul{
+            padding:0;
+            margin:0;
+            list-style:none;
+            li{
+                a{
+                    color:$white;
+                    font-size:14px;
+                    text-decoration:none;
+                    font-weight: 400;
+                    padding: 5px 0;
+                    line-height: 10px;
+                }
+                span{
+                    color:$white;
+                    font-size:14px;
+                    text-decoration:none;
+                    font-weight: 400;
+                    padding: 5px 0;
+                }
+            }
+        }
+    }
+
+    .coprightmain{
+        border-top:1px solid $white;
+        padding:10px 0;
+        margin-top:20px;
+        color:$white;
+        span{
+            font-size:16px;
+            // font-weight:bold;
+            padding:12px 0;
+        }
+        ul{
+            text-align:right;
+            padding:0;
+            margin:0;
+            li{
+                list-style:none;
+                display:inline-block;
+                padding:0 6px;
+                a{
+                    border:1px solid $white;
+                    padding:5px;
+                    border-radius:50%;
+                    width:34px;
+                    height:34px;
+                    text-align:center;
+                }
+            }
+        }
+    }
+}
+
+
+.cooldexlanguage{
+    background:$coolblue;
+}
+
+.footer-menus {
+    margin-bottom: 0.625rem !important;
+    li {
+      a {
+        padding: 5px !important;
+        min-width: 20px;
+        min-height: 30px;
+        border: 1px solid;
+        border-radius: 100px;
+        color:$white !important;
+        font-size: 1rem;
+      }
+    } 
+
+
+.list-inline-item{
+   .social-button{
+       background:transparent !important;
+       border:1px solid $white !important;
+   }
+}
+}
+/* .blink_me {
+   animation: blinker 5s linear 1;
+ }
+
+
+
+
+ @keyframes blinker {
+   0% {
+     background-color: $coolblue;
+   }
+   50% {
+     background-color: $white;
+   }
+ } */
+
+// code added by devang parekh for blink effect(18-6-2019)
+ @-webkit-keyframes blink_me {
+    from { background-color:$coolblue; }
+    to { background-color: $white; }
+  }
+@-moz-keyframes blink_me {
+    from { background-color: $coolblue; }
+    to { background-color: $white; }
+}
+@-o-keyframes blink_me {
+    from { background-color: $coolblue; }
+    to { background-color: $white; }
+}
+@keyframes blink_me {
+    from { background-color: $coolblue; }
+    to { background-color: $white; }
+}
+.blink_me {
+    -webkit-animation: blink_me 1s; /* Safari 4+ */
+    -moz-animation:    blink_me 1s; /* Fx 5+ */
+    -o-animation:      blink_me 1s; /* Opera 12+ */
+    animation:         blink_me 1s; /* IE 10+ */
+  }
+//end
+
+  //My Account Help & Support Complain List
+
+.Complainlist{
+    text-overflow:ellipsis;
+    width:100px;
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:12px;
+    margin:0;
+}
+
+.freelinktitle{
+    color:$coolblue;
+    padding-top:5px;
+}
+
+.tradefrm{
+    label{
+        margin-bottom:0;
+    }
+}
+
+.cooldexplstebmenu{
+    button{
+    min-width:80px;
+    }
+}
+.coolbtn-comman{
+    background-color:$coolblue !important;
+    span{
+        color:$white;
+    }
+}
+.coolbtn-secondary{
+    background-color:#4683F2 !important;
+    &:hover{
+        background-color:$coolblue !important;
+    }
+}
+.bgcool-primary {
+    background-color:$coolblue !important;
+}
+.perverbtn{
+    background:$coolblue !important;
+    color:$white;
+}
+.coolbtn-link{
+    color:$coolblue !important;
+    a{
+        color:$coolblue !important;
+    }
+}
+.MuiTab-textColorPrimary-86.MuiTab-selected-88 {
+    color:$coolblue !important;
+}
+.TabIndicator-colorPrimary-96 {
+    background-color:$coolblue !important;
+}
+
+.pagination{
+    margin: 5px !important;
+    padding: 5px !important;
+    font-size: 14px;
+    float: right;
+    // li{
+    //   padding: 5px !important;
+    // } 
+    
+    li{
+      color: #3B5998;
+      float: left;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+    li.active,li:hover{
+        background-color: #0014E4;
+        color: #fff;
+        a {
+          color: #fff;
+        }
+    }
+    a {
+        color: #0014E4;
+    }
+    /* li:hover:not(.active) {
+        background-color: #ddd;
+    } */
+  }
+
+  .Fundbalencepopup{
+    .dropdown-content{
+      min-width: 320px;
+      .dropdown-top, h5{
+        padding: 0 15px;
+      }
+    }
+  }
+  
+.kyc_verify{
+    a{
+        border-bottom:1px solid $coolblue;        
+        span{
+            color:$coolblue;
+        }
+    }
+}
+
+.myWatchlisttop, .portfolio-list{
+    table{
+      tr{
+        height:auto !important;
+        th{
+          background:#F4F7FA !important;
+          border-top:1px solid #e0e0e0;
+          border-bottom:1px solid #e0e0e0;
+          border-right:1px solid #e0e0e0;
+          padding:4px 30px 4px 10px !important;
+        }
+      }
+    }
+  }
+  .marketdepthgraph{
+        > div{
+            top: 25px;
+            position: relative;
+        }
+    }
+  
+@media only screen and (max-width : 767px) {
+    .cooldexplstebmenu{
+        button{
+            min-width:60px;
+        }
+    }
+    .cooldexopentitle{
+        label{
+            left:0px !important;
+        }
+    }
+    .transaction-history-detail{
+        .collapse {
+            bottom:0px;
+        }
+    }
+    .innertabpanel{
+        min-height:auto;
+    }
+    .tabformtitle {
+        padding: 10px 30px;
+        margin-bottom: 0;
+    }
+    .cooldexgraph{
+        margin:15px 0 0;
+    }
+
+    .cooldexgraphpadding, .cooldexgraphpl, .cooldexgraphpr{
+        padding:0 12px;
+    }
+    .cooldexbuysellmain{
+        margin:15px 0px;
+        padding:0;
+    }
+    .newslistmain{
+        margin:8px 0px;
+        padding:0 10px;
+    }
+    .cooldexopenorder{
+        margin:10px 0px;
+        padding:0 15px;
+    }
+    .activetrades{
+        margin:15px 0px;
+        padding:0 15px;
+        h5{
+            padding:0 5px;
+        }
+    }
+    .cooldexplsheader{
+        header{
+            margin-top:15px;
+        }
+    }
+    .comminborderright{
+        border-right:none !important;
+        padding:0;
+        form{
+            margin-top:20px;
+        }
+        .justify-content-between{
+            p{
+                width: 100%;
+                position: absolute;
+                top:26px;
+            }
+        }
+    }
+    .btnsell-per, .btnbuy-per{
+        width:30px !important;
+    }
+    .buysellbox{
+        padding:15px 15px;
+        .justify-content-between{
+            min-height:40px !important;
+        }
+    }
+    .btcbuyprice{
+        width:100%;
+        top:33px;
+        position:absolute;
+        left:15px;
+    }
+    .btnbuysell{
+        margin-top:5px !important;
+        padding:8px 0;
+        font-size:14px;
+        width:100%;
+    }
+    .cooldexplstebmenu{
+        button{
+            > span{
+                >span{
+                    >span{
+                        font-size:16px;
+                    }
+                }
+            }
+        }
+    }
+    .marketdepthgraph{
+        margin-left:12px;
+        margin-right:12px;
+    }
+    .footerlist{
+        > span{
+            border-bottom:1px solid $white;
+            font-size:18px;
+        }
+    }
+    .cooldexfooterbg{
+        .coprightmain{
+            ul{
+                text-align: center;
+            }
+        }
+        .col-6{
+            padding-left:0;
+            padding-right:0;
+        }
+    }
+    .cooldextrading-menu {
+        .nav {
+            padding-top: 8px;
+        }
+        ul{
+            li{
+                > a {
+                    display:inline-block;
+                    margin: -13px 0 0 0;
+                    width:100%;
+                    text-align: center;
+                    i{
+                        font-size:18px !important;
+                        margin:0px 6px !important;
+                        text-align:center;
+                    }
+                }
+                .sub-menu{
+                    position:absolute;
+                    // top:160px;
+                   li{
+                       a{
+                        text-align:left;
+                       }
+                   } 
+                }
+            }
+        }
+    }
+    .lnkToBtn{
+        min-height:35px !important;
+        width:47% !important;
+    }
+    .orderlist-search, .transaction-search, .tradefrm{
+        label{
+            margin-top:3px;
+        }
+        input,select{
+            margin-bottom:10px;
+        }
+        .app-selectbox-sm{
+            margin-bottom:10px;
+        }
+    }
+}
+
+
+@media screen and (min-width:1024px) and (max-width:1280px) {
+    .notification-dropdown .dropdown-menu {
+        left:-10.5rem !important;
+    }
+    
+}
+
+@media screen and (max-width:1400px) {
+    .cooldexcurrentmarkettop{
+        li{
+            padding:0 5px !important;
+        }
+    }
+    .notification-dropdown {
+        .dropdown-menu {
+            left: -15rem !important;
+        }
+    }
+    .invitelistmain{
+        padding: 35px 0;
+    }
+}
+
+.panel-border{
+    border:1px solid #0014E4;
+}
+.color-icon{
+    color: #0014E4;
+}
+.text-dblue{
+    color: #0014E4 !important;
+}
+
+.advtradingright{
+    padding-left: 0;
+}
+.advtradingleft{
+    padding-right: 0;
+}
+.Advancetradingtabmenu{
+    select{
+        margin: 2px 0 0 0;
+    }
+}
+
+//Responsive
+@media only screen and (max-width : 767px) {
+    // .Tradingdashboard{
+    //     margin:0 15px;
+    // }
+    .jbs-scroll{
+        margin-right:0px !important;
+    }
+    body {
+        padding-top:0px !important;
+    }
+    .marketsmenu {
+        margin: 10px 0 0;
+    }
+    .currentmarkettop{
+        li{
+          width:33%;
+        }
+    }
+    .advtradingleft {
+        padding-right: 12px;
+    }
+    .Advancetradingheader{
+        height:auto;
+        margin-top:12px;
+    }
+    .advtradingright {
+        padding-left: 12px;
+        margin-top: 10px;
+    }
+    .placeorderright {
+        .freelink{
+            .freelinktitle{
+                margin: 0px 1px 0 12px;
+                background: transparent;
+            }
+            a{
+                padding: 0;
+            }
+        }
+    }
+    .placeordertabmenu{
+        padding-left: 10px;
+    }
+    .Advancetradingtabmenu{
+        select{
+            margin: 2px 0px 12px 10px;
+            width: 94%;
+        }
+    }
+    .coprightmain{
+        ul{
+            padding:0 0 50px;
+            text-align: center;
+            li{
+                padding: 0 4px !important;
+                margin: 0 0 40px !important;
+                
+                button{
+                    width:34px;
+                    height:34px;
+                    span{
+                        padding:8px 0 !important;
+                    }
+                }
+            }
+        }
+    }
+   
+
+}
+
+
+
+//Margin-trading start For Mobile View
+@media only screen and (max-width : 767px) {
+    .cardboxmobile {
+        > div{
+            padding:15px 10px !important;
+        }
+        .tab-pane{
+            padding:0 10px;
+        }
+    }
+    .mobilemain{
+        .coinbasetitle{
+            padding:10px;
+        }
+    }
+    .mobiletabmenu{
+        button{ width:33%;
+            span{
+                font-size:14px;
+                font-weight:bold;
+                color:$github;
+            }
+        }
+        .MuiTab-selected-172{
+            span{
+                font-size:16px;
+                font-weight:bold;
+                color:$darkblue;
+            }
+        }
+    }
+    .selectcoin{
+        > span{
+            font-size:16px;
+            font-weight:bold;
+            padding: 0 10px 15px;
+            display: inline-block;
+        }
+        h3{
+            font-size:16px;
+            font-weight:bold;
+            color:$darkblue;
+            padding:15px 10px 5px;
+        }
+    }
+    .favoritesbtn{
+        a{
+            padding:10px 15px;
+            font-size:16px;
+            border: 1px solid $darkblue;
+            margin:7px 10px;
+            text-align:center;
+            color:$darkblue;
+            &:hover{
+                background:$darkblue;
+                border: 1px solid $white;
+                color:$white;
+            }
+        }
+    }
+    .MobileMarketTrade{
+        .mobilemarkettitle {
+            background:$darkblue;
+            color:$white;
+            font-size:20px;
+            padding:10px 8px;
+            font-weight:normal;
+            border-bottom: none;
+        }
+    }
+    .mobilemarketlist{
+        table{
+            tr{
+                th, td{
+                    font-size:12px !important;
+                    padding:4px 0 !important;
+                    text-align:left;
+                    width:25%;
+                }
+                th:first-child, td:first-child{
+                    width:20%;
+                    text-align: center;
+                }
+            }
+        }
+    }
+    .mobilebuyselltreade{
+        > .row{
+            font-size:20px;
+            padding:10px 8px;
+        }
+        h3{
+            font-size:18px;
+            font-weight:bold;
+        }
+        h5{
+            padding: 0 0 5px 10px;
+        }
+        ul{
+            text-align:right;
+            li{
+                list-style:none;
+                display:inline-block;
+                a{
+                    img{
+                        width:30px;
+                    }
+                }
+            }
+        }
+        table{
+            tr{
+                th{
+                    font-size:12px !important;
+                    padding:4px 5px !important;
+                    text-align:left;
+                    width: 33%;
+                }
+                td{
+                    padding:4px 5px !important;
+                    font-size:12px;
+                    text-align:left;
+                    width: 33%;
+                }
+            }
+        }
+    }
+
+    .mobileActiveOrders{
+        .cooldexopenorder {
+            border: none;
+            border-radius:5px;
+        }
+    }
+    .marketpairlist{
+        margin-top:30px;
+        h3{
+            font-size:22px;
+            font-weight: normal;
+            padding:10px 10px 0;
+        }
+        input{
+            margin: 0 10px;
+            width: 95%;
+        }
+        table{
+            tr{
+                td{
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+    .dialogheader{
+        background-color:$darkblue !important;
+        h3{
+            font-size:18px;
+            font-weight:bold;
+        }
+    }
+    .cooldexopenorder{
+        h3{
+            text-transform: unset;
+        }
+        .form-control{
+            margin-bottom:10px;
+        }
+    }
+    .highcharts-container {
+        svg{
+            rect{
+                fill:$white;
+            }
+        }
+    }
+    
+    .mobilepairlist{
+        table{
+            tr{
+                th, td{
+                    width:23%;
+                    text-align:left;
+                    a{
+                        vertical-align: middle;
+                    }
+                }
+                th:first-child, td:first-child{
+                    width:30%;
+                    text-align:left;
+                }
+            }
+        }
+    }
+
+//Dark Mode Start
+.dark-mode{ 
+    .mobiletabmenu{
+        button{
+            span{
+                color:$white;
+            }
+        }
+    }
+    .selectcoin{
+        h3{
+            color:$white;
+        }
+    }
+    .favoritesbtn{
+        a{
+            border: 1px solid $white;
+            color: $white;
+        }
+    }
+    .mobilemarketlist, .mobilebuyselltreade {
+        table{
+            tr{
+                th{
+                    color:$white;
+                }
+                td{
+                    border-top:none;
+                }
+            }
+        }
+    }
+    
+    .MobileMarketTrade{
+        .mobilemarkettitle{
+            background:#2c3644;
+        }
+    }
+    .dialogheader {
+        background-color: #323232 !important;
+    }
+    .marketsmenu{
+        li{
+            a{
+                color:$white;
+            }
+        }
+    }
+    // .highcharts-container {
+    //     svg{
+    //         rect{
+    //             fill:#2c3644;
+    //         }
+    //     }
+    // }
+}
+
+
+}
+
+//Margin-trading End
+
+
+
+
+
+//Advance trading start For Mobile View
+.Mobilecurrentmarkettop{
+    display:none;
+}
+@media only screen and (max-width : 767px) {
+    .currentmarkettop{
+        display:none;
+    }
+    .Mobilecurrentmarkettop{
+        display:block;
+        margin-top: 15px;
+        p{
+            margin:10px 0 7px 0;
+        }
+        .mobileupdown{
+            font-size:22px;
+            padding-top:15px;
+        }
+    }
+    .advmobiletabs{
+        > div{
+            padding:8px !important;
+            header{
+                background-color:transparent !important;
+                button{
+                    width:50%;
+                    text-align:center;
+                    span{
+                        font-size:14px;
+                        font-weight:bold;
+                    }
+                }
+            }
+        }
+        select{
+            width:94%;
+            margin:0 10px 15px;
+        }
+    }
+    .cooldexplstebmenu{
+        background-color:transparent !important;
+    }
+    .freelinktitle {
+        padding: 0 !important;
+        font-size: 16px;
+        margin-top:10px;
+    }
+    .advtabmenu{
+        button{
+            width:33%;
+            text-align:center;
+            span{
+                font-size:14px;
+                font-weight:bold;
+            }
+        }
+        .MuiTabScrollButton-root-167 {
+            flex: 0 0 0px !important;
+        }
+    }
+    .abvmobitradingbuysell{
+        table{
+            tr{
+                th, td {
+                    width:22% !important;
+                    text-align:left;
+                    a{
+                        vertical-align: middle;
+                    }
+                }
+                th:first-child, td:first-child{
+                    width:13% !important;
+                    text-align:center;
+                }
+            }
+        }
+    }
+
+//Dark Mode Start
+.dark-mode{ 
+    .advmobiletabs{
+        header{
+            color:$white;
+        }
+    }
+    .cooldexplstebmenu{
+        button.active {
+            color:#2DE670 !important;
+        }
+    }
+    button.active {
+        color:#2DE670 !important;
+    }
+    button{
+        color:$white;
+        //background: transparent;
+    }
+    .placeordertabmenu{
+        label{
+            span{
+                color:$white;
+            }
+        }
+    }
+    .openorder{
+        tr{
+            th{
+                color:$white;
+                span{
+                    color:$white;
+                }
+            }
+        }
+    }
+    .bg-light{
+        th{
+            span{
+                color:$white !important;
+            }
+        }
+    }
+}
+    
+}
+//Advance trading End For Mobile View
+

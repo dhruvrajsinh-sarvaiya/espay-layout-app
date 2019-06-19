@@ -1,0 +1,67 @@
+/* 
+    Createdby : dhara gajera
+    CreatedDate :18-01-2019
+    Description : Component For Invite Friend 
+*/
+@charset "UTF-8";
+.share-wrapper {
+  float: right;
+  height: 100% !important;
+}
+.share-wrapper i{
+    position: relative;
+}
+.share-wrapper .share {
+  width: 53px !important;
+  height: 53px !important;
+  color: white;
+  text-align: center;
+  line-height: 2.1;
+  font-size: 25px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: background-color 0.4s;
+  /* box-shadow: 0 1px 5px rgba(0, 0, 0, 0.28); */
+}
+
+.share-wrapper .share.active:before {
+    width: 53px !important;
+    height: 53px !important;
+}
+.share-wrapper .share.active + .social li {
+  transform: scale(1);
+}
+.share-wrapper .share.active + .social li:hover {
+  transform: scale(1.1);
+}
+.share-wrapper ul.social {
+  opacity: 0;
+  visibility: hidden;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  transform: translate(-3rem, 3rem);
+  transition: visibility 0.4s, opacity 0.4s, -webkit-transform 0.4s;
+}
+.share-wrapper ul.social.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0);
+  z-index: 9999;
+}
+.share-wrapper ul.social li {
+  width: 53px;
+  height: 53px;
+  border-radius: 50%;
+  color: #fff;
+  background-color: #fff;
+  text-align: center;
+  line-height: 2.1;
+  font-size: 25px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  box-shadow: 0.5px 0.87px 4px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.4s;
+  transform: scale(0.4);
+  padding: 6px;
+}

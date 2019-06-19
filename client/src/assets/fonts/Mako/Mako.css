@@ -1,0 +1,10 @@
+
+@font-face {
+  font-family: 'Mako';
+  src: url('fonts/Mako.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/Mako.woff') format('woff'), 
+  url('fonts/Mako.ttf')  format('truetype'), 
+  url('fonts/Mako.svg#Mako') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

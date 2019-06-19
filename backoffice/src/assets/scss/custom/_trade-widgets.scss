@@ -1,0 +1,469 @@
+
+.card1-data{
+    width: calc(100% + 16px);
+    margin: -8px;
+  }
+  
+  .card-data{
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;  
+  }
+  
+  .card-detail{
+    padding: 8px;
+    margin: 0px;
+    box-sizing: border-box;
+  }
+  
+  .card-detail1{
+    flex-grow: 0;
+    min-width: 100%;
+    max-width: 100%;
+    flex-basis: 50%;
+  }
+  
+  .card-header-info{
+    background-color: #fff;
+  } 
+  
+  .card-header-data{
+    border-radius: 12px;
+  }
+  
+  .card-header-detail{
+    box-shadow: 0px 1px 5px 0px rgba(80,80,80, 0.2), 0px 2px 2px 0px rgba(80,80,80, 0.14), 0px 3px 1px -2px rgba(80,80,80, 0.12);
+  }
+  
+  .card-header-information{
+    height: 196px;
+    display: flex;
+    overflow: hidden;
+    flex-grow: 1;
+    flex-direction: column;
+    justify-content: space-between
+  }
+  
+  .header{
+    display: flex;
+    padding: 10px;
+    align-items: center;
+  }
+  
+  .header-row1{
+    min-width: 100%;
+    height: 200px;
+    margin-right: 4px;
+  }
+  
+  .header-row{
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    font-size: 1.25rem;
+    align-items: center;
+    flex-shrink: 0;
+    user-select: none;
+    border-radius: 50%;
+    justify-content: center;  
+  }
+  
+  .jss358{
+    object-fit: cover;
+  }
+  
+  .card-content{
+    background-color: rgb(251,140,0);
+    position:relative;
+    text-align: right;
+    color: white;
+  }
+  
+  .card-content-data{
+    background-color: rgb(251,140,0);
+    top:-20px;
+    left:-50%;
+    width:200%;
+    height :260px;
+    position: absolute;
+    border-radius: 50%;
+  
+  }
+
+  // Slider box
+.sliderbox{
+  .card{
+      min-height:220px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      margin:0 15px;
+  }
+  
+  .coinslider{
+      padding:15px 5px 0 5px;        
+      display: inline-block;        
+      .marketslider{
+          float: right;
+          padding: 0 0px;
+          // display: inline-block;
+           width: 50%;
+           text-align: right !important;  
+           margin-right: 5px;         
+           span{
+               display: initial;
+               font-weight: bold;
+           }
+      }
+      span{
+          padding: 0 5px;
+          display: inline-block;
+          width: 50%;
+          text-align: right;
+      }
+      ul{
+          float: left;
+          list-style:none;
+          width: 45%;
+          li{
+              display: inline-block;
+              text-align: left;
+              img{
+                  width:40px;
+                  display: inline-block;
+                  margin-right:20px;
+              }
+              p{
+                  display: inline-block;
+                  color: #5D92F4;
+                  font-size:18px;
+                  margin-left: 5px;
+              }
+          }
+      }
+  }
+
+  .coinsliderprice{
+      span{
+          padding: 0 15px;
+          display: inline-block;
+          text-align: left;
+          color:$github;
+          width:70%;
+      }
+      .marketcap{     
+          padding: 0 15px;
+          display: inline-block;      
+          text-align: center;
+          width:50%;
+          color:$github;
+          span{                              
+              width:100%;
+              font-weight: bold;
+              text-align: center;
+          }
+          p{
+              font-size:14px; 
+              color: $github;
+          }
+      }
+      p{
+          display: inline-block;
+          color: green;
+          font-size:16px;
+      }
+  }
+}
+
+  .slick-slider{
+    // button{
+    //   //background-color: #5D92F4!important;
+    // }
+    .slick-prev {
+      height: 25px !important;
+      width: 25px !important;
+      background-color: #5D92F4!important;
+      left : -25px !important; 
+      border-radius : 25px !important;
+      z-index: 1 !important;
+      
+    }
+    .slick-next{
+      height: 25px !important;
+      width: 25px !important;
+      background-color: #5D92F4!important;
+      right : -25px !important; 
+      border-radius : 25px !important;
+      z-index: 1 !important;
+    }
+    .slick-prev, .slick-next{
+      &::before{
+        top: 4px;
+        position: absolute;
+        left: 3px;
+      }
+    }
+  }
+
+  .MarketHistoryTabel-darkmode{
+    body{
+      background-color: #323232 !important;
+      color: $white !important;
+    }
+
+    > div{
+      span{
+        //background-color: #323232 !important;
+        color: $white !important;
+      }
+    }
+      h2{
+        color: $white;
+      }
+    background-color: #323232;
+    .table-responsive-design{
+      h3{
+        margin:5px 0;
+      }
+      > div{
+        border-top: 1px solid #979797;
+        border-bottom:transparent;
+        font-size: 21px;
+        display: inline-block;
+        width: 100%;
+      }
+      table{
+        background-color: #323232;
+        tbody{
+          tr{
+            line-height:1;    
+            //font-size: 21px !important;    
+            td{
+              color: $white !important;    
+              border: none;          
+            }                
+          }
+        }
+        thead{
+          tr{
+            th{
+              background: #323232 !important;
+              border: none;
+              padding:2px 0.31rem !important;
+              border-top:1px solid #979797;
+              text-align: left;
+              color: $white !important;
+              font-size: 21px !important;
+              span{
+                color: $white !important
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .MarketHistoryTabel{
+    background-color: $white;
+    
+    .table-responsive-design{
+      h3{
+        margin:5px 0;
+      }
+      > div{
+        border-top: 1px solid #979797;
+        border-bottom:transparent;
+        font-size: 21px;
+        display: inline-block;
+        width: 100%;
+      }
+      table{
+        background-color: $white;
+        tbody{
+          tr{
+            line-height:1;    
+            //font-size: 21px !important;                    
+          }
+        }
+        thead{
+          tr{
+            th{
+              //background: #323232 !important;
+              border: none;
+              padding:2px 0.31rem !important;
+              border-top:1px solid #979797;
+              text-align: left;
+             // color: $white !important;
+              font-size: 21px !important;
+              span{
+               // color: $white !important
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+.StackingHistory{
+  .gainerlosertable{
+    margin-bottom: 25px !important;
+  }
+}
+  .recharts-wrapper{
+    cursor: pointer !important;
+  }
+
+  .topgainerloser{
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    margin-top: 5px !important;
+    a{
+      padding: 5px !important;
+    }
+  }
+
+  .chart {
+    position:relative;
+}
+
+.chart select {
+    position:absolute;
+    right:50%;
+    top:5px;
+    z-index:9999;
+    width: auto !important;
+}
+
+.coincheckbox{
+  margin-right: 0px !important;
+}
+
+.pagination{
+  margin: 5px !important;
+  padding: 5px !important;
+  font-size: 14px;
+  float: right !important;
+  // li{
+  //   padding: 5px !important;
+  // }  
+  li{
+    color: #3B5998;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #e0e0e0;
+  }
+  li.active{
+    background-color:#4683F2;
+    color: #af0e10;
+    a{
+      color:$white;
+    }
+  }
+  li:hover:not(.active) {background-color: #ddd;}
+}
+.tradeexpansion{
+  background-color: #dcdcdc !important;
+  color: #323232;
+}
+.tradetable{
+  width: 90% !important;
+  margin-right: 5%;
+  margin-left: 5%;
+}
+
+
+.bredscrum-top-btn{
+  text-align: right;
+  //width: 100%;
+  display: inline-block;
+  button{
+    //float: right;
+  }
+}
+
+.drawer-data{
+  // position: relative !important;
+  // overflow: hidden !important;
+  // transform: translate(0) !important;
+}
+
+.api-subscription{
+  Table{
+    tbody{
+      td{
+        border:none !important;
+      }
+    }
+  }
+}
+
+.Trade-Recon{
+.MuiTableCell-root-206{
+  padding: 4px 0px 4px 24px !important;
+}
+}
+
+.trade-Routing{
+  .MuiTableRow-head-198 {
+    background-color: #5D92F4 !important;
+  }
+
+.MUIDataTableHeadCell-data-202{
+  font-size: 16px !important;
+  font-weight: bold !important;
+  color: white !important;
+  
+}
+
+
+.MuiTableCell-root-206{
+  padding: 4px 0px 4px 24px !important;
+}
+
+}
+
+// code added by devang parekh for hide fusion chart place holder
+.fusioncharts-container > svg > g > text {
+  display: none;
+}
+
+.trade-recon-list-data{
+  table{
+    thead{
+      tr{
+        th{
+          font-weight: bold !important;
+          font-size: 12px !important;
+          padding: 4px 4px 4px 4px !important;
+          text-align: center !important;
+        }
+      }
+    }
+    tbody{
+      tr{
+        td{
+          text-align: center !important;
+          padding: 4px 4px 4px 4px !important;
+        }
+      }
+    }   
+  }
+}
+
+.b-text-40{
+  width: 100% !important;
+  max-width: unset !important;
+  padding-right: 0px!important;
+}
+
+.expansion-panel-data > div{
+  background-color: white !important;
+}
+
+.visibledata{
+  opacity: 0.2 !important;
+}
+//end

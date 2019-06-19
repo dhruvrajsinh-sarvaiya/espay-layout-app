@@ -1,0 +1,10 @@
+
+@font-face {
+  font-family: 'HindMadurai-Light';
+  src: url('fonts/HindMadurai-Light.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/HindMadurai-Light.woff') format('woff'), 
+  url('fonts/HindMadurai-Light.ttf')  format('truetype'), 
+  url('fonts/HindMadurai-Light.svg#HindMadurai-Light') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

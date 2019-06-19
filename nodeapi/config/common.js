@@ -1,0 +1,25 @@
+module.exports = {
+  apiUrl: 'https://cleandevtest.azurewebsites.net/SSO_Account/',
+  apiUrlSignUp: 'api/SignUp/',
+  apiUrlSignin: 'api/Signin/',
+  apiUrlWallet: 'api/Wallet/',
+  apiUrlWalletOpnAdvanced: 'api/WalletOpnAdvanced/',
+  apiUrlWalletOperations: 'api/WalletOperations/',
+  statusOk: 200,
+  enableActivityLog: 1,
+  ProjectRoot: __dirname.substring(0, __dirname.indexOf("\\routes") + '\logs'),
+  enableErrorLog: 1,
+  enableRequestLog: 1,
+  enableResponseLog: 1,
+  //Added by Jayesh for Zoho CRM Form 
+  zohoFormUrl: "https://crm.zoho.com/crm/WebToLeadForm",
+  xnQsjsdp: "c201e4deb13518323ee193da07ae02951d7b8425955fb1b2945946928db0561e",
+  zc_gad: "",
+  xmIwtLD: "1a24e61ded9f8062c5f2e3e0698027c7ce4e2143c6b7394b1df9a3258b02acc1",
+  actionType: "TGVhZHM=",
+  returnURL: "",
+  ldeskuid: "ldeskuid",
+  LDTuvid: "LDTuvid",
+  privateVapidKey: 'pMHv0_l_XmNPZ5XB9yefee0I2NdKdDTttOotBbwc-8I',
+  publicVapidKey: 'BM0yH9JtGnmzF8Mm3Tn_ua36PA9FZzufsmFYF2Ul8MZOoXW13hvZo9NYVeIPDZCaG_gBrdE20QwoYetxpo0wuh8'
+};

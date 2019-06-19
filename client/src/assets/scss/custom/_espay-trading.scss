@@ -1,0 +1,1060 @@
+.tradingdashboard{
+    background: #f2f3f8;
+}
+.logo-normal{
+    padding: 0 0 10px;
+}
+.userprofile{
+    button{
+   //  min-width:100px;
+     span{
+        p{
+            padding: 18px 5px 0 5px;
+            text-overflow: ellipsis;
+            width:100px;
+            overflow: hidden;
+            white-space:nowrap;
+            font-size:12px;
+       }
+     }
+    }
+}
+//Espay Header And Footer
+.espay-header{
+    header{
+        background-color:$coolblue !important;
+        ul{
+            li{
+                .header-icon{
+                    color:$coolblue;
+                }
+                a{
+                    color:$white;
+                    span{
+                        color:$white !important;
+                    }
+                }
+                span{
+                    color:$white !important;
+                }
+                i{
+                    color:$white !important;
+                }
+            }
+        }
+    }
+    .list-inline-item{
+        .list-unstyled {
+            li{
+                a{
+                    i{
+                        color:$coolblue  !important;
+                    }
+                    span{
+                        color:$github  !important;
+                    }
+                }
+            }
+            .border-top{
+                a{
+                    i{
+                        color:$coolred !important;
+                    }
+                }
+            }
+        }
+    }
+    
+}
+.espaytrading-menu{
+    background-color:$coolblue;
+    ul{
+        li{
+            a{
+                color:$white;
+                    span{
+                    color:$white !important;
+                }
+            }
+
+            &:hover{
+                a{
+                    background-color:$white;
+                    color:$coolblue;
+                        span{
+                        color:$coolblue !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.espay-footer{
+    background-color:$coolblue !important;
+    ul{
+        li{
+            a{
+                color:$white;
+                    span{
+                    color:$white !important;
+                }
+            }
+        }
+    }
+    h5{
+        color:$white;
+    }
+}
+
+.coinbasicmain{
+    background:$white;
+    border:1px solid $coolblue;
+    border-radius: 5px;
+    margin:15px 0 8px;
+    font-family: 'HindMadurai-Regular';
+    .highcharts-container {
+        top:36px;
+        left: -10px;
+    }
+    .coinbasicbox{
+        padding: 20px 15px 8px;
+        margin: 0;
+        h3{
+            color:$github;
+            font-size:20px;
+            text-transform:uppercase;
+            font-family:'Montserrat-Regular';
+            span{
+                color:$tumblr;
+                font-size:20px;
+                font-family: 'HindMadurai-Regular';
+                text-transform:uppercase;
+                padding:0 0 0 10px;
+            }
+        }
+        p{
+            color:$github;
+            font-size:14px;
+            font-family: 'HindMadurai-Regular';
+        }
+        span, strong{
+            font-size:13px;
+            font-family: 'HindMadurai-Regular';
+        }
+    }
+}    
+
+.coinbasetitle{
+    font-size: 26px;
+    padding: 10px 0 0px;
+    font-weight: normal;
+    border-bottom:1px solid $coolblue;
+    margin:2px 10px;
+    font-family: 'Montserrat-Regular';
+    text-transform: uppercase;
+}
+.marketdepthbox{
+    padding:20px 0 0 0;
+    img{
+        display:inline-block;
+        width: 245.3px;
+    }
+}
+
+
+//Open Order 
+.espayopenorder{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:10px;
+    margin:11px 0 0 0;
+    .espayopentitle{
+        border-bottom:1px solid $coolblue;
+        margin:5px 0px;
+        label{
+            margin-left:0;
+            margin-right:0;
+            margin-bottom:0;
+            position: relative;
+            left:0px;
+        }
+        span{
+            height:auto !important;
+        }
+    }
+    h3{
+        font-size:26px;
+        font-weight:normal;
+        padding:0px;
+        margin:0px;
+        font-family:'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+    table{
+        tr{
+            background:$white;
+            th{
+                font-family:'HindMadurai-Regular';
+                background:$white;
+                width:16%;
+                text-align:center;
+                border:none;
+                span{
+                    color:$github;
+                    font-size:13px;
+                    font-family: 'Mako';
+                }
+            }
+            td{
+                border-top:none;
+                font-family:'HindMadurai-Regular';
+                font-size:14px !important;
+                width:16%;
+                text-align:center;
+            }
+        }
+    }
+}
+
+//Market Trade Left Panel
+
+.espaymarkettrade{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:10px;
+    margin:0 0 15px 0;
+    .material-icons {
+        font-size: 16px;
+        padding: 0 2px 0 0;
+        vertical-align: middle;
+        margin-top: -4px !important;
+      }
+    h3{
+        font-size:22px;
+        font-weight:normal;
+        border-bottom:1px solid $coolblue;
+        padding-bottom: 5px;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+   .table-responsive-design{
+       table{
+           tr{
+               th{
+                   background:$white;
+                   border:none;
+                   font-size:14px;
+                   font-family: 'HindMadurai-Regular';
+                   text-align:left;
+                   width:28%;
+               }
+               td{
+                   border:none;
+                   font-family: 'HindMadurai-Regular';
+                   text-align:left;
+                   width:28%;
+               }
+           }
+       }
+   }
+   input{
+       height:35px;
+   } 
+}
+.marketsmenu{
+    border-bottom:none;
+    li{
+        .nav-link{
+            color:$black;
+        }
+        .nav-link, .nav-link.active{
+            color:$github;
+            // background-color:transparent;
+            border-color:transparent;
+            font-size: 14px !important;
+            font-family: 'Mako';
+            margin: 0 !important;
+        }
+    }
+}
+
+//Espay Graph Start
+.espaygraph{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:0 0 0;
+    margin:0 0 11px 0;
+}
+.espaygraphpadding{
+    padding:0;
+}
+.espaygraphpl{
+    padding:0;
+}
+.espaygraphpr{
+    // padding:0;
+}
+
+
+//Espay News List Start
+.newslistmain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:10px;
+    margin:0 0 11px 0;
+    font-family: 'HindMadurai-Regular';
+    h3{
+        font-size:26px;
+        padding:5px 0;
+        font-weight:normal;
+        border-bottom:1px solid $coolblue;
+        padding-bottom: 5px;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+    p{
+        font-size:13px;
+        color:$github;
+        padding:0;
+        text-align:justify;
+        font-family: 'HindMadurai-Regular';
+    }
+}
+
+//Espay Invite List Start
+.invitelistmain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:30px;
+    margin:0 0 15px 0;
+    text-align:center;
+    span{
+        font-size:26px;
+        padding: 15px 0 0;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+    }
+}
+
+//Espay Token Value Start
+.tokenvaluemain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    text-align:left;
+    height:auto;
+    p{
+        font-size: 30px;
+        padding:15px 0 0;
+    }
+    h3{
+        text-align:left;
+        border-bottom:1px solid $coolblue;
+        padding:0;
+        font-size:13px;
+        width:auto;
+        display:inline-block;
+        margin:25px 30px 0;
+    }
+    ul{
+        list-style:none;
+        width:100%;
+        text-align:left;
+        margin:10px 0 0;
+        li{
+            display: inline-block;
+            padding: 0 30px 0;
+        }
+        li:last-child{
+            color:$green;
+        }
+    }
+}
+
+
+//Active Trades
+.activetrades{
+    border:1px solid $coolblue;
+    border-radius: 5px;
+    padding:0 10px;
+    font-family: 'HindMadurai-Regular';
+    // .activetitle{
+    //     > span{
+    //         font-size:26px;
+    //         padding:5px 0;
+    //         font-weight:normal;
+    //         border-bottom:1px solid $coolblue;
+    //         width: 100%;
+    //         margin:0 0 20px;
+    //         padding: 0;
+    //     }
+    //     >h5{
+    //         margin: 0;
+    //         padding: 0;
+    //     }
+    // }
+    h5{
+        margin: 10px 0 0;
+    }
+    h3{
+        font-size:26px;
+        padding:5px 0;
+        font-weight:normal;
+        border-bottom:1px solid $coolblue;
+        padding-bottom:5px;
+        margin:0;
+        font-family: 'Montserrat-Regular';
+        text-transform:uppercase;
+        span{
+            font-size:26px;
+            padding:5px 0;
+            font-weight:normal;
+           // border-bottom:1px solid $coolblue;
+            padding-bottom:5px;
+            margin:0;
+            font-family: 'Montserrat-Regular';
+            text-transform:uppercase;
+        }
+    }
+    span{
+        font-size:12px;
+        display:inline-block;
+        padding:5px 0;
+    }
+    table{
+        tr{
+            th{
+                padding:0;
+                border-top:none;
+                border-bottom:none;
+                background:$white;
+                text-align:center;
+                font-family: 'HindMadurai-Regular';
+                width:25%;
+                font-size:13px;
+            }
+            td{
+                padding:0px 0;
+                border:none;
+                font-size:13px;
+                text-align:center;
+                font-family: 'HindMadurai-Regular';
+                width:25%;
+            }
+        }
+    }
+}
+
+.buyactive-bg{
+    background:$coolactivebuy-gradient;
+    cursor:pointer;
+    background-repeat:no-repeat;
+    background-position:right;
+}
+.sellactive-bg{
+    background:$coolactivesell-gradient;
+    cursor:pointer;
+    background-repeat:no-repeat;
+    background-position:right;
+}
+
+//espay place order header
+.TabIndicator-colorSecondary-190{
+   background-color:$coolblue !important;
+}
+
+.espaybuysellmain{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    padding:0 0 0;
+    .comminborderright{
+        border-right:1px solid $coolblue;
+    }
+    .tab-pane{
+        border-top:1px solid $coolblue;
+    }
+}
+.espayplsheader{
+    header{
+        background-color:$white !important;
+        box-shadow:none;
+        border-radius:5px 5px 0 0;
+    }
+}
+
+.espayplstebmenu{
+    button.active{
+        color:$coolblue;
+    }
+    button{
+        min-height:44px;
+        > span{
+            > span{
+                padding-left:0 !important;
+                padding-right:0  !important;
+                padding-top:0  !important;
+                padding-bottom:0  !important;
+                > span{
+                    font-size:20px;
+                }
+            }
+        }
+    }
+}
+
+.btnbuysell{
+    color:$white;
+    border:none;
+    padding:10px 0;
+    font-size:20px;
+    border-radius:30px;
+    font-family: 'Montserrat-Regular';
+    margin-top:40px !important;
+    span{
+        text-transform:uppercase;
+    }
+}
+.btn-buy, .btn-buy:hover{
+    background:$coolgreen;
+}
+.btn-sell, .btn-sell:hover{
+    background:$coolred;
+}
+
+.btnbuy-per{
+    background:$white;
+    border: 1px solid $coolgreen;
+    color: $coolgreen;
+    border-radius: 0;
+    padding:3px 0 0 !important;
+    font-size: 12px !important;
+    min-height: 20px !important;
+    width: 42px !important;
+    &:hover {
+        background:$coolgreen;
+        color: $white;
+        border: 1px solid $coolgreen;
+    }
+}
+.btnsell-per{
+    background:$white;
+    border: 1px solid $coolred;
+    color: $coolred;
+    border-radius: 0;
+    padding:3px 0 0 !important;
+    font-size: 12px !important;
+    min-height: 20px !important;
+    width: 42px !important;
+    &:hover {
+        background:$coolred;
+        color:$white;
+        border:1px solid $coolred;
+    }
+}
+
+.espaycurrentmarkettop{
+    list-style:none;
+    margin:0;
+    padding:5px 0 0;
+    text-align:center;
+    li{
+        display:inline-block;
+        padding:0 10px;
+        font-family: 'HindMadurai-Regular';
+        h3{
+            font-size:12px;
+            font-family: 'HindMadurai-Regular';
+        }
+    }
+}
+.groupbox{
+    font-size:12px;
+    color:$coolblue;
+    padding:0px 0 0 0;
+}
+
+.buysellbox{
+    padding:15px 30px;
+    font-family:'HindMadurai-Regular';
+    .justify-content-between{
+        border-bottom:1px solid $coolblue;
+    }
+    button{
+        width:100%;
+        margin:0 auto;
+        position: relative;
+    }
+    label{
+        span{
+            font-family:'HindMadurai-Regular';
+            font-size: 14px;
+        }
+    }
+    input{
+        font-family:'HindMadurai-Regular';
+        font-size: 14px;
+    }
+}
+
+.markettradehis{
+    table{
+        tr{
+            th,td{
+                width:33%;
+                text-align:center;
+            }
+            th{
+                font-size:13px !important;
+                font-family:'Mako';
+                background:$white !important;
+                border:none;
+            }
+            td{
+                font-size:13px  !important;
+                font-family: 'HindMadurai-Regular'  !important;
+                border:none;
+            }
+        }
+    }
+}
+
+
+
+//espay fiat left Start
+.espayfiattitle{
+    span{
+        font-size:36px;
+        color:$coolblue;
+    }
+    p{
+        font-size:18px;
+        color:$github;
+    }
+}
+.espayfiatlist{
+    list-style:none;
+    li{
+        padding:10px 0;
+    }
+    i{
+        background:$coolgradients-icon;
+        width:40px;
+        height:40px;
+        display:inline-block;
+        color:$white;
+        text-align:center;
+        border-radius:50%;
+        font-size:30px;
+        margin:5px 0 0;
+        padding:0 5px 0 0
+    }
+    span{
+        font-size:24px;
+        color:$github;
+    }
+    p{
+        font-size:14px;
+        color:$github;
+    }
+}
+
+//Buy Sell Form Start
+.fiatmenu{
+    border-bottom:1px solid $github !important;
+    margin:0 0 20px 0;
+    a{
+        border:none !important;
+        background-color:transparent  !important;
+        font-size:24px;
+        color:$github;
+        border-bottom:2px solid transparent !important; 
+    }
+    .nav-link.active{
+        color:$black !important;
+        border-bottom:2px solid $github !important; 
+    }
+}
+.espayfiat-buyform{
+    label{
+        font-weight:bold;
+    }
+    input,select{
+        box-shadow:0 1px 15px 1px rgba(69, 65, 78, 0.08) !important;
+        width:100%;
+    }
+    .bitcoinbtnbuybtn{
+        background:$coolgreen;
+        color:$white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 0 5px;
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+    }
+    .bitcoinbtnsellbtn{
+        background:$coolred;
+        color:$white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 0 5px;
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+    }
+}
+.paymentbox{
+    text-align:center;
+}
+.saveaddress{
+    color:$github;
+    padding: 5px 10px;
+    border: 1px solid $github;
+    margin: 10px 0;
+}
+.buytitleborder{
+    border-bottom:1px solid $instagram; 
+    margin: 0 0 15px;
+    label,p{
+        margin: 0 0 0px;
+    }
+    p{
+        font-size:12px;
+    }
+}
+
+
+//Espay Funding Page Start
+.espaybuysellfun{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    margin:0;
+    padding:0 10px;
+    .card{
+        border:none;
+        border-radius:5px;
+    }
+}
+
+.EspayHigherLowerbox{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    margin:0 0 30px 0;
+    padding:0 15px 30px 15px;
+
+    span{
+        color:$github;
+        font-size:20px;
+        font-weight:bold;
+        padding: 20px 0;
+    }
+    a{
+        padding: 5px 15px;
+        border-radius: 5px;
+        font-size: 25px;
+        text-align: center;
+    }
+    .higherbtn{
+        border: 2px solid $coolgreen;
+        color: $coolgreen;
+        &:hover{
+            color:$white;
+            background:$coolgreen;
+        }
+    }
+    .lowerbtn{
+        border:2px solid $coolred;
+        color:$coolred;
+        &:hover{
+            color:$white;
+            background:$coolred;
+        }
+    }
+}
+
+.buyCheckoutbox{
+    border:1px solid $coolblue;
+    border-radius:5px;
+    margin:0 0 0 0;
+    padding:30px 50px;
+    position:relative;
+
+    input{
+        border:1px solid $tumblr;
+        background:$white;
+        border-radius:3px !important;
+        margin:50px 0;
+        padding-right:55px;
+    }
+    span{
+        text-align:right;
+        position:absolute;
+        right:68px;
+        bottom:133px;
+        color:$coolblue;
+    }
+    .bitcoinbtn{
+        background:$coolgreen;
+        color:$white;
+        border:none;
+        border-radius:30px;
+        padding:10px 30px 6px;
+        font-size:22px;
+        margin:0 auto;
+        width:80%;
+        text-align:center;
+        display:block;
+    }
+    .checkoutbtn{
+        background:$coolblue;
+        color:$white;
+        border:none;
+        border-radius:30px;
+        font-size:22px;
+        padding:10px 30px 6px;
+        margin:0 auto;
+        width:80%;
+        text-align:center;
+        display:block;
+    }
+}
+
+.tooltipslidermain{
+    border:1px solid $coolblue;
+    background:$white;
+    border-radius:3px;
+    margin: 0 0 30px 0;
+    padding: 10px 0 30px;
+    .tooltipslider{
+        border-bottom:2px solid $coolblue;
+        text-align: center;
+        margin:0 20px;
+
+        &::after{
+            background:$coolblue;
+            padding:10px;
+            position:absolute;
+        }
+
+        a{
+            position:relative;
+            top:17px;
+            background:$coolgradients-icon;
+            margin:0 50px;
+            border-radius:50%;
+            width:20px;
+            height:20px;
+            padding:3px 0 0;
+            text-align: center;
+        }
+    }
+    .place-top{
+        border:1px solid $coolblue !important;
+        background:$white !important;
+        color:$github !important;
+    }
+}
+.dividerbuyselltrade{
+    //border:1px solid !important;
+    margin: 3px !important;
+}
+
+
+//Trading Footer
+.espayfooterbg{
+    background:$coolblue;
+    padding:50px 20px 20px;
+    .footerlogo{
+        width:150px;
+    }
+    .footerlist{
+        span{
+            color:$white;
+            font-weight: 600;
+            font-size:16px;
+            padding: 0 0 15px;
+            display: inline-block;
+
+            text-overflow: ellipsis;
+            width: 110px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        ul{
+            padding:0;
+            margin:0;
+            list-style:none;
+            li{
+                a{
+                    color:$white;
+                    font-size:14px;
+                    text-decoration:none;
+                    font-weight: 400;
+                    padding: 5px 0;
+                }
+                span{
+                    color:$white;
+                    font-size:14px;
+                    text-decoration:none;
+                    font-weight: 400;
+                    padding: 5px 0;
+                }
+            }
+        }
+    }
+
+    .coprightmain{
+        border-top:1px solid $white;
+        padding:10px 0 0 0;
+        margin-top:30px;
+        color:$white;
+        span{
+            font-size:16px;
+            font-weight:bold;
+        }
+        ul{
+            text-align:right;
+            padding:0;
+            margin:0;
+            li{
+                list-style:none;
+                display:inline-block;
+                padding:0 6px;
+                a{
+                    border:1px solid $white;
+                    padding:5px;
+                    border-radius:50%;
+                    width:34px;
+                    height:34px;
+                    text-align:center;
+                }
+            }
+        }
+    }
+}
+
+
+.espaylanguage{
+    background:$coolblue;
+}
+
+.footer-menus {
+    margin-bottom: 0.625rem !important;
+    li {
+      a {
+        padding: 5px !important;
+        min-width: 20px;
+        min-height: 30px;
+        border: 1px solid;
+        border-radius: 100px;
+        color:$white !important;
+        font-size: 1rem;
+      }
+    } 
+
+
+.list-inline-item{
+   .social-button{
+       background:transparent !important;
+       border:1px solid $white !important;
+   }
+}
+}
+.blink_me {
+   animation: blinker 5s linear 1;
+ }
+
+
+
+
+ @keyframes blinker {
+   0% {
+     background-color: $coolblue;;
+   }
+   50% {
+     background-color: $white;
+   }
+ }
+
+
+
+  //My Account Help & Support Complain List
+
+.Complainlist{
+    text-overflow:ellipsis;
+    width:100px;
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:12px;
+    margin:0;
+}
+
+.freelinktitle{
+    color:$coolblue;
+    padding-top:5px;
+    font-size: 14px;
+}
+
+//Mobile Responsive By Manish Vora
+
+@media only screen and (max-width : 767px) {
+    .espayopentitle{
+        label{
+            left:0px !important;
+        }
+    }
+    .transaction-history-detail{
+        .collapse {
+            bottom:0px;
+        }
+    }
+    .innertabpanel{
+        min-height:auto;
+    }
+    .tabformtitle {
+        padding: 10px 30px;
+        margin-bottom: 0;
+    }
+    .espaygraph{
+        margin:15px 0 0;
+    }
+
+    .espaygraphpadding, .espaygraphpl, .espaygraphpr{
+        padding:0 15px;
+    }
+    .espaybuysellmain{
+        margin:15px 4px;
+        padding:0;
+    }
+    .newslistmain{
+        margin:8px 5px;
+        padding:0 10px;
+    }
+    .espayopenorder{
+        margin:10px 4px;
+        padding:0 15px;
+    }
+    .activetrades{
+        margin:15px 4px;
+        padding:0 15px;
+        h5{
+            padding:0 5px;
+        }
+    }
+    .espayplsheader{
+        header{
+            margin-top:15px;
+        }
+    }
+    .comminborderright{
+        border-right:none !important;
+    }
+}
+
+
+@media screen and (min-width:1024px) and (max-width:1280px) {
+    .notification-dropdown .dropdown-menu {
+        left:-10.5rem !important;
+    }
+    
+}

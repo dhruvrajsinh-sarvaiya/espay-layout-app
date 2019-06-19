@@ -1,0 +1,51 @@
+/**
+  * Auther : Salim Deraiya
+ * Created : 13/12/2018
+ * Top Gainer
+ */
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { Form, FormGroup, Input, Alert, Button } from "reactstrap";
+import LinearProgress from '@material-ui/core/LinearProgress';
+// intl messages
+import IntlMessages from "Util/IntlMessages";
+import { SimpleCard } from './Widgets';
+
+class TopGainer extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+        };
+    }    
+
+    render() {
+        return (
+            <Fragment>
+                <Link to="/app/social-profile/top-gainer" className="text-dark">                
+                    <SimpleCard
+                        title="Top Gainer"
+                        icon="zmdi zmdi-plus-circle"
+                        bgClass="bg-dark"
+                        clickEvent={this.onClick}
+                    />
+                </Link>
+            </Fragment>
+        );
+    }
+}
+
+// map state to props
+/* const mapStateToProps = ({ forgotPassRdcer }) => {
+    var response = {
+        data: forgotPassRdcer.data,
+        loading: forgotPassRdcer.loading
+    };
+    return response;
+};
+
+export default withRouter(connect(mapStateToProps, {
+    forgotPassword
+})(TopGainer)); */
+
+export default TopGainer;

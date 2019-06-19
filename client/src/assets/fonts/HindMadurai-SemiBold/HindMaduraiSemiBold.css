@@ -1,0 +1,10 @@
+
+@font-face {
+  font-family: 'HindMadurai-SemiBold';
+  src: url('fonts/HindMadurai-SemiBold.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/HindMadurai-SemiBold.woff') format('woff'), 
+  url('fonts/HindMadurai-SemiBold.ttf')  format('truetype'), 
+  url('fonts/HindMadurai-SemiBold.svg#HindMadurai-SemiBold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

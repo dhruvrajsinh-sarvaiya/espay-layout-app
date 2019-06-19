@@ -1,0 +1,31 @@
+
+.socialUpdateBtn{
+    position: absolute;
+    top: 15px;
+    right: 35px;
+}
+.socialSlash{
+    text-align: center;
+    padding: 10px 0 0 0;
+    width: 100%;
+    margin: 0 auto;
+}
+.control-label{
+    span{font-size:1rem; color:$github;}
+}
+
+.SocialProfileTab{
+    border: 1px solid $lightborder;
+    background:$lightwhite;
+    padding:0;
+    > div{
+        border-bottom:2px solid $lightborder;
+    }
+    .LeaderForm, .FollowerForm{
+        .form-control{
+            box-shadow:none;
+            border-radius:none;
+            border-radius: 0 !important;
+        }
+    }
+}

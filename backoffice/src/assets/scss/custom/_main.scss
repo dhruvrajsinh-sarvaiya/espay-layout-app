@@ -1,0 +1,520 @@
+/*======== App Global (Main Structure) Mention Here =======*/
+#root,
+.app {
+  height: 100%;
+  width: 100%;
+}
+.app-main-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.jbs-page-content {
+  padding: $grid-gutter-width; //24px;
+  min-height: 500px; // for page content added by nishant
+}
+.footermain {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+.jbs-footer {
+  box-shadow: $footer-box-shadow;
+  background-color: $footer-bg;
+  padding: 1.25rem; //20px;
+  z-index: 1; //9;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  h5 {
+    margin-bottom: 0;
+    color: $gray-600;
+    font-size: 0.875rem; //14px;
+  }
+}
+.jbs-block {
+  background-color: $block-bg;
+  border-radius: $block-border-radius;
+  box-shadow: $block-shadow;
+  border: $block-border;
+  transition: $block-transition;
+  margin-bottom: $block-margin-bottom;
+  position: relative;
+  .jbs-block-content {
+    padding: $block-spacing;
+  }
+  &:hover {
+    box-shadow: $block-hover-shadow;
+  }
+}
+.jbs-block-title {
+  padding: $block-title-spacing;
+  position: relative;
+  // @include border(1px solid, $gray-300, bottom);
+  .badge {
+    vertical-align: middle;
+  }
+  h4 {
+    margin-bottom: 0;
+    color: $block-title-color;
+    font-size: $block-title-font-size;
+    text-transform: $block-title-transform;
+    font-weight: $block-title-font-weight;
+    line-height: 30px;
+  }
+  .contextual-link {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    a {
+      color: $block-contextual-color;
+      font-size: $block-contextual-font-size;
+      margin-right: 15px;
+      &:hover {
+        color: $blue;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+.jbs-block-footer {
+  background-color: $block-bg;
+  padding: $block-title-spacing;
+  border-top: $block-footer-border-width solid $block-footer-border-color;
+}
+.card-footer {
+  background-color: $block-bg;
+}
+.sub-title {
+  padding: $block-title-spacing;
+  margin-bottom: 1.25rem; //20px;
+  h4 {
+    margin-bottom: 0;
+    color: $block-title-color;
+    font-size: $block-title-font-size;
+    text-transform: $block-title-transform;
+    font-weight: $block-title-font-weight;
+  }
+}
+[class*="gradient-"],
+[class^="gradient-"] {
+  h4 {
+    color: $white;
+    border-color: $white;
+  }
+}
+/*========== Page Breadcrumb ============*/
+.page-title {
+  margin-bottom: 1.875rem; //30px;
+  .page-title-wrap > i {
+    color: $breadcrumb-font-color;
+    vertical-align: 3px;
+    margin-right: 10px;
+  }
+  h2 {
+    font-size: $breadcrumb-font-size;
+    color: $breadcrumb-font-color;
+    display: inline-block;
+    margin: 0;
+  }
+  .jbs-creadcrumb {
+    color: $breadcrumb-font-color;
+    font-size: 14px;
+    i {
+      font-size: 12px;
+      margin: 0 5px;
+    }
+  }
+}
+
+// Manish Vora
+.fade {
+  display: none;
+}
+.fade.show {
+  display: block;
+}
+.LiquidityProviderScroll {
+  overflow-y: scroll;
+  height: 470px;
+}
+
+/*Table scroll start*/
+.scroll-main {
+  border: 1px solid #464d69;
+  table.scroll {
+    width: 100%;
+    border-spacing: 0;
+
+    tbody,
+    thead {
+      display: block;
+      border-bottom: none;
+    }
+    tbody {
+      height: 100px;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+  }
+  table {
+    tr {
+      th {
+        border-top: none !important;
+        border-right: none !important;
+        line-height: 40px;
+      }
+      td,
+      th {
+        width: 250px;
+        text-align: left;
+        font-size: 12px;
+        padding: 5px;
+        border-bottom: 1px solid #e0e0e0;
+        color: #323232;
+      }
+    }
+  }
+}
+
+/*Table scroll end*/
+
+/*Table Header Start*/
+.transaction-history-detail,
+.Transaction-charge-report {
+  table {
+    tr {
+      height: 30px;
+      th {
+        font-size: 12px;
+        font-weight: bold;
+        border-left: 1px solid rgba(224, 224, 224, 1);
+        border-top: 1px solid rgba(224, 224, 224, 1);
+      }
+      td {
+        font-size: 12px;
+      }
+    }
+  }
+  select {
+    background: #efefef;
+  }
+  /* button {
+    border-radius: 0 !important;
+  } */
+}
+/*Table Header End*/
+.StackingHistory {
+  table {
+    thead,
+    tbody {
+      tr {
+        height: 30px;
+        th {
+          font-size: 12px;
+          font-weight: bold;
+          border-left: 1px solid rgba(224, 224, 224, 1);
+          border-top: 1px solid rgba(224, 224, 224, 1);
+          padding: 4px 20px 4px 15px !important;
+        }
+
+        td {
+          padding: 4px 20px 4px 15px !important;
+        }
+      }
+    }
+  }
+}
+
+.dialogwidthpopup > .MuiPaper-root-126 {
+  width: 100%;
+}
+
+.common-card {
+  ul {
+    li {
+      border: 1px solid #ebede7;
+      margin-right: 0 !important;
+      padding: 20px;
+      a {
+        color: $github;
+        width: 100%;
+        h2 {
+          font-size: 45px;
+          text-align: center;
+          padding-top: 10px;
+          margin-bottom: 0;
+          font-weight: 700;
+        }
+        h6 {
+          text-align: center;
+          font-weight: normal;
+          font-size: 18px;
+        }
+        h4 {
+          float: right;
+          position: relative;
+          top: 15px;
+        }
+      }
+    }
+  }
+}
+
+.card-title {
+  h5 {
+    border-top: 1px solid #ebede7;
+    margin-bottom: 0 !important;
+    padding: 10px;
+    border-right: 1px solid #ebede7;
+    border-left: 1px solid #ebede7;
+  }
+}
+
+//Time Picker
+//Time Picker
+.timePicker {
+  div:before {
+    border-bottom: none;
+  }
+  input {
+    box-shadow: none !important;
+    border: 1px solid #bbbcbf;
+    background: #efefef;
+    border-radius: 0;
+    width: 50%;
+    // border-bottom: none;
+    padding: 9px;
+  }
+}
+
+.sp-CommissionType {
+  > div {
+    position: relative;
+    left: 85px;
+    top: 8px;
+  }
+}
+
+.sw-CommissionType {
+  > span {
+    position: relative;
+    left: 70px;
+  }
+}
+
+.img-flag {
+  border: 1px solid #ebedf2;
+  border-radius: 0.25rem;
+  // box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  > div {
+    position: relative;
+    top: 5px;
+    input {
+      border-bottom: none !important;
+    }
+    > div {
+      > div {
+        border: none !important;
+        position: relative;
+        bottom: 5px;
+      }
+    }
+  }
+}
+
+.card-hight-common {
+  > .card-body {
+    min-height: 140px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .oraniztionfrom_info {
+    right: 0;
+  }
+}
+
+.oraniztionfrom_info {
+  position: relative;
+  right: 40px;
+}
+
+.wallet_blocktrn_addbutton,
+.wallet_wallettype_button {
+  float: none !important;
+}
+
+.Organization_addcustomer {
+  > div {
+    > div {
+      bottom: 5px;
+    }
+  }
+}
+
+.listproconedit {
+  position: relative;
+  right: 3px;
+}
+
+.listprocondel {
+  position: relative;
+  left: 7px;
+}
+
+.Tranlimitbox {
+  .d-inline-block {
+    width: 12.7% !important;
+  }
+  .d-inline-block:last-child {
+    width: 2% !important;
+    text-align: center;
+  }
+}
+
+//LoginBack in Forgot Pass
+.lnkToBtn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+  color: #fff;
+  background: #00d0bd linear-gradient(180deg, #25d6c6, #00d0bd) repeat-x;
+  border-color: #00d0bd;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.lnkToBtn:hover {
+  color: #fff;
+  background: #00aa9a linear-gradient(180deg, #25b5a9, #00aa9a) repeat-x;
+  border-color: #009d8f;
+}
+
+.perverbtn {
+  background: #0014e4 !important;
+  color: $white;
+}
+
+.demo {
+  border-left: 2px solid #000;
+  transform: rotate(90deg);
+  position: relative;
+  bottom: -35px;
+  height: 20px;
+}
+
+//added by salim dt:09/02/2019
+.jbs-scroll {
+  height: calc(100vh - 60px) !important;
+}
+
+// Added By Megha Kariya
+.tox-notification {
+  display: none !important;
+}
+
+//Added by Sanjay
+.ComplainType-invisible {
+  display: none;
+}
+
+.PublicApiStatistic {
+  // margin-bottom: 24px;
+  .col-sm-12 {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  .card {
+    box-shadow: 0 1px 7px rgba(0, 0, 0, 0.3);
+    .ti-user {
+      text-align: center;
+      font-size: 50px;
+      color: blue;
+      padding-top: 40px;
+    }
+    .ti-check {
+      text-align: center;
+      font-size: 50px;
+      color: green;
+      padding-top: 40px;
+    }
+    .ti-close {
+      text-align: center;
+      font-size: 50px;
+      color: red;
+      padding-top: 40px;
+    }
+  }
+  .card-body {
+    .card-title {
+      font-weight: bold;
+      font-size: 24px;
+    }
+    .card-subtitle {
+      font-size: 20px;
+      padding: 5px 0;
+    }
+  }
+}
+
+.plan-user-purchased{
+  margin-bottom: 24px;
+  .card{
+    padding: 10px;
+  }
+}
+
+//Added By Sanjay For List Method 
+.List-Methods{
+  list-style-type: square;
+  padding: 5px 25px;
+}
+
+.table-align{
+  th{
+    text-align: center
+  }
+  td{
+    text-align: center
+  }
+}
+
+//Stylr For Fixed Hight With Scroll
+.planUserLinear{
+  height:230px;
+  overflow-y:auto;
+  overflow-x: hidden;
+}
+
+.tableStyle{
+  .tableHeading{
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 0px 0px 10px
+  }
+  .table-responsive{
+    background: #fff;
+    margin-top: 10px;   
+    max-height: 250px;
+  }
+}
+
+//Added By Sanjay
+.market-cap-save-btn{
+  height: 30px;
+  margin-top: 13px !important;
+  margin-right: 10px !important;
+}
+ .tabel-norecord{
+  text-align: center;
+  padding-bottom: 15px;
+ }

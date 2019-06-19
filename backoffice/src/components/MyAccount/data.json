@@ -1,0 +1,40 @@
+{
+    "list_domains": [
+      {
+        "id": 1,
+        "alias_name": "Paro",
+        "domain_name": "www.paro.com",
+        "user_name": "John Deo",
+        "status": 1,
+        "created_date": "2018-11-24 10:06:50",
+        "updated_date": "2018-11-24 10:06:50"
+      },
+      {
+        "id": 2,
+        "alias_name": "Binanac",
+        "domain_name": "www.binance.com",
+        "user_name": "John Deo",
+        "status": 1,
+        "created_date": "2018-11-24 10:06:50",
+        "updated_date": "2018-11-24 10:06:50"
+      },
+      {
+        "id": 3,
+        "alias_name": "Bitrex",
+        "domain_name": "www.bitrex.com",
+        "user_name": "John Deo",
+        "status": 1,
+        "created_date": "2018-11-24 10:06:50",
+        "updated_date": "2018-11-24 10:06:50"
+      },
+      {
+        "id": 4,
+        "alias_name": "Oho Cash",
+        "domain_name": "www.ohocash.com",
+        "user_name": "John Deo",
+        "status": 1,
+        "created_date": "2018-11-24 10:06:50",
+        "updated_date": "2018-11-24 10:06:50"
+      }
+    ]
+  }
