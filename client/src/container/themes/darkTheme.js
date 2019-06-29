@@ -8,7 +8,7 @@ import AppConfig from 'Constants/AppConfig';
 
 const { darkBgColor } = AppConfig.darkThemeColors;
 
-const theme = createMuiTheme({
+const darkTheme = createMuiTheme({
     palette: {
         type: 'dark',
         types: {
@@ -57,4 +57,4 @@ const theme = createMuiTheme({
     }
 });
 
-export default theme;
+export default darkTheme;

@@ -9,13 +9,10 @@ import { connect } from "react-redux";
 import IntlMessages from "Util/IntlMessages";
 
 //import for design
-import { Table, Alert } from 'reactstrap';
+import { Table } from 'reactstrap';
 
 //used for scrolbar
 import { Scrollbars } from "react-custom-scrollbars";
-
-//import actions
-//import {arbitrageMarketTradeHistory} from "Actions/Arbitrage";
 
 //class for Market Trade history
 class MarketTradeHistory extends Component {
@@ -27,22 +24,6 @@ class MarketTradeHistory extends Component {
             marketTradeList: []
         };
     }
-
-    componentWillMount() {
-        //this.props.arbitrageMarketTradeHistory({Pair:this.props.currencyPair});
-    }
-
-    componentWillReceiveProps(nextprops) {
-        /* if(nextprops.marketTradeList && nextprops.marketTradeList.length){
-
-            this.setState({
-                marketTradeList:nextprops.marketTradeList
-            })
-        }  */
-
-        //this.setState({ tradeHistoryList: nextprops.tradeHistoryList.response })
-    }
-
     //renders the component
     render() {
 
@@ -56,8 +37,6 @@ class MarketTradeHistory extends Component {
                     <Scrollbars
                         className="jbs-scroll"
                         autoHeight
-                        // autoHeightMin={this.props.autoHeightMin}
-                        // autoHeightMax={this.props.autoHeightMax}
                         autoHeightMin={260}
                         autoHeightMax={260}
                         autoHide
@@ -121,12 +100,10 @@ class MarketTradeHistory extends Component {
 // Get Data from Store/reducer
 const mapStateToProps = ({ arbitrageReports }) => {
     const response = {
-        //marketTradeList: arbitrageReports.marketTradeHistoryList,
         loading: arbitrageReports.marketTradeHistoryLoading
     }
     return response;
 };
 
 export default connect(mapStateToProps, {
-    //arbitrageMarketTradeHistory
 })(MarketTradeHistory);

@@ -8,9 +8,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-// intl messages
-import IntlMessages from "Util/IntlMessages";
-
 // jbs card box
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 

@@ -3,7 +3,7 @@
     Date : 14-09-2018
     File Comment : Address Generation action manager
 */
-import { NotificationManager } from 'react-notifications';
+
 
 //import only required address generation actions 
 import {
@@ -43,7 +43,10 @@ const INITIAL_STATE = {
     loading: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state , action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
     switch (action.type) {
         // get currency list
         case GET_AD_CURRENCY:

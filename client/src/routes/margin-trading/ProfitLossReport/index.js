@@ -3,7 +3,7 @@
     Date : 18-04-2019
     File Comment : Profit & loss report
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import {ProfitLossReport} from 'Components/MarginTrading';

@@ -62,7 +62,7 @@ class JbsCollapsibleCard extends Component {
             <div
               className={`jbs-block-title ${
                 headingCustomClasses ? headingCustomClasses : ""
-              }`}
+                }`}
             >
               <h4>
                 {heading}{" "}

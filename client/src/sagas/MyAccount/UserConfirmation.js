@@ -14,7 +14,7 @@ import {
     userConfirmationFailure
 } from 'Actions/MyAccount';
 
-import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
+import { swaggerGetAPI } from 'Helpers/helpers';
 
 
 //Function for User Confirmation

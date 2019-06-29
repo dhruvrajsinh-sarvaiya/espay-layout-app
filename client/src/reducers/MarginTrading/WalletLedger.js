@@ -18,7 +18,11 @@ const INITIAL_STATE = {
 
 }
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
         case MARGIN_WALLET_LEDGER:
             return { ...state, loading: true, walletLedgerList: [], TotalCount: 0 }
@@ -26,7 +30,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, walletLedgerList: action.payload.WalletLedgers, TotalCount: action.payload.TotalCount }
         case MARGIN_WALLET_LEDGER_FAILURE:
             return { ...state, loading: false, walletLedgerList: [], TotalCount: 0 }
-
         default:
             return { ...state };
     }

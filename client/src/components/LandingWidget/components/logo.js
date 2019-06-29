@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import {
-    Card ,
     CardImg ,
     Container , Row , Col
   } from 'reactstrap';
@@ -24,7 +23,7 @@ const newsData = [
      }
  ]
 
-export default class section9 extends Component {
+export default class logo extends Component {
     
     state = {
         settings2: undefined

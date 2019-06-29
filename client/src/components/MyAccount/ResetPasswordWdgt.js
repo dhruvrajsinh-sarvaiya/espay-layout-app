@@ -81,7 +81,6 @@ class ResetPasswordWdgt extends Component {
 
     render() {
         const { err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
-        const { password, confirmPassword } = this.state.setPass;
         return (
             <div className="forgotconfirmradius">
                 {success_msg && (
@@ -193,8 +192,8 @@ class ResetPasswordWdgt extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ forgotConfirmation }) => {
-    const { setPassData, loading } = forgotConfirmation;
+const mapStateToProps = ({ forgotConfirmationReducer }) => {
+    const { setPassData, loading } = forgotConfirmationReducer;
     return { setPassData, loading };
 };
 

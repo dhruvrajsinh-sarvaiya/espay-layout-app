@@ -5,9 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
-
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { DISABLE_GOOGLE_AUTH } from "Actions/types";
 
 import {
@@ -29,7 +27,7 @@ function* disableGoogleAuthApi({ payload }) {
 		if(lgnErrCode.includes(response.statusCode)){
 			redirectToLogin();
 		} else if(statusErrCode.includes(response.statusCode)){               
-			staticRes = staticResponse(response.statusCode);
+			var staticRes = staticResponse(response.statusCode);
 			yield put(disableGoogleauthFailure(staticRes));
 		} else if (response.statusCode === 200) {
 			yield put(disableGoogleauthSuccess(response));

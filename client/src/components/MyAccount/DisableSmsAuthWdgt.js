@@ -62,7 +62,7 @@ class DisableSmsAuthWdgt extends Component {
   }
 
   render() {
-    const { loginpassword, phonenumber, smsauthcode, errors } = this.state;
+    const { phonenumber, smsauthcode, errors } = this.state;
     return (
       <div>
         <Form>
@@ -76,7 +76,6 @@ class DisableSmsAuthWdgt extends Component {
                   <Input
                     type="password"
                     name="loginpassword"
-                    // value={loginpassword} //Added By Bharat Jograna
                     id="loginpassword"
                     placeholder="Enter Login Password"
                     onChange={e =>

@@ -9,23 +9,28 @@ import {
     LIST_MARGIN_WALLETS,
     LIST_MARGIN_WALLETS_SUCCESS,
     LIST_MARGIN_WALLETS_FAILURE,
+
     //create
     CREATE_MARGIN_WALLETS,
     CREATE_MARGIN_WALLETS_SUCCESS,
     CREATE_MARGIN_WALLETS_FAILURE,
+
     //add leverage
     ADD_LEVERAGE,
     ADD_LEVERAGE_SUCCESS,
     ADD_LEVERAGE_FAILURE,
+
     //confirm leverage request
     ADD_LEVERAGE_CONFIRMATION,
     ADD_LEVERAGE_CONFIRMATION_SUCCESS,
     ADD_LEVERAGE_CONFIRMATION_FAILURE,
+
     //added by parth andhariya
     //for Margin currancy List
     GET_LEVERAGE_BASE_CURRENCY,
     GET_LEVERAGE_BASE_CURRENCY_SUCCESS,
     GET_LEVERAGE_BASE_CURRENCY_FAILURE,
+
     //added by vishva
     DELEVERAGE_PRECONFIRM,
     DELEVERAGE_PRECONFIRM_SUCCESS,
@@ -34,6 +39,7 @@ import {
     DELEVERAGE_CONFIRM,
     DELEVERAGE_CONFIRM_SUCCESS,
     DELEVERAGE_CONFIRM_FAILURE,
+
 } from 'Actions/types';
 
 const INITIAL_STATE = {
@@ -47,7 +53,11 @@ const INITIAL_STATE = {
     confirmDetail: {}
 }
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
         case LIST_MARGIN_WALLETS:
             return { ...state, loading: true, walletList: [], createWalletResponse: {}, addLeverageResponse: {}, confirmResponse: {} }
@@ -76,6 +86,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, addLeverageResponse: {}, confirmResponse: action.payload }
         case ADD_LEVERAGE_CONFIRMATION_FAILURE:
             return { ...state, loading: false, addLeverageResponse: {}, confirmResponse: action.payload }
+
         //added by partH andhariya
         // margin currency 
         case GET_LEVERAGE_BASE_CURRENCY:
@@ -84,6 +95,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, marginCurrancy: action.payload.Data }
         case GET_LEVERAGE_BASE_CURRENCY_FAILURE:
             return { ...state, loading: false, marginCurrancy: action.payload }
+
         //added by vishva
         case DELEVERAGE_PRECONFIRM:
             return { ...state, loading: true, preConfirmationDetails: {}, addLeverageResponse: {}, confirmResponse: {} };
@@ -91,6 +103,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, preConfirmationDetails: action.payload };
         case DELEVERAGE_PRECONFIRM_FAILURE:
             return { ...state, loading: false, preConfirmationDetails: action.payload };
+
         //deleverage confirmation
         case DELEVERAGE_CONFIRM:
             return { ...state, loading: true, confirmDetail: {}, addLeverageResponse: {}, confirmResponse: {} }
@@ -98,6 +111,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, confirmDetail: action.payload }
         case DELEVERAGE_CONFIRM_FAILURE:
             return { ...state, loading: false, confirmDetail: action.payload }
+
         default:
             return { ...state };
     }

@@ -4,7 +4,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
-
 import {
     Form,
     FormGroup,
@@ -22,7 +21,6 @@ import {
     FacebookLoginButtonWdgt,
     GoogleLoginButtonWdgt
 } from './SocialWidget';
-
 const validateLogin = require('../../validation/MyAccount/login');
 
 class LoginNormal extends Component {
@@ -35,7 +33,6 @@ class LoginNormal extends Component {
             is_show_blockchain_login: false,
             errors: {}
         }
-
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.showBlockchainLogin = this.showBlockchainLogin.bind(this);
@@ -62,7 +59,7 @@ class LoginNormal extends Component {
     }
 
     render() {
-        const { email, password, is_show_blockchain_login, errors } = this.state;
+        const { email, is_show_blockchain_login, errors } = this.state;
         return (
             <Fragment>
                 {
@@ -78,8 +75,6 @@ class LoginNormal extends Component {
                                     {errors.email && <span className="text-danger text-left"><IntlMessages id={errors.email} /></span>}
                                 </FormGroup>
                                 <FormGroup className="has-wrapper">
-                                    {/*Added By Bharat Jograna 
-                                    <Input type="Password" value={password} name="password" id="password" className="has-input input-lg" onChange={this.onChange} /> */}
                                     <Input type="Password" name="password" id="password" className="has-input input-lg" onChange={this.onChange} />
                                     <span className="has-icon"><i className="ti-lock" /></span>
                                     {errors.password && <span className="text-danger text-left"><IntlMessages id={errors.password} /></span>}
@@ -89,7 +84,6 @@ class LoginNormal extends Component {
                                 </FormGroup>
                                 <Button variant="raised" color="success" className="text-white btn-block" onClick={this.onSubmit}><IntlMessages id="sidebar.btnLogin" /></Button>
                                 <div className="p-10 text-center">OR</div>
-                                {/* <Link to="/app/my-account/login-blockchain" className="text-white btn bg-success btn-block"><IntlMessages id="sidebar.btnLoginWithBlockchain" /></Link> */}
                                 <Button variant="raised" color="success" className="text-white btn-block" onClick={this.showBlockchainLogin}><IntlMessages id="sidebar.btnLoginWithBlockchain" /></Button>
                                 <div className="row mt-10">
                                     <Link to="/app/my-account/forgot-password" className="text-primary col-6"><IntlMessages id="my_account.forgotPassword" /></Link>
@@ -115,8 +109,6 @@ class LoginNormal extends Component {
 }
 
 const mapStateToProps = ({ loginRdcer }) => {
-    /* const { tList, loading } = twoFAAuth;
-    return { tList, loading } */
     return { loginRdcer };
 }
 

@@ -13,12 +13,12 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
 // import for design 
-import { Table, Button, Modal, ModalBody, ModalFooter, Alert } from 'reactstrap';
+import { Table, Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 // import For Display notification
 import { NotificationManager } from "react-notifications";
 
-import { Tabs, Tab, TabPanel, TabList } from "react-web-tabs";
+import { Tabs, Tab, TabList } from "react-web-tabs";
 
 // intl messages for language conversion
 import IntlMessages from "Util/IntlMessages";
@@ -27,7 +27,7 @@ import IntlMessages from "Util/IntlMessages";
 import { Scrollbars } from "react-custom-scrollbars";
 
 //added by Tejas 14/6/2019
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 
 // method for cancel order process
 import { doCancelOrderArbitrage } from 'Actions/Arbitrage';
@@ -82,15 +82,16 @@ class OpenOrder extends Component {
                 var isOrderType = false;
                 if (this.state.OpenOrderList.length > 0) {
 
-                    this.state.OpenOrderList && this.state.OpenOrderList.map((value, key) => {
-                        orderTypes.map((item, key) => {
-                            if (item.ID == e.target.value) {
+                    this.state.OpenOrderList && this.state.OpenOrderList.map((value) => {
+                        orderTypes.map((item) => {
+                            if (item.ID === e.target.value) {
                                 if (item.type === value.OrderType) {
                                     isOrderType = true
                                 }
                             }
+                            return [];
                         })
-
+                        return [];
                     })
                 }
 
@@ -234,19 +235,6 @@ class OpenOrder extends Component {
 
     render() {
 
-        /* const activeMyOpenData = [];
-        if (this.props.OpenOrderList) {
-            this.props.OpenOrderList.length && this.props.OpenOrderList.map((value) => {
-                if (this.props.hideOtherPairs) {
-                    if (value.PairName === this.props.currencyPair) {
-                        activeMyOpenData.push(value);
-                    }
-                } else {
-                    activeMyOpenData.push(value);
-                }
-            });
-        } */
-
         // for dynamic tabs
         const uniqueTags = [];
         // for count no. of records in tab
@@ -258,13 +246,15 @@ class OpenOrder extends Component {
             }
         });
 
-        uniqueTags.map((item, i) => {
+        uniqueTags.map((i) => {
             k = 1;
             this.props.OpenOrderList.map((item) => {
                 if (uniqueTags[i] === item.ExchangeName) {
                     countTags[i] = k++;
                 }
+                return [];
             });
+            return [];
         });
 
         return (
@@ -290,14 +280,12 @@ class OpenOrder extends Component {
 
                     <div className="col-md-2 text-right arbitrage-btnmore">
                         <a href="javascript:void(0)"
-                            onClick={() => {this.props.history.push('/app/arbitrage/open-order')}}
-                            >
-                                <IntlMessages id="sidebar.apiplan.button.viewmore" />
+                            onClick={() => { this.props.history.push('/app/arbitrage/open-order') }}
+                        >
+                            <IntlMessages id="sidebar.apiplan.button.viewmore" />
                         </a>
                     </div>
                 </div>
-
-
                 <Scrollbars
                     className="jbs-scroll"
                     autoHeight
@@ -305,11 +293,11 @@ class OpenOrder extends Component {
                     autoHeightMax={220}
                     autoHide
                 >
-                    {this.props.openOrderListLoading && <JbsBarLoader />}
+                    {this.props.openOrderListLoading && <JbsLoader />}
                     {this.props.isShowTitle && <h2>
                         {/* Open Order */}
                         <IntlMessages id="sidebar.arbitrageOpenOrder" />
-                        </h2>}
+                    </h2>}
                     <table className="opn_ord_list striped highlight">
                         <thead>
                             <tr>
@@ -387,7 +375,7 @@ class OpenOrder extends Component {
                             }
                         </h1>
 
-                        {this.props.cancelOrderLoader && <JbsBarLoader />}
+                        {this.props.cancelOrderLoader && <JbsLoader />}
 
                         <ModalBody>
                             {this.state.cancelOrderBit !== "" && (
@@ -431,7 +419,7 @@ class OpenOrder extends Component {
                             }
                         </h1>
 
-                        {this.props.cancelOrderLoader && <JbsBarLoader />}
+                        {this.props.cancelOrderLoader && <JbsLoader />}
 
                         <ModalBody>
                             <div className="table-responsive">
@@ -543,4 +531,3 @@ const mapStateToProps = ({ arbitrageReports }) => {
 export default connect(mapStateToProps, {
     doCancelOrderArbitrage
 })(withRouter((OpenOrder)));
-//export default connect(mapStateToProps, { })(withRouter(FundBalances));

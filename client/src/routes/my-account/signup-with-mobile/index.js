@@ -25,11 +25,10 @@ export default class SignupWithMobile extends Component {
         }}
       />
     );
-    const { loading } = this.props;
     return (
       <div className="my-account-wrapper">
         <PageTitleBar
-          title={<IntlMessages id="sidebar.signupWithmobile" />}
+          title={<IntlMessages id="sidebar.signupWithMobile" />}
           match={this.props.match}
         />
         <JbsCollapsibleCard customClasses="col-sm-8 col-lg-3 mx-auto">

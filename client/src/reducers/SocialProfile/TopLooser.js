@@ -19,7 +19,10 @@ const INIT_STATE = {
     loading: false
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         //Get Top Looser List
         case GET_TOP_LOOSER_LIST:

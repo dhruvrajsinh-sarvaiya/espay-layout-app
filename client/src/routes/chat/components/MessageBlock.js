@@ -4,7 +4,7 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 
-const Message = ({ even, adminPhotoUrl, data, selectedUserPhotoUrl }) => {
+const MessageBlock = ({ even, adminPhotoUrl, data, selectedUserPhotoUrl }) => {
 	if (even) {
 		return (
 			<div className="d-flex flex-nowrap mb-3">
@@ -31,4 +31,4 @@ const Message = ({ even, adminPhotoUrl, data, selectedUserPhotoUrl }) => {
 	)
 };
 
-export default Message;
+export default MessageBlock;

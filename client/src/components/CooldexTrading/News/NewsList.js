@@ -1,9 +1,9 @@
-import React, { Component,Fragment } from 'react';
+import React, { Component } from 'react';
 
 // import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
 
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 
 import {getNews} from 'Actions/News';
 import {connect} from 'react-redux';
@@ -32,8 +32,6 @@ class NewsList extends Component {
   render() {
     const newslist =this.state.newslist;
     
-      var dateFormat = require('dateformat');
-
     return (
       <div className="newstitle">          
               <h3><IntlMessages id="trading.newTrading.news.text"/></h3>

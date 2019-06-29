@@ -6,7 +6,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { IP_HISTORY_LIST } from 'Actions/types';
 
 import {

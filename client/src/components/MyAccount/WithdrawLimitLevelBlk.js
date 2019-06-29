@@ -8,22 +8,22 @@
 import React, { Fragment, Component } from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { Badge, Alert } from 'reactstrap';
+import { Badge } from 'reactstrap';
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { getKYCStatus } from "Actions/MyAccount";
 
-const KYCStatus = ({kycStatusId}) => {
+const KYCStatus = ({ kycStatusId }) => {
 	var htmlMsg = <Link to="/app/my-account/personal-verification" className="text-primary"><IntlMessages id="my_account.submitVerificationDocuments" /></Link>;
-	if(kycStatusId === 1) {
+	if (kycStatusId === 1) {
 		htmlMsg = <Fragment><IntlMessages id="sidebar.kycStatus" /> : <Badge color="success"><IntlMessages id="sidebar.approval" /></Badge></Fragment>;
-	} else if(kycStatusId === 2) {
+	} else if (kycStatusId === 2) {
 		htmlMsg = <Fragment>
-					<div><IntlMessages id="sidebar.kycStatus" /> : <Badge color="danger"><IntlMessages id="sidebar.reject" /></Badge></div>
-					<Link to="/app/my-account/personal-verification" className="text-primary mt-10"><IntlMessages id="my_account.submitVerificationDocuments" /></Link>
-				</Fragment>;
-	} else if(kycStatusId === 4) {
+			<div><IntlMessages id="sidebar.kycStatus" /> : <Badge color="danger"><IntlMessages id="sidebar.reject" /></Badge></div>
+			<Link to="/app/my-account/personal-verification" className="text-primary mt-10"><IntlMessages id="my_account.submitVerificationDocuments" /></Link>
+		</Fragment>;
+	} else if (kycStatusId === 4) {
 		htmlMsg = <Fragment><IntlMessages id="sidebar.kycStatus" /> : <Badge color="warning"><IntlMessages id="sidebar.pending" /></Badge></Fragment>;
 	}
 
@@ -34,10 +34,10 @@ class WithdrawLimitLevelBlk extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            loading : false,
-            kycStatus : ''
+			loading: false,
+			kycStatus: ''
 		}
-		
+
 		this.onChangeVerifyDocumentTypeView = this.onChangeVerifyDocumentTypeView.bind(this);
 		this.onChangeMembershipLevelView = this.onChangeMembershipLevelView.bind(this);
 	}
@@ -54,29 +54,29 @@ class WithdrawLimitLevelBlk extends Component {
 
 	componentWillMount() {
 		this.props.getKYCStatus();
-    }
+	}
 
 	componentWillReceiveProps(nextProps) {
-        this.setState({ loading : nextProps.loading });
-		if(Object.keys(nextProps.data).length > 0 && nextProps.data.hasOwnProperty('KYCStatus')) {
-			this.setState({ kycStatus : nextProps.data.KYCStatus });
+		this.setState({ loading: nextProps.loading });
+		if (Object.keys(nextProps.data).length > 0 && nextProps.data.hasOwnProperty('KYCStatus')) {
+			this.setState({ kycStatus: nextProps.data.KYCStatus });
 		}
-    }
+	}
 
 	render() {
 		const { kycStatus, loading } = this.state;
 		return (
 			<Fragment>
 				{
-                    loading
-                    ?
-                    <div className="text-center py-40">
-                        <CircularProgress className="progress-primary" thickness={2} />
-                    </div>
-					:
-					<div className="kyc_verify text-center">
-						<KYCStatus kycStatusId={kycStatus} />
-					</div>
+					loading
+						?
+						<div className="text-center py-40">
+							<CircularProgress className="progress-primary" thickness={2} />
+						</div>
+						:
+						<div className="kyc_verify text-center">
+							<KYCStatus kycStatusId={kycStatus} />
+						</div>
 				}
 			</Fragment>
 		);
@@ -84,11 +84,11 @@ class WithdrawLimitLevelBlk extends Component {
 }
 
 //MapStateToProps
-const mapStateToProps = ({ prsnlVerifyFrmRdcer , settings }) => {
+const mapStateToProps = ({ prsnlVerifyFrmRdcer, settings }) => {
 	const response = {
-        data : prsnlVerifyFrmRdcer.kycStatus,
-        loading : prsnlVerifyFrmRdcer.loading,
-        darkMode : settings.darkMode
+		data: prsnlVerifyFrmRdcer.kycStatus,
+		loading: prsnlVerifyFrmRdcer.loading,
+		darkMode: settings.darkMode
 	}
 	return response;
 }

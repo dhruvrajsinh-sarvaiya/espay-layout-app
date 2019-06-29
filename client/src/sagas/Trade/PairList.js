@@ -1,7 +1,7 @@
 // sagas For Pair List Actions By Tejas Date : 14/9/2018
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 // types for set actions and reducers
 import {
@@ -52,7 +52,6 @@ function* getBuyerOrderData({ payload }) {
         // end
 
         const response = yield call(swaggerGetAPI, 'api/Transaction/GetBuyerBook/' + payload.Pair + isMargin, {});
-        //console.log('GetBuyerBook Response',response,new Date());
 
         if (response.ReturnCode === 0) {
             yield put(getBuyerOrderListSuccess(response));
@@ -79,7 +78,6 @@ function* getSellerOrderData({ payload }) {
         // end
 
         const response = yield call(swaggerGetAPI, 'api/Transaction/GetSellerBook/' + payload.Pair + isMargin, {});
-        //console.log('GetSellerBook Response',response,new Date());
 
         if (response.ReturnCode === 0) {
             yield put(getSellerOrderListSuccess(response));
@@ -106,7 +104,6 @@ function* getMarketTradeHistoryData({ payload }) {
         // end
 
         const response = yield call(swaggerGetAPI, 'api/Transaction/GetOrderhistory?Pair=' + payload.Pair + isMargin, {});
-        //console.log('GetOrderhistory Response',response,new Date());
 
         if (response.ReturnCode === 0) {
             yield put(getMarketTradeHistorySuccess(response));
@@ -134,7 +131,6 @@ function* getPairListData({ payload }) {
         // end
 
         const response = yield call(swaggerGetAPI, 'api/Transaction/GetTradePairAsset' + isMargin, {});
-        //console.log('GetTradePairAsset Response',response,new Date());
 
         if (response.ReturnCode === 0) {
             yield put(getPairListSuccess(response));
@@ -157,7 +153,6 @@ function* getVolumeDataList({ payload }) {
     try {
 
         const response = yield call(swaggerGetAPI, '/api/Transaction/GetVolumeData/' + BasePair, {});
-        //console.log('GetTradePairAsset Response',response,new Date());
 
         if (response.ReturnCode === 0) {
             yield put(getVolumeDataSuccess(response));
@@ -206,14 +201,13 @@ function* getFavouritePairRequest({ payload }) {
     // end
 
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    //const response = yield call(swaggerPostAPI,'api/Transaction/GetFavouritePair',{},headers);
     const response = yield call(swaggerGetAPI, 'api/Transaction/GetFavouritePair' + isMargin, {}, headers);
 
     try {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            var staticRes = staticResponse(response.statusCode);
             yield put(getFavouritePairListSuccess(staticRes));
         } else if (response.statusCode === 200) {
             yield put(getFavouritePairListSuccess(response));
@@ -248,7 +242,7 @@ function* addToFavouritePairRequest({ payload }) {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            var staticRes = staticResponse(response.statusCode);
             yield put(addToFavouritePairListFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(addToFavouritePairListSuccess(response));
@@ -284,7 +278,7 @@ function* removeFromFavouritePairRequest({ payload }) {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            var staticRes = staticResponse(response.statusCode);
             yield put(addToFavouritePairListFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(addToFavouritePairListSuccess(response));

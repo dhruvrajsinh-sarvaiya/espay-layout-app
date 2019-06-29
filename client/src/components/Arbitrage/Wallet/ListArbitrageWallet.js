@@ -4,7 +4,6 @@
     File Comment : list & create a Arbitrage wallets
 */
 import React, { Component, Fragment } from 'react';
-import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import classnames from "classnames";
 import MUIDataTable from "mui-datatables";
@@ -12,7 +11,6 @@ import { connect } from 'react-redux';
 import { changeDateFormat } from "Helpers/helpers";
 import IntlMessages from 'Util/IntlMessages';
 import Select from "react-select";
-// import Typography from "@material-ui/core/Typography";
 import CreateArbitrageWallet from './CreateArbitrageWallet';
 import Tooltip from '@material-ui/core/Tooltip';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
@@ -24,7 +22,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 
 //added by Tejas 14/6/2019
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 
 // import Leverage from './Leverage';
 import {
@@ -63,6 +61,8 @@ const initState = {
     errAmount: '',
     AvailableBalance: 0,
     showConfirmation: false,
+    walletBalance: 0,
+    isWithdraw: 0,
 }
 
 const BalanceWidget = ({ coin, balance, selectWallet }) => (
@@ -116,7 +116,7 @@ class ListMarginWallets extends Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.addBalanceConfirmation.hasOwnProperty('ReturnCode')) {
             if (nextProps.addBalanceConfirmation.ReturnCode === 0) {
-                NotificationManager.success(<IntlMessages id={`sidebar.creditSuccess`} />);
+                NotificationManager.success(this.state.isWithdraw ? <IntlMessages id={`sidebar.transferSuccess`} /> : <IntlMessages id={`sidebar.creditSuccess`} />);
                 this.closeModal();
                 this.props.getArbitrageWalletList({});
             } else if (nextProps.addBalanceConfirmation.ReturnCode !== 0) {
@@ -148,10 +148,12 @@ class ListMarginWallets extends Component {
         this.props.getArbitrageWalletList({});
     }
     /* toggle show model */
-    showModel(CoinName, CreditWalletId) {
+    showModel(CoinName, CreditWalletId, walletBalance, isWithdraw) {
         this.setState({
             WalletType: CoinName,
             CreditWalletId: CreditWalletId,
+            walletBalance: walletBalance,
+            isWithdraw: isWithdraw
         }, () => this.props.getWallets({ Coin: CoinName }));
         this.toggleShowModal();
     }
@@ -177,17 +179,15 @@ class ListMarginWallets extends Component {
     // numberic value only
     validateOnlyNumeric(value) {
         const regexNumeric = /^[0-9.]+$/;
-        if (
+
+        return (
             regexNumeric.test(value) &&
             validator.isDecimal(value, {
                 force_decimal: false,
                 decimal_digits: "0,8"
             })
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        ) ? true : false
+
     }
     /* on chane handler */
     onChangeHandler(e) {
@@ -205,6 +205,8 @@ class ListMarginWallets extends Component {
             Amount: '',
             errAmount: '',
             AvailableBalance: 0,
+            walletBalance: 0,
+            isWithdraw: 0,
         });
     }
     /* validate amount on  blur */
@@ -213,19 +215,11 @@ class ListMarginWallets extends Component {
             this.setState({
                 errAmount: "sidebar.erramountRequired"
             })
-        } else if (validator.contains(e.target.value, '-')) {
+        } else if (((validator.contains(e.target.value, '-')) || (validator.equals(e.target.value, '0') || e.target.value == 0)) || (!validator.isDecimal(e.target.value, { force_decimal: false, decimal_digits: '0,8' }))) {
             this.setState({
                 errAmount: "wallet.errWDInvalidAmount"
             })
-        } else if (validator.equals(e.target.value, '0') || e.target.value == 0) {
-            this.setState({
-                errAmount: "wallet.errWDInvalidAmount"
-            })
-        } else if (!validator.isDecimal(e.target.value, { force_decimal: false, decimal_digits: '0,8' })) {
-            this.setState({
-                errAmount: "wallet.errWDInvalidAmount"
-            })
-        } else if (parseFloat(e.target.value) > parseFloat(this.state.AvailableBalance)) {
+        } else if ((parseFloat(e.target.value) > parseFloat(this.state.AvailableBalance) && !this.state.isWithdraw) || (parseFloat(e.target.value) > parseFloat(this.state.walletBalance) && this.state.isWithdraw)) {
             this.setState({
                 errAmount: "wallet.errWDLessthenBalance"
             })
@@ -241,8 +235,9 @@ class ListMarginWallets extends Component {
             showConfirmation: false
         }, (e) => {
             const request = {
-                "DebitAccWalletId": this.state.DebitWalletId,
-                "CreditAccWalletId": this.state.CreditWalletId,
+                "isWithdraw": this.state.isWithdraw,
+                "DebitAccWalletId": this.state.isWithdraw ? this.state.CreditWalletId : this.state.DebitWalletId,
+                "CreditAccWalletId": this.state.isWithdraw ? this.state.DebitWalletId : this.state.CreditWalletId,
                 "Amount": parseFloat(this.state.Amount),
                 "CurrencyName": this.state.WalletType
             }
@@ -252,7 +247,7 @@ class ListMarginWallets extends Component {
     render() {
         const walletListSlider = Menu(this.props.wallets, this.selectWallet);
         const { intl, walletList, loading } = this.props;
-        const { errAmount, hideArrows, hideSingleArrow } = this.state;
+        const { errAmount } = this.state;
         var columns = [
             {
                 name: intl.formatMessage({ id: "wallet.walletName" }),
@@ -314,6 +309,7 @@ class ListMarginWallets extends Component {
             filter: false,
             search: false,
             rowsPerPage: 100,
+            fixedHeader: false,
             textLabels: {
                 body: {
                     noMatch: intl.formatMessage({ id: "wallet.emptyTable" }),
@@ -323,7 +319,7 @@ class ListMarginWallets extends Component {
         };
         return (
             <div className={this.props.darkMode ? 'DepositWithdrawHistory-darkmode tbl_overflow_auto' : 'DepositWithdrawHistory tbl_overflow_auto'}>
-                {loading && <JbsBarLoader />}
+                {loading && <JbsLoader />}
                 <JbsCollapsibleCard>
                     <div className="top-filter row">
                         <FormGroup className="col-md-2 col-sm-4">
@@ -352,8 +348,9 @@ class ListMarginWallets extends Component {
                             </Input>
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
+                            <Label for="Status">&nbsp;</Label>
                             <div className="btn_area">
-                                <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.Status !== '' || this.state.WalletTypeId !== '') ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
+                                <Button className={"border-0 rounded-0 perverbtn " + ((this.state.Status !== '' || this.state.WalletTypeId !== '') ? "" : " disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
                                 {this.state.showReset && <Button color="success" className="ml-15 border-0 rounded-0" onClick={(e) => this.clearFilter()}>{intl.formatMessage({ id: "button.clear" })}</Button>}
                             </div>
                         </FormGroup>
@@ -387,14 +384,23 @@ class ListMarginWallets extends Component {
                                     wallet.RoleName,
                                     changeDateFormat(wallet.ExpiryDate, 'YYYY-MM-DD', false),
                                     <div className="list-action">
-                                        {wallet.IsLeaverageAllow ? <Tooltip title={intl.formatMessage({ id: "wallet.addBalance" })} placement="bottom">
+                                        {wallet.IsLeaverageAllow ? <Fragment><Tooltip title={intl.formatMessage({ id: "wallet.addBalance" })} placement="bottom">
                                             <a
                                                 href="javascript:void(0)"
-                                                onClick={(e) => this.showModel(wallet.CoinName, wallet.AccWalletID)}
+                                                onClick={(e) => this.showModel(wallet.CoinName, wallet.AccWalletID, wallet.Balance, 0)}
                                             >
                                                 <i className="zmdi zmdi-plus-circle"></i>
                                             </a>
-                                        </Tooltip> : '-'}
+                                        </Tooltip>
+                                            <Tooltip title={intl.formatMessage({ id: "sidebar.trnToWallet" })} placement="bottom">
+                                                <a
+                                                    href="javascript:void(0)"
+                                                    onClick={(e) => this.showModel(wallet.CoinName, wallet.AccWalletID, wallet.Balance, 1)}
+                                                >
+                                                    <i className="zmdi zmdi-minus-circle"></i>
+                                                </a>
+                                            </Tooltip>
+                                        </Fragment> : '-'}
                                     </div>
                                 ]
                             })}
@@ -404,18 +410,16 @@ class ListMarginWallets extends Component {
                     </div>
                 </JbsCollapsibleCard>
                 <Modal isOpen={this.state.showModal}>
-                    {(this.props.loading || this.props.walletLoading) && <JbsBarLoader />}
-                    <ModalHeader toggle={this.closeModal}><IntlMessages id="wallet.addBalance" /></ModalHeader>
+                    {(this.props.loadingAddBalance || this.props.walletLoading) && <JbsLoader />}
+                    <ModalHeader toggle={this.closeModal}>{this.state.isWithdraw ? <IntlMessages id="sidebar.trnToWallet" /> : <IntlMessages id="wallet.addBalance" />}</ModalHeader>
                     <ModalBody>
                         <Form>
                             {this.state.WalletType !== '' && <FormGroup>
-                                <Label for="WalletTypeId">{intl.formatMessage({ id: "wallet.WDSelectWallet" })}</Label>
+                                <Label for="WalletTypeId">{this.state.isWithdraw ? intl.formatMessage({ id: "sidebar.targetWallet" }) : intl.formatMessage({ id: "wallet.WDSelectWallet" })}</Label>
                                 <ScrollMenu
                                     data={walletListSlider}
-                                    hideArrows={hideArrows}
-                                    hideSingleArrow={hideSingleArrow}
-                                    arrowLeft={ArrowLeft}
-                                    arrowRight={ArrowRight}
+                                    hideArrows={true}
+                                    hideSingleArrow={true}
                                     menuClass={''}
                                 />
                             </FormGroup>}
@@ -425,7 +429,7 @@ class ListMarginWallets extends Component {
                                     type="text"
                                     name="Amount"
                                     id="Amount"
-                                    placeholder={intl.formatMessage({ id: "wallet.Amount" })}
+                                    placeholder={intl.formatMessage({ id: "wallet.CTAvailableBalance" }) + ":" + (this.state.isWithdraw ? parseFloat(this.state.walletBalance).toFixed(8) : parseFloat(this.state.AvailableBalance).toFixed(8))}
                                     onChange={(e) => this.onChangeHandler(e)}
                                     onBlur={(e) => this.vadliateAmount(e)}
                                     value={this.state.Amount}
@@ -439,10 +443,9 @@ class ListMarginWallets extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button
-                            color="primary"
-                            className={"mr-10 border-0 rounded-0 " + ((this.state.WalletType === '' || this.state.DebitWalletId === '' || this.state.CreditWalletId === '' || this.state.Amount === '') ? "disabled" : "")}
+                            className={"mr-10 border-0 rounded-0 perverbtn " + ((this.state.WalletType === '' || this.state.DebitWalletId === '' || this.state.CreditWalletId === '' || this.state.Amount === '') ? "disabled" : "")}
                             disabled={((this.state.WalletType === '' || this.state.DebitWalletId === '' || this.state.CreditWalletId === '' || this.state.Amount === '' || this.state.errAmount !== '') ? true : false)}
-                            onClick={(e) => this.setState({ showConfirmation: true })}>{<IntlMessages id="button.add" />}</Button>
+                            onClick={(e) => this.setState({ showConfirmation: true })}>{this.state.isWithdraw ? <IntlMessages id="sidebar.transfer" /> : <IntlMessages id="button.add" />}</Button>
                         <Button
                             color="danger"
                             className="mr-10 border-0 rounded-0 "
@@ -465,8 +468,7 @@ class ListMarginWallets extends Component {
                     <DialogActions>
                         <Button
                             onClick={(e) => this.addBalance()}
-                            color="primary"
-                            className="mr-10 border-0 rounded-0 "
+                            className="mr-10 border-0 rounded-0 perverbtn "
                             autoFocus
                         >
                             <IntlMessages id={"sidebar.btnYes"} />
@@ -489,8 +491,8 @@ const mapDispatchToProps = ({ settings, ArbitrageWalletReducer, withdrawApp }) =
     const { darkMode } = settings;
     const { wallets } = withdrawApp;
     const walletLoading = withdrawApp.loading;
-    const { loading, currencyList, walletList, addBalanceConfirmation } = ArbitrageWalletReducer;
-    return { darkMode, loading, currencyList, walletList, wallets, walletLoading, addBalanceConfirmation };
+    const { loading, loadingAddBalance, currencyList, walletList, addBalanceConfirmation } = ArbitrageWalletReducer;
+    return { darkMode, loading, loadingAddBalance, currencyList, walletList, wallets, walletLoading, addBalanceConfirmation };
 }
 
 export default connect(mapDispatchToProps, {

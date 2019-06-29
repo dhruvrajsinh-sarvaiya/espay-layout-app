@@ -15,7 +15,11 @@ const INITIAL_STATE = {
     loading: false,
     Report: [],
 };
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+    
     switch (action.type) {
         //List action
         case GET_OPEN_POSITION_REPORT_LIST:

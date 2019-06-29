@@ -5,8 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 //Action Types..
 import { EMAIL_CONFIRMATION } from 'Actions/types';
@@ -17,17 +16,15 @@ import {
     emailConfirmationFailure
 } from 'Actions/MyAccount';
 
-import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
+import { swaggerGetAPI } from 'Helpers/helpers';
 
 
 //Function for Email Confirmation
-function* emailConfirmationAPI({payload}) { 
-    const response = yield call(swaggerGetAPI,'api/SignUp/ConfirmEmail?emailConfirmCode='+payload.emailConfirmCode,payload);
-    
+function* emailConfirmationAPI({ payload }) {
+    const response = yield call(swaggerGetAPI, 'api/SignUp/ConfirmEmail?emailConfirmCode=' + payload.emailConfirmCode, payload);
+
     try {
-        //console.log('Email Res',response);
-        if(response.statusCode === 200) {
+        if (response.statusCode === 200) {
             yield put(emailConfirmationSuccess(response));
         } else {
             yield put(emailConfirmationFailure(response));

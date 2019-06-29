@@ -2,41 +2,62 @@
  * Author : Salim Deraiya
  * Created : 27/05/2019
  *  Arbitrage Component scss..
+ 
+ Change and merge by Tejas 
 */
-.arbitrage-dashboard { background: #000; color: #fff; padding: 10px 15px 10px 0; }
-// .buy_sell_area_inner { padding: 15px; }
-.buy_sell_area_inner { padding: 3px; }
-.exchange_area { padding-right: 30px; }
-.buy_sell_area { padding: 18px 0 0; }
-.buy_sell_area_inner, .buy_book, .sell_book { border: 1px solid #fff; border-radius: 5px; }
-.buy_book table thead, .sell_book table thead,
-// .buy_book table tr, .sell_book table tr { background: none !important; }
-// .buy_book .table thead th, .sell_book .table thead th { width:25%;color: #fff; border-bottom: 2px solid #fff !important; font-weight: bold; }
-.buy_book .table thead th, .sell_book .table thead th { padding-right:2px;padding-left:2px; padding-top:5px; padding-bottom:5px; text-align: center;border-bottom: unset !important; font-weight: bold; }
+.arbitrage-dashboard { 
+    background: transparent; 
+    color: #fff;
+     padding: 10px 15px 10px 0; 
+}
+
+.buy_sell_area_inner {
+     padding: 3px;
+     margin: 3px;
+ }
+.exchange_area { 
+    padding-right: 30px; 
+    margin:5px;
+    border-radius: 5px;
+    background: $white;
+    border: 1px solid #0014E4;
+    
+}
+.buy_sell_area {
+     padding: 18px 0 0; 
+     background: $white;
+     border-radius: 5px;
+     margin: 5px;
+     border: 1px solid #0014E4;
+     color: #464D69;
+    }
+
+.buy_sell_area_inner {     
+    border-radius: 5px;
+    background: $white;
+    display: flex;
+ }
+
+.buy_sell_area_inner .buy_book, .sell_book {  border: 1px solid #333; border-radius: 5px;background: $white}
+
+.buy_book .table thead th, .sell_book .table thead th { color: #464D69 !important; background: $white; padding-right:2px;padding-left:2px; padding-top:5px; padding-bottom:5px; text-align: center;border-bottom: unset !important; font-weight: bold; }
 .buy_book .table th,.buy_book .table td,.sell_book .table th,.sell_book .table td { border-top: none; }
-.buy_book .table td, .sell_book .table td { padding-right:2px;padding-left:2px; padding-top:5px; padding-bottom:5px; text-align: center;color:$black !important;font-weight: bold; }
+.buy_book .table td, .sell_book .table td { padding-right:2px;padding-left:2px; padding-top:5px; padding-bottom:5px; text-align: center;color:$white !important;font-weight: bold; }
 .buy_book .jbs-scroll > div {overflow: auto;}
-.exchange_area .card { padding: 15px; border-radius: 5px; margin-bottom: 11px; color: #000; background: #ffd633; }
-// .exchange_area .card.active,.exchange_area .card:hover { background: #37BDF0; }
-.buy_book a,.sell_book a{cursor: pointer;text-transform: uppercase;color:blue;font-weight: bold;}
-/* .exchange_area .card:nth-child(1) { background: #F8BB01; }
-.exchange_area .card:nth-child(2) { background: #1652EF; }
-.exchange_area .card:nth-child(3) { background: #37BDF0; }
-.exchange_area .card:nth-child(4) { background: #F8BB01; }
-.exchange_area .card:nth-child(5) { background: #F8BB01; }
-.exchange_area .card:nth-child(6) { background: #F8BB01; }
-.exchange_area .card:nth-child(7) { background: #F8BB01; }
-.exchange_area .card:nth-child(8) { background: #F8BB01; }
-.exchange_area .card:nth-child(9) { background: #F8BB01; }
-.exchange_area .card:nth-child(10) { background: #F8BB01; } */
+.exchange_area .card { padding: 15px; border-radius: 5px; margin-bottom: 11px; color: #464D69; background: $white; border: 1px solid #0014E4 !important; }
+
+.buy_book a {cursor: pointer;text-transform: uppercase;color:red;background:white;font-weight: bold;padding: 2px 5px;border-radius: 2px;}
+.sell_book a{cursor: pointer;text-transform: uppercase;color:green;background:white;font-weight: bold;padding: 2px 5px;border-radius: 2px;}
+.buy_book a:hover,.sell_book a:hover{transform: scale(1.1);}
+
 .exchange_area .card .green { color : #00CFDC; }
 .exchange_area .card .red { color : #F00F00; }
 .arb_buy_sell_frm { padding : 0 15px;}
 .tblst  { border: 1px solid #e4e9f0; border-radius: 5px;}
-.tblst .buy,.tblst .sell { padding-top: 5px; padding-bottom: 5px;text-align: center;text-transform: uppercase;font-weight: bold;}
-.tblst .buy.active { border-radius: 5px 0 0 5px; }
+.tblst .buy,.tblst .sell { padding-top: 5px; padding-bottom: 5px;text-align: center;text-transform: uppercase;font-weight: bold;cursor: not-allowed;}
+.tblst .buy.active { border-radius: 5px 0 0 5px;}
 .tblst .sell.active { border-radius: 0 5px 5px 0; }
-.tblst .active { border: 1px solid #1652EF; margin: -1px; }
+.tblst .active { border: 1px solid #5D92F4; margin: -1px; }
 .arb_buy_sell_frm .tradefrm .form-group { margin-bottom: 5px; position: relative;}
 .arb_buy_sell_frm .tradefrm .form-group:last-child, .exchange_area .card:last-child{ margin-bottom: 0;}
 .arb_buy_sell_frm .tradefrm .form-group .text-danger { position: absolute;}
@@ -48,72 +69,62 @@
 .order_tbl_lnk { border-radius: 100%; background: #FF3739; width: 20px; height: 20px; line-height: 24px; color: $white; }
 .order_tbl_lnk:hover { background: #1652EF; color: #fff;}
 
-.arbitrage_tabs .tab_list { width: 100%; }
-.arbitrage_tabs .rwt__tab { float: left; width: auto; padding: 10px 15px; border: none; background: transparent; color: #F4F7FA;}
-//.arbitrage_tabs > span { font-size:13px; float: left; width: auto; padding: 10px 15px; border: none; background: transparent; color: #F4F7FA;}
+.arbitrage_tabs .tab_list { width: 100%;border-bottom: 1px solid #0014E4; }
+.arbitrage_tabs .rwt__tab { 
+    float: left;
+     width: auto;
+      padding: 10px 15px; 
+      border: none; 
+      background: transparent; 
+      color: #464D69;
+    }
 .arbitrage_tabs .rwt__tab:hover {border: none;}
 .arbitrage_tabs .rwt__tab > span {font-size:13px; }
-.tab_cnt_area { padding: 10px 15px; border: 1px solid #fff; border-radius: 0 0 5px 5px; }
+.tab_cnt_area { padding: 10px 15px; border-radius: 0 0 5px 5px; }
 .opn_ord_list thead {
     background: none;
 }
 
 .arbitrage_tabs {
-    .rwt__tab[aria-selected="true"]{
-       /*  position: relative;
-        color: #fff;
-        border-left: 5px solid #0014E4;
-        background: #0014E4 !important;
-        color: white;
-        border-radius: 10px; */
-        color: #F4F7FA;
-    background: transparent;
-    border-top: 1px solid #F4F7FA;
-    border-bottom: none;
-    border-left: 1px solid #F4F7FA;
-    border-right: 1px solid #F4F7FA;
+    .rwt__tab[aria-selected="true"]{ 
+        color: #424242;
+        border-color: transparent;
+        background-color: #F4F7FA;
     }
 }
-//.opn_ord_list tbody tr td,.trd_hst_list tbody tr td { padding: 10px 5px; }
+
 .opn_ord_list tbody tr td,.trd_hst_list tbody tr td { padding: 5px 5px; }
 .opn_ord_list thead tr th,
 .opn_ord_list tbody tr th {
-    border : 1px solid #F4F7FA;
     padding : 5px 0;
     font-size: 12px;
-    color : #fff;
-    font-weight: bold;
+    color: #424242; 
+}
+
+.opn_ord_list thead tr{
+    background-color: #F4F7FA;
 }
 
 .opn_ord_list tbody tr td {
-    border: unset;
-    //padding : 5px 0;
+    border: unset;    
     font-size: 12px;
-    color : #fff;    
+    color : #424242;    
 }
 
 .trd_hst_list tbody tr td {
-    border: unset;
-    //padding : 5px 0;
+    border: unset;    
     font-size: 12px;
-    color : #fff;    
+    color : #424242;    
 }
-/* .opn_ord_list tbody tr td{
-    border: unset;
-    font-size: 12px;
-    color: $white;
-} */
 
 .trade_history_table {    
         thead{
-            tr{
-                background: $black;
-                th{
-                    border : 1px solid #F4F7FA;
+            tr{     
+                background-color: #F4F7FA;           
+                th{                                   
                     padding : 5px 0;
                     font-size: 12px;
-                    color : #fff;
-                    font-weight: bold;
+                    color: #424242;                                      
                 }
             }
         }    
@@ -123,13 +134,6 @@
 }
 .opn_ord_list tbody tr th.text-danger {
     background-color: rgba($color: red, $alpha: 0.5);
-}
-.exchange_area .css-kj6f9i-menu{ background: #fff; color: #000; border: 1px solid #2684FF; }
-
-.exchange_area .css-15k3avv{
-    color: $white !important;
-    background: $black !important;
-    font-weight: bold !important;
 }
 
 .lbl-data{
@@ -157,26 +161,27 @@
 }
 
 .buy_sell_area_inner, .buy_book, .sell_book {
-    .btnsell-per{
+    .btnsell-per-arbitrage{
         background: #fff;
-        border: 1px solid #333;
+        border: 1px solid #5D92F4;
         color: #000;
         border-radius: 0;
         padding: 2px 0 0 !important;
         font-size: 10px !important;
         min-height: 18px !important;
-       // width: 30px !important;
         margin-top: -2px;
+        font-weight: bold;
     }
-    .btnbuy-per{
+    .btnbuy-per-arbitrage{
         background: #fff;
-        border: 1px solid #e64646;
-        color: #e64646;
+        border: 1px solid #5D92F4;
+        color: #000;
         border-radius: 0;
         padding: 2px 0 0 !important;
         font-size: 10px !important;
         min-height: 18px !important;
-        width: 30px !important;
+        margin-top: -2px;
+        font-weight: bold;
     }
 }
 .buy_book{
@@ -185,7 +190,6 @@
             th:nth-child(1), td:nth-child(1){
                 width : 10% !important;
                 padding-left: 10px !important;
-                //padding-right: 10px !important;
             }
             th:nth-child(2), td:nth-child(2){
                 width : 15% !important;
@@ -249,18 +253,6 @@
     }
 }
 
-/* .buy_book .table thead th, .sell_book .table thead th
-                .askBidbtn{width : 10% !important; }
-                .exchange-name{width : 25% !important;}
-                .calculate-btns{width : 25% !important;}
-                .price-data{width : 15% !important;}
-            
-       
-.buy_book .table td, .sell_book .table td
-                .askBidbtn{width : 10% !important;}
-                .exchange-name{width : 25% !important;}
-                .calculate-btns{width : 25% !important;}
-                .price-data{width : 15% !important;} */
             
 .arbitrage-trading{
 
@@ -269,9 +261,7 @@
         span{
             font-size: 16px;
             .btn-per{
-                //background: #fff;
                 border: 1px solid #333;
-                //color: #5D92F4;
                 border-radius: 0;
                 padding: 3px 0 0 !important;
                 font-size: 12px !important;
@@ -291,8 +281,6 @@
                     th{
                         font-size: 16px;
                         font-weight: bold;
-                        /*background: #333 !important;
-                        color: $white !important;*/
                     }
                 }
             }
@@ -311,23 +299,20 @@
 .arbitrage_marketTrade{
 
     table{
-        thead{
-            background: $black;
+        thead{            
             tr{
-                th{
-                    border : 1px solid #F4F7FA;
+                background-color: #F4F7FA;
+                th{ 
                     padding : 5px 0;
                     font-size: 12px;
-                    color : #fff;
-                    font-weight: bold;
+                    color: #424242;                  
                 }
           }        
         }
 
-        tbody{
-            background: $black;
+        tbody{            
           td{
-            color: $white;            
+            color: #424242;            
             font-size: 12px;                       
             border: unset !important;
             text-align: center;        
@@ -336,31 +321,6 @@
         }
     }
 }
-
-/* .arbitrage_balance-tab{
-    .social-card{
-        //cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-shadow: 0 1px 15px 1px $white;
-        border-radius: 5px;
-        margin-bottom: 24px;
-        transition: all 0.4s ease-in-out 0s;
-        padding: 1.25rem 1.25rem;
-        background-color: $black;
-
-        .social-icon{
-            width: 4.1875rem;
-            height: 4.1875rem;
-            background-color: $black;
-            justify-content: center;
-            display: flex;
-            align-items: center;
-            transition: all 0.4s ease-in-out;
-        }
-    }
-} */
 
 /* added Nirmit */
 .opn_ord_profit{ text-align: center; }
@@ -373,11 +333,6 @@
     font-weight: 500;
 	box-shadow:0px 0px 12px -4px #536AF7;
 }
-/* .opn_ord_profit tbody tr td{
-    border: unset;
-    font-size: 12px;
-    color: $white;
-} */
 
 .trade_history_table_profit {    
         thead{
@@ -400,11 +355,10 @@
 	color:#333;
 }
 .opn_ord_profit tbody tr th.text-black-pro {
-    background-color: #9cd8a5;
+    background-color: #008000;
 }
 .opn_ord_profit tbody tr th.text-black-profit {
-    background-color: #ffc1bc;
-
+    background-color: #FF0000
 }
 .txt {
 	  span{
@@ -413,25 +367,23 @@
 
 }
 
-//.balancecard-arbitrage{
+
     .social-card-arbitrage {
-        //cursor: pointer;
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        border: 1px solid;
-        //box-shadow: 0 1px 15px 1px rgba(69, 65, 78, 0.08);
+        justify-content: space-between;        
+        box-shadow: 0 1px 15px 1px rgba(69, 65, 78, 0.08);
         border-radius: 5px;
         margin-bottom: 24px;
         transition: all 0.4s ease-in-out 0s;
         padding: 1.25rem 1.25rem;
-        background-color: $black;
+        background-color: $white;
+        color: #424242;
 
         .social-icon {
             width: 4.1875rem;
             height: 4.1875rem;
-            // background-color: #FAFAFA;
-            background-color: transparent;
+            background-color: #FAFAFA;            
             justify-content: center;
             display: flex;
             align-items: center;
@@ -449,17 +401,15 @@
     }
     .social-card-arbitrage > span {
         width: 40%;
-        /* text-align: center; */
     }
-//}
+
 
 .arbitrage-btnbuysell{
     color: #fff;
     border: none;
     padding: 5px 0;
     font-size: 18px;
-    border-radius: 30px;
-    font-family: 'Montserrat-Regular';
+    border-radius: 30px;    
     margin-top: 17px !important;
 }
 
@@ -468,11 +418,151 @@
     top: 40%;
     left: 40%;
     width: 15%;
-    background: $black;
-    color: $white;
-    border: 1px solid $white;
+    background: #0014E4 !important;
+    color: $white;    
 }
 
 .arbitrage-btnmore{
-    a{color:$white;}
+    a{color: #464D69;}
+}
+
+.css-xp4uvy{
+    color: $white !important;
+}
+
+.askBidbtn.td :hover{    
+    border: 1px solid white;
+    background: transparent;
+}
+
+.askBidbtn{
+    label{
+        span{
+            color:$white;
+        }
+    }
+}
+.arbitrage_header{
+    header{
+        background-color:$white !important;
+        box-shadow:none;
+        border-radius:5px 5px 0 0;
+        z-index:1;
+        > div{
+            min-height: 40px;
+        }
+    }
+    
+}
+
+.arbitrage_header {
+    button[type=button].active span{
+      color: #0014E4 !important;
+	  font-weight:600;
+    }
+  }
+
+  .arbitrage_header{
+    header{
+        background-color:transparent !important;
+        box-shadow:none;
+    }
+}
+
+.arbitrage_header_menu{
+    button.active{
+        color:$coolblue;
+    }
+    button[type=button].active  {
+      border-bottom: 2px solid #FFD700 !important;
+      span{
+        font-size:12px;
+      }
+    }
+   
+    button{
+        min-height:44px;
+        > span {
+          > span {
+            > span{
+              color:#424242;
+              font-weight:600;
+            }
+          }
+        }
+    }
+    .TabIndicator-colorSecondary-190, .TabIndicator-colorSecondary-371{
+      background-color:transparent !important;
+   }
+}
+
+.arbitrage_header_menu{
+    button.active{
+        color:$coolblue;
+        font-weight:500;//bold;
+    }
+    button{
+        min-height:35px;
+        min-width:95px !important;
+        color:#464D69;// #787F9B;
+        > span{
+            min-width:100px !important;
+            > span{
+                padding-left:0 !important;
+                padding-right:0  !important;
+                padding-top:0  !important;
+                padding-bottom:0  !important;
+                min-width:100px !important;
+                > span{
+                    font-family:'HindMadurai-Regular';                    
+                    text-transform:uppercase;
+                    font-size:12px;
+                    font-weight:500;//bold;
+                }
+            }
+        }
+    }
+}
+
+.arbitrage_header_menu button > span > span > span {
+    font-size: 12px;
+}
+
+.exchange_data{
+    div{
+        font-size: 13px;
+    }
+}
+.bi-logo{    
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+
+.arbitrage_reports{
+    background: $white;
+    border-radius: 5px;
+}
+.css-xp4uvy{
+    color: #424242 !important;
+}
+
+.exchange_area{
+    .css-vj8t7z{
+        color: #424242;
+    }
+    .css-10nd86i{
+        color: #424242;
+        .css-15k3avv{
+          background-color: $white !important; 
+          color: #424242;
+            div {
+              background-color: $white !important;
+              color: #424242;
+              &:hover, .active{
+                background-color: #5D92F4 !important;
+            }     
+          }           
+      }
+     
+    }
 }

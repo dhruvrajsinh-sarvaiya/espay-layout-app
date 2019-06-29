@@ -6,8 +6,8 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+
 
 import { RESET_PASSWORD } from "Actions/types";
 
@@ -16,8 +16,8 @@ import {
   resetPasswordFailure
 } from "Actions";
 
-import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+
+import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for Reset Password
 function* resetPasswordAPI({payload}) {

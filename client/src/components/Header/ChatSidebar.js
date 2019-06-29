@@ -1,47 +1,15 @@
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-//import Avatar from '@material-ui/core/Avatar';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Button, Form, FormGroup, Label, Input, Row, Col } from "reactstrap";
+import { Button, Input, } from "reactstrap";
 import Clientimge from '../../assets/img/user-profile.png'
 import { isScriptTag } from "Helpers/helpers";
 import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";
-//import { Button, Form, FormGroup, Label, Input, Row, Col } from "reactstrap";
-// data
-//import users from 'Assets/data/chat-app/users';
-
-// helpers
-//import { textTruncate } from 'Helpers/helpers';
-
-/* const ChatSidebar = () => (
-   <div className="chat-sidebar jbs-customizer">
-      <AppBar position="static" color="primary">
-         <Toolbar>
-            <Typography variant="title" color="inherit">
-               Chat
-            </Typography>
-         </Toolbar>
-      </AppBar>
-      <List>
-         {users.map((user, key) => (
-            <ListItem key={key} button>
-               <Avatar src={user.photo_url} />
-               <ListItemText
-                  primary={user.first_name + ' ' + user.last_name}
-                  secondary={textTruncate(user.last_chat, 16)}
-               />
-            </ListItem>
-         ))}
-      </List>
-   </div>
-); */
-
 import React, { Component } from 'react';
-//import AppConfig from 'Constants/AppConfig';
 
 class ChatSidebar extends Component {
     constructor(props) {
@@ -66,7 +34,6 @@ class ChatSidebar extends Component {
         this.props.chatHubConnection.invoke('GetChatHistory').then().catch(err => console.error(err));
 
         this.props.chatHubConnection.on('RecieveChatHistory', (receivedMessage) => {
-            //console.log('SignalR Response from RecieveChatHistory',receivedMessage)
             try {
 
                 if (this.isActive === 1) {
@@ -96,10 +63,8 @@ class ChatSidebar extends Component {
 
         this.props.chatHubConnection.on('ReceiveMessage', (userName, receivedMessage) => {
 
-            //console.log('SignalR Response from ReceiveMessage',userName, receivedMessage,(new Date()))
             if (this.isActive === 1) {
 
-                const text = `${userName}: ${receivedMessage}`;
                 var chatList = this.state.chatList;
                 chatList.push({ user: userName, chatData: receivedMessage });
 
@@ -118,10 +83,9 @@ class ChatSidebar extends Component {
     }
 
     sendMessage = () => {
-        //console.log(this.state.message);
         if (typeof (this.state.message) != 'undefined' && !isScriptTag(this.state.message) && this.state.message !== '') {
             if (this.state.isUserBlocked === false) {
-                this.props.chatHubConnection.invoke('SendMessage', this.state.message).then(/* console.log('Send Message : ',(new Date())) */).catch(err => console.error(err));
+                this.props.chatHubConnection.invoke('SendMessage', this.state.message).then().catch(err => console.error(err));
             } else {
                 NotificationManager.error("You are blocked.");
             }
@@ -157,7 +121,6 @@ class ChatSidebar extends Component {
                         <div className="chatscrollmain">
                             {this.state.chatList.map((user, key) => (
                                 <ListItem key={key} button style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                    {/* <Avatar src={user.photo_url} /> */}
                                     <img className="chatclientimg" src={Clientimge} />
                                     <ListItemText
                                         primary={user.user}

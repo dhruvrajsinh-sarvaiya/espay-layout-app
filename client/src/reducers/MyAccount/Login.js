@@ -5,47 +5,49 @@
  * Normal / Blockchain
  */
 import {
-    LOGIN, 
-    LOGIN_SUCCESS, 
-    LOGIN_FAILURE, 
+    LOGIN,
+    LOGIN_SUCCESS,
+    LOGIN_FAILURE,
     LOGIN_BLOCKCHAIN,
     LOGIN_BLOCKCHAIN_SUCCESS,
     LOGIN_BLOCKCHAIN_FAILURE
- } from 'Actions/types';
- 
- 
- /*
- * Initial State
- */
+} from 'Actions/types';
+
+/*
+* Initial State
+*/
 const INIT_STATE = {
-    loading : false,
-    auth_type : 'google',
-    data : []
+    loading: false,
+    auth_type: 'google',
+    data: []
 }
 
 //Check Action for Login...
-export default (state = INIT_STATE, action) => {
-    switch(action.type) 
-    {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
+    switch (action.type) {
         case LOGIN:
-            return { ...state, loading : true };
+            return { ...state, loading: true };
 
         case LOGIN_SUCCESS:
-            return { ...state, loading : true, data : action.payload };
+            return { ...state, loading: true, data: action.payload };
 
         case LOGIN_FAILURE:
-            return { ...state, loading : false, error : action.payload };
+            return { ...state, loading: false, error: action.payload };
 
         case LOGIN_BLOCKCHAIN:
-            return { ...state, loading : true };
+            return { ...state, loading: true };
 
         case LOGIN_BLOCKCHAIN_SUCCESS:
-            return { ...state, loading : true, data : action.payload };
+            return { ...state, loading: true, data: action.payload };
 
         case LOGIN_BLOCKCHAIN_FAILURE:
-            return { ...state, loading : false, error : action.payload };
+            return { ...state, loading: false, error: action.payload };
 
-        default : 
+        default:
             return { ...state };
     }
 }

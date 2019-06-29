@@ -12,35 +12,36 @@ import {
     SUBMIT_CTREQUEST_FAILURE,
 } from 'Actions/types';
 
-const INITIAL_STATE = {
-    showLoading : false,
-    buyCurrency : [],
-    fromCurrency : []
+const INIT_STATE = {
+    showLoading: false,
+    buyCurrency: [],
+    fromCurrency: []
 }
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         case GET_CTINFO:
-            return { ...state, showLoading : true}
+            return { ...state, showLoading: true }
 
         case GET_CTINFO_SUCCESS:
-            return { ...state, showLoading: false, buyCurrency : action.payload.buyCurrency, fromCurrency : action.payload.fromCurrency}
+            return { ...state, showLoading: false, buyCurrency: action.payload.buyCurrency, fromCurrency: action.payload.fromCurrency }
 
         case GET_CTINFO_FAILURE:
-            console.log(action.payload);
-            return { ...state, showLoading : false}
-        
+            return { ...state, showLoading: false }
+
         case SUBMIT_CTREQUEST:
-            return { ...state, showLoading : true }
+            return { ...state, showLoading: true }
 
         case SUBMIT_CTREQUEST_SUCCESS:
-            return { ...state, showLoading : false, success : aciton.payload}
-        
+            return { ...state, showLoading: false, success: aciton.payload }
+
         case SUBMIT_CTREQUEST_FAILURE:
-            console.log(action.payload);
-            return { ...state, showLoading : false}
+            return { ...state, showLoading: false }
 
         default:
-            return { ...state}
+            return { ...state }
     }
 }

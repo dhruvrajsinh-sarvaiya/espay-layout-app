@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -26,9 +25,6 @@ import {
 	changeThemeColor, modeChange
 } from 'Actions';
 
-// helpers
-import { getAppLayout } from "Helpers/helpers";
-
 // components
 import Notifications from './Notifications';
 import ChatSidebar from './ChatSidebar';
@@ -46,10 +42,8 @@ import {
 } from "Helpers/helpers";
 
 // intl messages
-import IntlMessages from 'Util/IntlMessages';
 import { getProfileByID } from "Actions/MyAccount";
 import AppConfig from 'Constants/AppConfig';
-import { EXITED } from 'react-transition-group/Transition';
 const signalR = require("@aspnet/signalr");
 const signalRChatURL = AppConfig.signalRChatURL
 
@@ -73,7 +67,7 @@ class Header extends Component {
 					DayNightMode: localStorage.getItem('Thememode') !== 'undefined' ? localStorage.getItem('Thememode') : false,
 					DeviceId: getDeviceInfo(),
 					Mode: getMode(),
-					IPAddress: '', //getIPAddress(),
+					IPAddress: '', 
 					HostName: getHostName()
 				}
 			}
@@ -84,11 +78,6 @@ class Header extends Component {
 	}
 
 	componentDidMount() {
-		//const { darkMode } = this.props;
-
-		// if (darkMode) {
-		// 	this.darkModeHanlder(true);
-		// }
 
 		if (this.state.data.DayNightMode) {
 			var DayNightMode = JSON.parse(this.state.data.DayNightMode)
@@ -97,7 +86,6 @@ class Header extends Component {
 
 		// added by devang parekh for getting username
 		this.props.getProfileByID();
-		// localStorage.removeItem('Thememode');
 		this.props.location.state.hubConnection.on('SetTime', (TimeData) => {
 
 			try {
@@ -167,9 +155,7 @@ class Header extends Component {
 
 		try {
 
-			//console.log("Start connection")
 			this.state.chatHubConnection.start().then(() => {
-				//console.log("End connection")
 				this.setState({ chatHubConnection: this.state.chatHubConnection });
 
 			});
@@ -180,17 +166,12 @@ class Header extends Component {
 
 
 		this.state.chatHubConnection.onclose(e => {
-			//console.log('disconnected from server chat');
-			//console.log(window.JbsHorizontalLayout);
-			//console.log("Start connection new")
 			this.state.chatHubConnection.start().then(() => {
-				//console.log("End connection new")
 				this.setState({ chatHubConnection: this.state.chatHubConnection });
 			});
 		});
 
 		this.state.chatHubConnection.on('RecieveBlockUnblockUser', (receivedMessage) => {
-			//console.log('SignalR Response from RecieveBlockUnblockUser',receivedMessage)
 			try {
 
 				receivedMessage = JSON.parse(receivedMessage);
@@ -232,14 +213,6 @@ class Header extends Component {
      * Use To Enable Dark Mode
      * @param {*object} event
     */
-	// darkModeHanlder(isTrue) {
-	// 	if (isTrue) {
-	// 		$('body').addClass('dark-mode');
-	// 	} else {
-	// 		$('body').removeClass('dark-mode');
-	// 	}
-	// 	this.props.darkModeAction(isTrue);
-	// }
 
 	darkModeHanlder(isTrue) {
 		if (isTrue) {
@@ -247,12 +220,6 @@ class Header extends Component {
 		} else {
 			$('body').removeClass('dark-mode');
 		}
-		// this.setState({
-		// 	data: {
-		// 		...this.state.data,
-		// 		DayNightMode: isTrue
-		// 	}
-		// })
 		this.state.data.DayNightMode = isTrue;
 		let self = this;
 		var reqObj = Object.assign({}, this.state.data);
@@ -260,7 +227,6 @@ class Header extends Component {
 			reqObj.IPAddress = ipAddress;
 			self.props.modeChange(reqObj);
 		});
-		// this.props.modeChange(isTrue);
 	}
 
 	/**
@@ -308,7 +274,7 @@ class Header extends Component {
 	}
 
 	render() {
-		const { isMobileSearchFormVisible, darkMode } = this.state;
+		const { isMobileSearchFormVisible } = this.state;
 		const { loading } = this.props.settings;
 		$('body').click(function () {
 			$('.dashboard-overlay').removeClass('show');
@@ -316,7 +282,7 @@ class Header extends Component {
 			$('body').css('overflow', '');
 		});
 		var date = moment(this.state.TimeStamp).format("YYYY-MM-DD H:mm:ss");
-		const { tradingMenu, horizontalMenu, agencyMenu, location } = this.props;
+		const { tradingMenu, horizontalMenu, agencyMenu } = this.props;
 		var DayNightMode = JSON.parse(this.state.data.DayNightMode)
 		return (
 			<AppBar position="static" className="jbs-header">
@@ -325,9 +291,7 @@ class Header extends Component {
 					<div className="d-flex align-items-center">
 						{(tradingMenu || horizontalMenu || agencyMenu) &&
 							<div className="site-logo">
-								{/* <Link to="/app/dashboard/CooldexTrading" className="logo-normal"> */}
 								<Link to="/app/dashboard/trading" className="logo-normal">
-									{/* <img src={require('Assets/img/cool_dex_one.png')} className="img-fluid" alt="site-logo" width="100" height="17" /> */}
 									<img src={require('Assets/image/CoolDexLogo-tm.png')} className="img-fluid" alt="Cooldex-logo" alt="Cooldex-logo" width="150" />
 								</Link>
 							</div>
@@ -381,27 +345,7 @@ class Header extends Component {
 								/>
 							</Tooltip>
 						</li>
-						{/* <li className="list-inline-item">
-							<Tooltip title="Dark Mode" placement="bottom">
-								<FormControlLabel
-									control={
-										<Switch
-											checked={darkMode}
-											onChange={(e) => this.darkModeHanlder(e.target.checked)}
-											className="switch-btn tour-step-0"
-										/>
-									}
-									className="m-0"
-								/>
-							</Tooltip>
-						</li> */}
-						{/* <li className="list-inline-item summary-icon">
-							<Tooltip title="Summary" placement="bottom">
-								<a href="javascript:void(0)" className="header-icon tour-step-3" onClick={() => this.openDashboardOverlay()}>
-									<i className="zmdi zmdi-info-outline"></i>
-								</a>
-							</Tooltip>
-						</li> */}
+					
 						<LanguageProvider />
 						<User name={this.state.name} />
 						<Notifications hubConnection={this.props.location.state.hubConnection} />
@@ -436,12 +380,6 @@ class Header extends Component {
 		);
 	}
 }
-
-// map state to props
-/* const mapStateToProps = ({ settings }) => {
-
-	return settings;
-}; */
 const mapStateToProps = ({ settings, editProfileRdcer }) => {
 	const response = {
 		settings: settings,
@@ -452,7 +390,6 @@ const mapStateToProps = ({ settings, editProfileRdcer }) => {
 
 export default withRouter(connect(mapStateToProps, {
 	collapsedSidebarAction,
-	// darkModeAction,
 	changeThemeColor,
 	getProfileByID,
 	modeChange

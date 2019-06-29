@@ -7,8 +7,7 @@ import {
     GET_TICKERS_LIST,
     GET_TICKERS_LIST_SUCCESS,
     GET_TICKERS_LIST_FAILURE
-}
-    from 'Actions/types';
+} from 'Actions/types';
 
 // Set Initial State
 const INITIAL_STATE = {
@@ -17,7 +16,10 @@ const INITIAL_STATE = {
     newsTicker: []
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
 
     switch (action.type) {
 
@@ -46,6 +48,5 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, tickers: [] };
 
         default: return { ...state };
-
     }
 }

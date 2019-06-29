@@ -5,7 +5,6 @@
  */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import IntlMessages from "Util/IntlMessages";
 import {
 	getWatchlist,
@@ -140,7 +139,7 @@ class WatchListWdg extends Component {
 	}
 
     render() {
-		const { selLeaderGrpIds, groupName, defaultWatchlist, anchorEl, watchDialog, err_alert, err_msg, success_msg, success_alert, errors, loading } = this.state;
+		const { selLeaderGrpIds, groupName, defaultWatchlist, anchorEl, watchDialog,  errors, loading } = this.state;
 		return (
 			<Fragment>                    
 				{loading && <JbsSectionLoader />}
@@ -178,13 +177,13 @@ class WatchListWdg extends Component {
 						/>
 						{ defaultWatchlist.length > 0 &&
 							<Menu id="long-menu" className="wtc_list" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={this.handleClose} >
-								{ 	defaultWatchlist.map((wlst,index) => (
+								{ 	defaultWatchlist.map((wlst,index) => 
 										// ( selLeaderGrpIds.findIndex(selLeaderGrpId => (selLeaderGrpId === wlst.Id))
 										(selLeaderGrpIds.indexOf(wlst.Id) !== -1
 											? <MenuItem key={index} className="wtc_true" onClick={() => this.removeToWatchlist(wlst.Id,selLeaderId)}>{wlst.GroupName+' '+wlst.Id}</MenuItem>
 											: <MenuItem key={index} onClick={() => this.addToWatchlist(wlst.Id,selLeaderId)}>{wlst.GroupName+' '+wlst.Id}</MenuItem>
 										)
-									))
+									)
 								}
 								<MenuItem onClick={() => this.openWatchDialog()}><IntlMessages id="sidebar.addToNewList" /></MenuItem>
 							</Menu>

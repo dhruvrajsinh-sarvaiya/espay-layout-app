@@ -1,11 +1,7 @@
 // Component for displaying Market Cap history Data By:Tejas Date : 12/9/2018
 
 import React from "react";
-import { Row,Col,Alert } from "reactstrap";
-
-//import section loader
-import JbsPropogateLoader from "Components/JbsPageLoader/JbsPropagateLoader";
-
+import { Row, Col, Alert } from "reactstrap";
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 
@@ -24,30 +20,30 @@ class CurrentMarket extends React.Component {
       currentMarket: [],
       showLoader: true,
       oldMarketCapData: [],
-      socketData:[],
-      lastPrice:0,
-      oldLastPrice:0,
-      socketLastPriceData:[],
-      upDownBit:1,
-      Change24:0
-    };    
+      socketData: [],
+      lastPrice: 0,
+      oldLastPrice: 0,
+      socketLastPriceData: [],
+      upDownBit: 1,
+      Change24: 0
+    };
     this.isComponentActive = 1
   }
-    
+
   // This will invoke After component render
   componentWillMount() {
 
     this.isComponentActive = 1
 
     // code changed by devang parekh for handling margin trading process
-    if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-      
+    if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+
       // Call Actions For Get Market Cap List
-      this.props.getMarketCapList({ Pair: this.props.currencyPair, marginTrading:1});
+      this.props.getMarketCapList({ Pair: this.props.currencyPair, marginTrading: 1 });
       this.processForMarginTrading(); // call for intialize socket listners for margin trading
 
     } else {
-      
+
       this.props.getMarketCapList({ Pair: this.props.currencyPair });
       this.processForNormalTrading();// call for intialize socket listners for normal trading
 
@@ -61,66 +57,64 @@ class CurrentMarket extends React.Component {
   processForNormalTrading() {
 
     this.props.hubConnection.on('RecieveMarketData', (receivedMessage) => {
-        
-      //console.log("Get Data from signalR  ",receivedMessage);
-      if(this.isComponentActive === 1 && receivedMessage !==null ) { 
+
+      if (this.isComponentActive === 1 && receivedMessage !== null) {
 
         try {
 
           const marketCap = JSON.parse(receivedMessage)
-          if ((marketCap.EventTime && this.state.socketData.length === 0) || 
-            (this.state.socketData.length !== 0 && marketCap.EventTime > this.state.socketData.EventTime) ) {
-              
-              if(this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 0){
+          if ((marketCap.EventTime && this.state.socketData.length === 0) ||
+            (this.state.socketData.length !== 0 && marketCap.EventTime > this.state.socketData.EventTime)) {
 
-                this.setState({
-                  currentMarket:marketCap.Data,
-                  oldMarketCapData:this.state.currentMarket,
-                  socketData : marketCap,
-                  Change24:this.state.currentMarket.Change24
-                })
+            if (this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 0) {
 
-              }
+              this.setState({
+                currentMarket: marketCap.Data,
+                oldMarketCapData: this.state.currentMarket,
+                socketData: marketCap,
+                Change24: this.state.currentMarket.Change24
+              })
 
-          }    
+            }
 
-        } catch(error) {
-          
+          }
+
+        } catch (error) {
+
         }
-       
+
       }
 
     });
 
     this.props.hubConnection.on('RecieveLastPrice', (receivedMessage) => {
-        
-      //console.log("Get Data from signalR  ",receivedMessage);
-      if(this.isComponentActive === 1 && receivedMessage !==null ){ 
 
-        try{
+      if (this.isComponentActive === 1 && receivedMessage !== null) {
 
-          const marketCap = JSON.parse(receivedMessage)          
-          
-          if ((marketCap.EventTime && this.state.socketLastPriceData.length === 0) || 
-            (this.state.socketLastPriceData.length !== 0 && marketCap.EventTime > this.state.socketLastPriceData.EventTime) ) {     
-            
-              if(this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 0){
+        try {
 
-                this.setState({
-                  lastPrice:marketCap.Data.LastPrice,
-                  upDownBit:marketCap.Data.UpDownBit,
-                  oldLastPrice:this.state.lastPrice,
-                  socketLastPriceData : marketCap
-                })
+          const marketCap = JSON.parse(receivedMessage)
 
-              }
+          if ((marketCap.EventTime && this.state.socketLastPriceData.length === 0) ||
+            (this.state.socketLastPriceData.length !== 0 && marketCap.EventTime > this.state.socketLastPriceData.EventTime)) {
 
-          }    
+            if (this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 0) {
 
-        } catch(error)    {
-          
+              this.setState({
+                lastPrice: marketCap.Data.LastPrice,
+                upDownBit: marketCap.Data.UpDownBit,
+                oldLastPrice: this.state.lastPrice,
+                socketLastPriceData: marketCap
+              })
+
+            }
+
+          }
+
+        } catch (error) {
+
         }
-       
+
       }
 
     });
@@ -131,80 +125,77 @@ class CurrentMarket extends React.Component {
   processForMarginTrading() {
 
     this.props.hubConnection.on('RecieveMarketData', (receivedMessage) => {
-        
-      //console.log("margin Get Data from signalR  ",receivedMessage);
-      if(this.isComponentActive === 1 && receivedMessage !==null ) { 
-        
+
+      if (this.isComponentActive === 1 && receivedMessage !== null) {
+
         try {
-          
+
           const marketCap = JSON.parse(receivedMessage)
-          
-          if ((marketCap.EventTime && this.state.socketData.length === 0) || 
-            (this.state.socketData.length !== 0 && marketCap.EventTime > this.state.socketData.EventTime) ) {  
-              
-              if(this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 1){
-               
-                this.setState({
-                  currentMarket:marketCap.Data,
-                  oldMarketCapData:this.state.currentMarket,
-                  socketData : marketCap,
-                  Change24:this.state.currentMarket.Change24
-                })
 
-              }
+          if ((marketCap.EventTime && this.state.socketData.length === 0) ||
+            (this.state.socketData.length !== 0 && marketCap.EventTime > this.state.socketData.EventTime)) {
 
-          }    
+            if (this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 1) {
 
-        } catch(error) {
-          //console.log("error market data",error)
+              this.setState({
+                currentMarket: marketCap.Data,
+                oldMarketCapData: this.state.currentMarket,
+                socketData: marketCap,
+                Change24: this.state.currentMarket.Change24
+              })
+
+            }
+
+          }
+
+        } catch (error) {
         }
-       
+
       }
 
     });
 
     this.props.hubConnection.on('RecieveLastPrice', (receivedMessage) => {
-        
-      //console.log("margin Get Data from signalR  ",receivedMessage);
-      if(this.isComponentActive === 1 && receivedMessage !==null ){ 
 
-        try{
+      if (this.isComponentActive === 1 && receivedMessage !== null) {
 
-          const marketCap = JSON.parse(receivedMessage)          
-          
-          if ((marketCap.EventTime && this.state.socketLastPriceData.length === 0) || 
-            (this.state.socketLastPriceData.length !== 0 && marketCap.EventTime > this.state.socketLastPriceData.EventTime) ) {     
-          
-              if(this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 1){
-                
-                this.setState({
-                  lastPrice:marketCap.Data.LastPrice,
-                  upDownBit:marketCap.Data.UpDownBit,
-                  oldLastPrice:this.state.lastPrice,
-                  socketLastPriceData : marketCap
-                })
-                
-              }
-          }    
+        try {
 
-        } catch(error)    {
-          
+          const marketCap = JSON.parse(receivedMessage)
+
+          if ((marketCap.EventTime && this.state.socketLastPriceData.length === 0) ||
+            (this.state.socketLastPriceData.length !== 0 && marketCap.EventTime > this.state.socketLastPriceData.EventTime)) {
+
+            if (this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 1) {
+
+              this.setState({
+                lastPrice: marketCap.Data.LastPrice,
+                upDownBit: marketCap.Data.UpDownBit,
+                oldLastPrice: this.state.lastPrice,
+                socketLastPriceData: marketCap
+              })
+
+            }
+          }
+
+        } catch (error) {
+
         }
-       
+
       }
 
     });
-    
-  }
-  
-	// function to toggle dropdown menu
-	toggle = () => {
-		this.setState({
-			langDropdownOpen: !this.state.langDropdownOpen
-		});
-	}
 
-  componentWillUnmount(){
+  }
+
+  // function to toggle dropdown menu
+  toggle = () => {
+    this.setState({
+      langDropdownOpen: !this.state.langDropdownOpen
+    });
+  }
+
+  componentWillUnmount() {
     this.isComponentActive = 0;
   }
   // This will Invoke when component will recieve Props or when props changed
@@ -215,78 +206,70 @@ class CurrentMarket extends React.Component {
         oldMarketCapData: this.props.currentMarket,
         currentMarket: nextprops.currentMarketCap,
         showLoader: false,
-        lastPrice:nextprops.currentMarketCap.LastPrice ? nextprops.currentMarketCap.LastPrice : 0
+        lastPrice: nextprops.currentMarketCap.LastPrice ? nextprops.currentMarketCap.LastPrice : 0
       });
     }
   }
 
   // Render Component for Current MArket List
   render() {
-    
+
     var price = 0;
-    var oldPrice = 0;
 
     // get price and old price
-    if (this.state.currentMarket.length !==0 && this.state.lastPrice ==0) {   
-      
-      price = this.state.currentMarket.LastPrice;       
-    }else if(this.state.currentMarket.length ===0 && this.state.lastPrice ==0 ){
-      price =0 
+    if (this.state.currentMarket.length !== 0 && this.state.lastPrice == 0) {
+      price = this.state.currentMarket.LastPrice;
     }
-    else{
+    else {
       price = this.state.lastPrice
     }
 
     return (
-      
-        <div>
-          {this.state.currentMarket ? (   
-            <div className="pb-15">
-                  <Row>    
-                    <Col xs={6}>
-                      <div class="selectcoin" onClick={this.handleClickOpen}>
-                          {/* <h3>{this.props.firstCurrency+"/"+this.props.secondCurrency} <i class="fa fa-caret-down" aria-hidden="true"></i></h3> */}
-                          {this.state.upDownBit ? 
-                              <span className="text-center text-success">
-                                {parseFloat(price).toFixed(8)} <i className="ti-arrow-up" />
-                              </span>
-                              :
-                              <span className="text-center text-danger">
-                                {parseFloat(price).toFixed(8)} <i className="ti-arrow-down" />
-                              </span>
-                          }
-                      </div>
-                    </Col>
-                    {/* <Col xs={6} className="favoritesbtn">
-                          <a href="#"><i class="fa fa-star" aria-hidden="true"></i> Favorites</a>
-                    </Col> */}
-                    
-                  </Row>  
-                  
-                  <Row>    
-                    <Col xs={6} className="pl-30">
-                        <div>{<IntlMessages id="trading.marketcap.label.24hchange" /> } {this.state.currentMarket.Change24 !==undefined ? parseFloat(this.state.currentMarket.Change24).toFixed(8):0}</div>   
-                        <div>{<IntlMessages id="trading.marketcap.label.24hvoulme" /> }  {this.state.currentMarket.Volume24 !== undefined ? parseFloat(this.state.currentMarket.Volume24).toFixed(8):0}</div>  
-                    </Col>
-                    <Col xs={6} className="text-right pr-30">
-                        <div>{<IntlMessages id="trading.marketcap.label.24hhigh" />} {this.state.currentMarket.High24 !== undefined ? parseFloat(this.state.currentMarket.High24).toFixed(8):0}</div>
-                        <div>{<IntlMessages id="trading.marketcap.label.24hlow" />} {this.state.currentMarket.Low24 !== undefined ? parseFloat(this.state.currentMarket.Low24).toFixed(8):0}</div>
-                    </Col>
-                  </Row> 
-                  
-                  
-            
-            </div>         
-          ) : (
+
+      <div>
+        {this.state.currentMarket ? (
+          <div className="pb-15">
+            <Row>
+              <Col xs={6}>
+                <div class="selectcoin" onClick={this.handleClickOpen}>
+                  {this.state.upDownBit ?
+                    <span className="text-center text-success">
+                      {parseFloat(price).toFixed(8)} <i className="ti-arrow-up" />
+                    </span>
+                    :
+                    <span className="text-center text-danger">
+                      {parseFloat(price).toFixed(8)} <i className="ti-arrow-down" />
+                    </span>
+                  }
+                </div>
+              </Col>
+
+            </Row>
+
+            <Row>
+              <Col xs={6} className="pl-30">
+                <div>{<IntlMessages id="trading.marketcap.label.24hchange" />} {this.state.currentMarket.Change24 !== undefined ? parseFloat(this.state.currentMarket.Change24).toFixed(8) : 0}</div>
+                <div>{<IntlMessages id="trading.marketcap.label.24hvoulme" />}  {this.state.currentMarket.Volume24 !== undefined ? parseFloat(this.state.currentMarket.Volume24).toFixed(8) : 0}</div>
+              </Col>
+              <Col xs={6} className="text-right pr-30">
+                <div>{<IntlMessages id="trading.marketcap.label.24hhigh" />} {this.state.currentMarket.High24 !== undefined ? parseFloat(this.state.currentMarket.High24).toFixed(8) : 0}</div>
+                <div>{<IntlMessages id="trading.marketcap.label.24hlow" />} {this.state.currentMarket.Low24 !== undefined ? parseFloat(this.state.currentMarket.Low24).toFixed(8) : 0}</div>
+              </Col>
+            </Row>
+
+
+
+          </div>
+        ) : (
             <div>
               <span>
-                  <Alert color="danger" className="text-center fs-32">
-                        {<IntlMessages id="trading.marketcap.label.nodata" />}
-                  </Alert>                 
+                <Alert color="danger" className="text-center fs-32">
+                  {<IntlMessages id="trading.marketcap.label.nodata" />}
+                </Alert>
               </span>
             </div>
           )}
-        </div>
+      </div>
 
     );
   }
@@ -294,7 +277,7 @@ class CurrentMarket extends React.Component {
 
 // Set Props when actions are dispatch
 const mapStateToProps = state => ({
-  currentMarketCap: state.currentMarketCap.currentMarketCap,  
+  currentMarketCap: state.currentMarketCap.currentMarketCap,
 });
 
 // connect action with store for dispatch

@@ -26,14 +26,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import AppConfig from 'Constants/AppConfig';
+import { updateP2shAddress } from 'Actions/Deposit';
 const p2sh = require('./bitcoinjs.min.js');
 function Transition(props) {
 	return <Slide direction="up" {...props} />;
 }
 // Deposit Actions
-import {
-	updateP2shAddress
-} from 'Actions/Deposit';
 const BalanceWidget = ({ coin, balance, selectWallet }) => (
 	<div className="social-card mb-10 mt-10 p-15" onClick={selectWallet}>
 		<div className="d-flex justify-content-between text-white w-100">
@@ -212,8 +210,6 @@ class AddressGeneration extends Component {
 			this.setState({ publicAddress: address });
 			this.props.updateP2shAddress({ Address: Address, ConvertedAddress: address });
 		} catch (err) {
-			var message = "Please enter a valid address."
-			var address = "";
 		}
 	}
 	render() {
@@ -320,11 +316,11 @@ class AddressGeneration extends Component {
 											</div>
 											<div className="d-flex justify-content-between">
 												<div className="d-flex">
-													<Button variant="raised" size="small"  disabled={this.state.publicAddress} onClick={() => this.onGenerateAddress()} className="text-white mr-5 perverbtn"><IntlMessages id="wallet.AGButtonGenerateAddress" /></Button>
+													<Button variant="raised" size="small" disabled={this.state.publicAddress} onClick={() => this.onGenerateAddress()} className="text-white mr-5 perverbtn"><IntlMessages id="wallet.AGButtonGenerateAddress" /></Button>
 												</div>
 												<div className="d-flex">
-													<Button variant="raised" size="small"  disabled={!this.state.publicAddress} onClick={() => this.onShowQRCode()} className="mr-5 text-white perverbtn"><IntlMessages id="wallet.AGButtonQRCode" /></Button>
-													<Button variant="raised" size="small"  disabled={!this.state.publicAddress} onClick={() => this.onCopyAddress()} className="text-white perverbtn"><IntlMessages id="wallet.AGButtonCopyAddress" /></Button>
+													<Button variant="raised" size="small" disabled={!this.state.publicAddress} onClick={() => this.onShowQRCode()} className="mr-5 text-white perverbtn"><IntlMessages id="wallet.AGButtonQRCode" /></Button>
+													<Button variant="raised" size="small" disabled={!this.state.publicAddress} onClick={() => this.onCopyAddress()} className="text-white perverbtn"><IntlMessages id="wallet.AGButtonCopyAddress" /></Button>
 												</div>
 											</div>
 										</div>

@@ -29,7 +29,10 @@ const INIT_STATE = {
     surveyresultsdetail:[],
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     //console.log("reducer",action);
     switch (action.type) {
 

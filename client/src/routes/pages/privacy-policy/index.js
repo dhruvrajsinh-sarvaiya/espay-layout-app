@@ -7,11 +7,7 @@
 */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "react-html-parser";
+import ReactHtmlParser from "react-html-parser";
 
 // page title bar
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
@@ -28,8 +24,7 @@ import AppConfig from "Constants/AppConfig";
 // redux actions
 import { getPageContents } from "Actions";
 
-//For Meta Tag and SEO Configuration
-import Page from "Components/page";
+
 
 class PrivacyPolicy extends Component {
   state = {
@@ -46,12 +41,7 @@ class PrivacyPolicy extends Component {
     const html =pageContents != null && pageContents.locale && pageContents.locale[localStorage.getItem('locale')] && pageContents.locale[localStorage.getItem('locale')].content ? pageContents.locale[localStorage.getItem("locale")].content : "";
 
     return (
-      // <Page
-      //   id="privacypolicy"
-      //   title="Privacy Policy"
-      //   description="This is Privacy Policy"
-      // >
-        <div className="about-wrapper">
+         <div className="about-wrapper">
           <PageTitleBar
             title={<IntlMessages id="sidebar.privacyPolicy" />}
             match={this.props.match}
@@ -65,7 +55,7 @@ class PrivacyPolicy extends Component {
             </div>
           </div>
         </div>
-      // </Page>
+     
     );
   }
 }

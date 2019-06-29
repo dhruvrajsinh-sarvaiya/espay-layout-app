@@ -9,7 +9,8 @@ import SelectListGroup from '../../common/SelectListGroup';
 import { createProfile } from '../../../actions/profileActions';
 
 class CreateProfile extends Component {
-  constructor(props) {console.log('callllll');
+  constructor(props) {
+    console.log('callllll');
     super(props);
     this.state = {
       displaySocialInputs: false,
@@ -192,8 +193,7 @@ class CreateProfile extends Component {
                   value={this.state.skills}
                   onChange={this.onChange}
                   error={errors.skills}
-                  info="Please use comma separated values (eg.
-                    HTML,CSS,JavaScript,PHP"
+                  info="Please use comma separated values (eg.HTML,CSS,JavaScript,PHP)"
                 />
                 <TextFieldGroup
                   placeholder="Github Username"

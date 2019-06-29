@@ -17,7 +17,6 @@ import {
     Form,
     FormGroup,
     Label,
-    Input,
     Button
 } from 'reactstrap';
 import {
@@ -39,7 +38,6 @@ class CreateWallet extends Component {
     }
 
     componentWillMount() {
-        // this.props.getCurrency();
         this.props.getMarginCurrency({});
     }
     componentWillReceiveProps(nextProps) {

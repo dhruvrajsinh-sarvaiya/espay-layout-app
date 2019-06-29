@@ -6,7 +6,6 @@
 
 //Sagas Effects..
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import axios from 'axios';
 //Action Types..
 import { FORGOT_PASSWORD } from 'Actions/types';
 //Action methods..

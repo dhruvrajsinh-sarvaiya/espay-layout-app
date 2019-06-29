@@ -34,7 +34,7 @@ class PairSelection extends Component {
         });
 
         return (
-            <Select className="r_sel_20 mb-15"
+            <Select className="r_sel_20 mb-15 mt-5 select-box"
                 value={this.props.currencyPair === null ? null : ({ label: this.props.currencyPair.split("_")[0] + " / " + this.props.currencyPair.split("_")[1] })}
                 options={pairListData.map((item) => ({
                     value: item.PairId,

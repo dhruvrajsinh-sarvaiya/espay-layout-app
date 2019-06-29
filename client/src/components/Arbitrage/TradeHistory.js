@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { arbitrageTradeHistory } from 'Actions/Arbitrage';
 import IntlMessages from "Util/IntlMessages";
 import { Scrollbars } from "react-custom-scrollbars";
-import { Tabs, Tab, TabPanel, TabList } from "react-web-tabs";
+import { Tabs, Tab, TabList } from "react-web-tabs";
 // static array for tab 
 const openOrdDt = [
     { id: 1, pair: 'ATCC_BTC', side: 'Buy', order_type: 'Limit', exchange: 'Binance', amount: 10, price: 1, date: '29-05-2019 10:35' },
@@ -36,7 +36,6 @@ class TradeHistory extends Component {
                 page: 0,
                 marketType: "",
                 exchangeName: ""
-                // isMargin:0  use in treadArbitrage API as parameter
             },
             tradeHistoryList: []
         };
@@ -59,13 +58,13 @@ class TradeHistory extends Component {
                 if (item.exchange === itemName) {
                     filterData.push(item)
                 }
+                return [];
             });
             this.setState({ openOrderList: filterData })
         }
     }
     render() {
-        const { tradeHistoryList, openOrderList } = this.state;
-        const { defaultTab } = this.props;
+        const { tradeHistoryList } = this.state;
         // for dynamic tabs
         const uniqueTags = [];
         // for count no. of records in tab
@@ -88,14 +87,14 @@ class TradeHistory extends Component {
             <Fragment>
                 {this.props.isShowTitle && <h2>
                     {/* Trade History */}
-                <IntlMessages id="sidebar.tradehistory" />
+                    <IntlMessages id="sidebar.tradehistory" />
                 </h2>}
                 {<Tabs className="arbitrage_tabs_try">
                     <TabList className="tab_list_try clearfix">
                         <Tab tabFor="all" onClick={() => this.tabClick("all")} className="d-flex">
                             {/* ALL */}
                             <IntlMessages id="sidebar.arbitrageAll" />
-                        ({openOrdDt.length})</Tab>
+                            ({openOrdDt.length})</Tab>
                         {
                             uniqueTags.map((item, key) =>
                                 <Tab className="d-flex" key={key} tabFor={item} onClick={() => this.tabClick(item)}>{item} ({countTags[key]})</Tab>
@@ -147,29 +146,6 @@ class TradeHistory extends Component {
                                     :
                                     <tr><td colSpan="9"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>
                             }
-                            {/* disaply data acoording to tab static data */}
-                            {/*    {
-                                openOrderList && openOrderList.length > 0
-                                    ?
-                                    openOrderList.map((list, index) => {
-                                        return (
-                                            <tr key={index}>
-                                                <td>{list.pair}</td>
-                                                <td>{list.side}</td>
-                                                <td>{list.order_type}</td>
-                                                <td>{list.exchange}</td>
-                                                <td>{list.amount}</td>
-                                                <td>{list.price}</td>
-                                                <td>{list.date}</td>
-                                                <td>{list.DateTime.replace('T', ' ').split('.')[0]}</td>
-                                                <td>{"      "}</td>
-                                                <td>{"      "}</td>
-                                            </tr>
-                                        )
-                                    })
-                                    :
-                                    <tr><td colSpan="9">No date found.</td></tr>
-                            } */}
                         </tbody>
                     </table>
                 </Scrollbars>

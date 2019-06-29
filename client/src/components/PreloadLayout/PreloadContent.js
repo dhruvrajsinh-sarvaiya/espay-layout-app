@@ -3,7 +3,6 @@
  */
 
 import React, { Component, Fragment } from "react";
-
 //Pre Loader components
 import PreloadWidget from "./PreloadWidget";
 import PreloadTitlebar from "./PreloadTitlebar";

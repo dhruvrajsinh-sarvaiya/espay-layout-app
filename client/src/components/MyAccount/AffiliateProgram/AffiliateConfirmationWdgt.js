@@ -7,7 +7,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col } from "reactstrap";
 import CircularProgress from '@material-ui/core/CircularProgress';
 // redux action
 import { affiliateConfirmationLink } from "Actions/MyAccount";
@@ -15,13 +14,13 @@ import { affiliateConfirmationLink } from "Actions/MyAccount";
 import IntlMessages from "Util/IntlMessages";
 //queryString
 import qs from 'query-string';
-const AffiliateConfirmScreen = ({data}) => {
-    if(Object.keys(data).length > 0) {
-        if(data.ReturnCode === 0) {
-            return (            
+const AffiliateConfirmScreen = ({ data }) => {
+    if (Object.keys(data).length > 0) {
+        if (data.ReturnCode === 0) {
+            return (
                 <Fragment>
-                    <div className="forgotconfirmbox">                                                     
-                    <span className="bg-success"><i className="material-icons font-2x">done</i></span>                                    
+                    <div className="forgotconfirmbox">
+                        <span className="bg-success"><i className="material-icons font-2x">done</i></span>
                     </div>
                     <h1 className="font-weight-bold mb-20 text-center"> <IntlMessages id="my_account.emailConfTitle" /></h1>
                     <p className="text-center"><IntlMessages id="my_account.emailConfNote" /></p>
@@ -32,7 +31,7 @@ const AffiliateConfirmScreen = ({data}) => {
             return (
                 <Fragment>
                     <div className="forgotconfirmbox">
-                        <span className="bg-danger"><i className="material-icons font-2x">close</i></span>                                    
+                        <span className="bg-danger"><i className="material-icons font-2x">close</i></span>
                     </div>
                     <h1 className="font-weight-bold mb-20 text-center"> <IntlMessages id="my_account.emailNotConfTitle" /></h1>
                     <p className="text-center"><IntlMessages id={`apiErrCode.${data.ErrorCode}`} /></p>
@@ -56,16 +55,16 @@ class EmailConfirmationWdgt extends Component {
 
     componentWillMount() {
         const parsed = qs.parse(location.search);
-        if(parsed.emailConfirmCode !== '') {
+        if (parsed.emailConfirmCode !== '') {
             var reqObj = {
-                emailConfirmCode : parsed.emailConfirmCode
+                emailConfirmCode: parsed.emailConfirmCode
             }
             this.props.affiliateConfirmationLink(reqObj);
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({ loading: nextProps.loading, data : nextProps.data });
+        this.setState({ loading: nextProps.loading, data: nextProps.data });
     }
 
     render() {
@@ -75,10 +74,9 @@ class EmailConfirmationWdgt extends Component {
                 <div className="container">
                     <div className="inner_box rmv_brd">
                         <div className="text-center mb-30">
-                            {/* <a href="/"><img src={AppConfig.appLogo} alt="session-logo"/></a> */}
                         </div>
                         <div className="card p-20 mt-70 forgotconfirmradius">
-                            { loading 
+                            {loading
                                 ? <div className="text-center py-40"><CircularProgress className="progress-primary" thickness={2} /></div>
                                 : <AffiliateConfirmScreen data={data} />
                             }
@@ -92,8 +90,8 @@ class EmailConfirmationWdgt extends Component {
 
 const mapStateToProps = ({ affiliateRdcer }) => {
     const response = {
-        data : affiliateRdcer.data,
-        loading : affiliateRdcer.loading
+        data: affiliateRdcer.data,
+        loading: affiliateRdcer.loading
     }
     return response;
 };

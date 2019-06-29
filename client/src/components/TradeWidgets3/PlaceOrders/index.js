@@ -308,7 +308,7 @@ class PlaceOrder extends Component {
 const mapStateToProps = ({
     settings,
     currency,
-    currentMarketCap /* ,chargeList */,
+    currentMarketCap ,
 }) => {
     const { darkMode } = settings;
     const { loading, buyOrderLoading, sellOrderLoading } = currency;

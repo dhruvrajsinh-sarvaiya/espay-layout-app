@@ -7,7 +7,7 @@
 
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Form, FormGroup, Label, Input, Col, Button, Alert } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, Button } from "reactstrap";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";

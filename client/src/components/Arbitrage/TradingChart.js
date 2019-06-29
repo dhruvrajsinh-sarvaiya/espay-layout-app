@@ -21,10 +21,6 @@ import React, { Component, Fragment } from "react";
 // import High Chart Details
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
-
-//import section loader
-import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 import { getArbitrageChartData } from "Actions/Arbitrage";
 
 // import connect function for store
@@ -70,7 +66,6 @@ class ArbitrageChart extends Component {
     processForNormalTrading() {
 
         this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
-            //console.log("Get Data from signalR RecieveChartData", receivedMessage);
 
             if (this.isComponentActive === 1 && receivedMessage !== null) {
 
@@ -84,21 +79,8 @@ class ArbitrageChart extends Component {
                         (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
 
                         if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
-
-                            // for static data array process if want to test
-                            //var chartArray = [receivedMessageData.Data.DataDate,receivedMessageData.Data.Open,receivedMessageData.Data.High,receivedMessageData.Data.Low,receivedMessageData.Data.Close,receivedMessageData.Data.Volume];
-                            //charData.push(chartArray);
-
                             charData.push(receivedMessageData.Data)
-                            /*receivedMessageData.Data.map((info,key) =>{
-                              data.push(info)
-                            })*/
-
-                            /*this.state.chartData.map((value, key) => {
-                              data.push(value)
-                            })*/
                             this.setState({ chartData: charData, socketData: receivedMessageData });
-
                         }
 
                     }
@@ -117,7 +99,6 @@ class ArbitrageChart extends Component {
     processForMarginTrading() {
 
         this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
-            //console.log("margin Get Data from signalR RecieveChartData", receivedMessage);
 
             if (this.isComponentActive === 1 && receivedMessage !== null) {
 
@@ -131,27 +112,13 @@ class ArbitrageChart extends Component {
                         (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
 
                         if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
-
-                            // for static data array process if want to test
-                            //var chartArray = [receivedMessageData.Data.DataDate,receivedMessageData.Data.Open,receivedMessageData.Data.High,receivedMessageData.Data.Low,receivedMessageData.Data.Close,receivedMessageData.Data.Volume];
-                            //charData.push(chartArray);
-
                             charData.push(receivedMessageData.Data)
-                            /*receivedMessageData.Data.map((info,key) =>{
-                              data.push(info)
-                            })*/
-
-                            /*this.state.chartData.map((value, key) => {
-                              data.push(value)
-                            })*/
                             this.setState({ chartData: charData, socketData: receivedMessageData });
-
                         }
 
                     }
 
                 } catch (error) {
-                    //console.log("charte ",error)
                 }
 
             }
@@ -180,9 +147,7 @@ class ArbitrageChart extends Component {
 
         const info = [];
         const volume = [];
-        var dataLength = 0;
-        //console.log("this.state.chartData",this.state.chartData) 
-        //console.log("statechart data",this.state.chartData.length);
+
         const groupingUnits = [
             [
                 "week", // unit name
@@ -191,15 +156,11 @@ class ArbitrageChart extends Component {
             ["month", [1, 2, 3, 4, 6]]
         ];
 
-        var i = 0;
-
         var theme = false;
         if (localStorage.getItem('Thememode') !== null && localStorage.getItem('Thememode') !== undefined) {
             theme = localStorage.getItem('Thememode');
         }
         if (this.state.chartData.length !== 0) {
-            dataLength = this.state.chartData.length;
-            //dataLength = this.state.chartData.length; 
 
             this.state.chartData.map((value, key) => {
                 info.push(
@@ -217,32 +178,12 @@ class ArbitrageChart extends Component {
                     value.Volume
                 ])
             })
-
-            // for (i; i < dataLength; i += 1) {
-
-            //   info.push([
-            //     this.state.chartData[i][0], // the date
-            //     this.state.chartData[i][1], // open
-            //     this.state.chartData[i][2], // high
-            //     this.state.chartData[i][3], // low
-            //     this.state.chartData[i][4] // close
-            //   ]);
-
-            //   volume.push([
-            //     this.state.chartData[i][0], // the date
-            //     this.state.chartData[i][5] // the volume
-            //   ]);
-            // }
-
         }
         const options = {
             colors: ['#000000', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
                 '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
             ],
-            chart: {
-                backgroundColor: this.props.darkMode && '#2C3644',
-                color: this.props.darkMode ? 'white' : '#464D69',
-            },
+
             responsive: {
                 rules: [{
                     condition: {
@@ -332,12 +273,7 @@ class ArbitrageChart extends Component {
             navigator: {
                 enabled: false
             },
-            series: [
-                {
-                    data: volume,
-                    color: '#000000',
-                }
-            ],
+
             yAxis: [
                 {
                     labels: {
@@ -380,8 +316,6 @@ class ArbitrageChart extends Component {
                     dataGrouping: {
                         units: groupingUnits
                     },
-                    //color: theme ? 'white': '#000000',
-                    //color: 'green',
                     downColor: 'red'
                 },
                 {

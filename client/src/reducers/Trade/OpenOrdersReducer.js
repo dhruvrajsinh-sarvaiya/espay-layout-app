@@ -19,7 +19,11 @@ const INITIAL_STATE = {
     activeOrderBit:1
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+    
     switch (action.type) {
 
         // get  Active Open My Order list

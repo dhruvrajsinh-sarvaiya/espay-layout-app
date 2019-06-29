@@ -30,7 +30,6 @@ class Holding extends React.Component {
   // This will invoke After component render
   componentDidMount() {
     // Call Action For Get Holding List
-    //const pair = this.props.firstCurrency + '_' + this.props.secondCurrency;
     const pair = this.props.currecyPair
     this.props.getHoldingList({ Pair: pair });
   }
@@ -120,9 +119,9 @@ class Holding extends React.Component {
                 ) : (
                     <tr>
                       <td colSpan="7">
-                      <Alert color="danger" className="text-center fs-32">
+                        <Alert color="danger" className="text-center fs-32">
                           {<IntlMessages id="trading.holdingorder.label.nodata" />}
-                    </Alert> 
+                        </Alert>
                       </td>
                     </tr>
                   )}

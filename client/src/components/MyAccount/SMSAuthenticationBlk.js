@@ -3,7 +3,6 @@
  */
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom';
-
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import { Button } from '@material-ui/core';

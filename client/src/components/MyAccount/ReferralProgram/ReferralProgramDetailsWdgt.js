@@ -7,7 +7,7 @@ import IntlMessages from "Util/IntlMessages";
 
 class ReferralProgramDetailsWdgt extends Component {
   render() {
-    const i = 1;
+    
     return (
       <Fragment>
         <div className="card py-15 px-50">

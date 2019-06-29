@@ -12,19 +12,15 @@ module.exports = function validateWithdrawRequest(data, IsWhitelisting, Withdraw
     } else if (validator.isAlpha(data.address)) {
         errors.address = "wallet.errWDinvalidAddress";
     }
-    // else if (!/^[0-9A-Za-z?=]+$/.test(data.address)) {
-    //     errors.address = "wallet.errWDinvalidAddress";
-    // }
-    else if (!validator.matches(data.address,/^[0-9A-Za-z?=]+$/)) {
+
+    else if (!validator.matches(data.address, /^[0-9A-Za-z?=]+$/)) {
         errors.address = "wallet.errWDinvalidAddress";
     }
 
     // if whitelist is enable 
     if (!IsWhitelisting) {
         // validate label
-        if (validator.isEmpty(data.label, { ignore_whitespace: true })) {
-            errors.label = "wallet.errWDlabelRequired";
-        } else if (data.label.trim().length === 0) {
+        if ((validator.isEmpty(data.label, { ignore_whitespace: true })) || (data.label.trim().length === 0)) {
             errors.label = "wallet.errWDlabelRequired";
         }
     }

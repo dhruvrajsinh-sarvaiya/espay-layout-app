@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Container, Row, Col, Card } from 'reactstrap';
+import {Container, Row, Col} from 'reactstrap';
 // import components for trading dashboard
 import {
   CooldexFiatLeft,

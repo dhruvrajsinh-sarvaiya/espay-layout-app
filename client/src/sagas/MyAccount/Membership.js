@@ -5,13 +5,13 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+
 import { MEMBERSHIP_LEVEL } from 'Actions/types';
 import { membershipLevelSuccess, membershipLevelFailure } from 'Actions/MyAccount';
 
 import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
 
@@ -19,6 +19,7 @@ const statusErrCode = statusErrCodeList();
 function* membershipLevelAPI({ payload }) {
     var headers =  {'Authorization': AppConfig.authorizationToken}
 	const response = yield call(swaggerGetAPI,'api/Profile/GetProfileData',payload,headers);
+	var staticRes = '';
 	
 	try {
 		//console.log('Memeber Res', response);

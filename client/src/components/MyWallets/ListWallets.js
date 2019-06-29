@@ -3,20 +3,14 @@
     Date : 09-01-2019
     File Comment : wallet sharing list of all available wallets component
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import IntlMessages from "Util/IntlMessages";
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
-import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 import { Table } from "reactstrap";
 import AppConfig from 'Constants/AppConfig';
 import { Link } from 'react-router-dom'
-import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
-//initial state
-const initState = {
-    currency: "",
-    showClear: false,
-}
+import { FormGroup, Input, Button } from 'reactstrap';
 //my wallets methods...
 import {
     getAllWallets,
@@ -24,6 +18,11 @@ import {
 import {
     getCurrency,
 } from "Actions/Withdraw";
+//initial state
+const initState = {
+    currency: "",
+    showClear: false,
+}
 
 class ListWallets extends Component {
     state = initState;
@@ -52,9 +51,6 @@ class ListWallets extends Component {
     render() {
         const { walletList } = this.props;
         return (
-            // <JbsCollapsibleCard
-            //     colClasses="col-sm-12"
-            //     fullBlock>
             <React.Fragment>
                 <div className="row">
                     <div className="col-md-12">
@@ -113,7 +109,6 @@ class ListWallets extends Component {
                 </Table>
                 {this.props.loading && <JbsSectionLoader />}
             </React.Fragment>
-            // </JbsCollapsibleCard>
         );
     }
 }

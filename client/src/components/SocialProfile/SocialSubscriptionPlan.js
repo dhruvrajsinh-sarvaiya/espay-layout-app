@@ -27,10 +27,6 @@ class SocialSubscriptionPlan extends Component {
             disablePlan : false,
             profileId : '',
             type: '',
-            /* subscriptionType : {
-                Leader : false,
-                Follower : false
-            }, */
             planList : []
         };
 
@@ -69,18 +65,12 @@ class SocialSubscriptionPlan extends Component {
             }
         } else if(typeof nextProps.subscriptionData !== 'undefined' && typeof nextProps.subscriptionData.SocialProfileList !== 'undefined' && nextProps.subscriptionData.SocialProfileList.length > 0) {
             var SocialProfileList = nextProps.subscriptionData.SocialProfileList;
-            // var subObj = Object.assign({},this.state.subscriptionType);
 
             SocialProfileList.map((list,index) => {
-                // subObj[list.ProfileType] = list.Subscribe;
                 if(list.Subscribe) {
                     this.setState({ disablePlan : true });
-                    // return true;
                 }
             });
-            // this.setState({ planList : nextProps.subscriptionData.SocialProfileList, subscriptionType : subObj });            
-            // console.log('Location :',subObj);
-            // this.props.location.state = { ...this.props.location.state, allowAccess : subObj };
             this.setState({ planList : nextProps.subscriptionData.SocialProfileList });            
         }
     }

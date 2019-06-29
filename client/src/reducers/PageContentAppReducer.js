@@ -22,7 +22,11 @@ const INIT_STATE = {
     loading: false
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
+
     switch (action.type) {
 
         // get PAGE_CONTENTS

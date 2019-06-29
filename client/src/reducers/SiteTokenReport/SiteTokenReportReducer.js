@@ -13,7 +13,10 @@ const INITIAL_STATE = {
     errorCode:0
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
     switch (action.type) {
         // get Site Token Report List
         case GET_SITE_TOKEN_REPORT_LIST:

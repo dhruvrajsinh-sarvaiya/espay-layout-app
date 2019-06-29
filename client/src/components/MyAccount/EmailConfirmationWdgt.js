@@ -7,7 +7,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row,Col } from "reactstrap";
 import CircularProgress from '@material-ui/core/CircularProgress';
 // redux action
 import { emailConfirmation } from "Actions/MyAccount";
@@ -15,9 +14,6 @@ import { emailConfirmation } from "Actions/MyAccount";
 import IntlMessages from "Util/IntlMessages";
 //queryString
 import qs from 'query-string';
-// app config
-import AppConfig from 'Constants/AppConfig';
-
 const EmailConfirmScreen = ({data}) => {
     if(Object.keys('data').length > 0 && data.ReturnCode === 0) {
         return (            

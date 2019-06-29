@@ -14,11 +14,11 @@ import AppConfig from 'Constants/AppConfig';
 import Divider from "@material-ui/core/Divider";
 import { NotificationManager } from 'react-notifications';
 import { changeDateFormat } from "Helpers/helpers";
-//initial state
-const initState = {}
 import {
     confirmaWithdraw
 } from "Actions/Withdraw";
+//initial state
+const initState = {}
 class withdrawConfirmation extends Component {
     state = initState;
     //will mount fetch data

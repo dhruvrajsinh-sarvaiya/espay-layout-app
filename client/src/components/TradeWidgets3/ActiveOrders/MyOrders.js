@@ -31,9 +31,8 @@ import $ from 'jquery';
 const orderTypes = [
     { "type": "LIMIT", "ID": "1" },
     { "type": "MARKET", "ID": "2" },
-    // { "type": "SPOT", "ID": "3" },
     { "type": "STOP_Limit", "ID": "4" },
-  ]
+]
 class OpenOrder extends React.Component {
     constructor(props) {
         super(props);
@@ -123,7 +122,7 @@ class OpenOrder extends React.Component {
 
             }
         }
-        
+
     }
 
     // handle close add new Schedule dailog
@@ -213,7 +212,7 @@ class OpenOrder extends React.Component {
                     <IntlMessages
                         id={`openorder.cancelorder.message.${
                             nextprops.cancelOrder.ErrorCode
-                        }`}
+                            }`}
                     />
                 );
             }
@@ -226,13 +225,11 @@ class OpenOrder extends React.Component {
                 modalInfo: -1,
                 modal: false,
                 cancelAllModal: false,
-                //cancelOrderSuccess:true
             });
         }
     }
 
     render() {
-        //console.log("open orders",this.state.cancelAllModal)
         const activeMyOpenData = [];
         if (this.state.activeMyOpenOrder) {
             this.state.activeMyOpenOrder.map((value) => {
@@ -320,9 +317,9 @@ class OpenOrder extends React.Component {
                                             <td className="text-center">
                                                 {value.PairName !== null
                                                     ? value.PairName.replace(
-                                                          "_",
-                                                          "/"
-                                                      )
+                                                        "_",
+                                                        "/"
+                                                    )
                                                     : ""}
                                             </td>
                                             <td
@@ -335,41 +332,41 @@ class OpenOrder extends React.Component {
                                                 {value.Type === "BUY" ? (
                                                     <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
                                                 ) : (
-                                                    <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
-                                                )}
+                                                        <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
+                                                    )}
                                             </td>
                                             <td className="text-center">
                                                 {value.OrderType === "LIMIT" ? (
                                                     <IntlMessages id="trading.placeorder.label.limit" />
                                                 ) : (
-                                                    ""
-                                                )}
+                                                        ""
+                                                    )}
                                                 {value.OrderType ===
-                                                "MARKET" ? (
-                                                    <IntlMessages id="trading.placeorder.label.market" />
-                                                ) : (
-                                                    ""
-                                                )}
+                                                    "MARKET" ? (
+                                                        <IntlMessages id="trading.placeorder.label.market" />
+                                                    ) : (
+                                                        ""
+                                                    )}
                                                 {value.OrderType ===
-                                                "STOP_Limit" ? (
-                                                    <IntlMessages id="trading.placeorder.label.stoplimit" />
-                                                ) : (
-                                                    ""
-                                                )}
+                                                    "STOP_Limit" ? (
+                                                        <IntlMessages id="trading.placeorder.label.stoplimit" />
+                                                    ) : (
+                                                        ""
+                                                    )}
                                                 {value.OrderType === "SPOT" ? (
                                                     <IntlMessages id="trading.placeorder.label.spot" />
                                                 ) : (
-                                                    ""
-                                                )}
+                                                        ""
+                                                    )}
                                             </td>
                                             <td className="text-center">
                                                 {value.Price === 0 ? (
                                                     <IntlMessages id="trading.placeorder.label.market" />
                                                 ) : (
-                                                    parseFloat(
-                                                        value.Price
-                                                    ).toFixed(8)
-                                                )}
+                                                        parseFloat(
+                                                            value.Price
+                                                        ).toFixed(8)
+                                                    )}
                                             </td>
                                             <td className="text-center">
                                                 {parseFloat(
@@ -401,35 +398,35 @@ class OpenOrder extends React.Component {
                                     );
                                 })
                             ) : (
-                                <tr>
-                                    <td>
-                                        <Row className="justify-content-center m-0">
-                                            <Col
-                                                className="text-center m-0"
-                                                sm={12}
-                                            >
-                                                <span>
-                                                    <i
-                                                        className="zmdi zmdi-view-list-alt"
-                                                        style={{
-                                                            fontSize: "80px",
-                                                        }}
-                                                    />
-                                                    <br />
-                                                </span>
-                                            </Col>
+                                    <tr>
+                                        <td>
+                                            <Row className="justify-content-center m-0">
+                                                <Col
+                                                    className="text-center m-0"
+                                                    sm={12}
+                                                >
+                                                    <span>
+                                                        <i
+                                                            className="zmdi zmdi-view-list-alt"
+                                                            style={{
+                                                                fontSize: "80px",
+                                                            }}
+                                                        />
+                                                        <br />
+                                                    </span>
+                                                </Col>
 
-                                            <Col
-                                                className="text-center text-danger m-0 fs-32"
-                                                sm={12}
-                                                style={{ fontSize: "18px" }}
-                                            >
-                                                <IntlMessages id="trading.activeorders.label.nodata" />
-                                            </Col>
-                                        </Row>
-                                    </td>
-                                </tr>
-                            )}
+                                                <Col
+                                                    className="text-center text-danger m-0 fs-32"
+                                                    sm={12}
+                                                    style={{ fontSize: "18px" }}
+                                                >
+                                                    <IntlMessages id="trading.activeorders.label.nodata" />
+                                                </Col>
+                                            </Row>
+                                        </td>
+                                    </tr>
+                                )}
                         </tbody>
                     </Table>
                 </Scrollbars>
@@ -532,31 +529,31 @@ class OpenOrder extends React.Component {
                                         activeMyOpenData.map(
                                             (value, key) =>
                                                 value.Id ===
-                                                    this.state.modalInfo && (
+                                                this.state.modalInfo && (
                                                     <tr key={key}>
                                                         <td className="text-center">
                                                             {value.PairName !==
-                                                            null
+                                                                null
                                                                 ? value.PairName.replace(
-                                                                      "_",
-                                                                      "/"
-                                                                  )
+                                                                    "_",
+                                                                    "/"
+                                                                )
                                                                 : ""}
                                                         </td>
                                                         <td
                                                             className={
                                                                 value.Type ===
-                                                                "BUY"
+                                                                    "BUY"
                                                                     ? "text-success text-center"
                                                                     : "text-danger text-center"
                                                             }
                                                         >
                                                             {value.Type ===
-                                                            "BUY" ? (
-                                                                <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
-                                                            ) : (
-                                                                <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
-                                                            )}
+                                                                "BUY" ? (
+                                                                    <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
+                                                                ) : (
+                                                                    <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
+                                                                )}
                                                         </td>
                                                         <td className="text-center">
                                                             {parseFloat(
@@ -580,17 +577,17 @@ class OpenOrder extends React.Component {
                                                 )
                                         )
                                     ) : (
-                                        <tr>
-                                            <td colSpan="5">
-                                                <Alert
-                                                    color="danger"
-                                                    className="text-center fs-32"
-                                                >
-                                                    <IntlMessages id="trading.activeorders.label.nodata" />
-                                                </Alert>
-                                            </td>
-                                        </tr>
-                                    )}
+                                            <tr>
+                                                <td colSpan="5">
+                                                    <Alert
+                                                        color="danger"
+                                                        className="text-center fs-32"
+                                                    >
+                                                        <IntlMessages id="trading.activeorders.label.nodata" />
+                                                    </Alert>
+                                                </td>
+                                            </tr>
+                                        )}
                                 </tbody>
                             </Table>
                         </div>

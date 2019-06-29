@@ -4,7 +4,7 @@
  * Updated :
  * Top Gainer List Component
  */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import MUIDataTable from 'mui-datatables';
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
@@ -75,11 +75,6 @@ class LeaderBoardWdgt extends Component {
 	render() {
 		const { list, loading } = this.state;
 		return (
-			// <Fragment>
-			// 	{loading && <JbsSectionLoader />}
-			// 	<Fragment>
-			// 		<div className="mt-20 top-gainer-list">
-			// 			<div className="list_layout_area">
 			<div className={this.props.darkMode ? 'transaction-history-detail-darkmode tbl_overflow_auto' : 'transaction-history-detail tbl_overflow_auto'}>
 				{loading && <JbsSectionLoader />}
 				<MUIDataTable
@@ -97,9 +92,6 @@ class LeaderBoardWdgt extends Component {
 					})}
 				/>
 			</div>
-			// 		</div>
-			// 	</Fragment>
-			// </Fragment>
 		);
 	}
 }

@@ -5,12 +5,11 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
-// intl messages
-import IntlMessages from "Util/IntlMessages";
+
+
 
 class RiskScoreChart extends Component {
     constructor(props) {
@@ -71,17 +70,5 @@ RiskScoreChart.defaultProps = {
     LeaderId : 0
 }
 
-// map state to props
-/* const mapStateToProps = ({ forgotPassRdcer }) => {
-    var response = {
-        data: forgotPassRdcer.data,
-        loading: forgotPassRdcer.loading
-    };
-    return response;
-};
-
-export default withRouter(connect(mapStateToProps, {
-    forgotPassword
-})(RiskScoreChart)); */
 
 export default RiskScoreChart;

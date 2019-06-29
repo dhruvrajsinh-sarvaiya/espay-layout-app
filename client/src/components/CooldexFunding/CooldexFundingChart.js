@@ -1,23 +1,21 @@
 
 // Component For Trading Chart By Tejas : Date : 25/9/2018
 import React, { Component, Fragment } from "react";
-
 // import High Chart Details
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import { getChartData } from "Actions/Trade";
-
 // import connect function for store
 import { connect } from "react-redux";
-import {chartData} from "./ChartData"; 
+import { chartDataConst } from "./ChartData";
 
 // component For trading chart
 class CooldexFundingChart extends Component {
   state = {
-    chartData: chartData,
-    socketData:[]
+    chartData: chartDataConst,
+    socketData: []
   };
-// render component
+  // render component
   render() {
     const info = [];
     const volume = [];
@@ -34,8 +32,9 @@ class CooldexFundingChart extends Component {
 
     if (this.state.chartData.length !== 0) {
       dataLength = this.state.chartData.length;
-     
-      for (i; i < dataLength; i += 1) {        info.push([
+
+      for (i; i < dataLength; i += 1) {
+        info.push([
           this.state.chartData[i][0], // the date
           this.state.chartData[i][1], // open
           this.state.chartData[i][2], // high
@@ -50,74 +49,63 @@ class CooldexFundingChart extends Component {
       }
 
     }
-    const options = {    
-      colors: ['#000000','#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-      '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
-      ], 
+    const options = {
+      colors: ['#000000', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+        '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
+      ],
       chart: {
-        backgroundColor: this.props.darkMode ? '#2c3644': 'white',   
-        color:   this.props.darkMode ? 'white': '#464D69', 
-     },
-     responsive: {
+        backgroundColor: this.props.darkMode ? '#2c3644' : 'white',
+        color: this.props.darkMode ? 'white' : '#464D69',
+        height: 280
+      },
+      responsive: {
         rules: [{
-            condition: {
-                maxWidth: 500
+          condition: {
+            maxWidth: 500
+          },
+          chartOptions: {
+            chart: {
+              height: 300
             },
-            chartOptions: {
-                chart: {
-                    height: 300
-                },
-                subtitle: {
-                    text: null
-                },
-                navigator: {
-                    enabled: false
-                }
+            subtitle: {
+              text: null
+            },
+            navigator: {
+              enabled: false
             }
+          }
         }]
-    },
-    rangeSelector: {
-      buttons: [
- {
+      },
+      rangeSelector: {
+        buttons: [
+          {
             type: 'day',
             count: 1,
             text: '1d'
-        },{
+          }, {
             type: 'month',
             count: 1,
             text: '1m'
-        } ,
-        {
-          type: 'month',
-          count: 3,
-          text: '3m'
-        },
-        {
-          type: 'month',
-          count: 6,
-          text: '6m'
-        } ],
-      selected: 2,
-      inputEnabled: false,
-    },
-
-      chart: {
-          backgroundColor: this.props.darkMode ? '#2c3644': 'white',   
-          color:   this.props.darkMode ? 'white': '#464D69', 
-          height: 280
+          },
+          {
+            type: 'month',
+            count: 3,
+            text: '3m'
+          },
+          {
+            type: 'month',
+            count: 6,
+            text: '6m'
+          }],
+        selected: 2,
+        inputEnabled: false,
       },
-      scrollbar:{
+      scrollbar: {
         enabled: false
       },
       navigator: {
         enabled: false
       },
-       series: [
-        {
-          data: volume,
-          color: '#000000',
-        }
-      ],
       yAxis: [
         {
           labels: {
@@ -128,7 +116,7 @@ class CooldexFundingChart extends Component {
             text: "Data"
           },
           lineWidth: 2,
-          height:'60%',
+          height: '60%',
           resize: {
             enabled: true
           }
@@ -136,7 +124,7 @@ class CooldexFundingChart extends Component {
         {
           labels: {
             align: "right",
-            x: -3  
+            x: -3
           },
           title: {
             text: "Volume"
@@ -155,7 +143,7 @@ class CooldexFundingChart extends Component {
       series: [
         {
           type: "candlestick",
-          name: this.props.firstCurrency + "/"+this.props.secondCurrency,
+          name: this.props.firstCurrency + "/" + this.props.secondCurrency,
           data: info,
           dataGrouping: {
             units: groupingUnits
@@ -165,24 +153,25 @@ class CooldexFundingChart extends Component {
           type: "column",
           name: "Volume",
           data: volume,
+          color: '#000000',
           yAxis: 1,
           dataGrouping: {
             units: groupingUnits
           },
-        }      
-         
-      ],  
+        }
+
+      ],
       plotOptions: {
         candlestick: {
-                   color: 'green',
-                   upColor: 'red'
-               }
-           },
+          color: 'green',
+          upColor: 'red'
+        }
+      },
     };
 
     return (
       <Fragment>
-        <div className="cooldexgraph">       
+        <div className="cooldexgraph">
           <HighchartsReact
             highcharts={Highcharts}
             constructorType={"stockChart"}
@@ -196,8 +185,8 @@ class CooldexFundingChart extends Component {
 
 const mapStateToProps = ({ settings, tradeChart }) => {
   const { darkMode } = settings;
-  const { chartData,loading } = tradeChart;
-  return { darkMode, chartData, loading };
+  const { loading } = tradeChart;
+  return { darkMode, loading };
 };
 
 // connect action with store for dispatch

@@ -41,6 +41,7 @@ class TwoFaGoogleAuthentication extends Component {
 			deviceModel: false,
 			deviceMsg: '',
 			TwoFAKey: '',
+			AllowToken: '',
 			username: '',
 			password: '',
 			appkey: '',
@@ -73,7 +74,8 @@ class TwoFaGoogleAuthentication extends Component {
 			username: this.props.loginData.username,
 			password: this.props.loginData.password,
 			appkey: this.props.loginData.appkey,
-			TwoFAKey: this.props.loginData.TwoFAKey
+			TwoFAKey: this.props.loginData.TwoFAKey,
+			AllowToken: this.props.loginData.AllowToken
 		});
 	}
 
@@ -127,8 +129,8 @@ class TwoFaGoogleAuthentication extends Component {
 				TwoFAKey: this.state.TwoFAKey,
 				deviceId: getDeviceInfo(),
 				mode: getMode(),
-				// ipAddress: getIPAddress(),
 				hostName: getHostName(),
+				AllowToken: this.state.AllowToken
 			}
 
 			let self = this;
@@ -140,7 +142,7 @@ class TwoFaGoogleAuthentication extends Component {
 	}
 
 	render() {
-		const { deviceModel, deviceMsg, open, Code, err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
+		const { deviceModel, deviceMsg, Code, err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
 		return (
 			<Fragment>
 				{loading && <div><LinearProgress color="secondary" /></div>}

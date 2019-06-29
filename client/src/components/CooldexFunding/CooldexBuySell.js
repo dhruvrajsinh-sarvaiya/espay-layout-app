@@ -4,11 +4,7 @@ import {TabContent, TabPane, Nav, NavItem, NavLink, Form, FormGroup, Label,
 import classnames from 'classnames';
 import { Link } from "react-router-dom";
 import Switch from '@material-ui/core/Switch';
-
 import paymenticon2 from 'Assets/image/paymenticon2.png';
-
-
-
 
 export default class CooldexBuySell extends Component {
     constructor(props) {

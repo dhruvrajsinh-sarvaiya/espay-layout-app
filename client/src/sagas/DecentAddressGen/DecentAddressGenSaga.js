@@ -4,9 +4,7 @@
     FIle Comment : convert token action saga
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-//import api from 'Api';
 import api from 'Api';
-
 // import types for dispatch puropse
 import {
     GET_CURRENCY,

@@ -65,21 +65,17 @@ export default class TradingChartBasic extends Component {
       today: "17,020",
       lastMonth: "20.30%"
     };
-    if (response) {
-      this.setState({
-        chartLabels: response.chartLabels,
-        chartDatasets: response.chartDatasets,
-        onlineSources: response.onlineSources,
-        today: response.today,
-        lastMonth: response.lastMonth
-      });
-    }
+    this.setState({
+      chartLabels: response.chartLabels,
+      chartDatasets: response.chartDatasets,
+      onlineSources: response.onlineSources,
+      today: response.today,
+      lastMonth: response.lastMonth
+    });
   }
 
   render() {
     const {
-      chartLabels,
-      chartDatasets,
       onlineSources,
       today,
       lastMonth

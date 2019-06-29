@@ -7,9 +7,7 @@ import {
     DO_CANCEL_ORDER,
     DO_CANCEL_ORDER_SUCCESS,
     DO_CANCEL_ORDER_FAILURE
-}
-    from 'Actions/types';
-
+} from 'Actions/types';
 
 // Set Initial State
 const INITIAL_STATE = {
@@ -18,7 +16,11 @@ const INITIAL_STATE = {
     cancelOrder: []
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
 
         // get Active Open Order list
@@ -27,12 +29,10 @@ export default (state = INITIAL_STATE, action) => {
 
         // set Data Of  Active Open Order list
         case GET_ACTIVE_OPEN_ORDER_LIST_SUCCESS:
-
             return { ...state, loading: false, OpenOrder: action.payload };
 
         // Display Error for Active Open Order list failure
         case GET_ACTIVE_OPEN_ORDER_LIST_FAILURE:
-
             return { ...state, OpenOrder: [], loading: false };
 
         // do cancel Open Order 
@@ -41,16 +41,12 @@ export default (state = INITIAL_STATE, action) => {
 
         // set response Of  cancel Open Order 
         case DO_CANCEL_ORDER_SUCCESS:
-
             return { ...state, loading: false, cancelOrder: action.payload };
 
         // Display Error for cancel Open Order  failure
         case DO_CANCEL_ORDER_FAILURE:
-
             return { ...state, loading: false, cancelOrder: [] };
 
-
         default: return { ...state };
-
     }
 }

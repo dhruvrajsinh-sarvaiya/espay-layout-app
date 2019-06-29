@@ -23,11 +23,10 @@ function* getNewsTickerList() {
 }
 
 // Function for set response to data and Call Function for Api Call
-function* getNewsTickerListData({payload}) {
+function* getNewsTickerListData({ payload }) {
     const { Pair } = payload;
-    //console.log(Pair)
     try {
-        const response = yield call(getNewsTickerListRequest,Pair)
+        const response = yield call(getNewsTickerListRequest, Pair)
 
         // set response if its available else set error message
         if (response && response != null && response != undefined) {
@@ -43,7 +42,6 @@ function* getNewsTickerListData({payload}) {
 // function for Call api and set response 
 const getNewsTickerListRequest = async (newstickerListRequest) =>
     await api.get('newsTicker.js')
-    //.then(console.log('API',newstickerListRequest))   
         .then(response => response)
         .catch(error => error)
 
@@ -54,9 +52,9 @@ function* getTickersList() {
 }
 
 // Function for set response to data and Call Function for Api Call
-function* getTickersListData({payload}) {
+function* getTickersListData({ payload }) {
     try {
-        const response = yield call(getTickersListRequest,payload.tickerListRequest)
+        const response = yield call(getTickersListRequest, payload.tickerListRequest)
 
         // set response if its available else set error message
         if (response && response != null && response != undefined) {

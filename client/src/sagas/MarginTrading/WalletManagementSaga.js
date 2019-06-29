@@ -3,8 +3,8 @@
     Date : 19-02-2019
     File Comment : Margin Trading Wallet Management saga methods
 */
-import { all, call, fork, take, put, takeEvery } from 'redux-saga/effects';
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
 import AppConfig from 'Constants/AppConfig';
 import {
     LIST_MARGIN_WALLETS,
@@ -31,9 +31,7 @@ import {
     delavrageConfirmSuccess,
     delavrageConfirmFailure
 } from 'Actions/MarginTrading';
-const socketApiUrl = AppConfig.socketAPIUrl;
 const lgnErrCode = loginErrCode();
-const statusErrCode = statusErrCodeList();
 //server request ...
 function* getMaringWalletListRequest(payload) {
     const request = payload.request;
@@ -87,7 +85,7 @@ function* createMarginWalletRequest(payload) {
 function* addLeverageWithWalletRequest(payload) {
     const request = payload.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const responseFromSocket = yield call(swaggerGetAPI, 'api/MarginWallet/GetMarginPreConfirmationData/' + request.WalletTypeId + '/' + request.Amount + '/' + request.AccWalletid + '?Leverage=' +request.LeveragePer, payload.WalletTypeId, headers);
+    const responseFromSocket = yield call(swaggerGetAPI, 'api/MarginWallet/GetMarginPreConfirmationData/' + request.WalletTypeId + '/' + request.Amount + '/' + request.AccWalletid + '?Leverage=' + request.LeveragePer, payload.WalletTypeId, headers);
     try {
         // check response code
         if (lgnErrCode.includes(responseFromSocket.statusCode)) {
@@ -107,7 +105,7 @@ function* addLeverageWithWalletRequest(payload) {
 function* confirmAddLeverageRequest(payload) {
     const request = payload.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const responseFromSocket = yield call(swaggerPostAPI, 'api/MarginWallet/InsertMarginRequest/' + request.WalletTypeId + '/' + request.Amount + '/' + request.AccWalletid + '?Leverage=' +request.LeveragePer, payload.WalletTypeId, headers);
+    const responseFromSocket = yield call(swaggerPostAPI, 'api/MarginWallet/InsertMarginRequest/' + request.WalletTypeId + '/' + request.Amount + '/' + request.AccWalletid + '?Leverage=' + request.LeveragePer, payload.WalletTypeId, headers);
     try {
         // check response code
         if (lgnErrCode.includes(responseFromSocket.statusCode)) {
@@ -127,13 +125,13 @@ function* confirmAddLeverageRequest(payload) {
 function* getPreConfirmationRequest(payload) {
     const request = payload.request
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerGetAPI, 'api/MarginWallet/MarginWithdrawPreConfirm?Currency=' + request,{}, headers);
+    const response = yield call(swaggerGetAPI, 'api/MarginWallet/MarginWithdrawPreConfirm?Currency=' + request, {}, headers);
     try {
-            if (response.ReturnCode == 0) {
-                yield put(getPreConfirmationsSuccess(response));
-            } else {
-                yield put(getPreConfirmationsFailure(response));
-            }
+        if (response.ReturnCode == 0) {
+            yield put(getPreConfirmationsSuccess(response));
+        } else {
+            yield put(getPreConfirmationsFailure(response));
+        }
     } catch (error) {
         yield put(getPreConfirmationsFailure(error));
     }
@@ -142,13 +140,13 @@ function* getPreConfirmationRequest(payload) {
 function* getConfirmationRequest(payload) {
     const request = payload.request
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/MarginWallet/WithdrawMigration?Currency=' + request,{}, headers);
+    const response = yield call(swaggerPostAPI, 'api/MarginWallet/WithdrawMigration?Currency=' + request, {}, headers);
     try {
         if (response.ReturnCode == 0) {
-                yield put(delavrageConfirmSuccess(response));
-            } else {
-                yield put(delavrageConfirmFailure(response));
-            }
+            yield put(delavrageConfirmSuccess(response));
+        } else {
+            yield put(delavrageConfirmFailure(response));
+        }
     } catch (error) {
         yield put(delavrageConfirmFailure(error));
     }

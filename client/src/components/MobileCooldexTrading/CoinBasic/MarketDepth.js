@@ -2,7 +2,6 @@ import React, { Fragment,Component } from 'react';
 // import High Chart Details
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
- import {data} from './MarketDepthData';
  import { connect } from "react-redux";
 
  //import section loader

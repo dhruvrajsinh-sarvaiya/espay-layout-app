@@ -15,7 +15,7 @@ import {
     from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
 
     arbitrageExchange: [],
     arbitrageExchangeLoading: 0,
@@ -23,8 +23,11 @@ const INITIAL_STATE = {
 
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
 
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         //  Exchange List

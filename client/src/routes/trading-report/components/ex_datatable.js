@@ -1,12 +1,10 @@
 /**
  * About Us Page
  */
-import React, { Component } from "react";
+import React from "react";
 import MUIDataTable from "mui-datatables";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // jbs card box
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 

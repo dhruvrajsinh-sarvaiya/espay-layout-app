@@ -18,7 +18,10 @@ const INIT_STATE = {
   data: []
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state,action) => {
+  if (typeof state === 'undefined') {
+        return INIT_STATE
+  }
   switch (action.type) {
     //For Change Password
     case CHANGE_PASSWORD:

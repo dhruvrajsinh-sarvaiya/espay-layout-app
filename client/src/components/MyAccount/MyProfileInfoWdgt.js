@@ -52,55 +52,53 @@ class MyProfileInfoWdgt extends Component {
       this.setState({
         Default: prevObj.Complain
       });
-    }else{
-      
     }
   }
 
   render() {
     let def = this.state.Default;
     return (
-        <Row className="my_profile_tab">
-          <TabProvider defaultTab={def}>
-            <Col className="colright" md={1}>
-              <TabList className="myaccountTab clearfix">
-                <Tab tabFor="Profile">
-                  <span className="material-icons mr-10">person</span>
-                  <IntlMessages id="myAccount.Dashboard.myProfileInfo.profile" />
-                </Tab>
-                <Tab tabFor="Security">
-                  <span className="material-icons mr-10">security</span>
-                  <IntlMessages id="myAccount.Dashboard.myProfileInfo.security" />
-                </Tab>
-                <Tab tabFor="ActiveHistory">
-                  <span className="material-icons mr-10">history</span>
-                  <IntlMessages id="myAccount.Dashboard.myProfileInfo.history" />
-                </Tab>
-                <Tab tabFor="Complain">
-                  <span className="material-icons mr-10">help</span>
-                  <IntlMessages id="my_account.helpNSupoort" />
-                </Tab>
-              </TabList>
-            </Col>
+      <Row className="my_profile_tab">
+        <TabProvider defaultTab={def}>
+          <Col className="colright" md={1}>
+            <TabList className="myaccountTab clearfix">
+              <Tab tabFor="Profile">
+                <span className="material-icons mr-10">person</span>
+                <IntlMessages id="myAccount.Dashboard.myProfileInfo.profile" />
+              </Tab>
+              <Tab tabFor="Security">
+                <span className="material-icons mr-10">security</span>
+                <IntlMessages id="myAccount.Dashboard.myProfileInfo.security" />
+              </Tab>
+              <Tab tabFor="ActiveHistory">
+                <span className="material-icons mr-10">history</span>
+                <IntlMessages id="myAccount.Dashboard.myProfileInfo.history" />
+              </Tab>
+              <Tab tabFor="Complain">
+                <span className="material-icons mr-10">help</span>
+                <IntlMessages id="my_account.helpNSupoort" />
+              </Tab>
+            </TabList>
+          </Col>
 
-            <Col className="colleft" md={11}>
-              <TabPanel tabId="Profile">
-                <ProfileWdgt {...this.props} />
-              </TabPanel>
-              <TabPanel tabId="Security">
-                <SecurityWdgt {...this.props} />
-              </TabPanel>
-              {/* <TabPanel tabId="ProfileImage">
+          <Col className="colleft" md={11}>
+            <TabPanel tabId="Profile">
+              <ProfileWdgt {...this.props} />
+            </TabPanel>
+            <TabPanel tabId="Security">
+              <SecurityWdgt {...this.props} />
+            </TabPanel>
+            {/* <TabPanel tabId="ProfileImage">
               </TabPanel> */}
-              <TabPanel tabId="ActiveHistory">
-                <ActiveHistory {...this.props} />
-              </TabPanel>              
-              <TabPanel tabId="Complain">
-                <ComplainWdgt {...this.props} />
-              </TabPanel>
-            </Col>
-          </TabProvider>
-        </Row>
+            <TabPanel tabId="ActiveHistory">
+              <ActiveHistory {...this.props} />
+            </TabPanel>
+            <TabPanel tabId="Complain">
+              <ComplainWdgt {...this.props} />
+            </TabPanel>
+          </Col>
+        </TabProvider>
+      </Row>
     );
   }
 }

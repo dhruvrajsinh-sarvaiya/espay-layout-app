@@ -60,7 +60,7 @@ class VerifyDocumentTypeWdgt extends Component {
               </div>
             </div>
             </MatButton>
-          {/* </Link> */}
+         
           <MatButton
             className="p-0 m-0 w-100 text-secondary mb-20"
             onClick={this.onChangeEnterpriseVerificationView}

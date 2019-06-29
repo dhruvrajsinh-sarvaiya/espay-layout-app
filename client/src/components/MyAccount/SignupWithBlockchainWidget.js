@@ -6,11 +6,10 @@
  */
 
 import React, { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 import Button from "@material-ui/core/Button";
-import { Form, FormGroup, Input, Alert } from "reactstrap";
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { Form, FormGroup, Input } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
@@ -98,7 +97,7 @@ class SignupWithBlockchainWidget extends Component {
   }
 
   render() {
-    const { loading, err_alert, err_msg, success_alert, success_msg, keyPassword, showPassword, errors } = this.state;
+    const { keyPassword, showPassword, errors } = this.state;
     return (
       <div>
         <Form>

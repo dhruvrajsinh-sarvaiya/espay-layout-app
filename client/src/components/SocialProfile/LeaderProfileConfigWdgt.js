@@ -8,9 +8,9 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
-import { Form, Input, Label, Alert, Button } from "reactstrap";
+import { Form, Input, Label, Button } from "reactstrap";
 import FormGroup from "@material-ui/core/FormGroup";
-import LinearProgress from '@material-ui/core/LinearProgress';
+
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import { NotificationManager } from "react-notifications";
 //Import addFollower Config Action...
@@ -46,12 +46,12 @@ class LeaderProfileConfigWdgt extends Component {
     componentWillMount() {
         var leaderConfig = this.props.history.location.state;
         if(leaderConfig.profileId > 0) {
-            var newObj = Object.assign({},this.state.data);
+           
             // newObj.ProfileId = leaderConfig.profileId;
             // this.setState({ data : newObj });
             this.props.getLeaderConfig();
         } else {
-            this.setState({ showForm : false, err_msg: <IntlMessages id="apiErrCode.0" />, err_alert: false });
+            this.setState({ showForm : false, err_msg: <IntlMessages id="apiErrCode.0" />, er: false });
             /* setTimeout(() => {
                 this.props.history.push('/app/social-profile');
             },5000); */
@@ -94,7 +94,7 @@ class LeaderProfileConfigWdgt extends Component {
     onSubmit(event) {
         event.preventDefault();
         const { errors, isValid } = validateLeaderProfileConfigForm(this.state.data);
-        this.setState({ err_alert: false, errors: errors });
+        this.setState({ er: false, errors: errors });
 
         if (isValid) {
             var reqObj = Object.assign({},this.state.data);

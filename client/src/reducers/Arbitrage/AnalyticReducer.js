@@ -15,7 +15,10 @@ const INITIAL_STATE = {
     analyticData: {},
 }
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
     switch (action.type) {
         case GET_ANALYTICSGRAPH_RECORD:
             return { ...state, loading: true, analyticData : {} }

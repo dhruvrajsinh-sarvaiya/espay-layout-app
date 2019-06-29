@@ -25,19 +25,19 @@ class SecurityWdgt extends Component {
                 <div className="innertabpanel">
                   <TabList className="myaccountinnerTab">
                     <Tab className={this.props.darkMode ? 'innertabmenu-darkmode ' : 'innertabmenu'} tabFor="AllowedIPAddress">
-                      <Tooltip id="tooltip-icon" title={<IntlMessages id="myAccount.Dashboard.myProfileInfo.security.allowedIPAddress" />}><i class="zmdi zmdi-pin" /></Tooltip>
+                      <Tooltip id="tooltip-icon" title={<IntlMessages id="myAccount.Dashboard.myProfileInfo.security.allowedIPAddress" />}><i className="zmdi zmdi-pin" /></Tooltip>
                       <IntlMessages id="myAccount.Dashboard.myProfileInfo.security.allowedIPAddress" />
                     </Tab>
                     <Tab className={this.props.darkMode ? 'innertabmenu-darkmode ' : 'innertabmenu'} tabFor="Authentication">
-                      <Tooltip id="tooltip-icon" title={<IntlMessages id="myAccount.Dashboard.myProfileInfo.twoFactorAuthentication" />}><i class="zmdi zmdi-portable-wifi" /></Tooltip>
+                      <Tooltip id="tooltip-icon" title={<IntlMessages id="myAccount.Dashboard.myProfileInfo.twoFactorAuthentication" />}><i className="zmdi zmdi-portable-wifi" /></Tooltip>
                       <IntlMessages id="myAccount.Dashboard.myProfileInfo.twoFactorAuthentication" />
                     </Tab>
                     <Tab className={this.props.darkMode ? 'innertabmenu-darkmode ' : 'innertabmenu'} tabFor="IPWhitelisting">
-                      <Tooltip id="tooltip-icon" title={<IntlMessages id="myAccount.Dashboard.myProfileInfo.activityHistory.ipWhitelisting" />}><i class="zmdi zmdi-nature-people" /></Tooltip>
+                      <Tooltip id="tooltip-icon" title={<IntlMessages id="myAccount.Dashboard.myProfileInfo.activityHistory.ipWhitelisting" />}><i className="zmdi zmdi-nature-people" /></Tooltip>
                       <IntlMessages id="myAccount.Dashboard.myProfileInfo.activityHistory.ipWhitelisting" />
                     </Tab>
                     <Tab className={this.props.darkMode ? 'innertabmenu-darkmode ' : 'innertabmenu'} tabFor="DeviceWhitelisting">
-                      <Tooltip id="tooltip-icon" title={<IntlMessages id="sidebar.deviceWhitelisting" />}><i class="zmdi zmdi-devices" /></Tooltip>
+                      <Tooltip id="tooltip-icon" title={<IntlMessages id="sidebar.deviceWhitelisting" />}><i className="zmdi zmdi-devices" /></Tooltip>
                       <IntlMessages id="sidebar.deviceWhitelisting" />
                     </Tab>
 

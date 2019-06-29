@@ -16,7 +16,7 @@ import { DisableGoogleAuthWdgt } from "Components/MyAccount";
 
 export default class DisableGoogleAuth extends Component {
   render() {
-    // const { name, email, password } = this.state;
+    
 
     return (
       <div>

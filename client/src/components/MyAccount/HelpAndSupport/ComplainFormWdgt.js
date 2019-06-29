@@ -131,7 +131,7 @@ class ComplainFormWdgt extends Component {
 					<FormGroup className="row">
 						<label className="col-md-2 col-sm-12 form-label d-inline"><IntlMessages id="sidebar.subject" /><span className="text-danger">*</span></label>
 						<div className="col-md-10 col-sm-12">
-							<Input tabIndex="3" type="text" name="Subject" className="form-control" placeholder="Subject" id="Subject" value={Subject} onChange={this.onChange} />
+							<Input tabIndex="3" type="text" name="Subject" className="form-control" placeholder="Subject" id="Subject1" value={Subject} onChange={this.onChange} />
 							{errors.Subject && <span className="text-danger"><IntlMessages id={errors.Subject} /></span>}
 						</div>
 					</FormGroup>

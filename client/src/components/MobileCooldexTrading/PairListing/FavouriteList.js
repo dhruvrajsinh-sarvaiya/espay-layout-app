@@ -8,8 +8,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Card,
-  CardBody
 } from "reactstrap";
 
 // import radio button
@@ -107,9 +105,9 @@ class FavouriteList extends React.Component {
     var list = [];
 
     // iterate object and search pair and push into search data array
-    this.state.pairList.map((value, key) => {
-      if (value.currency) {
-        value.currency.map(data => {
+    this.state.pairList.map((val, key) => {
+      if (val.currency) {
+        val.currency.map(data => {
           var isAvailable = favourites.findIndex(fav => fav.pair === data.pair);
           if (isAvailable !== -1) {
             if (
@@ -145,7 +143,7 @@ class FavouriteList extends React.Component {
         localStorage.setItem("favourite", JSON.stringify(favourites));
       }
     } else {
-      var favourites = [];
+      favourites = [];
       favourites.push({ pair: value.pair });
       localStorage.setItem("favourite", JSON.stringify(favourites));
     }
@@ -166,6 +164,7 @@ class FavouriteList extends React.Component {
     if (this.state.pairList && this.state.oldState) {
       this.state.pairList.map((value, key) => {
         this.state.oldState.map(data => {
+          
           if (
             value.symbol === info.secondCurrency &&
             data.symbol === info.secondCurrency
@@ -263,7 +262,7 @@ class FavouriteList extends React.Component {
         );
       });
     } else {
-      var rows = (
+       rows = (
         <tr>
           <td colSpan="2">
             {<IntlMessages id="trading.orders.label.nodata" />}

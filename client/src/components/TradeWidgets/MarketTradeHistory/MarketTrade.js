@@ -43,9 +43,6 @@ class MarketTradeRow extends React.Component {
             lastClass = "text-success";
         } else if (this.props.Type === "Sell") {
             lastClass = "text-danger";
-        } else {
-            lastClass = "";
-            changeClass = "";
         }
 
         return (
@@ -80,14 +77,12 @@ class MarketTradeHistory extends React.Component {
     // This will invoke After component render
     componentWillMount() {
         // Call Actions For Get Market Trade History
-        //  const pair = this.props.firstCurrency + '_' + this.props.secondCurrency;
         const pair = this.props.currencyPair;
 
-        this.props.getMarketTradeHistory({ Pair: pair });        
+        this.props.getMarketTradeHistory({ Pair: pair });
     }
 
     componentWillUnmount() {
-        //const pair = this.props.firstCurrency + '_' + this.props.secondCurrency;
         const pair = this.props.currencyPair;
 
         this.props.closeMarketHistorySocketConnection({ Pair: pair });
@@ -225,6 +220,6 @@ export default connect(
     mapStateToProps,
     {
         getMarketTradeHistory,
-        closeMarketHistorySocketConnection,        
+        closeMarketHistorySocketConnection,
     }
 )(MarketTradeHistory);

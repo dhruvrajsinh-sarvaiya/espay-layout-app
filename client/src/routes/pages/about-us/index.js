@@ -14,9 +14,6 @@ import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
-// jbs card box
-import { JbsCard } from "Components/JbsCard";
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 
 // app config
@@ -24,9 +21,6 @@ import AppConfig from "Constants/AppConfig";
 
 // redux actions
 import { getPageContents } from "Actions";
-
-//For Meta Tag and SEO Configuration
-import Page from "Components/page";
 
 class AboutUS extends Component {
   state = {
@@ -44,7 +38,6 @@ class AboutUS extends Component {
     const { pageContents } = this.props;
     const html =pageContents != null && pageContents.locale && pageContents.locale[localStorage.getItem('locale')] && pageContents.locale[localStorage.getItem('locale')].content ? pageContents.locale[localStorage.getItem("locale")].content : "";
     return (
-      // <Page id="aboutus" title="About Us" description="This is About Us">
         <div className="about-wrapper">
           <PageTitleBar
             title={<IntlMessages id="sidebar.aboutUs" />}
@@ -56,7 +49,6 @@ class AboutUS extends Component {
             </div>
           </div>
         </div>
-      // </Page>
     );
   }
 }

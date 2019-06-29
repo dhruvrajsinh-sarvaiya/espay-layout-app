@@ -5,7 +5,6 @@
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
 import AppConfig from 'Constants/AppConfig';
 // import types for dispatch puropse
 import {
@@ -25,6 +24,7 @@ import {
     postStackRequestSuccess,
     postStackRequestFailure
 } from 'Actions/TokenStaking';
+const lgnErrCode = loginErrCode();
 
 // get plan list details
 function* getSlabListRequest(payload) {
@@ -37,7 +37,7 @@ function* getSlabListRequest(payload) {
             //unauthorized or invalid token
             redirectToLogin()
         } else {
-            if (responseFromSocket.ReturnCode == 0) {
+            if (responseFromSocket.ReturnCode === 0) {
                 yield put(getSlabListSuccess(responseFromSocket));
             } else {
                 yield put(getSlabListFailure(responseFromSocket));
@@ -61,7 +61,7 @@ function* getPreConfirmationRequest(payload) {
             //unauthorized or invalid token
             redirectToLogin()
         } else {
-            if (responseFromSocket.ReturnCode == 0) {
+            if (responseFromSocket.ReturnCode === 0) {
                 yield put(getPreConfirmationDetailsSuccess(responseFromSocket));
             } else {
                 yield put(getPreConfirmationDetailsFailure(responseFromSocket));
@@ -85,7 +85,7 @@ function* getWalletTypeListRequest(payload) {
             //unauthorized or invalid token
             redirectToLogin()
         } else {
-            if (responseFromSocket.ReturnCode == 0 && responseFromSocket.hasOwnProperty('walletTypeMasters'))
+            if (responseFromSocket.ReturnCode === 0 && responseFromSocket.hasOwnProperty('walletTypeMasters'))
                 yield put(getWalletTypeListSuccess(responseFromSocket.walletTypeMasters));
             else
                 yield put(getWalletTypeListFailure(responseFromSocket));
@@ -108,7 +108,7 @@ function* postStackRequestServer(payload) {
             //unauthorized or invalid token
             redirectToLogin()
         } else {
-            if (responseFromSocket.ReturnCode == 0)
+            if (responseFromSocket.ReturnCode === 0)
                 yield put(postStackRequestSuccess(responseFromSocket));
             else
                 yield put(postStackRequestFailure(responseFromSocket));

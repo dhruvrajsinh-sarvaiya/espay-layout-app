@@ -108,7 +108,6 @@ class TourComponent extends Component {
   // component life cycle hook to set the state when component is mounted
   componentDidMount() {
     this.setState({ step: 0 });
-    //console.log('step',this.state.step);
     // setup tour first
     this.joyride.addTooltip({
       title: "The classic joyride",

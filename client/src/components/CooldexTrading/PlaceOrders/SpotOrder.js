@@ -1,7 +1,6 @@
 // Component for Limit Place Order Detail By:Tejas Date : 13/9/2018
 
 import React from "react";
-import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 import { AddMarginBalance } from 'Components/MarginTrading';
 import {
   validateBuyPrice,
@@ -106,9 +105,7 @@ class LimitOrder extends React.Component {
         priceSell : parseFloat(nextprops.currentPrice.LastPrice).toFixed(8),
         lastPriceBit:nextprops.lastPriceBit,
         amountBuy:"",
-        //totalBuy:"",
         amountSell:"",
-        //totalSell:""
       })
 
     }
@@ -442,10 +439,7 @@ class LimitOrder extends React.Component {
   };
 
   changeSelectedBuyValue = value => {
-    if (this.state.selectedBuyValue === value) {
-      
-    } else {
-      
+    if (this.state.selectedBuyValue !== value) {
       // calculation process of Amount
       if (
         this.state.priceBuy != "" &&
@@ -479,10 +473,7 @@ class LimitOrder extends React.Component {
   };
 
   changeSelectedSellValue = value => {
-    if (this.state.selectedSellValue === value) {
-      
-    } else {
-      
+    if (this.state.selectedSellValue !== value) {
       // calculation process of Amount
       if (
         this.state.priceSell != "" &&
@@ -518,26 +509,26 @@ class LimitOrder extends React.Component {
   doSellOrder = event => {
     event.preventDefault();
     const info = this.props.info;
-    if(this.state.priceSell == '' || typeof this.state.priceSell === undefined || this.state.priceSell ==0 ){
+    if(this.state.priceSell == '' || typeof this.state.priceSell === 'undefined' || this.state.priceSell ==0 ){
 
       this.setState({ showLoader: false, sellLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
-    } else if(this.state.amountSell == '' || typeof this.state.amountSell === undefined || this.state.amountSell ==0 ){
+    } else if(this.state.amountSell == '' || typeof this.state.amountSell === 'undefined' || this.state.amountSell ==0 ){
       this.setState({ showLoader: false, sellLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
-    } else if(this.state.totalSell == '' || typeof this.state.totalSell === undefined || this.state.totalSell ==0 ){
+    } else if(this.state.totalSell == '' || typeof this.state.totalSell === 'undefined' || this.state.totalSell ==0 ){
 
       this.setState({ showLoader: false, sellLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4609" />);
-    } else if(info.currencyPairID == '' || typeof info.currencyPairID === undefined || info.currencyPairID ==0 ){
+    } else if(info.currencyPairID == '' || typeof info.currencyPairID === 'undefined' || info.currencyPairID ==0 ){
 
       this.setState({ showLoader: false, sellLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
-    } else if(this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === undefined || this.props.secondCurrencyWalletId ==0 ){
+    } else if(this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === 'undefined' || this.props.secondCurrencyWalletId ==0 ){
 
       this.setState({ showLoader: false, sellLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
-    } else if(this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === undefined || this.props.firstCurrencyWalletId ==0 ){
+    } else if(this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === 'undefined' || this.props.firstCurrencyWalletId ==0 ){
 
       this.setState({ showLoader: false, sellLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
@@ -620,26 +611,26 @@ class LimitOrder extends React.Component {
     event.preventDefault();
     const info = this.props.info;
     
-    if(this.state.priceBuy == '' || typeof this.state.priceBuy === undefined || this.state.priceBuy ==0 ){
+    if(this.state.priceBuy == '' || typeof this.state.priceBuy === 'undefined' || this.state.priceBuy ==0 ){
 
       this.setState({ showLoader: false, buyLimitOrderBit:0});
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
-    } else if(this.state.amountBuy == '' || typeof this.state.amountBuy === undefined || this.state.amountBuy ==0 ){
+    } else if(this.state.amountBuy == '' || typeof this.state.amountBuy === 'undefined' || this.state.amountBuy ==0 ){
 
       this.setState({ showLoader: false, buyLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
-    } else if(this.state.totalBuy == '' || typeof this.state.totalBuy === undefined || this.state.totalBuy ==0 ){
+    } else if(this.state.totalBuy == '' || typeof this.state.totalBuy === 'undefined' || this.state.totalBuy ==0 ){
       this.setState({ showLoader: false, buyLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4609" />);
-    } else if(info.currencyPairID == '' || typeof info.currencyPairID === undefined || info.currencyPairID ==0 ){
+    } else if(info.currencyPairID == '' || typeof info.currencyPairID === 'undefined' || info.currencyPairID ==0 ){
 
       this.setState({ showLoader: false, buyLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
-    } else if(this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === undefined || this.props.secondCurrencyWalletId ==0 ){
+    } else if(this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === 'undefined' || this.props.secondCurrencyWalletId ==0 ){
 
       this.setState({ showLoader: false, buyLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
-    } else if(this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === undefined || this.props.firstCurrencyWalletId ==0 ){
+    } else if(this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === 'undefined' || this.props.firstCurrencyWalletId ==0 ){
 
       this.setState({ showLoader: false, buyLimitOrderBit:0 });
       NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
@@ -723,7 +714,6 @@ class LimitOrder extends React.Component {
     const data = this.props.info;
     return (
       <Row>
-        {/* this.props.loading && <JbsSectionLoader /> */}
         <Col sm={6} xs={6} className="buysellbox">
             <div className="p-0 d-flex justify-content-between">
               <h4>
@@ -1060,7 +1050,6 @@ class LimitOrder extends React.Component {
                     <Input
                       type="text"
                       value={this.state.totalSell}
-                      // onBlur={this.validateSellTotal}
                       name="total"
                       id="total"
                       onChange={this.validateSellTotal}
@@ -1105,9 +1094,6 @@ class LimitOrder extends React.Component {
   }
 }
 
-// export component
-//export default LimitOrder;
-
 // Set Props when actions are dispatch
 const mapStateToProps = state => ({
   buyOrder: state.placeOrder.buyOrder,
@@ -1116,8 +1102,7 @@ const mapStateToProps = state => ({
   buyOrderLoading: state.placeOrder.buyOrderLoading,
   sellOrderLoading: state.placeOrder.sellOrderLoading,
   error: state.placeOrder.error,
-  //currentPrice:state.currency.currentPrice,  
-  currentPrice:state.currentMarketCap.currentMarketCap,
+   currentPrice:state.currentMarketCap.currentMarketCap,
   lastPriceBit:state.currentMarketCap.lastPriceBit, 
 });
 

@@ -4,7 +4,7 @@
     File Comment : Deposit History Reducer action manager
 */
 
-import { NotificationManager } from 'react-notifications';
+
 //import only required deposit history actions 
 import {
     GET_DEPOSIT_HISTORY,
@@ -19,7 +19,10 @@ const INITIAL_STATE = {
     deposithistoryLoading: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state , action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
     switch (action.type) {
         case GET_DEPOSIT_HISTORY:
             return { ...state, deposithistoryLoading : true };

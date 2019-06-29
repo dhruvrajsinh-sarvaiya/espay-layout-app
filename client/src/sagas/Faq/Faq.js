@@ -29,15 +29,15 @@ import {
 
 //Function check API call for Faq Category List..
 const getFaqCategoryRequest = async () =>
-await api.get('/api/private/v1/faqcategory/getActiveFaqCategory')
-    .then(response => response)
-    .catch(error => error);
+    await api.get('/api/private/v1/faqcategory/getActiveFaqCategory')
+        .then(response => response)
+        .catch(error => error);
 
 //Function check API call for Faq Question List..
 const getFaqQuestionRequest = async () =>
-await api.get('/api/private/v1/faqquestion/getActiveFaqQuestion')
-    .then(response => response)
-    .catch(error => error);
+    await api.get('/api/private/v1/faqquestion/getActiveFaqQuestion')
+        .then(response => response)
+        .catch(error => error);
 
 /**
  * Send Faq Request To Server
@@ -52,11 +52,9 @@ const getFaqRequest = async () =>
 function* getFaqCategoriesAPI() {
     try {
         const response = yield call(getFaqCategoryRequest);
-        //console.log("API Category",response);
-        if (typeof response.data != 'undefined' && response.data.responseCode==0)
-        {
+        if (typeof response.data != 'undefined' && response.data.responseCode == 0) {
             yield put(getFaqcategoriesSuccess(response.data.data));
-        }else{
+        } else {
             yield put(getFaqcategoriesFailure('Unable to Fetch Data.'));
         }
     } catch (error) {
@@ -68,11 +66,10 @@ function* getFaqCategoriesAPI() {
 function* getFaqQuestionsAPI() {
     try {
         const response = yield call(getFaqQuestionRequest);
-    
-        if (typeof response.data != 'undefined' && response.data.responseCode==0)
-        {
+
+        if (typeof response.data != 'undefined' && response.data.responseCode == 0) {
             yield put(getFaqquestionsSuccess(response.data.data));
-        }else{
+        } else {
             yield put(getFaqquestionsFailure('Unable to Fetch Data.'));
         }
     } catch (error) {
@@ -86,7 +83,6 @@ function* getFaqQuestionsAPI() {
 function* getFaqFromServer() {
     try {
         const response = yield call(getFaqRequest);
-        //console.log("responsefaq",response);
         yield put(getFaqSuccess(response));
     } catch (error) {
         yield put(getFaqFailure(error));
@@ -107,7 +103,6 @@ export function* getFaqquestions() {
  * Get Faq
  */
 export function* getFaq() {
-    //console.log("faqtest");
     yield takeEvery(GET_FAQ, getFaqFromServer);
 }
 

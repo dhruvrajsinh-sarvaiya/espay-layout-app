@@ -8,10 +8,9 @@ import { connect } from 'react-redux';
 import IntlMessages from 'Util/IntlMessages';
 import { injectIntl } from 'react-intl';
 import { NotificationManager } from 'react-notifications';
-import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 
 //added by Tejas 14/6/2019
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 
 import Select from "react-select";
 import {
@@ -22,9 +21,7 @@ import {
     Form,
     FormGroup,
     Label,
-    Input,
     Button,
-    Table
 } from 'reactstrap';
 import {
     createArbitrageWallet,
@@ -44,9 +41,10 @@ class CreateArbitrageWallet extends Component {
         };
     }
     componentWillReceiveProps(nextProps) {
-        if (nextProps.createWalletResponse.hasOwnProperty('ReturnCode')) {
+        if (nextProps.createWalletResponse.hasOwnProperty('ReturnCode') && this.state.flag) {
+            this.setState({ flag: false });
             if (nextProps.createWalletResponse.ReturnCode === 0) {
-                NotificationManager.success(nextProps.createWalletResponse.ReturnMsg);
+                NotificationManager.success(<IntlMessages id={`sidebar.createWalletSuccess`} />);
                 this.props.getArbitrageWalletList({});
                 this.setState({
                     showModal: false,
@@ -101,8 +99,8 @@ class CreateArbitrageWallet extends Component {
         return (
             <Fragment>
                 <Button
-                    color="primary"
-                    className="mr-10 border-0 rounded-0 mt-10"
+                    // color="primary"
+                    className="mr-10 border-0 rounded-0 mt-10 perverbtn"
                     style={{ float: "right" }}
                     onClick={this.toggleShowModal}
                 >
@@ -111,7 +109,7 @@ class CreateArbitrageWallet extends Component {
 
                 {/* end */}
                 <Modal isOpen={showModal}>
-                    {(this.props.loading || this.props.walletLoading) && <JbsBarLoader />}
+                    {(this.props.loadingCreate || this.props.walletLoading) && <JbsLoader />}
                     <ModalHeader toggle={this.toggleShowModal}><IntlMessages id="wallet.createarbitrageWallet" /></ModalHeader>
                     <ModalBody>
                         <Form>
@@ -131,8 +129,8 @@ class CreateArbitrageWallet extends Component {
                     </ModalBody>
                     <ModalFooter>
                         <Button
-                            color="primary"
-                            className={"mr-10 border-0 rounded-0 " + ((this.state.WalletTypeId === '') ? "disabled" : "")}
+                            // color="primary"
+                            className={"mr-10 border-0 rounded-0 perverbtn " + ((this.state.WalletTypeId === '') ? "disabled" : "")}
                             onClick={this.createWallet}><IntlMessages id="wallet.btnCreate" /></Button>{' '}
                         <Button
                             color="danger"
@@ -148,8 +146,8 @@ class CreateArbitrageWallet extends Component {
 // map state to props
 const mapStateToProps = ({ ArbitrageWalletReducer, withdrawApp }) => {
     const walletLoading = withdrawApp.loading;
-    const { loading, addLeverageResponse, confirmResponse, currencyList, createWalletResponse } = ArbitrageWalletReducer;
-    return { loading, walletLoading, addLeverageResponse, confirmResponse, currencyList, createWalletResponse };
+    const { loadingCreate, addLeverageResponse, confirmResponse, currencyList, createWalletResponse } = ArbitrageWalletReducer;
+    return { loadingCreate, walletLoading, addLeverageResponse, confirmResponse, currencyList, createWalletResponse };
 };
 
 export default connect(mapStateToProps, {

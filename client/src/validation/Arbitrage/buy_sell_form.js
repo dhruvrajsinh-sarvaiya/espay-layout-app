@@ -10,10 +10,7 @@ export function validatePrice(data) {
     let errors = {};
     const regexNumeric = /^[0-9]+(\.[0-9]{1,8})?$/;
 
-    // if (!regexNumeric.test(data)) {
-    //     errors.rate = "trade.errTradePriceIsNumber";
-    // }
-    if (!validator.matches(data,regexNumeric)) {
+    if (!validator.matches(data, regexNumeric)) {
         errors.rate = "trade.errTradePriceIsNumber";
     }
     return {
@@ -25,7 +22,7 @@ export function validateAmount(data) {
     let errors = {};
     const regexNumeric = /^[0-9]+(\.[0-9]{1,8})?$/;
 
-    if (!validator.matches(data,regexNumeric)) {
+    if (!validator.matches(data, regexNumeric)) {
         errors.amount = "trade.errTradeAmountIsNumber";
     }
 
@@ -38,7 +35,7 @@ export function validateTotal(data) {
     let errors = {};
     const regexNumeric = /^[0-9]+(\.[0-9]{1,8})?$/;
 
-    if (!validator.matches(data,regexNumeric)) {
+    if (!validator.matches(data, regexNumeric)) {
         errors.total = "trade.errTradeTotalIsNumber";
     }
 
@@ -51,7 +48,7 @@ export function validateQty(data) {
     let errors = {};
     const regexNumeric = /^[0-9]+(\.[0-9]{1,8})?$/;
 
-    if (!validator.matches(data,regexNumeric)) {
+    if (!validator.matches(data, regexNumeric)) {
         errors.quantity = "trade.errTradeQtyIsNumber";
     }
 
@@ -64,7 +61,7 @@ export function validateFees(data) {
     let errors = {};
     const regexNumeric = /^[0-9]+(\.[0-9]{1,8})?$/;
 
-    if (!validator.matches(data,regexNumeric)) {
+    if (!validator.matches(data, regexNumeric)) {
         errors.fees = "trade.errTradeFeesIsNumber";
     }
 
@@ -96,10 +93,6 @@ export function validateData(data) {
         }
     }
 
-    if (data.total === '' || data.total === 0) {
-        //errors.buyTotal = "trade.errTradeTotalRequired";
-    }
-
     if (data.limitBuy === '' || data.limitBuy === 0) {
         errors.buyLimit = "trade.errTradeLimitRequired";
     }
@@ -113,9 +106,6 @@ export function validateOnlyNumeric(data) {
 
     const regexNumeric = /^[0-9.]+$/;
 
-    if (!validator.matches(data,regexNumeric)) {
-        return false;
-    } else {
-        return true;
-    }
+    return (!validator.matches(data, regexNumeric)) ? false : true
+
 }

@@ -4,17 +4,13 @@
  * Edit IP Whitelist Component
  */
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 import { Form, FormGroup, Input, Label, Alert } from "reactstrap";
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
-// redux action
-import { AddIPToWhitelist } from "Actions/MyAccount";
 //intl messages
 import IntlMessages from "Util/IntlMessages";
 //Get IP,Hostname,deviceInfo and mode from the helper.js
@@ -106,7 +102,7 @@ class EditIPWhitelistDialogWdgt extends Component {
 
 	render() {
 		const { SelectedIPAddress, IpAliasName } = this.state.data;
-		const { err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
+		const { err_alert, err_msg, success_msg, success_alert, errors } = this.state;
 		return (
 			<Fragment>
 				<Dialog

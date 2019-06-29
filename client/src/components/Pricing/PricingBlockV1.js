@@ -3,10 +3,8 @@
  */
 import React from "react";
 import { Button } from "reactstrap";
-
 // component
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 

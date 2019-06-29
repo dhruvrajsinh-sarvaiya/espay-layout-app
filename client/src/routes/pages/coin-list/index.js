@@ -15,11 +15,7 @@ import CoinList from "Components/Coinlist/CoinList";
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
-import {Link} from 'react-router-dom';
-import AppConfig from 'Constants/AppConfig';
-//For Meta Tag and SEO Configuration
-import Page from "Components/page";
-import Surveys from 'Components/Surveys/survey-form';//Added by dhara gajera 21/1/2019
+//Added by dhara gajera 21/1/2019
 export default class coinList extends Component {
 	render() {
 		return (

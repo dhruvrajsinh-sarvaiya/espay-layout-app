@@ -5,7 +5,6 @@
 */
 import React, { Component, Fragment } from 'react'
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
-import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import IntlMessages from "Util/IntlMessages";
 import { NotificationManager } from "react-notifications";
 import { connect } from "react-redux";
@@ -72,7 +71,7 @@ class EmailsWdgt extends Component {
         const { EmailList } = this.state.EmailList;
         return (
             <Fragment>
-                {/* {this.state.loading && <JbsSectionLoader />} */}
+                
                 <Form>
                     <FormGroup>
                         <Label for="EmailIds"><IntlMessages id="sidebar.enterEmailId" /><span className="text-danger">*</span></Label>

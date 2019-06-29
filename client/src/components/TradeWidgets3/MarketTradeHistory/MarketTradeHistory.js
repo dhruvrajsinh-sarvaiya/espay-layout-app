@@ -14,7 +14,7 @@ import IntlMessages from "Util/IntlMessages";
 import { Scrollbars } from "react-custom-scrollbars";
 
 // import Action
-import { 
+import {
     getMarketTradeHistory,
 } from "Actions/Trade";
 
@@ -31,8 +31,6 @@ class MarketTradeRow extends React.Component {
             lastClass = "text-success";
         } else if (this.props.Type === "SELL") {
             lastClass = "text-danger";
-        } else {
-            lastClass = "";
         }
 
         return (
@@ -105,7 +103,7 @@ class MarketTrade extends React.Component {
 
     // code for handle signalr listners for normal trading
     processForNormalTrading() {
-        
+
         this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
@@ -116,7 +114,7 @@ class MarketTrade extends React.Component {
                             this.state.socketLastPriceData.length === 0) ||
                         (this.state.socketLastPriceData.length !== 0 &&
                             marketCap.EventTime >
-                                this.state.socketLastPriceData.EventTime)
+                            this.state.socketLastPriceData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -129,7 +127,7 @@ class MarketTrade extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
 
@@ -145,13 +143,13 @@ class MarketTrade extends React.Component {
                                 this.state.socketData.length === 0) ||
                             (this.state.socketData.length !== 0 &&
                                 receivedMessageData.EventTime >
-                                    this.state.socketData.EventTime)
+                                this.state.socketData.EventTime)
                         ) {
                             if (
                                 this.props.currencyPair ===
-                                    receivedMessageData.Parameter &&
+                                receivedMessageData.Parameter &&
                                 typeof receivedMessageData.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 receivedMessageData.IsMargin === 0
                             ) {
                                 var orderHistory = $.extend(
@@ -168,9 +166,7 @@ class MarketTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {
-                        //console.log(error)
-                    }
+                    } catch (error) { }
                 }
             }
         );
@@ -188,7 +184,7 @@ class MarketTrade extends React.Component {
                             this.state.socketLastPriceData.length === 0) ||
                         (this.state.socketLastPriceData.length !== 0 &&
                             marketCap.EventTime >
-                                this.state.socketLastPriceData.EventTime)
+                            this.state.socketLastPriceData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -201,7 +197,7 @@ class MarketTrade extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
 
@@ -216,13 +212,13 @@ class MarketTrade extends React.Component {
                                 this.state.socketData.length === 0) ||
                             (this.state.socketData.length !== 0 &&
                                 receivedMessageData.EventTime >
-                                    this.state.socketData.EventTime)
+                                this.state.socketData.EventTime)
                         ) {
                             if (
                                 this.props.currencyPair ===
-                                    receivedMessageData.Parameter &&
+                                receivedMessageData.Parameter &&
                                 typeof receivedMessageData.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 receivedMessageData.IsMargin === 1
                             ) {
                                 var orderHistory = $.extend(
@@ -239,7 +235,7 @@ class MarketTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
             }
         );
@@ -278,7 +274,7 @@ class MarketTrade extends React.Component {
         if (this.state.marketTradeHistory.length !== 0) {
             MarketTradeData.map((newBuyOrder, key) => {
 
-                if(newBuyOrder.IsCancel === 0) { // code add by devang parekh (8-4-2019), as per discuss with ritaben for handle partial cancel order settle date issue (because of this issue order comes with first which is already settled priviously)
+                if (newBuyOrder.IsCancel === 0) { // code add by devang parekh (8-4-2019), as per discuss with ritaben for handle partial cancel order settle date issue (because of this issue order comes with first which is already settled priviously)
                     marketTradeHistoryList.push(
                         <MarketTradeRow
                             price={newBuyOrder.Price}

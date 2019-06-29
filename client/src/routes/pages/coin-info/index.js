@@ -21,7 +21,6 @@ import IntlMessages from 'Util/IntlMessages';
 // jbs card box
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 //For SET META TAG
-import Page from 'Components/page';
 import AppConfig from 'Constants/AppConfig';
 
 
@@ -51,14 +50,14 @@ export default class coinInfo extends Component {
 		const coininfo = this.state.coininfo;
 		var dateFormat = require('dateformat');
 		return (
-			// <Page id="coininfo" title="COIN INFO" description="This is COIN INFO">
+			
 			<div className="about-wrapper">
 				<PageTitleBar title={<IntlMessages id="sidebar.coinInfo" />} match={this.props.match} />
 					
 				<div className="row">
 					<div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 w-xs-full">
 						<div className="dash-cards">
-							{/* <a href="javascript:void(0);" className="square-40 bg-warning card-right-action fs-8">2</a> */}
+							
 								<div className="card">
 									<div className="media">
 										<div className="media-left mr-25">
@@ -68,9 +67,7 @@ export default class coinInfo extends Component {
                             				<div className="mb-10">
                                 				<h2 className="mb-5">{coininfo.SMSCode}</h2>
                                 				<p className="text-muted mb-15">{coininfo.Name}</p>
-												{/* <div className="mb-10">
-													<p className="font-3x mb-0">$623<sub className="text-dark font-lg">+1.5%</sub></p>
-												</div> */}
+												
                             				</div>
                         				</div>
 									</div>
@@ -82,16 +79,6 @@ export default class coinInfo extends Component {
 						<div className="dash-cards">
 							<div className="card p-25">
 								<div className="row mt-50">
-                        			{/* <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 pb-10">
-                            			<span className="fs-14 d-block font-weight-bold text-center">Market Cap</span>
-                            			<span className="text-center">$21,326,015,000</span>
-                        			</div>
-
-									<div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 pb-10">
-										<span className="fs-14 d-block font-weight-bold text-center">24h Vol (Global)</span>
-										<span className="text-center">฿139,038 ($890,368,352)</span>
-									</div> */}
-
 									<div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 pb-10">
 										<span className="fs-14 d-block font-weight-bold text-center">{<IntlMessages id="coininfo.circulatingsupply" />}</span>
 										<span className="text-center">{coininfo.CirculatingSupply}</span>
@@ -167,7 +154,7 @@ export default class coinInfo extends Component {
 					</div>
 				</JbsCollapsibleCard>
 			</div>
-			// </Page>	
+			
 		);
 	}
 }

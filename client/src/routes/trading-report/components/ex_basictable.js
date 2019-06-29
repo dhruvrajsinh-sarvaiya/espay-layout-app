@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Fragment } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,14 +12,8 @@ import IntlMessages from "Util/IntlMessages";
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 
 const ExBasictable = ({ title, data, columns, options }) => {
-  /* state = {
-        sectionReload : false
-    } */
   return (
     <Fragment>
-      {/* {this.state.sectionReload &&
-                <JbsSectionLoader />
-            } */}
       <JbsCollapsibleCard
         heading={<IntlMessages id={title} />}
         reloadable
@@ -44,7 +37,6 @@ const ExBasictable = ({ title, data, columns, options }) => {
                   data.map(
                     (list, key) =>
                       key < 10 && (
-                        //console.log(list[0])
                         <TableRow key={Math.random()}>
                           <TableCell>{list[0]}</TableCell>
                           <TableCell>{list[1]}</TableCell>

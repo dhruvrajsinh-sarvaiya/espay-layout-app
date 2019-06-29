@@ -46,7 +46,7 @@ class BlockchainKeystoreFile extends Component {
         }
     }
     render() {
-        const { password, errors } = this.state;
+        const { errors } = this.state;
         return (
             <Fragment>
                 <form>
@@ -55,8 +55,7 @@ class BlockchainKeystoreFile extends Component {
                     </FormGroup>
                     <FormGroup className="row">
                         <span className="has-icon col-md-2 pt-10"><i className="ti-lock"></i></span>
-                        {/*Added By Bharat Jograna
-                        <Input type="password" name="password" className="col-md-10" id="password" value={password} placeholder="Enter Password" onChange={this.onChange} /> */}
+                        
                         <Input type="password" name="password" className="col-md-10" id="password" placeholder="Enter Password" onChange={this.onChange} />
                         {errors.password && <span className="ml-70 text-danger"><IntlMessages id={errors.password} /></span>}
                     </FormGroup>

@@ -224,7 +224,7 @@ class tradingDashbaord extends Component {
 
     setBuyOrders = (price,amount) =>{
         var bulkBuyOrder=[]
-        if((price && price !==0) && (amount && amount !==0) ){            
+        if((price && price !=0) && (amount && amount !=0) ){            
             var total = parseFloat(parseFloat(price)*parseFloat(amount)).toFixed(8)        
             // bulkBuyOrder.push({"Price":price,"Amount":amount,"Total":total})    
             bulkBuyOrder.Price = price;       
@@ -239,7 +239,7 @@ class tradingDashbaord extends Component {
 
     setSellOrders = (price,amount) =>{
         var bulkSellOrder=[]
-        if((price && price !==0) && (amount && amount !==0) ){            
+        if((price && price !=0) && (amount && amount !=0) ){            
             var total = parseFloat(parseFloat(price)*parseFloat(amount)).toFixed(8)                    
             bulkSellOrder.Price = price;       
             bulkSellOrder.Amount = amount;
@@ -263,9 +263,7 @@ class tradingDashbaord extends Component {
                 const firstCurrency = value.PairList[0].Abbrevation
                 const UpDownBit =  value.PairList[0].UpDownBit
                 const takers =  value.PairList[0].SellFees
-                const makers =  value.PairList[0].BuyFees
-                var pairs = '';
-    
+                const makers =  value.PairList[0].BuyFees    
                 const OldBaseCurrency = this.state.secondCurrency;
                 const oldPair = this.state.currencyPair;
                 this.setState({
@@ -365,9 +363,6 @@ class tradingDashbaord extends Component {
     }
 
     render() {
- 
-        var secondCurrencyBalance = 0;
-        var firstCurrencyBalance = 0;
         var firstCurrencyWalletId =0;
         var secondCurrencyWalletId =0;
       
@@ -380,7 +375,6 @@ class tradingDashbaord extends Component {
                 secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID
             }else{
                 this.state.secondCurrencyBalance = 0
-                secondCurrencyWalletId = 0
             }
 
             if(firstCurrencyBal !== -1){
@@ -388,19 +382,12 @@ class tradingDashbaord extends Component {
                     firstCurrencyWalletId = this.state.Wallet[firstCurrencyBal].AccWalletID
             }else{
                 this.state.firstCurrencyBalance = 0
-                firstCurrencyWalletId = 0
             }         
         } 
-       
-        //console.log("inde first render",this.state.firstCurrencyBalance);
-        //console.log("inde first render",this.state.secondCurrencyBalance);
-        const { match } = this.props;
-        var currentBuyPrice = 0
-        var currentSellPrice = 0
-        if (this.state.currentMarket) {
+               if (this.state.currentMarket) {
             this.state.currentMarket.map(value => {
                 if (value.firstCurrency == this.state.firstCurrency) {
-                    this.state.currentBuyPrice = value.BuyPrice,
+                    this.state.currentBuyPrice = value.BuyPrice
                     this.state.currentSellPrice = value.SellPrice
                 }
             })

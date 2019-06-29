@@ -118,7 +118,6 @@ class CommissionReport extends Component {
             userLable: '',
             showReset: false,
             loading: false,
-            isDisable: true,
             totalCount: 0,
             errors: {},
             list: []
@@ -158,14 +157,14 @@ class CommissionReport extends Component {
         newObj.SchemeMappingId = "";
         newObj.TrnUserId = "";
         newObj.TrnRefNo = "";
-        this.setState({ data: newObj, errors: '', showReset: false, isDisable: true });
+        this.setState({ data: newObj, errors: '', showReset: false });
         this.props.affiliateCommissionReport(newObj);
     }
 
     onChange = (event) => {
         var newObj = Object.assign({}, this.state.data);
         newObj[event.target.name] = event.target.value;
-        this.setState({ data: newObj, isDisable: false });
+        this.setState({ data: newObj });
     }
 
     applyFilter = () => {
@@ -218,7 +217,7 @@ class CommissionReport extends Component {
 
     render() {
         const { PageNo, PageSize, FromDate, ToDate, SchemeMappingId, TrnUserId, TrnRefNo } = this.state.data;
-        const { mappingList, userlist, loading, list, totalCount, showReset, errors, isDisable } = this.state;
+        const { mappingList, userlist, loading, list, totalCount, showReset, errors } = this.state;
         const options = {
             filterType: "select",
             responsive: "scroll",
@@ -242,9 +241,9 @@ class CommissionReport extends Component {
             },
 
             customFooter: (count, page, rowsPerPage) => {
-                var page = page > 0 ? page + 1 : 1;
+                var page1 = page > 0 ? page + 1 : 1;
                 return (
-                    <CustomFooter count={count} page={page} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
+                    <CustomFooter count={count} page={page1} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
             },
             onTableChange: (action, tableState) => {
@@ -295,7 +294,7 @@ class CommissionReport extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger  rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>

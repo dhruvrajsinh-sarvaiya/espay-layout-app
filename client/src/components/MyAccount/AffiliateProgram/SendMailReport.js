@@ -58,7 +58,6 @@ class SendMailReport extends Component {
             showReset: false,
             loading: false,
             totalCount: 0,
-            isDisable: true,
             errors: {},
             list: []
         }
@@ -89,7 +88,7 @@ class SendMailReport extends Component {
         newObj.ToDate = new Date().toISOString().slice(0, 10);
         newObj.PageNo = 0;
         newObj.PageSize = AppConfig.totalRecordDisplayInList;
-        this.setState({ data: newObj, showReset: false, errors: '',isDisable: true });
+        this.setState({ data: newObj, showReset: false, errors: '' });
         this.props.affiliateEmailSentReport(newObj);
     }
 
@@ -124,7 +123,7 @@ class SendMailReport extends Component {
     onChange = (event) => {
         var newObj = Object.assign({}, this.state.data);
         newObj[event.target.name] = event.target.value;
-        this.setState({ data: newObj,isDisable: false  });
+        this.setState({ data: newObj  });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -147,7 +146,7 @@ class SendMailReport extends Component {
 
     render() {
         const { FromDate, ToDate, PageNo, PageSize } = this.state.data;
-        const { showReset, loading, list, totalCount, errors,isDisable, } = this.state;
+        const { showReset, loading, list, totalCount, errors } = this.state;
         let today = new Date();
         today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
         const options = {
@@ -170,9 +169,9 @@ class SendMailReport extends Component {
                 }
             },
             customFooter: (count, page, rowsPerPage) => {
-                var page = page > 0 ? page + 1 : 1;
+                var page1 = page > 0 ? page + 1 : 1;
                 return (
-                    <CustomFooter count={count} page={page} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
+                    <CustomFooter count={count} page={page1} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
             },
             onTableChange: (action, tableState) => {
@@ -201,7 +200,7 @@ class SendMailReport extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                                <Button  variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10 rounded-0 border-0 text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button  variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 rounded-0 border-0 text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>

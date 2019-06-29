@@ -63,7 +63,7 @@ class Signin extends Component {
 	}
 
 	render() {
-		const { email, password } = this.state;
+		const { email} = this.state;
 		const { loading } = this.props;
 		return (
 			<QueueAnim type="bottom" duration={2000}>

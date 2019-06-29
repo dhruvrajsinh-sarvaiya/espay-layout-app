@@ -47,7 +47,7 @@ class ComplainReplayFormWdgt extends Component {
 		if (Object.keys(nextProps.list).length > 0 && Object.keys(nextProps.list.ComplainViewmodel).length > 0) {
 			this.setState({ list: nextProps.list.ComplainViewmodel });
 		}
-	if (nextProps.reply_data.ReturnCode === 1 || nextProps.reply_data.ReturnCode === 9) {
+		if (nextProps.reply_data.ReturnCode === 1 || nextProps.reply_data.ReturnCode === 9) {
 			var errMsg = nextProps.reply_data.ErrorCode === 1 ? nextProps.reply_data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.reply_data.ErrorCode}`} />;
 			NotificationManager.error(errMsg);
 			this.props.myCallbackComplainWdgt1(this.state.ListComplain);
@@ -83,26 +83,26 @@ class ComplainReplayFormWdgt extends Component {
 				{loading && <JbsSectionLoader />}
 				<div className="card mx-auto w-100 p-15">
 					{list.ComplainMasterDataViewModel &&
-						list.ComplainMasterDataViewModel.map((list, index) => (
-						<div key={index}>
-							<h4 className="heading">#{list.ComplainId + " " + list.Subject}</h4>
-							<h2 className="heading mb-10">#{list.ComplainId}</h2>
-						</div>
-					))}
+						list.ComplainMasterDataViewModel.map((item, index) => (
+							<div key={index}>
+								<h4 className="heading">#{item.ComplainId + " " + item.Subject}</h4>
+								<h2 className="heading mb-10">#{item.ComplainId}</h2>
+							</div>
+						))}
 					{list.CompainTrailViewModel &&
-					list.CompainTrailViewModel.map((list, index) => (
-						<div className="card p-10 mb-10" key={index}>
-							<div className="media">
-								<div className="media-body pt-10">
-									<span className="mb-5 text-primary fs-14 d-block">
-										{list.Username}
-										<span className="date ml-10">{changeDateFormat(list.CreatedDate, 'YYYY-MM-DD HH:mm:ss')}</span>
-									</span>
-									<p>{list.Description}</p>
+						list.CompainTrailViewModel.map((items, index) => (
+							<div className="card p-10 mb-10" key={index}>
+								<div className="media">
+									<div className="media-body pt-10">
+										<span className="mb-5 text-primary fs-14 d-block">
+											{items.Username}
+											<span className="date ml-10">{changeDateFormat(items.CreatedDate, 'YYYY-MM-DD HH:mm:ss')}</span>
+										</span>
+										<p>{items.Description}</p>
+									</div>
 								</div>
 							</div>
-						</div>
-					))}
+						))}
 					<Form className="mt-25">
 						<FormGroup>
 							<Input tabIndex="1" type="textarea" name="description" className="form-control" rows="5" value={description} onChange={this.onChange} />

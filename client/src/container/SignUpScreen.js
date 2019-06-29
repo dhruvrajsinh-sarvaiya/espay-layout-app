@@ -15,8 +15,6 @@ import QueueAnim from 'rc-queue-anim';
 import IntlMessages from "Util/IntlMessages";
 //queryString
 import qs from 'query-string';
-// components
-//import { SessionSlider } from 'Components/Widgets';
 
 //Registration Form
 import { NormalRegistrationWdgt } from 'Components/MyAccount';
@@ -66,7 +64,6 @@ class SignUpScreen extends Component {
 								<div className="d-flex justify-content-between">
 									<div className="session-logo">
 										<Link to="/">
-											{/* <img src={AppConfig.appLogo} alt="session-logo" width="110" height="35" /> */}
 											<img src={AppConfig.appLogo} alt="session-logo" />
 										</Link>
 									</div>

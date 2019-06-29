@@ -241,15 +241,8 @@ class SetCustomLimits extends Component {
         const regexNumeric = /^[0-9]+$/;
 
         if (this.props.IsUpdate) {
-            if (event.target.value === "") {
+            if ((event.target.value === "")||(validator.matches(event.target.value, regexNumeric))) {
 
-                this.setState({
-                    [event.target.name]: event.target.value,
-                    updateRecord: true
-                })
-
-            }
-            else if (validator.matches(event.target.value, regexNumeric)) {
                 this.setState({
                     [event.target.name]: event.target.value,
                     updateRecord: true
@@ -257,19 +250,12 @@ class SetCustomLimits extends Component {
 
             }
         } else {
-            if (event.target.value === "") {
+            if ((event.target.value === "")|| (validator.matches(event.target.value, regexNumeric))) {
 
                 this.setState({
                     [event.target.name]: event.target.value
                 })
-            } else if (validator.matches(event.target.value, regexNumeric)) {
-
-                this.setState({
-                    [event.target.name]: event.target.value
-                })
-
             }
-
         }
     }
 
@@ -325,23 +311,10 @@ class SetCustomLimits extends Component {
         $("input[name='readonly']:checked").each(function () {
             values.push($(this).val());
         });
-        if (this.props.IsUpdate) {
-
-
-            this.setState({
-                readOnlyAPI: values,
-                updateRecord: true
-            })
-
-
-        } else {
-            this.setState({
-                readOnlyAPI: values,
-                updateRecord: true
-            })
-
-        }
-
+        this.setState({
+            readOnlyAPI: values,
+            updateRecord: true
+        })
 
     }
 
@@ -351,22 +324,10 @@ class SetCustomLimits extends Component {
         $("input[name='fullAccess']:checked").each(function () {
             values.push($(this).val());
         });
-        if (this.props.IsUpdate) {
-
-
-            this.setState({
-                fullAccessAPI: values,
-                updateRecord: true
-            })
-
-
-        } else {
-            this.setState({
-                fullAccessAPI: values,
-                updateRecord: true
-            })
-
-        }
+        this.setState({
+            fullAccessAPI: values,
+            updateRecord: true
+        })
 
     }
 

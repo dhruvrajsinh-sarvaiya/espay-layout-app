@@ -1,13 +1,10 @@
 // component for Top Loser Data By:Tejas Date : 4-1-2019
 
 // import react and component
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 
 //import method for connect store in component
 import { connect } from "react-redux";
-
-// import notification manager display warning,success, or error 
-import { NotificationManager } from "react-notifications";
 
 // import section loader
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
@@ -16,22 +13,10 @@ import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import { getTopLosersData } from "Actions/Trade";
 
 // import component
-import { Card, Table,Input } from 'reactstrap';
+import { Card, Table, Input } from 'reactstrap';
 
 // Import component for internationalization
 import IntlMessages from "Util/IntlMessages";
-
-// import component for drawer
-import TopGainerLoserData from '../TopGainer/TopGainerLoserData';
-
-const components = {
-    TopGainerLoserData: TopGainerLoserData,
-};
-
-// dynamic component binding
-const dynamicComponent = (TagName, props, drawerClose, closeAll) => {
-    return React.createElement(components[TagName], { props, drawerClose, closeAll });
-};
 
 // create class for Top Loser component
 class TopLoser extends Component {
@@ -41,7 +26,7 @@ class TopLoser extends Component {
             topLoserList: [],
             open: false,
             componentName: '',
-            selectedType:2
+            selectedType: 2
         };
     }
 
@@ -78,9 +63,8 @@ class TopLoser extends Component {
             this.setState({
                 topLoserList: nextprops.topLoserList,
             })
-        } 
+        }
         else if (nextprops.error.length !== 0 && nextprops.error.ReturnCode !== 0) {
-            //NotificationManager.error(<IntlMessages id={`error.trading.transaction.${nextprops.error.ErrorCode}`} />);
             this.setState({
                 topLoserList: [],
             })
@@ -88,13 +72,13 @@ class TopLoser extends Component {
 
     }
 
-     // handle selected type for call api
-     handleChange = (event) =>{
-      
+    // handle selected type for call api
+    handleChange = (event) => {
+
         this.props.getTopLosersData({ Type: event.target.value })
 
         this.setState({
-            selectedType:event.target.value
+            selectedType: event.target.value
         })
     }
 
@@ -112,7 +96,7 @@ class TopLoser extends Component {
 
         return (
             <Card className="mb-10">
-                {this.props.loading && <JbsSectionLoader />}                
+                {this.props.loading && <JbsSectionLoader />}
 
                 <div className="m-20 page-title d-flex justify-content-between align-items-center">
                     <div className="page-title-wrap">
@@ -155,11 +139,11 @@ class TopLoser extends Component {
                     <Table>
                         <thead>
                             <tr>
-                                <th><IntlMessages id="trading.topgainerslosers.pair" /></th>                                
-                                {this.state.selectedType == 1 && <th><IntlMessages id="widgets.volume" />  </th> }
-                                {this.state.selectedType == 2 && <th><IntlMessages id="trading.topgainerslosers.label.changeper" />  </th> }
-                                {this.state.selectedType == 3 && <th><IntlMessages id="trading.marketcap.label.lastprice" />  </th> }
-                                {this.state.selectedType == 4 && <th><IntlMessages id="trading.topgainerslosers.label.changeval" />  </th> }
+                                <th><IntlMessages id="trading.topgainerslosers.pair" /></th>
+                                {this.state.selectedType == 1 && <th><IntlMessages id="widgets.volume" />  </th>}
+                                {this.state.selectedType == 2 && <th><IntlMessages id="trading.topgainerslosers.label.changeper" />  </th>}
+                                {this.state.selectedType == 3 && <th><IntlMessages id="trading.marketcap.label.lastprice" />  </th>}
+                                {this.state.selectedType == 4 && <th><IntlMessages id="trading.topgainerslosers.label.changeval" />  </th>}
                                 <th><IntlMessages id="widgets.high" /></th>
                                 <th><IntlMessages id="widgets.low" /></th>
                             </tr>
@@ -172,23 +156,17 @@ class TopLoser extends Component {
                                     {this.state.selectedType == 1 && <td className="text-center">{parseFloat(topLoser.Volume).toFixed(8)}</td>}
                                     {this.state.selectedType == 2 && <td className="text-center">{parseFloat(topLoser.ChangePer).toFixed(2)}</td>}
                                     {this.state.selectedType == 3 && <td className="text-center">{parseFloat(topLoser.LTP).toFixed(8)}</td>}
-                                    {this.state.selectedType == 4 && <td className="text-center">{parseFloat(topLoser.ChangeValue).toFixed(8)}</td>}                                    
+                                    {this.state.selectedType == 4 && <td className="text-center">{parseFloat(topLoser.ChangeValue).toFixed(8)}</td>}
                                     <td className="text-center">{parseFloat(topLoser.High).toFixed(8)}</td>
                                     <td className="text-center">{parseFloat(topLoser.Low).toFixed(8)}</td>
                                 </tr>
                             )}
                         </tbody>
-                    </Table>                
+                    </Table>
                 </div>
-                {/* <div className="mt-5 topgainerloser">
-                    <a href="javascript:void(0)" onClick={(e) => this.showComponent('TopGainerLoserData')} className="col-sm-full" style={{ float: "right", padding: "5px" }}>
-                        <IntlMessages id="trading.showmore" />
-                    </a>
-                </div>                 */}
             </Card>
         )
     }
-
 }
 
 // map states to props when changed in states from reducer

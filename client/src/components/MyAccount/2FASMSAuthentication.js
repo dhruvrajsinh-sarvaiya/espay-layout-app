@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import {
     FormGroup,
-	Label,
+    Label,
     Input,
     Button
 } from 'reactstrap';
@@ -22,7 +22,7 @@ import Divider from '@material-ui/core/Divider';
 import IntlMessages from 'Util/IntlMessages';
 
 //Import 2fa Google Authentication...
-import { 
+import {
     twoFASMSAuthentication,
     sendSMS
 } from 'Actions/MyAccount';
@@ -31,52 +31,52 @@ const validate2FASMSAuth = require('../../validation/MyAccount/2fa_authenticatio
 
 class TwoFaSMSAuthentication extends Component {
     constructor(props) {
-		super();
-		this.state = {
+        super();
+        this.state = {
             open: false,
-            authType : 'sms',
-            authCode : '',
-            errors : {}
+            authType: 'sms',
+            authCode: '',
+            errors: {}
         }
-		
-		this.handleClickOpen = this.handleClickOpen.bind(this);
-		this.handleClose = this.handleClose.bind(this);
+
+        this.handleClickOpen = this.handleClickOpen.bind(this);
+        this.handleClose = this.handleClose.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSendSMS = this.onSendSMS.bind(this);
-	}
+    }
 
-	handleClickOpen(){
-		this.setState({ open: true });
-	}
+    handleClickOpen() {
+        this.setState({ open: true });
+    }
 
-	handleClose() {
-		this.setState({ open: false });
+    handleClose() {
+        this.setState({ open: false });
     }
 
     onChange(event) {
-        this.setState({ authCode : event.target.value });
+        this.setState({ authCode: event.target.value });
     }
-    
+
     onSendSMS(e) {
         e.preventDefault();
         this.props.sendSMS(this.state);
     }
 
-    onSubmit(e) {        
+    onSubmit(e) {
         e.preventDefault();
 
         const { errors, isValid } = validate2FASMSAuth(this.state);
-        this.setState({ errors : errors });
+        this.setState({ errors: errors });
 
-        if(isValid) {
+        if (isValid) {
             this.props.twoFASMSAuthentication(this.state);
         }
     }
 
     render() {
         const { open, authCode, errors } = this.state;
-        
+
         return (
             <Fragment>
                 <form>
@@ -98,12 +98,12 @@ class TwoFaSMSAuthentication extends Component {
                     </div>
                 </form>
                 <Dialog open={open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
-					<DialogTitle id="form-dialog-title" className="text-center">
+                    <DialogTitle id="form-dialog-title" className="text-center">
                         <span className="border-bottom border-warning pb-10"><IntlMessages id="my_account.resetSMSAuth" /></span>
                     </DialogTitle>
-					<DialogContent>
-						<DialogContentText>
-                            <IntlMessages id="my_account.resetGoogleAuthTxt1" />                            
+                    <DialogContent>
+                        <DialogContentText>
+                            <IntlMessages id="my_account.resetGoogleAuthTxt1" />
                             <Divider className="mt-5 mb-5" />
                             <div className="row mt-5 mb-5">
                                 <div className="col-md-11">
@@ -122,21 +122,21 @@ class TwoFaSMSAuthentication extends Component {
                                 </div>
                             </div>
                         </DialogContentText>
-					</DialogContent>
-					<DialogActions>
-						<Button variant="raised" onClick={this.handleClose} color="primary" className="text-white float-right"><IntlMessages id="sidebar.btnConfirmYourResetRequest" /></Button>
-					</DialogActions>
-				</Dialog>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button variant="raised" onClick={this.handleClose} color="primary" className="text-white float-right"><IntlMessages id="sidebar.btnConfirmYourResetRequest" /></Button>
+                    </DialogActions>
+                </Dialog>
             </Fragment>
         )
     }
 }
 
 const mapStateToProps = ({ twoFAAuth }) => {
-    return {twoFAAuth};
+    return { twoFAAuth };
 }
 
-export default connect(mapStateToProps,{
+export default connect(mapStateToProps, {
     twoFASMSAuthentication,
     sendSMS
-}) (TwoFaSMSAuthentication);
+})(TwoFaSMSAuthentication);

@@ -57,9 +57,7 @@ class BasePairList extends Component {
         this.setState({ value });
     };
     //on click pair change
-    pairChange(pair) {
-        //NotificationManager.info(pair + ' Pair Selected');
-    }
+    pairChange(pair) { }
     // change tab selection
     handleChangeIndex = (index) => {
         //set tab index value
@@ -75,11 +73,7 @@ class BasePairList extends Component {
                     <Tabs
                         value={this.state.value}
                         onChange={this.handleChange}
-                        // indicatorColor="primary"
-                        // textColor="primary"
                         fullWidth
-                        // scrollable
-                        // scrollButtons="off"
                     >
                         {this.state.pairList &&
                             this.state.pairList !== null &&
@@ -99,9 +93,8 @@ class BasePairList extends Component {
                     {this.state.pairList ? (
                         this.state.pairList &&
                         this.state.pairList !== null &&
-                        this.state.pairList.map((pair, key) => (
-                            <TabContainer key={key}>
-                                {/* <List className="p-0 border-top"> */}
+                        this.state.pairList.map((pair, index) => (
+                            <TabContainer key={index}>
                                 <Scrollbars
                                     className="jbs-scroll initialism"
                                     autoHeight
@@ -110,7 +103,7 @@ class BasePairList extends Component {
                                     autoHide
                                 >
                                     <ListItem
-                                        key={key}
+                                        key={index}
                                         className="border-bottom d-flex justify-content-between align-items-center p-5 pl-20 pr-20"
                                     >
                                         <div className="w-40 d-flex">
@@ -132,9 +125,9 @@ class BasePairList extends Component {
                                             </span>
                                         </div>
                                     </ListItem>
-                                    {pair.pairs.map((list, key) => (
+                                    {pair.pairs.map((list, i) => (
                                         <ListItem
-                                            key={key}
+                                            key={i}
                                             className="border-bottom d-flex justify-content-between align-items-center p-5 pl-20 pr-20"
                                             button
                                             onClick={() =>
@@ -156,27 +149,27 @@ class BasePairList extends Component {
                                             <div className="w-40 d-flex justify-content-between">
                                                 <span>
                                                     {list.percentage_diff >
-                                                    0 ? (
-                                                        <i className="ti-arrow-up mr-10 text-success" />
-                                                    ) : (
-                                                        <i className="ti-arrow-down mr-10 text-danger" />
-                                                    )}
+                                                        0 ? (
+                                                            <i className="ti-arrow-up mr-10 text-success" />
+                                                        ) : (
+                                                            <i className="ti-arrow-down mr-10 text-danger" />
+                                                        )}
                                                     {list.percentage_diff >
-                                                    0 ? (
-                                                        <span className="text-success">
-                                                            {
-                                                                list.percentage_diff
-                                                            }
-                                                            %
+                                                        0 ? (
+                                                            <span className="text-success">
+                                                                {
+                                                                    list.percentage_diff
+                                                                }
+                                                                %
                                                         </span>
-                                                    ) : (
-                                                        <span className="text-danger">
-                                                            {
-                                                                list.percentage_diff
-                                                            }
-                                                            %
+                                                        ) : (
+                                                            <span className="text-danger">
+                                                                {
+                                                                    list.percentage_diff
+                                                                }
+                                                                %
                                                         </span>
-                                                    )}
+                                                        )}
                                                 </span>
                                                 <span>{list.marketRate}</span>
                                             </div>
@@ -186,8 +179,8 @@ class BasePairList extends Component {
                             </TabContainer>
                         ))
                     ) : (
-                        <div>No Data Found</div>
-                    )}
+                            <div>No Data Found</div>
+                        )}
                 </SwipeableViews>
             </div>
         );

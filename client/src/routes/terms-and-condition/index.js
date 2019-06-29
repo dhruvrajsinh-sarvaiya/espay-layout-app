@@ -3,7 +3,7 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser';
 
 // page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
@@ -24,27 +24,24 @@ class TermsAndConditions extends Component {
 
 	state = {
 		myContnet: []
-    }
-    
-    componentDidMount(){
-        //console.log('called terms component did mount');
-		//console.log("pageId",AppConfig.pages['terms-and-conditions']);
+	}
+
+	componentDidMount() {
 		//HAVE TO PASS PROPER PAGE ID TO GET RELAVANT PAGE CONTENT
-        this.props.getPageContents(AppConfig.pages['terms-and-conditions']);
-    }
+		this.props.getPageContents(AppConfig.pages['terms-and-conditions']);
+	}
 
 	render() {
-
 		const { pageContents } = this.props;
 		const html = pageContents.locale[localStorage.getItem('locale')].content;
 		return (
 			<div className="about-wrapper">
 				<PageTitleBar title={<IntlMessages id="termsAndCondition.title" />} match={this.props.match} />
-				<div className="terms-and-condition-detail">																	
+				<div className="terms-and-condition-detail">
 					<JbsCard customClasses="p-60">
-						{ReactHtmlParser(html)}   
-					</JbsCard>   
-				</div>   
+						{ReactHtmlParser(html)}
+					</JbsCard>
+				</div>
 			</div>
 		);
 	}
@@ -52,7 +49,6 @@ class TermsAndConditions extends Component {
 
 // map state to props
 const mapStateToProps = ({ pageContentApp }) => {
-    //console.log("from map state to props",pageContentApp);
 	const { pageContents } = pageContentApp;
 	return { pageContents };
 }

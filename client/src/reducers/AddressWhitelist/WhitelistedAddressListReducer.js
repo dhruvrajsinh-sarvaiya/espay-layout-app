@@ -3,34 +3,42 @@ import {
     GET_COIN_LIST,
     GET_COIN_LIST_SUCCESS,
     GET_COIN_LIST_FAILURE,
+
     // GET GLOBAL PREFERENCE
     GET_PREFERENCE,
     GET_PREFERENCE_SUCCESS,
     GET_PREFERENCE_FAILURE,
+
     // SET GLOBAL PREFERENCE
     SET_PREFERENCE,
     SET_PREFERENCE_SUCCESS,
     SET_PREFERENCE_FAILURE,
+
     //list
     FETCH_WITHDRAWALADDRESS,
     FETCH_WITHDRAWALADDRESS_SUCCESS,
     FETCH_WITHDRAWALADDRESS_FAIL,
+
     // add
     SUBMIT_WITHDRAWALADDRESSES,
     SUBMIT_WITHDRAWALADDRESSES_SUCCESS,
     SUBMIT_WITHDRAWALADDRESSES_FAIL,
+
     // add to whitelist
     ADDTO_WHITELIST,
     ADDTO_WHITELIST_SUCCESS,
     ADDTO_WHITELIST_FAILURE,
+
     // remove form whitelist
     REMOVE_WHITELIST,
     REMOVE_WHITELIST_SUCCESS,
     REMOVE_WHITELIST_FAILURE,
+
     // delete from whitelist
     DELETE_ADDRESSES,
     DELETE_ADDRESSES_SUCCESS,
     DELETE_ADDRESSES_FAILURE,
+
 } from "Actions/types";
 
 //Set Initial State
@@ -45,7 +53,11 @@ const INITIAL_STATE = {
     preferenceResponse: {}
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
 
         // GET_COIN_LIST

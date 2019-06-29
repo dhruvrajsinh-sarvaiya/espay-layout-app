@@ -36,7 +36,10 @@ const INIT_STATE = {
 }
 
 //Check Action for Authorization Token...
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch(action.type) 
     {
         //Generate Token
@@ -58,8 +61,8 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading : false, data : action.payload };
 
         case REFRESH_TOKEN_FAILURE:
-            var error = action.payload.returnCode === 1 ? action.payload.returnMsg : error;
-            return { ...state, loading : false, error : error };
+            var err = action.payload.returnCode === 1 ? action.payload.returnMsg : error;
+            return { ...state, loading : false, error : err };
 
         //Check Token
         case CHECK_TOKEN:
@@ -69,8 +72,8 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading : false, data : action.payload };
 
         case CHECK_TOKEN_FAILURE:
-            var error = action.payload.returnCode === 1 ? action.payload.returnMsg : error;
-            return { ...state, loading : false, error : error };
+            var errr = action.payload.returnCode === 1 ? action.payload.returnMsg : error;
+            return { ...state, loading : false, error : errr };
 
         default : 
             return { ...state };

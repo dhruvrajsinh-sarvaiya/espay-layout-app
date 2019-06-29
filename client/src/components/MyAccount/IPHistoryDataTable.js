@@ -62,7 +62,6 @@ class IPHistoryDataTable extends Component {
 			loading: true,
 			errors: '',
 			totalCount: 0,
-			isDisable: true,
 			showReset: '',
 			datalist: {
 				PageIndex: 1,
@@ -126,7 +125,7 @@ class IPHistoryDataTable extends Component {
 	onChange = (event) => {
 		var newObj = Object.assign({}, this.state.datalist);
 		newObj[event.target.name] = event.target.value;
-		this.setState({ datalist: newObj, isDisable: false });
+		this.setState({ datalist: newObj });
 	}
 	//to clear filter
 	clearFilter = () => {
@@ -136,7 +135,7 @@ class IPHistoryDataTable extends Component {
 		newObj.FromDate = new Date().toISOString().slice(0, 10);
 		newObj.ToDate = new Date().toISOString().slice(0, 10);
 		newObj.IPAddress = "";
-		this.setState({ datalist: newObj, showReset: false, errors: '', isDisable: true, });
+		this.setState({ datalist: newObj, showReset: false, errors: '' });
 		this.props.ipHistoryList(newObj);
 	}
 
@@ -149,7 +148,7 @@ class IPHistoryDataTable extends Component {
 	};
 
 	render() {
-		const { list, loading, totalCount, errors, showReset, isDisable } = this.state;
+		const { list, loading, totalCount, errors, showReset } = this.state;
 		const { FromDate, ToDate, PageIndex, Page_Size, IPAddress } = this.state.datalist;
 		let today = new Date();
 		today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
@@ -209,7 +208,7 @@ class IPHistoryDataTable extends Component {
 						</FormGroup>
 						<FormGroup className="col-md-3 col-sm-6">
 							<div className="btn_area">
-								<Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10  rounded-0 border-0 text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+								<Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10  rounded-0 border-0 text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
 								{showReset && <Button className="btn-danger  rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
 							</div>
 						</FormGroup>

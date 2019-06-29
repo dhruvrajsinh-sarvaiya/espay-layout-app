@@ -59,12 +59,8 @@ class AddApiKeyData extends Component {
         event.preventDefault()
         const regexNumeric = /^[A-Za-z0-9? ,_-]+$/;
 
-        if (!validator.matches(event.target.value, regexNumeric)) {
-        }
-        else {
-            this.setState({
-                apiKeyName: event.target.value
-            })
+        if (validator.matches(event.target.value, regexNumeric)) {
+            this.setState({ apiKeyName: event.target.value })
         }
 
         if (event.target.value === "") {

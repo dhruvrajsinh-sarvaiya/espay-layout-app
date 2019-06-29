@@ -14,7 +14,7 @@ import {
     arbitrageGetExchangeList
 } from "Actions/Arbitrage";
 //added by Tejas 14/6/2019
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 //used for display scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
 import $ from 'jquery';
@@ -104,15 +104,24 @@ class ExchangeList extends Component {
                     autoHeightMax={this.props.autoHeightMax}
                     autoHide
                 >
-                    {this.props.arbitrageExchangeLoading && <JbsBarLoader />}
+                    {this.props.arbitrageExchangeLoading && <JbsLoader />}
 
                     {exchangeList && exchangeList.length > 0
                         ?
                         exchangeList.map((list, index) => {
                             return (
-                                <div className="card" key={index} onClick={() => this.changeData(list)}>
+                                <div className="card exchange_data bi-logo"
+                                    key={index} onClick={() => this.changeData(list)}>
                                     <div className="d-flex justify-content-between">
-                                        <div className="font-weight-bold">{list.ProviderName}</div>
+                                        <div className="font-weight-bold">
+                                            <img
+                                                src={require('Assets/img/MyAccount/' + list.ProviderName + '.png')}
+                                                className="mr-5 mb-1"
+                                                height="25px"
+                                                width="25px"
+                                                alt={list.ProviderName}
+                                            />
+                                            {list.ProviderName}</div>
                                         <div><span className="text-blue font-weight-bold">
                                             {list.Volume.toFixed(2)}
 

@@ -108,12 +108,10 @@ class AddMarginBalance extends Component {
             flag: false,
             limit: "",
             LeveragePer: "1",
-            // LeverageChargeDeductionType: '',
         };
         this.selectWallet = this.selectWallet.bind(this);
     }
     componentWillMount() {
-        // this.props.getCurrency();
         this.props.getMarginCurrency({});
     }
     componentWillReceiveProps(nextProps) {
@@ -130,7 +128,6 @@ class AddMarginBalance extends Component {
         if (nextProps.confirmResponse.hasOwnProperty('ReturnCode')) {
             if (nextProps.confirmResponse.ReturnCode === 0) {
                 NotificationManager.success(nextProps.confirmResponse.ReturnMsg);
-                // setTimeout(function () {
                 this.setState({
                     showModal: false,
                     showConfirmModal: false,
@@ -139,7 +136,6 @@ class AddMarginBalance extends Component {
                     AccWalletid: '',
                     Amount: '',
                     LeveragePer: ""
-                    // LeverageChargeDeductionType: '',
                 });
                 //refresh wallet list
                 this.props.getMaringWalletList({});
@@ -150,7 +146,6 @@ class AddMarginBalance extends Component {
                 }
                 // end
 
-                // }.bind(this), 3000);
             } else if (nextProps.confirmResponse.ReturnCode === 1) {
                 NotificationManager.error(<IntlMessages id={`apiWalletErrCode.${nextProps.confirmResponse.ErrorCode}`} />);
                 this.setState({
@@ -161,7 +156,6 @@ class AddMarginBalance extends Component {
                     AccWalletid: '',
                     Amount: '',
                     LeveragePer: ""
-                    // LeverageChargeDeductionType: '',
                 });
             }
         }
@@ -174,7 +168,6 @@ class AddMarginBalance extends Component {
         //if closed
         if (!this.state.showModal) {
             /* select currency default */
-            // add || this.props.widgetType === 3 by devang parekh (7-3-2019)
             if ((this.props.widgetType === 2 || this.props.widgetType === 3 || this.props.widgetType === 4) && this.props.hasOwnProperty("walletTypeName") && this.state.WalletTypeId === '') {
                 this.props.marginCurrancy.map((wallet, key) => {
                     //added by parth andhariya
@@ -211,7 +204,6 @@ class AddMarginBalance extends Component {
             Amount: '',
             flag: false,
             LeveragePer: ""
-            // LeverageChargeDeductionType: '',
         });
     }
 
@@ -219,8 +211,8 @@ class AddMarginBalance extends Component {
      * Handle create wallet 
      */
     createWallet = () => {
-        const { WalletTypeId, AccWalletid, Amount, LeveragePer } = this.state;
-        if (WalletTypeId !== '' && AccWalletid !== '' && Amount !== '' && LeveragePer !== "") {
+        const { WalletTypeId, AccWalletid, Amount } = this.state;
+        if (WalletTypeId !== '' && AccWalletid !== '' && Amount !== '' && this.state.LeveragePer !== "") {
             this.setState({ flag: true });
             this.props.addLeverageWithWallet(this.state);
         }
@@ -229,27 +221,24 @@ class AddMarginBalance extends Component {
      * Handle confirm wallet leverage
      */
     confirmWallet = () => {
-        const { WalletTypeId, AccWalletid, Amount, LeveragePer } = this.state;
-        if (WalletTypeId !== '' && AccWalletid !== '' && Amount !== '' && LeveragePer !== '') {
+        const { WalletTypeId, AccWalletid, Amount } = this.state;
+        if (WalletTypeId !== '' && AccWalletid !== '' && Amount !== '' && this.state.LeveragePer !== '') {
             this.props.confirmAddLeverage(this.state);
         }
     }
     // numberic value only
     validateOnlyNumeric(value) {
         const regexNumeric = /^[0-9.]+$/;
-        if (
-            validator.matches(value,regexNumeric) &&
+        return (
+            validator.matches(value, regexNumeric) &&
             validator.isDecimal(value, {
                 force_decimal: false,
                 decimal_digits: "0,8"
             })
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        ) ? true : false
+
     }
-    /* on chane handler */
+        /* on chane handler */
     onChangeHandler(e) {
         if (this.validateOnlyNumeric(e.target.value) || e.target.value == "") {
             this.setState({ [e.target.name]: e.target.value });
@@ -354,17 +343,6 @@ class AddMarginBalance extends Component {
                                     maxLength="12"
                                     autoComplete="off" />
                             </FormGroup>}
-                            {/* {this.state.AccWalletid !== '' && <FormGroup>
-                                <Label for="LeverageChargeDeductionType">{intl.formatMessage({ id: "wallet.leverageDeductionType" })}</Label>
-                                <Input type="select" name="LeverageChargeDeductionType" id="LeverageChargeDeductionType" onChange={(e) => this.onChangeHandler(e)} >
-                                    <option value="">{intl.formatMessage({ id: "wallet.selectDeductionType" })}</option>
-                                    <option value="0">{intl.formatMessage({ id: "wallet.LeverageChargeDeductionType.0" })}</option>
-                                    <option value="1">{intl.formatMessage({ id: "wallet.LeverageChargeDeductionType.1" })}</option>
-                                    <option value="2">{intl.formatMessage({ id: "wallet.LeverageChargeDeductionType.2" })}</option>
-                                    <option value="3">{intl.formatMessage({ id: "wallet.LeverageChargeDeductionType.3" })}</option>
-                                    <option value="4">{intl.formatMessage({ id: "wallet.LeverageChargeDeductionType.4" })}</option>
-                                </Input>
-                            </FormGroup>} */}
                             {this.state.AccWalletid !== '' && <FormGroup>
                                 <Label for="LeveragePer">{intl.formatMessage({ id: "marginTrading.leverage" })}</Label>
                                 <Input type="select"
@@ -401,18 +379,10 @@ class AddMarginBalance extends Component {
                     <ModalBody>
                         <Table bordered className="mb-0">
                             <tbody>
-                                {/* {this.props.addLeverageResponse.hasOwnProperty('LeveragePer') && <tr>
-                                    <td className="w-50"><IntlMessages id="wallet.LeveragePer" /></td>
-                                    <td className="w-50">{parseFloat(this.props.addLeverageResponse.LeveragePer).toFixed(8)}</td>
-                                </tr>} */}
                                 {this.props.addLeverageResponse.hasOwnProperty('LeverageAmount') && <tr>
                                     <td className="w-50"><IntlMessages id="wallet.LeverageAmount" /></td>
                                     <td className="w-50">{parseFloat(this.props.addLeverageResponse.LeverageAmount).toFixed(8)} (<span className="font-weight-bold">{parseInt(this.props.addLeverageResponse.LeveragePer) + 'X'}</span>)</td>
                                 </tr>}
-                                {/* {this.props.addLeverageResponse.hasOwnProperty('ChargePer') && <tr>
-                                    <td className="w-50"><IntlMessages id="wallet.ChargePer" /></td>
-                                    <td className="w-50">{parseFloat(this.props.addLeverageResponse.ChargePer).toFixed(8)}</td>
-                                </tr>} */}
                                 {this.props.addLeverageResponse.hasOwnProperty('ChargeAmount') && <tr>
                                     <td className="w-50"><IntlMessages id="wallet.ChargeAmount" /></td>
                                     <td className="w-50">{parseFloat(this.props.addLeverageResponse.ChargeAmount).toFixed(8)} (<span className="font-weight-bold">{parseFloat(this.props.addLeverageResponse.ChargePer).toFixed(2) + '%'}</span>)</td>

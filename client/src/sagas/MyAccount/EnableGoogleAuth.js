@@ -6,16 +6,14 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
-
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { ENABLE_GOOGLE_AUTH, GET_GOOGLE_AUTH_INFO } from "Actions/types";
 
-import { 
+import {
 	getGoogleAuthInfoSuccess,
 	getGoogleAuthInfoFailure,
 	enableGoogleAuthSuccess,
-	enableGoogleAuthFailure 
+	enableGoogleAuthFailure
 } from "Actions/MyAccount";
 
 import AppConfig from 'Constants/AppConfig';
@@ -25,15 +23,14 @@ const statusErrCode = statusErrCodeList();
 
 //Function for Enable Google Auth API
 function* enableGooogleAuthApi({ payload }) {
-	var headers =  {'Authorization': AppConfig.authorizationToken}
-    const response = yield call(swaggerPostAPI,'api/TwoFASetting/Enableauthenticator',payload,headers);
-	
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/TwoFASetting/Enableauthenticator', payload, headers);
+
 	try {
-		//console.log('Ena Res',response);
-		if(lgnErrCode.includes(response.statusCode)){
+		if (lgnErrCode.includes(response.statusCode)) {
 			redirectToLogin();
-		} else if(statusErrCode.includes(response.statusCode)){               
-			staticRes = staticResponse(response.statusCode);
+		} else if (statusErrCode.includes(response.statusCode)) {
+			let staticRes = staticResponse(response.statusCode);
 			yield put(enableGoogleAuthFailure(staticRes));
 		} else if (response.statusCode === 200) {
 			yield put(enableGoogleAuthSuccess(response));
@@ -47,15 +44,14 @@ function* enableGooogleAuthApi({ payload }) {
 
 //Function for Get Google Auth Info API
 function* getGooogleAuthApi({ payload }) {
-	var headers =  {'Authorization': AppConfig.authorizationToken}
-	const response = yield call(swaggerGetAPI,'api/TwoFASetting/Enableauthenticator',payload,headers);
-	
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/TwoFASetting/Enableauthenticator', payload, headers);
+
 	try {
-		//console.log('Get Res',response);
-		if(lgnErrCode.includes(response.statusCode)){
+		if (lgnErrCode.includes(response.statusCode)) {
 			redirectToLogin();
-		} else if(statusErrCode.includes(response.statusCode)){               
-			staticRes = staticResponse(response.statusCode);
+		} else if (statusErrCode.includes(response.statusCode)) {
+			let staticRes = staticResponse(response.statusCode);
 			yield put(getGoogleAuthInfoFailure(staticRes));
 		} else if (response.statusCode === 200) {
 			yield put(getGoogleAuthInfoSuccess(response));

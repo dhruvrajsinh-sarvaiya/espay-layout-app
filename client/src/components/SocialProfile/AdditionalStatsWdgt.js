@@ -4,13 +4,6 @@
  * Additional Stats Component
  */
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-import { Form, FormGroup, Input, Alert, Button } from "reactstrap";
-import LinearProgress from '@material-ui/core/LinearProgress';
-// intl messages
-import IntlMessages from "Util/IntlMessages";
-import { SimpleCard } from './Widgets';
 
 class AdditionalStatsWdgt extends Component {
     constructor(props) {
@@ -74,18 +67,5 @@ class AdditionalStatsWdgt extends Component {
 AdditionalStatsWdgt.defaultProps = {
     LeaderId: 0
 }
-
-// map state to props
-/* const mapStateToProps = ({ forgotPassRdcer }) => {
-    var response = {
-        data: forgotPassRdcer.data,
-        loading: forgotPassRdcer.loading
-    };
-    return response;
-};
-
-export default withRouter(connect(mapStateToProps, {
-    forgotPassword
-})(AdditionalStatsWdgt)); */
 
 export default AdditionalStatsWdgt;

@@ -19,7 +19,10 @@ const INIT_STATE = {
 }
 
 //Check Action for Referral Friends...
-export default (state = INIT_STATE, action) => {
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     //console.log('Reducers:',action.type);
 
     switch(action.type) 

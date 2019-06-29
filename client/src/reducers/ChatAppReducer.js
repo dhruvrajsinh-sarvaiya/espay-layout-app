@@ -15,7 +15,7 @@ import {
 // chat users
 import recentChatUsers from 'Assets/data/chat-app/users';
 
-const INITIAL_STATE = {
+const INIT_STATE = {
     admin_photo_url: require('../assets/img/user-7.jpg'),
     recentChatUsers: recentChatUsers,
     allRecentChatUsers: recentChatUsers,
@@ -24,7 +24,10 @@ const INITIAL_STATE = {
     searchUsers: ''
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         // get recent chat user

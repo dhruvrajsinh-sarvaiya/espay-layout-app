@@ -150,7 +150,7 @@ class UpdateApiKeyIPAccess extends Component {
             removeData: {},
             aliasName: "",
         })
-        //this.props.updateApiKeyList({planKey:this.state.updateData.KeyId})        
+        
     }
 
     // used fro update api key
@@ -187,7 +187,7 @@ class UpdateApiKeyIPAccess extends Component {
 
     // call api for remove ip
     RemoveIPFromList = () => {
-        let dataWhittelist = []//this.state.whitelist
+        let dataWhittelist = []
         this.state.whitelist.map((item, key) => {
             if (this.state.removeData.aliasName !== item.aliasName) {
                 dataWhittelist.push(item)
@@ -375,7 +375,7 @@ class UpdateApiKeyIPAccess extends Component {
 
                     <ModalBody>
                         <Row className="mt-10">
-                            {/* <Col md={6}> */}
+                           
                             <div>
                                 <h1 className="text-center mt-10">
                                     {<IntlMessages id="sidebar.ApiPlan.whitelist" />}
@@ -451,7 +451,7 @@ class UpdateApiKeyIPAccess extends Component {
 
                     <ModalBody>
                         <Row className="mt-10">
-                            {/* <Col md={6}> */}
+                            
                             <div>
                                 <h1 className="text-center mt-10">
                                     {<IntlMessages id="sidebar.ApiPlan.removewhitelist" />}
@@ -464,7 +464,7 @@ class UpdateApiKeyIPAccess extends Component {
                                         {<IntlMessages id="sidebar.colAliasName" />}
                                     </Label>
                                     <Label sm={8} for="planName">
-                                        {/* {<IntlMessages id="sidebar.ApiPlan.planname" />} */}
+                                       
                                         {this.state.removeData.aliasName}
                                     </Label>
                                 </FormGroup>
@@ -474,7 +474,7 @@ class UpdateApiKeyIPAccess extends Component {
                                         {<IntlMessages id="sidebar.ApiPlan.removeip" />}
                                     </Label>
                                     <Label sm={8} for="planName">
-                                        {/* {<IntlMessages id="sidebar.ApiPlan.planname" />} */}
+                                       
                                         {this.state.removeData.ipaddress}
                                     </Label>
                                 </FormGroup>

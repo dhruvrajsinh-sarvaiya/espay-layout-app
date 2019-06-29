@@ -31,27 +31,27 @@ import { connect } from "react-redux";
 // component For trading chart
 class TradingChartthree extends Component {
   state = {
-    chartData: [] , //chartData
-    socketData:[]
+    chartData: [], //chartData
+    socketData: []
   };
 
   // This will invoke After component render
   componentWillMount() {
-    
+
     this.isComponentActive = 1;
     const pair = this.props.state.currencyPair;
-    
+
     // code changed by devang parekh for handling margin trading process
-    if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-      
+    if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+
       // Call Actions For Get chart data List
-      this.props.getChartData({ Pair: pair,Interval:'1m', marginTrading:1});
+      this.props.getChartData({ Pair: pair, Interval: '1m', marginTrading: 1 });
       this.processForMarginTrading(); // call for intialize socket listners for margin trading
 
     } else {
 
       // Call Actions For Get chart data List
-      this.props.getChartData({ Pair: pair,Interval:'1m' });
+      this.props.getChartData({ Pair: pair, Interval: '1m' });
       this.processForNormalTrading();// call for intialize socket listners for normal trading
 
     }
@@ -68,22 +68,22 @@ class TradingChartthree extends Component {
 
         var charData = this.state.chartData;
 
-        try{
+        try {
 
           const receivedMessageData = JSON.parse(receivedMessage);
 
-          if ((receivedMessageData.EventTime && this.state.socketData.length === 0) || 
-            (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime) ) {
+          if ((receivedMessageData.EventTime && this.state.socketData.length === 0) ||
+            (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
 
-              if(this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0){                
-                charData.push(receivedMessageData.Data)
+            if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
+              charData.push(receivedMessageData.Data)
               this.setState({ chartData: charData, socketData: receivedMessageData });
 
-              } 
+            }
 
           }
 
-        }catch(error){
+        } catch (error) {
 
         }
 
@@ -101,34 +101,34 @@ class TradingChartthree extends Component {
 
         var charData = this.state.chartData;
 
-        try{
+        try {
 
           const receivedMessageData = JSON.parse(receivedMessage);
 
-          if ((receivedMessageData.EventTime && this.state.socketData.length === 0) || 
-            (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime) ) {
+          if ((receivedMessageData.EventTime && this.state.socketData.length === 0) ||
+            (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
 
-              if(this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1){
-                charData.push(receivedMessageData.Data)
-                this.setState({ chartData: charData, socketData: receivedMessageData });
+            if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
+              charData.push(receivedMessageData.Data)
+              this.setState({ chartData: charData, socketData: receivedMessageData });
 
-              } 
+            }
 
           }
 
-        }catch(error){
+        } catch (error) {
         }
 
       }
 
     });
-    
+
   }
 
   componentWillUnmount() {
     this.isComponentActive = 0;
   }
-  
+
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextProps) {
 
@@ -137,7 +137,7 @@ class TradingChartthree extends Component {
       this.setState({
         chartData: nextProps.chartData
       });
-    } 
+    }
   }
 
   // render component
@@ -145,7 +145,6 @@ class TradingChartthree extends Component {
 
     const info = [];
     const volume = [];
-    var dataLength = 0;
     const groupingUnits = [
       [
         "week", // unit name
@@ -154,22 +153,19 @@ class TradingChartthree extends Component {
       ["month", [1, 2, 3, 4, 6]]
     ];
 
-    var i = 0;
-
     var theme = false;
-    if(localStorage.getItem('Thememode') !== null && localStorage.getItem('Thememode') !== undefined) {
+    if (localStorage.getItem('Thememode') !== null && localStorage.getItem('Thememode') !== undefined) {
       theme = localStorage.getItem('Thememode');
     }
     if (this.state.chartData.length !== 0) {
-      dataLength = this.state.chartData.length;
-      this.state.chartData.map((value,key)=>{
+      this.state.chartData.map((value, key) => {
         info.push(
           [
             value.DataDate,
             value.Open,
             value.High,
             value.Low,
-            value.Close 
+            value.Close
           ]
         )
 
@@ -179,109 +175,100 @@ class TradingChartthree extends Component {
         ])
       })
     }
-    const options = {    
-      colors: ['#000000','#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
-      '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
-      ], 
-      chart: {
-        backgroundColor: this.props.darkMode && '#2C3644',  
-        color:   this.props.darkMode ? 'white': '#464D69', 
-     },
-     responsive: {
+    const options = {
+      colors: ['#000000', '#90ee7e', '#f45b5b', '#7798BF', '#aaeeee', '#ff0066', '#eeaaee',
+        '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'
+      ],
+
+      responsive: {
         rules: [{
-            condition: {
-                maxWidth: 500
+          condition: {
+            maxWidth: 500
+          },
+          chartOptions: {
+            chart: {
+              height: 400
             },
-            chartOptions: {
-                chart: {
-                    height:400
-                },
-                subtitle: {
-                    text: null
-                },
-                navigator: {
-                    enabled: false
-                }
+            subtitle: {
+              text: null
+            },
+            navigator: {
+              enabled: false
             }
+          }
         }]
-    },
-     rangeSelector: {
-      buttons: [
-        {
-          type: 'minute',
-          count: 1,
-          text: '1m'
-        },
-        {
-          type: 'minute',
-          count: 5,
-          text: '5m'
-        },
-        {
-          type: 'minute',
-          count: 15,
-          text: '15m'
-        },
-        {
-          type: 'minute',
-          count: 30,
-          text: '30m'
-        },
-        {
+      },
+      rangeSelector: {
+        buttons: [
+          {
+            type: 'minute',
+            count: 1,
+            text: '1m'
+          },
+          {
+            type: 'minute',
+            count: 5,
+            text: '5m'
+          },
+          {
+            type: 'minute',
+            count: 15,
+            text: '15m'
+          },
+          {
+            type: 'minute',
+            count: 30,
+            text: '30m'
+          },
+          {
             type: 'hour',
             count: 1,
             text: '1h'
-        },{
+          }, {
             type: 'hour',
             count: 6,
             text: '6h'
-        },
-        {
+          },
+          {
             type: 'day',
             count: 1,
             text: '1d'
-        },
-        {
+          },
+          {
             type: 'month',
             count: 1,
             text: '1m'
-        },
-        {
-          type: 'month',
-          count: 3,
-          text: '3m'
-        },
-        {
-          type: 'month',
-          count: 6,
-          text: '6m'
-        },
-        {
-          type: 'year',
-          count: 1,
-          text: '1y'
-        }
-       ],
-      selected: 1,
-      inputEnabled: false,
-    },
-      chart: {
-        backgroundColor: theme && '#2C3644',   
-        color:   theme ? 'white': '#464D69', 
-        height:305
+          },
+          {
+            type: 'month',
+            count: 3,
+            text: '3m'
+          },
+          {
+            type: 'month',
+            count: 6,
+            text: '6m'
+          },
+          {
+            type: 'year',
+            count: 1,
+            text: '1y'
+          }
+        ],
+        selected: 1,
+        inputEnabled: false,
       },
-      scrollbar:{
+      chart: {
+        backgroundColor: this.props.darkMode && '#2C3644',
+        color: this.props.darkMode ? 'white' : '#464D69',
+        height: 305
+      },
+      scrollbar: {
         enabled: false
       },
       navigator: {
         enabled: false
       },
-       series: [
-        {
-          data: volume,
-          color: '#000000',
-        }
-      ],
       yAxis: [
         {
           labels: {
@@ -292,7 +279,7 @@ class TradingChartthree extends Component {
             text: "Data"
           },
           lineWidth: 2,
-          height:'50%',
+          height: '50%',
           resize: {
             enabled: true
           }
@@ -300,7 +287,7 @@ class TradingChartthree extends Component {
         {
           labels: {
             align: "right",
-            x: -3  
+            x: -3
           },
           title: {
             text: "Volume"
@@ -319,37 +306,37 @@ class TradingChartthree extends Component {
       series: [
         {
           type: "candlestick",
-          name: this.props.firstCurrency + "/"+this.props.secondCurrency,
+          name: this.props.firstCurrency + "/" + this.props.secondCurrency,
           data: info,
           dataGrouping: {
             units: groupingUnits
           },
-			downColor: 'red'
+          downColor: 'red'
         },
         {
           type: "column",
           name: "Volume",
           data: volume,
+          color: theme ? 'white' : '#000000',
           yAxis: 1,
           dataGrouping: {
             units: groupingUnits
           },
-          color: theme ? 'white': '#000000',
-        }      
-         
-      ],  
+        }
+
+      ],
       plotOptions: {
         candlestick: {
-                   	color: 'red',
-                	upColor: 'green',
-               }
-           },
+          color: 'red',
+          upColor: 'green',
+        }
+      },
     };
 
     return (
       <Fragment>
-         {this.props.loading && <JbsSectionLoader />}
-        <div>       
+        {this.props.loading && <JbsSectionLoader />}
+        <div>
           <HighchartsReact
             highcharts={Highcharts}
             constructorType={"stockChart"}
@@ -363,7 +350,7 @@ class TradingChartthree extends Component {
 
 const mapStateToProps = ({ settings, tradeChart }) => {
   const { darkMode } = settings;
-  const { chartData,loading } = tradeChart;
+  const { chartData, loading } = tradeChart;
   return { darkMode, chartData, loading };
 };
 

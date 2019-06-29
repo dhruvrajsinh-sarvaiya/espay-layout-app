@@ -105,7 +105,6 @@ class tradingDashbaord extends Component {
         this.toggle = this.toggle.bind(this);
         this.setBuyOrders = this.setBuyOrders.bind(this);
         this.setSellOrders = this.setSellOrders.bind(this);
-        // this.openFavourite = this.openFavourite.bind(this)
     }
 
     // invoke before Compoent render
@@ -119,7 +118,6 @@ class tradingDashbaord extends Component {
         self.state.hubConnection.on(
             "RecieveTradeHistory",
             (tradeHistoryDetail) => {
-                //console.log("Get Data from signalR RecieveTradeHistory", tradeHistoryDetail);
             }
         );
 
@@ -194,7 +192,6 @@ class tradingDashbaord extends Component {
 
     componentWillUnmount() {
         this.isComponentActive = 0;
-        //this.setState({ isComponentActive: 0 });
         window.removeEventListener('resize', this.handleWindowSizeChange); //Added by salim dt:20/05/2019
     }
 
@@ -235,7 +232,6 @@ class tradingDashbaord extends Component {
         }
 
         if (nextprops.wallet && nextprops.wallet !== null) {
-            //console.log("wallet ",nextprops.wallet);
             if (nextprops.wallet.length !== 0) {
                 nextprops.wallet.map((value) => {
                     if (this.state.secondCurrency === value.CoinName) {
@@ -257,8 +253,6 @@ class tradingDashbaord extends Component {
             this.setState({
                 Wallet: nextprops.wallet,
             });
-            //console.log("inde first",this.state.firstCurrencyBalance);
-            //console.log("inde first",this.state.secondCurrencyBalance);
         }
     }
 
@@ -269,11 +263,10 @@ class tradingDashbaord extends Component {
 
     setBuyOrders = (price, amount) => {
         var bulkBuyOrder = [];
-        if (price && price !== 0 && (amount && amount !== 0)) {
+        if (price && price != 0 && (amount && amount != 0)) {
             var total = parseFloat(
                 parseFloat(price) * parseFloat(amount)
             ).toFixed(8);
-            // bulkBuyOrder.push({"Price":price,"Amount":amount,"Total":total})
             bulkBuyOrder.Price = price;
             bulkBuyOrder.Amount = amount;
             bulkBuyOrder.Total = total;
@@ -286,7 +279,7 @@ class tradingDashbaord extends Component {
 
     setSellOrders = (price, amount) => {
         var bulkSellOrder = [];
-        if (price && price !== 0 && (amount && amount !== 0)) {
+        if (price && price != 0 && (amount && amount != 0)) {
             var total = parseFloat(
                 parseFloat(price) * parseFloat(amount)
             ).toFixed(8);
@@ -302,7 +295,6 @@ class tradingDashbaord extends Component {
 
     // function for change second currency
     changeSecondCurrency(value) {
-        //if(this.state.currencyPair !== value.PairName) {
 
         if (
             this.state.secondCurrency !== value.Abbrevation ||
@@ -330,11 +322,9 @@ class tradingDashbaord extends Component {
                 bulkSellOrder: [],
                 bulkBuyOrder: [],
             });
-            //console.log("AddPairSubscription",(new Date()));
             this.state.hubConnection
                 .invoke("AddPairSubscription", pair, oldPair)
                 .catch((err) => console.error("AddPairSubscription", err));
-            //console.log("AddMarketSubscription",(new Date()));
             this.state.hubConnection
                 .invoke(
                     "AddMarketSubscription",
@@ -345,23 +335,12 @@ class tradingDashbaord extends Component {
 
             // call All methods that are use in child components
             this.props.getMarketCapList({ Pair: pair });
-            //this.props.getActiveMyOpenOrderList({ Pair: pair, page: 1 });
-            //this.props.getActiveOpenOrderList({ Pair: pair });
-            //this.props.changeBuyPairSocket({ Pair: pair });
-            // this.props.changeSellPairSocket({ Pair: pair });
             this.props.getBuyerOrderList({ Pair: pair });
             this.props.getSellerOrderList({ Pair: pair });
             this.props.getChartData({ Pair: pair, Interval: "1m" });
-            //this.props.getHoldingList({ Pair: pair });
             this.props.getMarketTradeHistory({ Pair: pair });
-            //this.props.getCurrentPrice({Pair: pair});
-            // this.props.changeMarketTradeSocketConnection({ Pair: pair });
-            //this.props.getTickersList({ Pair: pair })
-            //this.props.getVolumeData(this.state.secondCurrency)
-            //this.props.getPairList({ Pair: pair })
         }
 
-        //}
     }
 
     // function for change selected currency pair
@@ -371,7 +350,6 @@ class tradingDashbaord extends Component {
             const oldPair = this.state.currencyPair;
             const pair = value.PairName;
             const pairId = value.PairId;
-            //const currencies = pair.split('_');
             const firstCurrency = value.Abbrevation;
             pairs = value.PairName;
             this.setState({
@@ -385,7 +363,6 @@ class tradingDashbaord extends Component {
                 bulkSellOrder: [],
                 bulkBuyOrder: [],
             });
-            //console.log("AddPairSubscription",(new Date()));
             this.state.hubConnection
                 .invoke("AddPairSubscription", pair, oldPair)
                 .catch((err) => console.error("AddPairSubscription", err));
@@ -408,9 +385,6 @@ class tradingDashbaord extends Component {
                     secondCurrency: tempSecondCurrency,
                 });
             }
-        } else {
-            // const pair = this.state.firstCurrency + '/' + this.state.secondCurrency;
-            // this.setState({ currencyPair: pair })
         }
 
         // call All methods that are use in child components
@@ -449,7 +423,6 @@ class tradingDashbaord extends Component {
                     .AccWalletID;
             } else {
                 this.state.secondCurrencyBalance = 0;
-                secondCurrencyWalletId = 0;
             }
 
             if (firstCurrencyBal !== -1) {
@@ -460,7 +433,6 @@ class tradingDashbaord extends Component {
                     .AccWalletID;
             } else {
                 this.state.firstCurrencyBalance = 0;
-                firstCurrencyWalletId = 0;
             }
         }
 
@@ -485,7 +457,6 @@ class tradingDashbaord extends Component {
                                     onChange={(e, value) => this.handleChange(value)}
                                     scrollable
                                     scrollButtons="on"
-                                    // className="advtabmenu"
                                     textColor="inherit">
                                     <Tab className="col-4" label="Charts" />
                                     <Tab className="col-4" label="Trade" />
@@ -894,7 +865,6 @@ export default connect(
         getSellerOrderList,
         getChartData,
         getHoldingList,
-        //CHANGE_MARKET_TRADE_HISTORY_SOCKET,
         getTickersList,
         getMarketTradeHistory,
         getPairList,

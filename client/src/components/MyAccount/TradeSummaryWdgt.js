@@ -7,56 +7,39 @@
  */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
 import { Table } from "reactstrap";
-
 // redux action
 import { listTradeSummary } from "Actions";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // jbs card box
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 
 //Columns Object
 const columns = [
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.id" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.exchange" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.date" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.scripName" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.buyQty" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.buyRate" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.buyTotal" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.sellQty" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.sellRate" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.sellTotal" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.netQty" />
-  },
-  {
-    name: <IntlMessages id="myaccount.tradeSummaryColumn.netTotal" />
-  }
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.id" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.exchange" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.date" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.scripName" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.buyQty" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.buyRate" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.buyTotal" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.sellQty" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.sellRate" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.sellTotal" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.netQty" /> },
+
+  { name: <IntlMessages id="myaccount.tradeSummaryColumn.netTotal" /> }
 ];
 
 class MembershipLevelProfileWdgt extends Component {
@@ -100,7 +83,6 @@ class MembershipLevelProfileWdgt extends Component {
                   })}
                 </tbody>
               </Table>
-              {/* <h4>Total={total}</h4>    */}
             </div>
           </div>
         </JbsCollapsibleCard>

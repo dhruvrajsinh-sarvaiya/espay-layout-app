@@ -6,9 +6,6 @@ import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 // function for get Data with Type GET
 import { swaggerGetAPI } from 'Helpers/helpers';
 
-//import Appconfig Object for access Constants
-import AppConfig from 'Constants/AppConfig';
-
 // types for set actions and reducers
 import {
   GET_TOP_GAINERS_DATA,
@@ -22,7 +19,7 @@ import {
   getTopGainersFailure,
   getTopGainersLosersSuccess,
   getTopGainersLosersFailure,
-  getTopLosersSuccess, 
+  getTopLosersSuccess,
   getTopLosersFailure
 } from "Actions/Trade";
 
@@ -36,7 +33,6 @@ function* getTopGainersDataDetail({ payload }) {
   const { Data } = payload;
 
   try {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
     const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopGainerPair/' + Data.Type, {});
 
     // set response if its available else set error message
@@ -57,10 +53,8 @@ function* getTopGainersLosersData() {
 
 // Function for set response to data and Call Function for Api Call
 function* getTopGainersLosersDataDetail({ payload }) {
-  const { Data } = payload;
 
   try {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
     const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopLooserGainerPair', {});
 
     // set response if its available else set error message
@@ -76,27 +70,26 @@ function* getTopGainersLosersDataDetail({ payload }) {
 
 // Sagas Function for get Top Losers Cap data by :Tejas
 function* getTopLosersData() {
-    yield takeEvery(GET_TOP_LOSERS_DATA, getTopLosersDataDetail);
-  }
-  
-  // Function for set response to data and Call Function for Api Call
-  function* getTopLosersDataDetail({ payload }) {
-    const { Data } = payload;
-  
-    try {
-      var headers = { 'Authorization': AppConfig.authorizationToken }
-      const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopLooserPair/' + Data.Type, {});
-  
-      // set response if its available else set error message
-      if (response && response != null && response.ReturnCode === 0) {
-        yield put(getTopLosersSuccess(response));
-      } else {
-        yield put(getTopLosersFailure(response));
-      }
-    } catch (error) {
-      yield put(getTopLosersFailure(error));
+  yield takeEvery(GET_TOP_LOSERS_DATA, getTopLosersDataDetail);
+}
+
+// Function for set response to data and Call Function for Api Call
+function* getTopLosersDataDetail({ payload }) {
+  const { Data } = payload;
+
+  try {
+    const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopLooserPair/' + Data.Type, {});
+
+    // set response if its available else set error message
+    if (response && response != null && response.ReturnCode === 0) {
+      yield put(getTopLosersSuccess(response));
+    } else {
+      yield put(getTopLosersFailure(response));
     }
+  } catch (error) {
+    yield put(getTopLosersFailure(error));
   }
+}
 
 // Function for root saga
 export default function* rootSaga() {

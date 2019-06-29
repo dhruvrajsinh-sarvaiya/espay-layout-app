@@ -22,52 +22,31 @@ import validateComplainReport from '../../../validation/MyAccount/complain_repor
 const columns = [
     {
         name: <IntlMessages id="sidebar.colHash" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colType" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colDate" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colSubject" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colDescription" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colStatus" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colActions" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false }
     },
 ];
 const options = {
@@ -108,7 +87,6 @@ class ComplainReportsWdgt extends Component {
             ListComplain: false,
             showReset: false,
             errors: '',
-            isDisable: true,
             data: {
                 FromDate: new Date().toISOString().slice(0, 10),
                 ToDate: new Date().toISOString().slice(0, 10),
@@ -141,7 +119,6 @@ class ComplainReportsWdgt extends Component {
                     this.setState({ showReset: true });
                 }
             }
-
         }
     }
     //to clear filter
@@ -150,15 +127,13 @@ class ComplainReportsWdgt extends Component {
         newObj.FromDate = new Date().toISOString().slice(0, 10);
         newObj.ToDate = new Date().toISOString().slice(0, 10);
         newObj.Subject = "";
-        this.setState({ data: newObj, showReset: false, errors: '', isDisable: true });
+        this.setState({ data: newObj, showReset: false, errors: '' });
         this.props.complainList(newObj);
-
     }
     onChange = (event) => {
-
         var newObj = Object.assign({}, this.state.data);
         newObj[event.target.name] = event.target.value;
-        this.setState({ data: newObj, isDisable: false });
+        this.setState({ data: newObj });
     }
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.loading });
@@ -180,7 +155,7 @@ class ComplainReportsWdgt extends Component {
 
     render() {
         const { FromDate, ToDate, Subject } = this.state.data;
-        const { showReset, list, loading, errors, isDisable } = this.state;
+        const { showReset, list, loading, errors } = this.state;
         let today = new Date();
         today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
         return (
@@ -200,12 +175,12 @@ class ComplainReportsWdgt extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-3 col-sm-6">
                             <Label for="Subject"><IntlMessages id="sidebar.subject" /></Label>
-                            <Input type="text" name="Subject" id="Subject" placeholder="Subject" value={Subject} onChange={(e) => this.onChange(e)} />
+                            <Input type="text" name="Subject" id="Subject2" placeholder="Subject" value={Subject} onChange={(e) => this.onChange(e)} />
                             {errors.Subject && <div className="text-danger text-left"><IntlMessages id={errors.Subject} /></div>}
                         </FormGroup>
                         <FormGroup className="col-md-3 col-sm-6">
                             <div className="btn_area">
-                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>
@@ -227,7 +202,6 @@ class ComplainReportsWdgt extends Component {
                                         <p className="Complainlist">{lst.Description}</p>,
                                         <Fragment><ComplainStatus status_id={lst.Status} /></Fragment>,
                                         <Fragment>
-                                            {/* {lst.Status === 'Close' ? '-' : <a href="javascript:void(0);" onClick={() => this.onComplainReply(lst.CompainNumber)} className="text-dark"> <i className="zmdi zmdi-replay zmdi-hc-sm" /> </a>} */}
                                             <a href="javascript:void(0);" onClick={() => this.onComplainReply(lst.CompainNumber)} className="text-dark"> <i className="zmdi zmdi-replay zmdi-hc-sm" /> </a>
                                         </Fragment>
                                     ];

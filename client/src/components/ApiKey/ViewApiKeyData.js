@@ -147,9 +147,7 @@ class ViewApiKeyData extends Component {
     onAliasName = (event) => {
         event.preventDefault()
         const regexNumeric = /^[A-Za-z0-9? ,_-]+$/;
-        if (!validator.matches(event.target.value, regexNumeric)) {
-        }
-        else {
+        if (validator.matches(event.target.value, regexNumeric)) {
             this.setState({
                 aliasName: event.target.value
             })

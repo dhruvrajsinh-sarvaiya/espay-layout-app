@@ -354,7 +354,7 @@ class Withdraw extends Component {
                 }
             })
         }
-        else if (isHtmlTag(e.target.value)){
+        else if (isHtmlTag(e.target.value)) {
             this.setState({
                 errors: {
                     ...this.state.errors,
@@ -362,7 +362,7 @@ class Withdraw extends Component {
                 }
             })
         }
-        else if (isScriptTag(e.target.value)){
+        else if (isScriptTag(e.target.value)) {
             this.setState({
                 errors: {
                     ...this.state.errors,
@@ -371,7 +371,7 @@ class Withdraw extends Component {
             })
         }
 
-              else {
+        else {
             this.setState({
                 errors: {
                     ...this.state.errors,
@@ -379,7 +379,7 @@ class Withdraw extends Component {
                 }
             })
         }
- 
+
     }
     /* validate address on  blur */
     vadliateAddress(e) {
@@ -390,30 +390,7 @@ class Withdraw extends Component {
                     address: "wallet.errWDaddressRequired"
                 }
             })
-        } else if (validator.isNumeric(e.target.value)) {   // validate only digit
-            this.setState({
-                errors: {
-                    ...this.state.errors,
-                    address: "wallet.errWDinvalidAddress"
-                }
-            })
-        } else if (validator.isAlpha(e.target.value)) {   // validate only alpha
-            this.setState({
-                errors: {
-                    ...this.state.errors,
-                    address: "wallet.errWDinvalidAddress"
-                }
-            })
-        }
-        // else if (!/^[0-9A-Za-z?=]+$/.test(e.target.value)) {   // validate special character alogn with ? and = for XRP
-        //     this.setState({
-        //         errors: {
-        //             ...this.state.errors,
-        //             address: "wallet.errWDinvalidAddress"
-        //         }
-        //     })
-        // }
-        else if (!validator.matches(e.target.value,/^[0-9A-Za-z?=]+$/)) {   // validate special character alogn with ? and = for XRP
+        } else if ((validator.isAlpha(e.target.value)) || (!validator.matches(e.target.value, /^[0-9A-Za-z?=]+$/)) || (validator.isNumeric(e.target.value))) {   // validate only alpha or validate special character alogn with ? and = for XRP
             this.setState({
                 errors: {
                     ...this.state.errors,
@@ -451,28 +428,15 @@ class Withdraw extends Component {
                     }
                 })
             }
-        } else if (validator.contains(e.target.value, '-')) {
+        } else if ((validator.equals(e.target.value, '0') || e.target.value == 0) || (!validator.isDecimal(e.target.value, { force_decimal: false, decimal_digits: '0,8' })) || (validator.contains(e.target.value, '-'))) {
             this.setState({
                 errors: {
                     ...this.state.errors,
                     amount: "wallet.errWDInvalidAmount"
                 }
             })
-        } else if (validator.equals(e.target.value, '0') || e.target.value == 0) {
-            this.setState({
-                errors: {
-                    ...this.state.errors,
-                    amount: "wallet.errWDInvalidAmount"
-                }
-            })
-        } else if (!validator.isDecimal(e.target.value, { force_decimal: false, decimal_digits: '0,8' })) {
-            this.setState({
-                errors: {
-                    ...this.state.errors,
-                    amount: "wallet.errWDInvalidAmount"
-                }
-            })
-        } else if (parseFloat(e.target.value) > parseFloat(this.props.WithdrawalDailyLimit) && this.props.WithdrawalDailyLimit != 0) {
+        }
+        else if (parseFloat(e.target.value) > parseFloat(this.props.WithdrawalDailyLimit) && this.props.WithdrawalDailyLimit != 0) {
             this.setState({
                 errors: {
                     ...this.state.errors,

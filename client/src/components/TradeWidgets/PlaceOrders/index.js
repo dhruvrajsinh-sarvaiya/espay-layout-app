@@ -12,7 +12,7 @@ import Tab from "@material-ui/core/Tab";
 // function for connect store
 import { connect } from "react-redux";
 
-//import { getCurrentPrice,getChargeList } from "Actions/Trade";
+
 
 //import  Limit Order type Component
 import LimitOrder from "./LimitOrders";
@@ -29,13 +29,7 @@ import SpotOrder from "./SpotOrder";
 // import for internationalization
 import IntlMessages from "Util/IntlMessages";
 
-//import { getWallets } from "Actions/Withdraw";
-
-//import Popover from '@material-ui/core/Popover';
-//import Typography from '@material-ui/core/Typography';
 import { findDOMNode } from 'react-dom';
-//import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-//import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 class PlaceOrder extends Component {
@@ -61,20 +55,6 @@ class PlaceOrder extends Component {
 
  // invoke before Compoent render
  componentDidMount() {
-  // code changed by devang parekh for handling margin trading process
-  /* if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-  
-    this.props.getChargeList({marginTrading:1})
-    //load Currency List
-    //this.props.getCurrentPrice({ Pair: this.props.currencyPair,marginTrading:1 });    
-  
-  } else {
-
-    this.props.getChargeList({})
-    //load Currency List
-    //this.props.getCurrentPrice({ Pair: this.props.currencyPair });    
-    
-  } */
   
 }
 
@@ -127,11 +107,11 @@ class PlaceOrder extends Component {
     
     return (
       <Fragment>
-        {/* {this.props.loading && <JbsSectionLoader />} */}
+       
         <div className="commnplaceorder">
           <Row className="pl-0 pr-15">
             <Col md={9} className="placeorderheader pr-0">
-              {/* <h4>{<IntlMessages id="trading.placeorder.label.title" />}</h4> */}
+             
               <AppBar
                 position="static"
                 className={classnames(
@@ -142,12 +122,10 @@ class PlaceOrder extends Component {
                 <Tabs
                   value={this.state.value}
                   onChange={this.handleChange}
-                  //indicatorColor="primary"
+                  
                   textColor="primary"
                   fullWidth
-                  // scrollable
-                  // scrollButtons="off"
-                >
+                                  >
                   {<Tab
                     label={<IntlMessages id="trading.placeorder.label.limit" />}
                     className={classnames(
@@ -193,9 +171,7 @@ class PlaceOrder extends Component {
               {" "}
               <div  className="mt-10 mr-10 freelinktitle">
               <Link to="/app/pages/fees" className="float-right"><IntlMessages id="sidebar.fees" /></Link>
-              {/* <IntlMessages id="trading.placeorder.label.fee" /> : 
-              <IntlMessages id="trading.placeorder.label.takers" /> {" " + this.props.takers} {" "}
-              <IntlMessages id="trading.placeorder.label.makers" /> {" " + this.props.makers}  */}
+              
               </div>              
             </Col>
           </Row>
@@ -283,7 +259,7 @@ const mapStateToProps = ({ settings, currency, currentMarketCap/* ,chargeList */
   const { loading, buyOrderLoading, sellOrderLoading } = currency;
   const currentPrice = currentMarketCap.currentMarketCap;
   const lastPriceBit = currentMarketCap.lastPriceBit;
-  //const {chargesList} = chargeList;
+  
   
   return { darkMode, currentPrice, loading, buyOrderLoading, sellOrderLoading,lastPriceBit /* ,chargesList */ };
 };
@@ -291,8 +267,6 @@ const mapStateToProps = ({ settings, currency, currentMarketCap/* ,chargeList */
 export default connect(
   mapStateToProps,
   {
-    //getCurrentPrice,
-    //getWallets,
-    //getChargeList
+    
   }
 )(PlaceOrder);

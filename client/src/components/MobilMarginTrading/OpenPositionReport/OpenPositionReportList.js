@@ -167,8 +167,8 @@ class OpenPositionReport extends Component {
     }
 }
 // map states to props when changed in states from reducer
-const mapStateToProps = ({ OpenPositionReport, tradePairList }) => {
-    const { loading, Report } = OpenPositionReport;
+const mapStateToProps = ({ OpenPositionReportRdcr, tradePairList }) => {
+    const { loading, Report } = OpenPositionReportRdcr;
     const { pairList } = tradePairList;
     return { loading, pairList, Report };
 };

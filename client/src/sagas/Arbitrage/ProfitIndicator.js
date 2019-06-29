@@ -9,7 +9,7 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 // types for set actions and reducers
 import {
     GET_ARBITRAGE_PROFITINDICATOR,
@@ -31,7 +31,7 @@ function* getAribitrageProfitIndicatorAPI({ payload }) {
 
     var headers = { 'Authorization': AppConfig.authorizationToken }
     const response = yield call(swaggerGetAPI, 'api/Transaction/GetProfitIndicatorArbitrage/' + payload.PairName, headers);
-    //const response = profitIndicator;
+  
 
     try {
 

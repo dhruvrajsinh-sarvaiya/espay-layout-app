@@ -1,11 +1,11 @@
 import appLocaleData from 'react-intl/locale-data/he';
 import saMessages from '../locales/he_HE';
 
-const saLang = {
+const he_HE = {
     messages: {
         ...saMessages
     },
     locale: 'he-he',
     data: appLocaleData
 };
-export default saLang;
+export default he_HE;

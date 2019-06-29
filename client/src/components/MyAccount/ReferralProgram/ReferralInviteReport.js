@@ -86,7 +86,6 @@ class ReferralInviteReport extends Component {
             Service: "",
             ChannelType: ""
         },
-        isDisable: true,
         payTypeList: [],
         serviceData: [],
         channelList: [],
@@ -121,7 +120,7 @@ class ReferralInviteReport extends Component {
         newObj.PayType = "";
         newObj.Service = "";
         newObj.ChannelType = "";
-        this.setState({ showReset: false, getFilter: newObj, isDisable: true, errors: {} });
+        this.setState({ showReset: false, getFilter: newObj, errors: {} });
         this.props.getReferralInviteList(newObj);
     }
 
@@ -170,14 +169,13 @@ class ReferralInviteReport extends Component {
                 } else if (ToDate > currentDate) {
                     NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
                 } else {
-                    // var newObj = Object.assign({}, this.state.getFilter);
                     newObj.PageIndex = 1;
                     newObj.Page_Size = AppConfig.totalRecordDisplayInList;
                     this.props.getReferralInviteList(newObj);
                 }
 
             }  // Added By Tejas For Validating Dates 26/3/2019 --> End
-        };
+        }
 
     }
 
@@ -212,14 +210,14 @@ class ReferralInviteReport extends Component {
     handleChange = (event) => {
         var newObj = Object.assign({}, this.state.getFilter);
         newObj[event.target.name] = event.target.value;
-        this.setState({ getFilter: newObj, isDisable: false });
+        this.setState({ getFilter: newObj });
         if (event.target.name === "PayType") {
             this.props.getServiceList({ PayTypeId: event.target.value });
         }
     }
 
     render() {
-        const { Data, totalCount, payTypeList, serviceData, channelList, isDisable, errors } = this.state;
+        const { Data, totalCount, payTypeList, serviceData, channelList, errors } = this.state;
         const { loading } = this.props;
         const { PageIndex, Page_Size, FromDate, ToDate, PayType, ChannelType, Service } = this.state.getFilter;
         let today = new Date();
@@ -253,24 +251,20 @@ class ReferralInviteReport extends Component {
                 );
             },
             onTableChange: (action, tableState) => {
-                switch (action) {
-                    case 'changeRowsPerPage' || "changePage":
-                        this.setState({
-                            GetData: {
-                                ...this.state.Getdata,
-                                PageIndex: tableState.page,
-                                Page_Size: tableState.rowsPerPage
-                            }
-                        });
-                        this.props.getReferralInviteList({
+                if (action === 'changeRowsPerPage' && action === 'changePage') {
+					this.setState({
+                        GetData: {
                             ...this.state.Getdata,
                             PageIndex: tableState.page,
                             Page_Size: tableState.rowsPerPage
-                        });
-                        break;
-                    default:
-                        break;
-                }
+                        }
+                    });
+                    this.props.getReferralInviteList({
+                        ...this.state.Getdata,
+                        PageIndex: tableState.page,
+                        Page_Size: tableState.rowsPerPage
+                    });
+				}
             }
         };
 
@@ -331,7 +325,7 @@ class ReferralInviteReport extends Component {
                                 <Row>
                                     <Col md="4" xs="4" sm="4">
                                         <FormGroup className="mt-30">
-                                            <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
+                                            <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : false)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
                                         </FormGroup>
                                     </Col>
                                     <Col md="4" xs="4" sm="4">
@@ -348,7 +342,6 @@ class ReferralInviteReport extends Component {
                 </JbsCollapsibleCard>
                 <div className="StackingHistory statusbtn-comm">
                     <MUIDataTable
-                        // title={<IntlMessages id="my_account.invites" />}
                         columns={columns}
                         options={options}
                         data={

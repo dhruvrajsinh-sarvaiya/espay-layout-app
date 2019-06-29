@@ -4,16 +4,7 @@ module.exports = function validateAntiPhishingCode(data) {
     let errors = {};
 
     //Check Anti-Phishing code...
-    if (validator.isEmpty(data.antiphishingcode))
-    {
-        errors.antiphishingcode = "my_account.err.antiphishingcodeRequired";
-    }
-    else if (validator.isAlphanumeric(data.antiphishingcode))
-    {
-        errors.antiphishingcode = "my_account.err.antiphishingcodeRequired";
-    }
-    else if (validator.isLength(data.antiphishingcode, 4 , 20 ))
-    {
+    if ((validator.isEmpty(data.antiphishingcode)) || (validator.isAlphanumeric(data.antiphishingcode)) || (validator.isLength(data.antiphishingcode, 4, 20))) {
         errors.antiphishingcode = "my_account.err.antiphishingcodeRequired";
     }
 

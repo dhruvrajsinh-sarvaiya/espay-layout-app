@@ -3,7 +3,7 @@
     Date : 04-06-2019
     File Comment : List currency
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import {ListArbitrageWallet} from 'Components/Arbitrage';

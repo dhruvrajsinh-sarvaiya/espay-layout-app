@@ -100,28 +100,6 @@ class NormalRegistrationWdgt extends Component {
         newObj[event.target.name] = event.target.value;
         this.setState({ data: newObj });
     }
-
-    clearData() {
-        let clearData = Object.assign({}, this.state.data);
-        clearData = {
-            username: '',
-            firstname: '',
-            lastname: '',
-            email: '',
-            password: '',
-            confirmpassword: '',
-            mobile: '',
-            ReferralCode: '',
-            deviceId: '',
-            mode: '',
-            ipAddress: '',
-            hostName: '',
-            ReferralServiceId: 0, // code added by devang parekh (1-4-2019) // as per discuss with pratikbhai
-            ReferralChannelTypeId: 0,  // code added by devang parekh (1-4-2019) // as per discuss with pratikbhai
-        }
-        this.setState({ data: clearData });
-    }
-
     resendConfirmEmail(data) {
         let cnfmObj = {
             email: data.email,
@@ -192,7 +170,7 @@ class NormalRegistrationWdgt extends Component {
     //end
 
     render() {
-        const { username, firstname, lastname, email, password, confirmpassword, ReferralCode } = this.state.data;
+        const { username, firstname, lastname, email, ReferralCode } = this.state.data;
         const { tem_mobile, confirm_link, err_alert, err_msg, success_msg, success_alert, loading, errors, CountryCode } = this.state;
         return (
             <Fragment>

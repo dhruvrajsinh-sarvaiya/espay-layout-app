@@ -167,7 +167,7 @@ class SigninEmailWithOTPWdgt extends Component {
         this.setState({ err_alert: false, errors: errors });
 
         if (isValid) {
-            let otpObj = {
+             otpObj = {
                 appkey: this.state.appkey,
                 otp: this.state.otp,
                 email: this.state.email,

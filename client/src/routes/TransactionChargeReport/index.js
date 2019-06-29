@@ -45,23 +45,19 @@ class TransactionCharge extends Component {
       "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVhIjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NDsgcnY6NjIuMCkgR2Vja28vMjAxMDAxMDEgRmlyZWZveC82Mi4wIiwiYnJvd3NlciI6eyJuYW1lIjoiRmlyZWZveCIsInZlcnNpb24iOiI2Mi4wIiwibWFqb3IiOiI2MiJ9LCJlbmdpbmUiOnsibmFtZSI6IkdlY2tvIiwidmVyc2lvbiI6IjYyLjAifSwib3MiOnsibmFtZSI6IldpbmRvd3MiLCJ2ZXJzaW9uIjoiMTAifSwiZGV2aWNlIjp7fSwiY3B1Ijp7ImFyY2hpdGVjdHVyZSI6ImFtZDY0In19LCJpYXQiOjE1Mzg0NzQzNTAsImV4cCI6MTUzODQ3Nzk1MH0.koeuMpryYz7NrsdJw7GoDxPKzkZnwhFSojKwfxfiOCc";
 
     var Logger = log4javascript.getLogger();
-    //headers.append('Authorization', token);
+   
     var ajaxAppender = new log4javascript.AjaxAppender(
       "http://172.20.65.111:5000/api/private/v1/getLogs/addFrontErrorLog"
     );
     ajaxAppender.addHeader("Authorization", token);
 
-    // var layout = new log4javascript.JsonLayout(true, false);
-    // ajaxAppender.setLayout(layout);
+   
     ajaxAppender.setBatchSize(10); // send in batches of 10
     ajaxAppender.setSendAllOnUnload(); // send all remaining messages on window.beforeunload()
     Logger.addAppender(ajaxAppender);
 
-    //Sending error message to server
-    //LOgger.error({error:"there are error in front"});
-
-    //Sending info log to server
-    //LOgger.info("test info");
+    
+    
     //report all user console errors
     onerror = (message, url, lineNumber) => {
       var errorMsg =
@@ -73,7 +69,7 @@ class TransactionCharge extends Component {
   }
 
   componentWillUnmount() {
-    //console.log('componentWillUnmount');
+    
   }
 
   // apply button used to call Transaction Charge
@@ -161,9 +157,7 @@ class TransactionCharge extends Component {
 
     return (
       <Fragment>
-        {/* { this.state.sectionReload &&
-					<JbsSectionLoader />
-				} */}
+      
         <div className="charts-widgets-wrapper">
           <PageTitleBar
             title={<IntlMessages id="sidebar.transactioncharge.list" />}
@@ -307,12 +301,7 @@ class TransactionCharge extends Component {
   }
 }
 
-//export default TransactionCharge;
-// map states to props when changed in states from reducer
-// const mapStateToProps = state => ({
-//   transactionCharge: state.transactionCharge.transactionCharge,
-//   darkMode : state.settings.darkMode
-// });
+
 
 const mapStateToProps = ({ transactionCharge , settings }) => {
 	const { darkMode } = settings;

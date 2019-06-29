@@ -21,8 +21,6 @@ import { Announcement } from "Components/Widgets";
 // jbs collapsible card
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 
-//For Meta Tag and SEO Configuration
-import Page from 'Components/page';
 // Added By Megha Kariya (13/02/2019)
 import {
   TwitterFeeds,
@@ -32,7 +30,7 @@ export default class News extends Component {
   render() {
     
     return (
-      // <Page id="News" title="News" description="This is News Page">
+      
       <div className="about-wrapper">
         <PageTitleBar
           title={<IntlMessages id="sidebar.news" />}
@@ -73,7 +71,7 @@ export default class News extends Component {
             </div>
         </div>
       </div>
-      // </Page>
+      
     );
   }
 }

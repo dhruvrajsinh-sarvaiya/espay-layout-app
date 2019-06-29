@@ -3,7 +3,7 @@
     Date : 1-03-2019
     File Comment : Margin Wallet Ledger
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import {ListMarginWalletLedger} from 'Components/MarginTrading';

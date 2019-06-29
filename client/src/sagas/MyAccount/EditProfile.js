@@ -5,7 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import {
     EDIT_PROFILE,
@@ -19,10 +19,9 @@ import {
     getProfileByIDSuccess,
     getProfileByIDFailure,
 } from 'Actions/MyAccount';
+import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 
 import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
 
@@ -36,7 +35,7 @@ function* editProfileAPI({payload}) {
         if(lgnErrCode.includes(response.statusCode)){
             redirectToLogin();
         } else if(statusErrCode.includes(response.statusCode)){               
-            staticRes = staticResponse(response.statusCode);
+            let staticRes = staticResponse(response.statusCode);
             yield put(editProfileFailure(staticRes));
         } else if(response.statusCode === 200) {
             yield put(editProfileSuccess(response));
@@ -57,7 +56,7 @@ function* getProfileByIDAPI() {
         if(lgnErrCode.includes(response.statusCode)){
             redirectToLogin();
         } else if(statusErrCode.includes(response.statusCode)){      
-            staticRes = staticResponse(response.statusCode);
+            let staticRes = staticResponse(response.statusCode);
             yield put(getProfileByIDFailure(staticRes));
         } else if(response.statusCode === 200) {
             yield put(getProfileByIDSuccess(response));

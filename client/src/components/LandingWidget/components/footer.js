@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container , Row , Col , Button , Img } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import Footerlogo from '../../../assets/img/site-logo.png';
 
 export default class footer extends Component {
@@ -9,7 +9,7 @@ export default class footer extends Component {
         <Container>
           <Row>
             <Col className="footer-logo" sm={3}>
-              <img src={Footerlogo} href="/" />
+              <img src={Footerlogo} href="/" alt="" />
             </Col>
             <Col className="about" sm={2}>
               <h6>Company</h6>

@@ -13,9 +13,6 @@ import classnames from "classnames";
 import { connect } from "react-redux";
 
 import { doBuyOrder, doSellOrder } from "Actions/Trade";
-
-import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 import { NotificationManager } from "react-notifications";
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -77,7 +74,7 @@ class MarketOrder extends React.Component {
   };
 
   validateBuyPrice = event => {
-    //  console.log(event.target.value);
+
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ priceBuy: event.target.value });
 
@@ -130,49 +127,22 @@ class MarketOrder extends React.Component {
         priceSell: parseFloat(nextprops.currentPrice.LastPrice).toFixed(8),
         lastPriceBit: nextprops.lastPriceBit,
         amountBuy: "",
-        //totalBuy:"",
         amountSell: "",
-        //totalSell:""
+
       })
 
     }
 
-    // if(nextprops.bulkBuyOrder && nextprops.bulkBuyOrder.Price !== '-' && nextprops.bulkBuyOrder.Price && nextprops.bulkBuyOrder.Amount && nextprops.bulkBuyOrder.Total) {
 
-    //   if(nextprops.bulkBuyOrder.Price !== this.props.bulkBuyOrder.Price && 
-    //     nextprops.bulkBuyOrder.Amount !== this.props.bulkBuyOrder.Amount && 
-    //     nextprops.bulkBuyOrder.Total !== this.props.bulkBuyOrder.Total
-    //     ){ 
-    //     this.setState({
-    //       priceBuy:parseFloat(nextprops.bulkBuyOrder.Price).toFixed(8),
-    //       amountBuy:parseFloat(nextprops.bulkBuyOrder.Amount).toFixed(8),
-    //       totalBuy:nextprops.bulkBuyOrder.Total
-    //     })
-    //   }   
-    // }
-    // if(nextprops.bulkSellOrder && nextprops.bulkSellOrder.Price !== '-' && nextprops.bulkSellOrder.Price && nextprops.bulkSellOrder.Amount && nextprops.bulkSellOrder.Total) {
-
-    //   if(nextprops.bulkSellOrder.Price !== this.props.bulkSellOrder.Price && 
-    //     nextprops.bulkSellOrder.Amount !== this.props.bulkSellOrder.Amount && 
-    //     nextprops.bulkSellOrder.Total !== this.props.bulkSellOrder.Total
-    //     ){  
-    //     this.setState({
-    //       priceSell:parseFloat(nextprops.bulkSellOrder.Price).toFixed(8),
-    //       amountSell:parseFloat(nextprops.bulkSellOrder.Amount).toFixed(8),
-    //       totalSell:nextprops.bulkSellOrder.Total
-    //     })
-    //   }  
-    // }
-
-    if (typeof nextprops.buyOrder.response !== undefined) {
+    if (nextprops.buyOrder.response !== undefined) {
 
       if (this.state.buyMarketOrderBit) {
 
         if (nextprops.buyOrder.statusCode == 200 && nextprops.buyOrder.ErrorCode == 4566) {
 
-          //NotificationManager.success(<IntlMessages id="error.trading.transaction.4566"/>)
+
           NotificationManager.success(<IntlMessages id={`trading.orders.orders.trnid`} values={nextprops.buyOrder.response} />);
-          // NotificationManager.success(<IntlMessages id="trading.orders.orders.trnid"/> )
+
         } else if (nextprops.buyOrder.statusCode == 200 && nextprops.buyOrder.ErrorCode == 4568) {
 
           NotificationManager.error(<IntlMessages id="error.trading.transaction.4568" />)
@@ -253,7 +223,7 @@ class MarketOrder extends React.Component {
   }
 
   validateBuyAmount = event => {
-    //  console.log(event.target.value);
+
     if (validateOnlyNumeric(event.target.value)) {
       const { isValid, errors } = validateBuyAmount(event.target.value);
 
@@ -290,7 +260,7 @@ class MarketOrder extends React.Component {
   };
 
   validateBuyTotal = event => {
-    //  console.log(event.target.value);
+
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ totalBuy: event.target.value });
 
@@ -326,7 +296,7 @@ class MarketOrder extends React.Component {
   };
 
   validateSellPrice = event => {
-    //    console.log(event.target.value);
+
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ priceSell: event.target.value });
 
@@ -359,7 +329,7 @@ class MarketOrder extends React.Component {
   };
 
   validateSellAmount = event => {
-    //     console.log(event.target.value);
+
     if (validateOnlyNumeric(event.target.value)) {
       const { isValid, errors } = validateSellAmount(event.target.value);
 
@@ -395,7 +365,7 @@ class MarketOrder extends React.Component {
   };
 
   validateSellTotal = event => {
-    //  console.log(event.target.value);
+
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ totalSell: event.target.value });
 
@@ -436,8 +406,6 @@ class MarketOrder extends React.Component {
 
   changeSelectedBuyValue = value => {
     if (this.state.selectedBuyValue === value) {
-
-    } else {
       if (
         this.state.priceBuy !== "" &&
         this.state.isPriceBuyValid &&
@@ -472,8 +440,6 @@ class MarketOrder extends React.Component {
 
   changeSelectedSellValue = value => {
     if (this.state.selectedSellValue === value) {
-
-    } else {
       if (
         this.state.priceSell !== "" &&
         this.state.isPriceSellValid &&
@@ -508,23 +474,23 @@ class MarketOrder extends React.Component {
   doSellOrder = event => {
     event.preventDefault();
     const info = this.props.info;
-    if (this.state.priceSell == '' || typeof this.state.priceSell === undefined || this.state.priceSell == 0) {
+    if (this.state.priceSell == '' || typeof this.state.priceSell === 'undefined' || this.state.priceSell == 0) {
 
       this.setState({ showLoader: false, sellMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
-    } else if (this.state.amountSell == '' || typeof this.state.amountSell === undefined || this.state.amountSell == 0) {
+    } else if (this.state.amountSell == '' || typeof this.state.amountSell === 'undefined' || this.state.amountSell == 0) {
 
       this.setState({ showLoader: false, sellMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
-    } else if (info.currencyPairID == '' || typeof info.currencyPairID === undefined || info.currencyPairID == 0) {
+    } else if (info.currencyPairID == '' || typeof info.currencyPairID === 'undefined' || info.currencyPairID == 0) {
 
       this.setState({ showLoader: false, sellMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
-    } else if (this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === undefined || this.props.secondCurrencyWalletId == 0) {
+    } else if (this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === 'undefined' || this.props.secondCurrencyWalletId == 0) {
 
       this.setState({ showLoader: false, sellMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4602" />);
-    } else if (this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === undefined || this.props.firstCurrencyWalletId == 0) {
+    } else if (this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === 'undefined' || this.props.firstCurrencyWalletId == 0) {
 
       this.setState({ showLoader: false, sellMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4603" />);
@@ -588,7 +554,6 @@ class MarketOrder extends React.Component {
             buyMarketOrderBit: 0
           });
 
-          //this.props.doSellOrder(data);
 
           if (this.state.amountSell <= this.props.firstCurrencyBalance) {
 
@@ -615,27 +580,27 @@ class MarketOrder extends React.Component {
     event.preventDefault();
     const info = this.props.info;
 
-    if (this.state.priceBuy == '' || typeof this.state.priceBuy === undefined || this.state.priceBuy == 0) {
+    if (this.state.priceBuy == '' || typeof this.state.priceBuy === 'undefined' || this.state.priceBuy == 0) {
 
       this.setState({ showLoader: false, buyMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
-    } else if (this.state.amountBuy == '' || typeof this.state.amountBuy === undefined || this.state.amountBuy == 0) {
+    } else if (this.state.amountBuy == '' || typeof this.state.amountBuy === 'undefined' || this.state.amountBuy == 0) {
 
       this.setState({ showLoader: false, buyMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
-    } else if (this.state.totalBuy == '' || typeof this.state.totalBuy === undefined || this.state.totalBuy == 0) {
+    } else if (this.state.totalBuy == '' || typeof this.state.totalBuy === 'undefined' || this.state.totalBuy == 0) {
 
       this.setState({ showLoader: false, buyMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4609" />);
-    } else if (info.currencyPairID == '' || typeof info.currencyPairID === undefined || info.currencyPairID == 0) {
+    } else if (info.currencyPairID == '' || typeof info.currencyPairID === 'undefined' || info.currencyPairID == 0) {
 
       this.setState({ showLoader: false, buyMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
-    } else if (this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === undefined || this.props.secondCurrencyWalletId == 0) {
+    } else if (this.props.secondCurrencyWalletId == '' || typeof this.props.secondCurrencyWalletId === 'undefined' || this.props.secondCurrencyWalletId == 0) {
 
       this.setState({ showLoader: false, buyMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4602" />);
-    } else if (this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === undefined || this.props.firstCurrencyWalletId == 0) {
+    } else if (this.props.firstCurrencyWalletId == '' || typeof this.props.firstCurrencyWalletId === 'undefined' || this.props.firstCurrencyWalletId == 0) {
 
       this.setState({ showLoader: false, buyMarketOrderBit: 0 });
       NotificationManager.error(<IntlMessages id="error.trading.transaction.4603" />);
@@ -724,7 +689,7 @@ class MarketOrder extends React.Component {
     const data = this.props.info;
     return (
       <Row>
-        {/* {this.props.loading && <JbsSectionLoader />} */}
+
         <Col sm={6} xs={6} className="buysellbox">
           <div className="p-0 d-flex justify-content-between">
             <h4>
@@ -754,7 +719,7 @@ class MarketOrder extends React.Component {
                 <Row>
                   <Col sm={4}>
                     <Label className="col-form-label" for="Price">
-                      {/* <IntlMessages id="trading.placeorder.market.label.price" /> */}
+
                       <IntlMessages id="trading.placeorder.limit.label.price" />
                     </Label>
                   </Col>
@@ -767,8 +732,6 @@ class MarketOrder extends React.Component {
                           name="price"
                           id="price"
                           placeholder={placeholder}
-                          //value={this.state.priceBuy}
-                          //onChange={this.validateBuyPrice}
                           className={!this.state.isPriceBuyValid ? "error" : ""}
                           disabled={this.state.priceBuy ? "true" : "false"}
                         />
@@ -887,11 +850,8 @@ class MarketOrder extends React.Component {
                 <Col sm={8}>
                   <Input
                     type="text"
-                    //value={this.state.totalBuy}                      
                     name="total"
                     id="total"
-                    //onChange={this.validateBuyTotal}
-                    //placeholder={data.secondCurrency}
                     className={!this.state.isTotalBuyValid ? "error" : ""}
                     disabled={this.state.priceBuy ? "true" : "false"}
                   />
@@ -953,9 +913,7 @@ class MarketOrder extends React.Component {
             <Form>
               <FormGroup row className="mb-10">
                 <Label sm={4} for="Price">
-                  {/*
-                      <IntlMessages id="trading.placeorder.market.label.price" />
-                    */}
+
                   {<IntlMessages id="trading.placeorder.limit.label.price" />}
                 </Label>
                 <Col sm={8}>
@@ -968,7 +926,7 @@ class MarketOrder extends React.Component {
                         placeholder={placeholder}
                         value={placeholder}
                         disabled={this.state.priceSell ? "true" : "false"}
-                        //onChange={this.validateSellPrice}
+
                         className={!this.state.isPriceSellValid ? "error" : ""}
                       />
                     }
@@ -1087,11 +1045,8 @@ class MarketOrder extends React.Component {
 
                   <Input
                     type="text"
-                    //value={this.state.totalSell}                      
                     name="total"
                     id="total"
-                    //onChange={this.validateSellTotal}
-                    //placeholder={data.secondCurrency}
                     className={!this.state.isTotalSellValid ? "error" : ""}
                     disabled={this.state.priceSell ? "true" : "false"}
                   />
@@ -1141,7 +1096,6 @@ const mapStateToProps = state => ({
   buyOrderLoading: state.placeOrder.buyOrderLoading,
   sellOrderLoading: state.placeOrder.sellOrderLoading,
   error: state.placeOrder.error,
-  //currentPrice:state.currency.currentPrice,
   currentPrice: state.currentMarketCap.currentMarketCap,
   lastPriceBit: state.currentMarketCap.lastPriceBit,
 });

@@ -23,45 +23,27 @@ import { NotificationManager } from 'react-notifications';
 const columns = [
     {
         name: <IntlMessages id="sidebar.colHash" />,
-        options: {
-            filter: true,
-            sort: false,
-        }
+        options: { filter: true, sort: false, }
     },
     {
         name: <IntlMessages id="sidebar.colUserName" />,
-        options: {
-            filter: true,
-            sort: false,
-        }
+        options: { filter: true, sort: false, }
     },
     {
         name: <IntlMessages id="sidebar.ReciverUsername" />,
-        options: {
-            filter: false,
-            sort: false
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="sidebar.colChannelType" />,
-        options: {
-            filter: false,
-            sort: false
-        }
+        options: { filter: false, sort: false }
     },
     {
         name: <IntlMessages id="table.Discription" />,
-        options: {
-            filter: true,
-            sort: false,
-        }
+        options: { filter: true, sort: false, }
     },
     {
         name: <IntlMessages id="sidebar.colCreatedDt" />,
-        options: {
-            filter: false,
-            sort: false,
-        }
+        options: { filter: false, sort: false, }
     }
 ];
 
@@ -78,7 +60,6 @@ class ReferralParticipateReport extends Component {
             ReferUsername: "",
             ChannelType: ""
         },
-        isDisable: true,
         serviceData: [],
         channelList: [],
         showReset: false,
@@ -130,7 +111,7 @@ class ReferralParticipateReport extends Component {
         newObj.Service = "";
         newObj.ReferUsername = "";
         newObj.ChannelType = "";
-        this.setState({ showReset: false, getFilter: newObj, isDisable: true, errors: {} });
+        this.setState({ showReset: false, getFilter: newObj, errors: {} });
         this.props.getReferralParticipate(newObj);
     }
 
@@ -159,8 +140,6 @@ class ReferralParticipateReport extends Component {
 
                     NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
                 } else {
-
-                    // var newObj = Object.assign({}, this.state.getFilter);
                     newObj.PageIndex = 1;
                     newObj.Page_Size = AppConfig.totalRecordDisplayInList;
                     this.props.getReferralParticipate(newObj);
@@ -202,12 +181,12 @@ class ReferralParticipateReport extends Component {
     handleChange = (event) => {
         var newObj = Object.assign({}, this.state.getFilter);
         newObj[event.target.name] = event.target.value;
-        this.setState({ getFilter: newObj, isDisable: false });
+        this.setState({ getFilter: newObj });
     }
 
     render() {
 
-        const { Data, totalCount, serviceData, channelList, isDisable, errors } = this.state;
+        const { Data, totalCount, serviceData, channelList, errors } = this.state;
         const { loading } = this.props;
         const { PageIndex, Page_Size, FromDate, ToDate, Service, ReferUsername, ChannelType } = this.state.getFilter;
         let today = new Date();
@@ -241,25 +220,19 @@ class ReferralParticipateReport extends Component {
                 );
             },
             onTableChange: (action, tableState) => {
-                switch (action) {
-                    case 'changeRowsPerPage' || "changePage":
-                        this.setState({
-                            GetData: {
-                                ...this.state.Getdata,
-                                PageIndex: tableState.page,
-                                Page_Size: tableState.rowsPerPage
-                            }
-                        });
-                        this.props.getReferralParticipate({
-                            GetData: {
-                                ...this.state.Getdata,
-                                PageIndex: tableState.page,
-                                Page_Size: tableState.rowsPerPage
-                            }
-                        });
-                        break;
-                    default:
-                        break;
+                if (action === 'changeRowsPerPage' || action === 'changePage') {
+                    this.setState({
+                        GetData: {
+                            ...this.state.Getdata,
+                            PageIndex: tableState.page,
+                            Page_Size: tableState.rowsPerPage
+                        }
+                    });
+                    this.props.getReferralParticipate({
+                        ...this.state.Getdata,
+                        PageIndex: tableState.page,
+                        Page_Size: tableState.rowsPerPage
+                    });
                 }
             }
         };
@@ -320,12 +293,12 @@ class ReferralParticipateReport extends Component {
                                 <Row>
                                     <Col md="4" xs="4" sm="4">
                                         <FormGroup className="mt-30">
-                                            <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
+                                            <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : false)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
                                         </FormGroup>
                                     </Col>
                                     <Col md="4" xs="4" sm="4">
                                         {this.state.showReset && <FormGroup className="mt-30">
-                                            <Button className="btn-danger text-white rounded-0 border-0 "  onClick={this.clearFilter}>
+                                            <Button className="btn-danger text-white rounded-0 border-0 " onClick={this.clearFilter}>
                                                 <IntlMessages id="button.clear" />
                                             </Button>
                                         </FormGroup>}
@@ -337,7 +310,6 @@ class ReferralParticipateReport extends Component {
                 </JbsCollapsibleCard>
                 <div className="StackingHistory statusbtn-comm">
                     <MUIDataTable
-                        // title={<IntlMessages id="my_account.participant" />}
                         columns={columns}
                         options={options}
                         data={

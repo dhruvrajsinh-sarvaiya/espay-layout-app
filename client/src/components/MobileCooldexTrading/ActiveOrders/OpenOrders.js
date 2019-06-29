@@ -38,7 +38,6 @@ import $ from 'jquery';
 const orderTypes = [
   { "type": "LIMIT", "ID": "1" },
   { "type": "MARKET", "ID": "2" },
-  // { "type": "SPOT", "ID": "3" },
   { "type": "STOP_Limit", "ID": "4" },
 ]
 class OpenOrder extends React.Component {
@@ -137,7 +136,7 @@ class OpenOrder extends React.Component {
       sectionReload: false,
       cancelAllModal: false,
       sectionReloadCancelAll: false,
-      cancelOrderBit:''
+      cancelOrderBit: ''
     });
   }
 
@@ -183,15 +182,12 @@ class OpenOrder extends React.Component {
 
   // This will invoke Before component render
   componentWillMount() {
-    const pair = this.props.currencyPair;
     this.isComponentActive = 1;
     // Call When Get Data From Socket/SignalR      
     this.props.hubConnection.on('RecieveActiveOrder', (openOrderDetail) => {
 
-      //console.log("call from SignalR RecieveOpenOrder",openOrderDetail);
       if (this.isComponentActive === 1 && openOrderDetail !== null) {
 
-        //var openorders = this.state.activeMyOpenOrder;
         try {
 
           const openOrderDetailData = JSON.parse(openOrderDetail);
@@ -203,17 +199,11 @@ class OpenOrder extends React.Component {
             if (parseFloat(newData.Price) >= 0) {
 
               var openorders = $.extend(true, [], this.state.activeMyOpenOrder);
-              //console.log("findIndexOrderId start ",(new Date()))
-              var findIndexOrderId = openorders.findIndex(openorders => parseFloat(openorders.Id) === parseFloat(newData.Id));
-              //console.log("findIndexOrderId end ",findIndexOrderId,(new Date()))
+              var findIndexOrderId = openorders.findIndex(openorder => parseFloat(openorder.Id) === parseFloat(newData.Id));
               if (findIndexOrderId === -1) {
 
                 if (parseFloat(newData.Amount) > 0) {
                   openorders.unshift(newData)
-                  /* openorders.map((value,key) =>{
-                    opendata.push(value)
-                  }) */
-                  //openorders.push(newData)
                 }
 
               } else {
@@ -251,7 +241,6 @@ class OpenOrder extends React.Component {
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
 
-    //console.log("this.state.activeOrderBit !== nextprops.activeOrderBit",this.state.activeOrderBitCount , nextprops.activeOrderBit)
     if (nextprops.activeMyOpenOrder.length !== 0 && this.state.activeOrderBitCount !== nextprops.activeOrderBit) {
 
       // set Active My Open Order list if gets from API only
@@ -285,14 +274,12 @@ class OpenOrder extends React.Component {
         modalInfo: -1,
         modal: false,
         cancelAllModal: false
-        //cancelOrderSuccess:true
       });
     }
 
   }
 
   render() {
-    //console.log("open orders",this.state.activeMyOpenOrder)
     const activeMyOpenData = [];
     if (this.state.activeMyOpenOrder) {
       this.state.activeMyOpenOrder.map(value => {
@@ -357,18 +344,6 @@ class OpenOrder extends React.Component {
                     <option value="2">{select}</option>
                   }
                 </IntlMessages>
-
-                {/* <IntlMessages id="openorder.cancelallspot">
-                  {(select) =>
-                    <option value="3">{select}</option>
-                  }
-                </IntlMessages> */}
-
-                {/* <IntlMessages id="openorder.cancelallstop">
-                          {(select) =>
-                            <option value="4">{select}</option>
-                          }
-                        </IntlMessages> */}
 
                 <IntlMessages id="openorder.cancelallstop-limit">
                   {(select) =>

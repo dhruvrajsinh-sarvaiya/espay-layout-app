@@ -9,7 +9,7 @@ import { Badge } from "reactstrap";
 import { NotificationManager } from "react-notifications";
 
 // components
-import SupportPage from "../Support/Support";
+import SupportPage from "../Support/SupportPage";
 
 // redux action
 import { logoutUserFromFirebase } from "Actions";

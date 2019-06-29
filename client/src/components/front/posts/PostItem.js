@@ -20,11 +20,7 @@ class PostItem extends Component {
 
   findUserLike(likes) {
     const { auth } = this.props;
-    if (likes.filter(like => like.user === auth.user.id).length > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return (likes.filter(like => like.user === auth.user.id).length > 0) ? true : false;
   }
 
   render() {

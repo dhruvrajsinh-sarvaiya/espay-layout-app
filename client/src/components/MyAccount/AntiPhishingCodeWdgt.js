@@ -51,7 +51,7 @@ class AntiPhishingCodeWdgt extends Component {
                 </Label>
                 <Col sm={6} className="d-inline-block">
                   <Input
-                    type="text"                    
+                    type="text"
                     name="antiphishingcode"
                     value={antiphishingcode}
                     id="antiphishingcode"
@@ -60,7 +60,6 @@ class AntiPhishingCodeWdgt extends Component {
                       this.setState({ antiphishingcode: e.target.value })
                     }
                   />
-                  {/* <p className="mb-0 text-left">please enter 4-20 non-special characters.</p> */}
                   {errors.antiphishingcode && (
                     <span className="text-danger text-left">
                       <IntlMessages id={errors.antiphishingcode} />

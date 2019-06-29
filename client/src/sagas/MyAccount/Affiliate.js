@@ -5,7 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import {
     AFFILIATE_SIGNUP,
@@ -32,8 +32,8 @@ import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
 //Function for Affiliate Signup
 function* affiliateSignupAPI({ payload }) {
     var sUrl = 'api/Affiliate/AffiliateRegister';
-    if(payload.passdata !== '' && payload.passdata !== undefined) {
-        sUrl += '?passdata='+payload.passdata;
+    if (payload.passdata !== '' && payload.passdata !== undefined) {
+        sUrl += '?passdata=' + payload.passdata;
     }
 
     var headers = { 'Authorization': AppConfig.authorizationToken }
@@ -51,10 +51,10 @@ function* affiliateSignupAPI({ payload }) {
 }
 
 //Function for Affiliate Resend Confirmation Link
-function* affiliateResendConfirmationLinkAPI({payload}) {
-    const response = yield call(swaggerPostAPI,'api/Affiliate/ReSendAffiliateRegisterlink',payload);
+function* affiliateResendConfirmationLinkAPI({ payload }) {
+    const response = yield call(swaggerPostAPI, 'api/Affiliate/ReSendAffiliateRegisterlink', payload);
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(affiliateResendConfirmationLinkSuccess(response));
         } else {
             yield put(affiliateResendConfirmationLinkFailure(response));
@@ -65,11 +65,11 @@ function* affiliateResendConfirmationLinkAPI({payload}) {
 }
 
 //Function for Affiliate Confirmation Link
-function* affiliateConfirmationLinkAPI({payload}) {
-    const response = yield call(swaggerGetAPI,'api/Affiliate/AffiliateConfirmEmail?emailConfirmCode='+payload.emailConfirmCode,{});
-    
+function* affiliateConfirmationLinkAPI({ payload }) {
+    const response = yield call(swaggerGetAPI, 'api/Affiliate/AffiliateConfirmEmail?emailConfirmCode=' + payload.emailConfirmCode, {});
+
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(affiliateConfirmationLinkSuccess(response));
         } else {
             yield put(affiliateConfirmationLinkFailure(response));
@@ -84,7 +84,7 @@ function* affiliateConfirmationLinkAPI({payload}) {
 * Type : 0 for Basic & 1 for Full Detail 
 */
 function* getAffiliateCommissionPatternAPI({ payload }) {
-    const response = yield call(swaggerGetAPI, 'api/Affiliate/GetAffiliateSchemeType/'+payload.type, {});
+    const response = yield call(swaggerGetAPI, 'api/Affiliate/GetAffiliateSchemeType/' + payload.type, {});
 
     try {
         if (response.statusCode === 200) {

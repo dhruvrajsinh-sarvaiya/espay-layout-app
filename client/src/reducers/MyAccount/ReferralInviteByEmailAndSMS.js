@@ -20,7 +20,10 @@ const INIT_STATE = {
     inviteDataBySMS: {}
 }
 
-export default (state = INIT_STATE, action) => {
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         case SEND_REFERRAL_BY_EMAIL:
             return { ...state, loading: true, inviteDataByEmail: {}, inviteDataBySMS: {} };

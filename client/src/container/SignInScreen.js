@@ -65,7 +65,6 @@ class SignInScreen extends Component {
 								<div className="d-flex justify-content-between">
 									<div className="session-logo">
 										<Link to="/">
-											{/* <img src={AppConfig.appLogo} alt="session-logo" width="110" height="35" /> */}
 											<img src={AppConfig.appLogo} alt="session-logo" />
 										</Link>
 									</div>
@@ -86,8 +85,6 @@ class SignInScreen extends Component {
 											<h2 className="font-weight-bold"><IntlMessages id="my_account.getStartedWith" /> {AppConfig.brandName}</h2>
 										</div>
 										<LoginScreen method_id={method} />
-										{/* <p className="text-muted"><IntlMessages id="my_account.bySigningnote" /> {AppConfig.brandName}</p>
-										<p className="mb-0"><a target="_blank" href="/terms-of-service" className="text-muted"><IntlMessages id="sidebar.termsOfService" /></a></p> */}
 									</div>
 								</div>
 							</div>

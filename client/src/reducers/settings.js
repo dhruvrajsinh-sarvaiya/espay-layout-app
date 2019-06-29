@@ -1,11 +1,9 @@
 /**
  * App Settings Reducers
  */
-import update from "react-addons-update";
 
 import {
   COLLAPSED_SIDEBAR,
-  // DARK_MODE,
   BOXED_LAYOUT,
   RTL_LAYOUT,
   MINI_SIDEBAR,
@@ -36,15 +34,14 @@ import AppConfig from "Constants/AppConfig";
  */
 const INIT_STATE = {
   navCollapsed: AppConfig.navCollapsed,
-  // darkMode: AppConfig.darkMode,
   boxLayout: AppConfig.boxLayout,
   rtlLayout: AppConfig.rtlLayout,
   miniSidebar: AppConfig.miniSidebar,
   searchFormOpen: false, // search form by default false
   startUserTour: false,
   isDarkSidenav: AppConfig.isDarkSidenav,
-  modeChangeData:{},
-  loading:false,
+  modeChangeData: {},
+  loading: false,
   themes: [
     {
       id: 1,
@@ -84,7 +81,7 @@ const INIT_STATE = {
   ],
   enableSidebarBackgroundImage: AppConfig.enableSidebarBackgroundImage, // default enable sidebar background
   selectedSidebarImage: AppConfig.sidebarImage, // default sidebar background image
-  locale: AppConfig.locale,  
+  locale: AppConfig.locale,
   languages: [
     {
       languageId: "english",
@@ -92,84 +89,6 @@ const INIT_STATE = {
       name: "English",
       icon: "en"
     }
-    // {
-    //   languageId: "chinese",
-    //   locale: "zh",
-    //   name: "Chinese",
-    //   icon: "zh"
-    // },
-    // {
-    //   languageId: "russian",
-    //   locale: "ru",
-    //   name: "Russian",
-    //   icon: "ru"
-    // },
-    // {
-    //   languageId: "hebrew",
-    //   locale: "he",
-    //   name: "Hebrew",
-    //   icon: "he"
-    // },
-    // {
-    //   languageId: "french",
-    //   locale: "fr",
-    //   name: "French",
-    //   icon: "fr"
-    // },
-    // {
-    //   languageId: "saudi-arabia",
-    //   locale: "ar",
-    //   name: "Arabic",
-    //   icon: "ar"
-    // },
-    // {
-    //   languageId: "german",
-    //   locale: "de",
-    //   name: "German",
-    //   icon: "de"
-    // },
-    // {
-    //   languageId: "spanish",
-    //   locale: "es",
-    //   name: "Spanish",
-    //   icon: "es"
-    // },
-    // {
-    //   languageId: "japanese",
-    //   locale: "ja",
-    //   name: "Japanese",
-    //   icon: "ja"
-    // },
-    // {
-    //   languageId: "korean",
-    //   locale: "ko",
-    //   name: "Korean",
-    //   icon: "ko"
-    // },
-    // {
-    //   languageId: "italian",
-    //   locale: "it",
-    //   name: "Italian",
-    //   icon: "it"
-    // },
-    // {
-    //   languageId: "hungarian",
-    //   locale: "hu",
-    //   name: "Hungarian",
-    //   icon: "hu"
-    // },
-    // {
-    //   languageId: "dutch",
-    //   locale: "nl",
-    //   name: "Dutch",
-    //   icon: "du"
-    // },
-    // {
-    //   languageId: "portuguese",
-    //   locale: "pt",
-    //   name: "Portuguese",
-    //   icon: "pt"
-    // }
   ],
   agencyLayoutBgColors: [
     {
@@ -194,11 +113,14 @@ const INIT_STATE = {
       class: "bg-grdnt-purple-dark"
     }
   ],
-  langData : '', //Added by salim dt:04/04/2019
+  langData: '', //Added by salim dt:04/04/2019
 };
 
-export default (state = INIT_STATE, action) => {
-  //console.log("Setting reducer",action);
+export default (state, action) => {
+  if (typeof state === 'undefined') {
+    return INIT_STATE
+  }
+
   switch (action.type) {
     // collapse sidebar
     case COLLAPSED_SIDEBAR:
@@ -215,10 +137,6 @@ export default (state = INIT_STATE, action) => {
     // change theme color
     case CHANGE_THEME_COLOR:
       return { ...state, activeTheme: action.payload };
-
-    // dark mode
-    // case DARK_MODE:
-    //   return { ...state, darkMode: action.payload };
 
     // boxed layout
     case BOXED_LAYOUT:
@@ -250,13 +168,13 @@ export default (state = INIT_STATE, action) => {
 
     // set language
     case SET_LANGUAGE:
-      return { ...state, loading: true, locale: action.payload, langData : '' };
+      return { ...state, loading: true, locale: action.payload, langData: '' };
 
     case SET_LANGUAGE_SUCCESS: //added by salim dt:04/04/2019
-      return {...state, loading: false, locale: action.payload.locale, langData : action.payload.response };
+      return { ...state, loading: false, locale: action.payload.locale, langData: action.payload.response };
 
     case SET_LANGUAGE_FAILURE: //added by salim dt:04/04/2019
-      return {...state, loading: false, locale: action.payload.locale, langData : action.payload.response };
+      return { ...state, loading: false, locale: action.payload.locale, langData: action.payload.response };
 
     // dark sidenav
     case TOGGLE_DARK_SIDENAV:
@@ -278,26 +196,26 @@ export default (state = INIT_STATE, action) => {
         agencyLayoutBgColors: layoutsBg
       };
 
-      // get languages added by Jayesh 11-12-2018
+    // get languages added by Jayesh 11-12-2018
     case GET_LANGUAGES:
-    return { ...state, loading: true };
+      return { ...state, loading: true };
 
     // get languages success
     case GET_LANGUAGES_SUCCESS:
-      return { ...state, languages: action.payload.language, locale: action.payload.defaultlanguage,rtlLayout:action.payload.defaultlanguage.rtlLayout, loading: false };
+      return { ...state, languages: action.payload.language, locale: action.payload.defaultlanguage, rtlLayout: action.payload.defaultlanguage.rtlLayout, loading: false };
 
     // get languages failure
     case GET_LANGUAGES_FAILURE:
       return { ...state, loading: false }
 
     case MODE_CHANGE:
-      return {...state,loading:true,modeChangeData:{}};
+      return { ...state, loading: true, modeChangeData: {} };
 
     case MODE_CHANGE_SUCCESS:
-      return {...state,loading:false,modeChangeData:action.payload};
+      return { ...state, loading: false, modeChangeData: action.payload };
 
     case MODE_CHANGE_FAILURE:
-      return {...state,loading:false,modeChangeData:action.payload};
+      return { ...state, loading: false, modeChangeData: action.payload };
 
     default:
       return { ...state };

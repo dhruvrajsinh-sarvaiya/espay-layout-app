@@ -75,13 +75,7 @@ const columns = [
 			sort: false
 		}
 	},
-	/* {
-		name: <IntlMessages id="sidebar.colTradeType" />,
-		options: {
-			filter: false,
-			sort: false
-		}
-	}, */
+	
 	{
 		name: <IntlMessages id="sidebar.colStatus" />,
 		options: {
@@ -172,7 +166,7 @@ class Portfolio extends Component {
             NotificationManager.error(errMsg);
         } else if (nextProps.data.ReturnCode === 0) {
             if(nextProps.data.hasOwnProperty('Response') && nextProps.data.Response !== null && nextProps.data.Response.length > 0) {
-                // NotificationManager.success(nextProps.data.ReturnMsg);
+                
                 this.setState({ list : nextProps.data.Response });
             }
         }
@@ -192,7 +186,7 @@ class Portfolio extends Component {
 
 	render() {
 		const { list, pairList, loading, errors } = this.state;
-		const { Pair, TrnType, FromDate, ToDate, FollowTradeType } = this.state.filter; 
+		const { Pair, TrnType, FromDate, ToDate } = this.state.filter; 
 		const { isfilter } = this.props;
 	    return (
 			<Fragment>				
@@ -227,14 +221,7 @@ class Portfolio extends Component {
 									<IntlMessages id="tradeSummary.selectType.sell">{(sell) =><option value="sell">{sell}</option>}</IntlMessages>
 								</Input>
 							</FormGroup>
-							{/* <FormGroup className="col-md-2 col-sm-4">
-								<Label for="Select-2">{<IntlMessages id="sidebar.tradeType" />}</Label>
-								<Input type="select" name="FollowTradeType" value={FollowTradeType} id="Select-2" onChange={this.onChangeOrder}>
-									<IntlMessages id="sidebar.selTradeType">{(selTradeType) => <option value="">{selTradeType}</option>}</IntlMessages>
-									<IntlMessages id="sidebar.copyTrade">{(copyTrade) => <option value="CAN_COPY_TRADE">{copyTrade}</option>}</IntlMessages>
-									<IntlMessages id="sidebar.mirrorTrade">{(mirrorTrade) =><option value="CAN_MIRROR_TRADE">{mirrorTrade}</option>}</IntlMessages>
-								</Input>
-							</FormGroup>  */}
+							
 							<FormGroup className="col-md-2 col-sm-4">
 								<div className="btn_area">
 									<Button color="primary" variant="raised" className="mr-10 text-white perverbtn" onClick={this.applyFilter}><IntlMessages id="widgets.apply" /></Button>
@@ -256,22 +243,13 @@ class Portfolio extends Component {
 								item.Amount,
 								item.ChargeRs,
 								item.Total,
-								// item.FollowTradeType === '' ? '-' : item.FollowTradeType,
 								<PortfolioStatus status={item.Status} />,
-								// item.Status,
 								item.IsCancel ? <IntlMessages id="sidebar.yes" /> : <IntlMessages id="sidebar.no" />,
 								item.DateTime.replace('T', ' ').split('.')[0]
 							];
 						})}
 					/>
 				</div>
-				{/* <div className="clearfix bln_area">
-					<div className="float-left">Balance</div>
-					<div className="float-right text-right">
-						<div className="font-weight">90.04%</div>
-						<div>Balance</div>
-					</div>
-				</div> */}
 			</Fragment>
 		);
 	}

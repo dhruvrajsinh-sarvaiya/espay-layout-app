@@ -4,7 +4,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import AppConfig from 'Constants/AppConfig';
 
-const theme = createMuiTheme({
+const secondaryTheme = createMuiTheme({
     palette: {
         primary: {
             main: AppConfig.themeColors.secondary
@@ -15,4 +15,4 @@ const theme = createMuiTheme({
     }
 });
 
-export default theme;
+export default secondaryTheme;

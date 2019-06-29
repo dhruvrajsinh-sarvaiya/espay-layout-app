@@ -8,14 +8,16 @@ import {
     from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     loading: false,
     currentMarketCap: [],
-    lastPriceBit : 1
+    lastPriceBit: 1
 };
 
-export default (state = INITIAL_STATE, action) => {
-
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         // get pair list
@@ -25,12 +27,12 @@ export default (state = INITIAL_STATE, action) => {
         // set Data Of  pair list
         case GET_MARKET_CAP_LIST_SUCCESS:
 
-        return { ...state, currentMarketCap: action.payload, loading: false,lastPriceBit : ++state.lastPriceBit };
+            return { ...state, currentMarketCap: action.payload, loading: false, lastPriceBit: ++state.lastPriceBit };
 
         // Display Error for pair list failure
         case GET_MARKET_CAP_LIST_FAILURE:
 
-        return { ...state, loading: false, currentMarketCap: [],lastPriceBit : ++state.lastPriceBit  };
+            return { ...state, loading: false, currentMarketCap: [], lastPriceBit: ++state.lastPriceBit };
 
         default: return { ...state };
 

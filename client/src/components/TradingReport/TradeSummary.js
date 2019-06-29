@@ -10,10 +10,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import validator from "validator";
 import { Form, Label, Input } from "reactstrap";
-
 // redux action
 import MatButton from "@material-ui/core/Button";
-
 import { listTradeSummary } from "Actions/TradingReport";
 import { getTradePairs } from "Actions/TradingReport";
 // intl messages
@@ -41,27 +39,20 @@ const options = {
 };
 //Columns Object
 const columns = [
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.trnNo" />,
-    },
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.pair" />,
-    },
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.type" />,
-    },
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.orderType" />,
-    },
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.price" />,
-    },
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.amount" />,
-    },
-    {
-        name: <IntlMessages id="tradesummary.tradeSummaryColumn.dateTime" />,
-    },
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.trnNo" /> },
+
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.pair" /> },
+
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.type" /> },
+
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.orderType" /> },
+
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.price" /> },
+
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.amount" /> },
+
+    { name: <IntlMessages id="tradesummary.tradeSummaryColumn.dateTime" /> },
+
 ];
 
 class MembershipLevelProfileWdgt extends Component {
@@ -84,7 +75,6 @@ class MembershipLevelProfileWdgt extends Component {
             pairList: [],
             tradingLedger: [],
             isChange: false,
-            // tradeLedgerBit:0
         };
 
         this.onApply = this.onApply.bind(this);
@@ -95,7 +85,7 @@ class MembershipLevelProfileWdgt extends Component {
     validateNumericValue = (event) => {
         const regexNumeric = /^[0-9]+$/;
         if (
-            validator.matches(event.target.value,regexNumeric) ||
+            validator.matches(event.target.value, regexNumeric) ||
             event.target.value === ""
         ) {
             if (event.target.name === "userID") {
@@ -141,15 +131,9 @@ class MembershipLevelProfileWdgt extends Component {
             if (this.state.trnNo) {
                 makeLedgerRequest.TrnNo = this.state.trnNo;
             }
-            // if (this.state.status) {
-            // makeLedgerRequest.Status = this.state.status;
-            // }
             if (this.state.userID) {
                 makeLedgerRequest.MemberID = this.state.userID;
             }
-            // if (this.state.currency) {
-            // makeLedgerRequest.SMSCode = this.state.currency;
-            // }
             if (this.state.type) {
                 makeLedgerRequest.TrnType = this.state.type;
             }
@@ -159,38 +143,11 @@ class MembershipLevelProfileWdgt extends Component {
             if (this.state.orderType) {
                 makeLedgerRequest.OrderType = this.state.orderType;
             }
-
             this.setState({ onLoad: 1 });
             this.props.listTradeSummary(makeLedgerRequest);
         }
     }
 
-    componentWillMount() {
-        /* var makeLedgerRequest = { FromDate: this.state.start_date, ToDate: this.state.end_date };
-    if (this.state.trnNo) {
-      makeLedgerRequest.TrnNo = this.state.trnNo;
-    }
-    // if (this.state.status) {
-    //   makeLedgerRequest.Status = this.state.status;
-    // }
-    if (this.state.userID) {
-      makeLedgerRequest.MemberID = this.state.userID;
-    }
-    // if (this.state.currency) {
-    //   makeLedgerRequest.SMSCode = this.state.currency;
-    // }
-    if (this.state.type) {
-      makeLedgerRequest.TrnType = this.state.type;
-    }
-    if (this.state.pair) {
-      makeLedgerRequest.PairName = this.state.pair;
-    }
-    if (this.state.orderType) {
-      makeLedgerRequest.OrderType = this.state.orderType;
-    }
-    
-    this.props.listTradeSummary(makeLedgerRequest) */
-    }
     handleChange(event) {
         this.setState({ [event.target.name]: event.target.value });
     }
@@ -204,12 +161,9 @@ class MembershipLevelProfileWdgt extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.pairList.length) {
-            this.setState({
-                pairList: nextProps.pairList,
-            });
+            this.setState({ pairList: nextProps.pairList });
         }
 
-        // if (nextProps.tradeSummaryData && nextProps.error.length == 0 && this.state.tradeLedgerBit !== nextProps.tradeLedgerBit) {
         if (
             nextProps.tradeSummaryList &&
             nextProps.error.length === 0 &&
@@ -218,7 +172,6 @@ class MembershipLevelProfileWdgt extends Component {
             this.setState({
                 tradingLedger: nextProps.tradeSummaryList,
                 onLoad: 0,
-                // tradeLedgerBit:nextProps.tradeLedgerBit
             });
         } else if (
             nextProps.error.length !== 0 &&
@@ -226,17 +179,9 @@ class MembershipLevelProfileWdgt extends Component {
             this.state.onLoad
         ) {
             NotificationManager.error(
-                <IntlMessages
-                    id={`error.trading.transaction.${
-                        nextProps.error.ErrorCode
-                    }`}
-                />
+                <IntlMessages id={`error.trading.transaction.${nextProps.error.ErrorCode}`} />
             );
-            this.setState({
-                tradingLedger: [],
-                onLoad: 0,
-                // tradeLedgerBit:nextProps.tradeLedgerBit
-            });
+            this.setState({ tradingLedger: [], onLoad: 0 });
         }
     }
 
@@ -247,9 +192,7 @@ class MembershipLevelProfileWdgt extends Component {
 
     closeAll = () => {
         this.props.closeAll();
-        this.setState({
-            open: false,
-        });
+        this.setState({ open: false });
     };
 
     render() {
@@ -260,133 +203,85 @@ class MembershipLevelProfileWdgt extends Component {
                     <div className="m-20 page-title d-flex justify-content-between align-items-center">
                         <div className="page-title-wrap">
                             <h2>
-                                {
-                                    <IntlMessages id="tradeSummary.title.report" />
-                                }
+                                {<IntlMessages id="tradeSummary.title.report" />}
                             </h2>
                         </div>
                     </div>
-
-                    {/* <PageTitleBar title={<IntlMessages id="sidebar.tradingLedger" />} match={this.props.match} /> */}
                     <div className="transaction-history-detail">
                         <div className="col-md-12">
                             <JbsCollapsibleCard>
                                 <div className="row">
                                     <div className="col-md-12">
                                         <div className="top-filter clearfix tradefrm">
-                                            <Form
-                                                name="frm_search"
-                                                className="row mb-10"
-                                            >
+                                            <Form name="frm_search" className="row mb-10" >
                                                 <div className="col-md-3">
                                                     <Label for="startDate1">
-                                                        {
-                                                            <IntlMessages id="sidebar.tradeSummary.filterLabel.startDate" />
-                                                        }
+                                                        {<IntlMessages id="sidebar.tradeSummary.filterLabel.startDate" />}
                                                     </Label>
                                                     <Input
                                                         type="date"
                                                         name="start_date"
-                                                        value={
-                                                            this.state
-                                                                .start_date
-                                                        }
+                                                        value={this.state.start_date}
                                                         id="startDate1"
                                                         placeholder="dd/mm/yyyy"
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
+                                                        onChange={this.handleChange}
                                                     />
                                                 </div>
                                                 <div className="col-md-3">
                                                     <Label for="endDate1">
-                                                        {
-                                                            <IntlMessages id="sidebar.tradeSummary.filterLabel.endDate" />
-                                                        }
+                                                        {<IntlMessages id="sidebar.tradeSummary.filterLabel.endDate" />}
                                                     </Label>
                                                     <Input
                                                         type="date"
                                                         name="end_date"
-                                                        value={
-                                                            this.state.end_date
-                                                        }
+                                                        value={this.state.end_date}
                                                         id="endDate1"
                                                         placeholder="dd/mm/yyyy"
-                                                        onChange={
-                                                            this.handleChange
-                                                        }
+                                                        onChange={this.handleChange}
                                                     />
                                                 </div>
-
                                                 <div className="col-md-3">
                                                     <Label for="Select-2">
-                                                        {
-                                                            <IntlMessages id="tradeSummary.filterLabel.trnNo" />
-                                                        }
+                                                        {<IntlMessages id="tradeSummary.filterLabel.trnNo" />}
                                                     </Label>
                                                     <IntlMessages id="tradeSummary.filterLabel.trnNo">
                                                         {(placeholder) => (
                                                             <Input
                                                                 type="text"
                                                                 name="trnNo"
-                                                                value={
-                                                                    this.state
-                                                                        .trnNo
-                                                                }
+                                                                value={this.state.trnNo}
                                                                 id="trnNo"
-                                                                placeholder={
-                                                                    placeholder
-                                                                }
-                                                                onChange={
-                                                                    this
-                                                                        .validateNumericValue
-                                                                }
+                                                                placeholder={placeholder}
+                                                                onChange={this.validateNumericValue}
                                                             />
                                                         )}
                                                     </IntlMessages>
                                                 </div>
                                                 <div className="col-md-3">
                                                     <Label for="Select-2">
-                                                        {
-                                                            <IntlMessages id="sidebar.tradeSummary.filterLabel.type" />
-                                                        }
+                                                        {<IntlMessages id="sidebar.tradeSummary.filterLabel.type" />}
                                                     </Label>
                                                     <div className="app-selectbox-sm">
                                                         <Input
                                                             type="select"
                                                             name="type"
-                                                            value={
-                                                                this.state.type
-                                                            }
+                                                            value={this.state.type}
                                                             id="Select-2"
-                                                            onChange={
-                                                                this
-                                                                    .handleChange
-                                                            }
+                                                            onChange={this.handleChange}
                                                         >
                                                             <IntlMessages id="tradeSummary.selectType">
-                                                                {(
-                                                                    selectType
-                                                                ) => (
-                                                                    <option value="">
-                                                                        {
-                                                                            selectType
-                                                                        }
-                                                                    </option>
+                                                                {(selectType) => (
+                                                                    <option value=""> {selectType} </option>
                                                                 )}
                                                             </IntlMessages>
                                                             <IntlMessages id="tradeSummary.selectType.buy">
                                                                 {(buy) => (
-                                                                    <option value="buy">
-                                                                        {buy}
-                                                                    </option>
+                                                                    <option value="buy"> {buy} </option>
                                                                 )}
                                                             </IntlMessages>
                                                             <IntlMessages id="tradeSummary.selectType.sell">
                                                                 {(sell) => (
-                                                                    <option value="sell">
-                                                                        {sell}
-                                                                    </option>
+                                                                    <option value="sell"> {sell} </option>
                                                                 )}
                                                             </IntlMessages>
                                                         </Input>
@@ -394,48 +289,24 @@ class MembershipLevelProfileWdgt extends Component {
                                                 </div>
                                                 <div className="col-md-3 mt-10">
                                                     <Label for="Select-1">
-                                                        {
-                                                            <IntlMessages id="sidebar.tradeSummary.filterLabel.currencyPair" />
-                                                        }
+                                                        {<IntlMessages id="sidebar.tradeSummary.filterLabel.currencyPair" />}
                                                     </Label>
                                                     <div className="app-selectbox-sm">
                                                         <Input
                                                             type="select"
                                                             name="pair"
-                                                            value={
-                                                                this.state.pair
-                                                            }
+                                                            value={this.state.pair}
                                                             id="Select-1"
-                                                            onChange={
-                                                                this
-                                                                    .handleChange
-                                                            }
+                                                            onChange={this.handleChange}
                                                         >
                                                             <IntlMessages id="tradeSummary.selectCurrencyPair.all">
                                                                 {(all) => (
-                                                                    <option value="">
-                                                                        {all}
-                                                                    </option>
+                                                                    <option value=""> {all} </option>
                                                                 )}
                                                             </IntlMessages>
-
                                                             {this.state.pairList.map(
-                                                                (
-                                                                    currency,
-                                                                    key
-                                                                ) => (
-                                                                    <option
-                                                                        key={
-                                                                            key
-                                                                        }
-                                                                        value={
-                                                                            currency.PairName
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            currency.PairName
-                                                                        }
-                                                                    </option>
+                                                                (currency, key) => (
+                                                                    <option key={key} value={currency.PairName} > {currency.PairName} </option>
                                                                 )
                                                             )}
                                                         </Input>
@@ -444,65 +315,39 @@ class MembershipLevelProfileWdgt extends Component {
 
                                                 <div className="col-md-3 mt-10">
                                                     <Label for="Select-2">
-                                                        {
-                                                            <IntlMessages id="tradeSummary.orderType.label" />
-                                                        }
+                                                        {<IntlMessages id="tradeSummary.orderType.label" />}
                                                     </Label>
                                                     <div className="app-selectbox-sm">
                                                         <Input
                                                             type="select"
                                                             name="orderType"
-                                                            value={
-                                                                this.state
-                                                                    .orderType
-                                                            }
+                                                            value={this.state.orderType}
                                                             id="Select-2"
-                                                            onChange={
-                                                                this
-                                                                    .handleChangeOrder
-                                                            }
+                                                            onChange={this.handleChangeOrder}
                                                         >
                                                             <IntlMessages id="tradeSummary.orderType">
-                                                                {(
-                                                                    orderType
-                                                                ) => (
-                                                                    <option value="">
-                                                                        {
-                                                                            orderType
-                                                                        }
-                                                                    </option>
+                                                                {(orderType) => (
+                                                                    <option value=""> {orderType} </option>
                                                                 )}
                                                             </IntlMessages>
                                                             <IntlMessages id="tradeSummary.orderType.limit">
                                                                 {(limit) => (
-                                                                    <option value="LIMIT">
-                                                                        {limit}
-                                                                    </option>
+                                                                    <option value="LIMIT"> {limit} </option>
                                                                 )}
                                                             </IntlMessages>
                                                             <IntlMessages id="tradeSummary.orderType.market">
                                                                 {(market) => (
-                                                                    <option value="MARKET">
-                                                                        {market}
-                                                                    </option>
+                                                                    <option value="MARKET"> {market} </option>
                                                                 )}
                                                             </IntlMessages>
                                                             <IntlMessages id="tradeSummary.orderType.stopLimit">
-                                                                {(
-                                                                    stopLimit
-                                                                ) => (
-                                                                    <option value="STOP_Limit">
-                                                                        {
-                                                                            stopLimit
-                                                                        }
-                                                                    </option>
+                                                                {(stopLimit) => (
+                                                                    <option value="STOP_Limit"> {stopLimit} </option>
                                                                 )}
                                                             </IntlMessages>
                                                             <IntlMessages id="tradeSummary.orderType.spot">
                                                                 {(spot) => (
-                                                                    <option value="SPOT">
-                                                                        {spot}
-                                                                    </option>
+                                                                    <option value="SPOT"> {spot} </option>
                                                                 )}
                                                             </IntlMessages>
                                                         </Input>
@@ -544,13 +389,9 @@ class MembershipLevelProfileWdgt extends Component {
                                                         item.OrderType,
                                                         item.Price === 0
                                                             ? "price"
-                                                            : parseFloat(
-                                                                  item.Price
-                                                              ).toFixed(8),
+                                                            : parseFloat(item.Price).toFixed(8),
                                                         item.Qty
-                                                            ? parseFloat(
-                                                                  item.Qty
-                                                              ).toFixed(8)
+                                                            ? parseFloat(item.Qty).toFixed(8)
                                                             : 0,
                                                         item.TrnDate.replace(
                                                             "T",
@@ -561,7 +402,6 @@ class MembershipLevelProfileWdgt extends Component {
                                                 columns={columns}
                                                 options={options}
                                             />
-                                            {/* <h4>Total={total}</h4>    */}
                                         </div>
                                     </div>
                                 </JbsCollapsibleCard>

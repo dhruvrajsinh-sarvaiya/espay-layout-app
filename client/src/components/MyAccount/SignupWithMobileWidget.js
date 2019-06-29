@@ -50,7 +50,7 @@ class SignupWithMobileWidget extends Component {
   }
 
   render() {
-    const { err_alert, err_msg, btn_disabled, mobile, password, confirmpassword, referalid, selectedValue, errors } = this.state;
+    const { err_alert, err_msg, btn_disabled, mobile, referalid, selectedValue, errors } = this.state;
     return (
       <Fragment>
         {err_msg && <div className="alert_area">
@@ -63,15 +63,11 @@ class SignupWithMobileWidget extends Component {
             {errors.mobile && <span className="text-danger text-left"><IntlMessages id={errors.mobile} /></span>}
           </FormGroup>
           <FormGroup className="has-wrapper">
-            {/*Added By Bharat Jograna
-            <Input type="Password" value={password} name="user-pwd" id="pwd" className="has-input input-lg" placeholder="Password" onChange={e => this.setState({ password: e.target.value })} /> */}
-            <Input type="Password"  name="user-pwd" id="pwd" className="has-input input-lg" placeholder="Password" onChange={e => this.setState({ password: e.target.value })} />
+            <Input type="Password" name="user-pwd" id="pwd" className="has-input input-lg" placeholder="Password" onChange={e => this.setState({ password: e.target.value })} />
             <span className="has-icon"><i className="ti-lock" /></span>
             {errors.password && <span className="text-danger text-left"><IntlMessages id={errors.password} /></span>}
           </FormGroup>
           <FormGroup className="has-wrapper">
-            {/*Added By Bharat Jograna
-            <Input type="Password" value={confirmpassword} name="confirm-pwd" id="confirm-pwd" className="has-input input-lg" placeholder="Confirm Password" onChange={e => this.setState({ confirmpassword: e.target.value })} /> */}
             <Input type="Password" name="confirm-pwd" id="confirm-pwd" className="has-input input-lg" placeholder="Confirm Password" onChange={e => this.setState({ confirmpassword: e.target.value })} />
             <span className="has-icon"><i className="ti-lock" /></span>
             {errors.confirmpassword && <span className="text-danger text-left"><IntlMessages id={errors.confirmpassword} /></span>}

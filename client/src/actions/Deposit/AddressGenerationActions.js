@@ -47,7 +47,7 @@ export const getCurrency = () => ({
 export const getCurrencySuccess = (response) => ({
     type: GET_AD_CURRENCY_SUCCESS,
     payload: response
-})
+});
 
 /* 
     Developer : Nishant Vadgama
@@ -57,7 +57,7 @@ export const getCurrencySuccess = (response) => ({
 export const getCurrencyFailure = (error) => ({
     type: GET_AD_CURRENCY_FAILURE,
     payload: error
-})
+});
 
 /* 
     Developer : Nishant Vadgama
@@ -77,7 +77,7 @@ export const getWallets = (request) => ({
 export const getWalletsSuccess = (response) => ({
     type: GET_AD_WALLETS_SUCCESS,
     payload: response
-})
+});
 
 /* 
     Developer : Nishant Vadgama
@@ -87,35 +87,35 @@ export const getWalletsSuccess = (response) => ({
 export const getWalletsFailure = (error) => ({
     type: GET_AD_WALLETS_FAILURE,
     payload: error
-})
+});
 
 // GET WALLET BALANCE REQUEST
 export const getBalance = (walletId) => ({
     type: GET_AD_BALANCE,
     walletId: walletId
-})
+});
 export const getBalanceSuccess = (response) => ({
     type: GET_AD_BALANCE_SUCCESS,
     payload: response
-})
+});
 export const getBalanceFailure = (error) => ({
     type: GET_AD_BALANCE_FAILURE,
     payload: error
-})
+});
 
 // GET DEFAULT ADDRESS OF WALLET
 export const getDefaultAddress = (walletId) => ({
     type: GET_DEFAULT_ADD,
     walletId: walletId
-})
+});
 export const getDefaultAddressSuccess = (response) => ({
     type: GET_DEFAULT_ADD_SUCCESS,
     payload: response
-})
+});
 export const getDefaultAddressFailure = (error) => ({
     type: GET_DEFAULT_ADD_FAILURE,
     payload: error
-})
+});
 
 /* 
     Developer : Nishant Vadgama
@@ -135,7 +135,7 @@ export const generateNewAddress = (request) => ({
 export const generateNewAddressSuccess = (response) => ({
     type: GENERATE_ADDRESS_SUCCESS,
     payload: response
-})
+});
 
 /* 
     Developer : Nishant Vadgama
@@ -145,19 +145,19 @@ export const generateNewAddressSuccess = (response) => ({
 export const generateNewAddressFailure = (error) => ({
     type: GENERATE_ADDRESS_FAILURE,
     payload: error
-})
+});
 
 
 // update ltc p2sh convertion address
 export const updateP2shAddress = (request) => ({
     type: UPDATE_P2SH_ADDRESS,
     request: request
-})
+});
 export const updateP2shAddressSuccess = (response) => ({
     type: UPDATE_P2SH_ADDRESS_SUCCESS,
     payload: response
-})
+});
 export const updateP2shAddressFailure = (error) => ({
     type: UPDATE_P2SH_ADDRESS_FAILURE,
     payload: error
-})
+});

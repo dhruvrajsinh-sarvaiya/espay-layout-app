@@ -154,12 +154,12 @@ class SignupMobileWithOTPWdgt extends Component {
     verifyOTP(event) {
         event.preventDefault();
 
-        let otpObj = { otp: this.state.otp };
-        const { errors, isValid } = validateMobileSignup(otpObj);
+        let otpObjs = { otp: this.state.otp };
+        const { errors, isValid } = validateMobileSignup(otpObjs);
         this.setState({ err_alert: false, errors: errors });
 
         if (isValid) {
-            let otpObj = {
+            let otpObject = {
                 otp: this.state.otp,
                 mobile: this.state.mobile,
                 deviceId: this.state.deviceId,
@@ -170,8 +170,8 @@ class SignupMobileWithOTPWdgt extends Component {
 
             let self = this;
             getIPAddress().then(function (ipAddress) {
-                otpObj.ipAddress = ipAddress;
-                self.props.signUpMobileVerifyOTP(otpObj);
+                otpObject.ipAddress = ipAddress;
+                self.props.signUpMobileVerifyOTP(otpObject);
             });
         }
     }

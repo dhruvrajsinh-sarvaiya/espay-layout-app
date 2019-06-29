@@ -5,7 +5,7 @@
  */
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import IntlMessages from "Util/IntlMessages";
+
 
 const TradeDetailBlk = ({ tData }) => (
     <Fragment>

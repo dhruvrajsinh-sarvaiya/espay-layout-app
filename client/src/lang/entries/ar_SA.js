@@ -1,11 +1,11 @@
 import appLocaleData from 'react-intl/locale-data/ar';
 import saMessages from '../locales/ar_SA';
 
-const saLang = {
+const ar_SA = {
    messages: {
       ...saMessages
    },
    locale: 'ar-SA',
    data: appLocaleData
 };
-export default saLang;
+export default ar_SA;

@@ -7,7 +7,7 @@ import { Table, Modal, ModalBody, ModalFooter, Button } from "reactstrap";
 // import For Display notification
 import { NotificationManager } from "react-notifications";
 
-import { Row, Col, Card, Input } from 'reactstrap';
+import { Row, Col, Card } from 'reactstrap';
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
@@ -213,7 +213,7 @@ class OpenOrder extends React.Component {
         modalInfo: -1,
         modal: false,
         cancelAllModal: false
-        //cancelOrderSuccess:true
+       
       });
 
     }
@@ -253,75 +253,6 @@ class OpenOrder extends React.Component {
     return (
       <Fragment>
         <Card className="cooldexopenorder">
-          { /* isShowHeader === 1 &&<Row className="cooldexopentitle">
-            <Col md={8} xs={5} className="p-0">
-              <h3>{<IntlMessages id="trading.newTrading.openorder.text" />}</h3>
-            </Col>
-            <Col md={2} xs={5} className="p-0">
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.displayOtherPairs}
-                    onChange={this.handleChangeDisplayPair}
-                    icon={<CheckBoxOutlineBlankIcon />}
-                    checkedIcon={<CheckBoxIcon />}
-                  />
-                }
-                label={<IntlMessages id="trading.activeorders.hidepairs" />}
-              />
-            </Col>
-            <Col md={2} xs={2} className="p-0">
-              <Input
-                type="select"
-                name="CancelAll"
-                value={this.state.cancelOrderBit}
-                onChange={(e) => this.openCancelAllModal(e)}
-              >
-                <IntlMessages id="openorder.cancelall">
-                  {(select) =>
-                    <option value="">{select}</option>
-                  }
-                </IntlMessages>
-
-                <IntlMessages id="openorder.cancelalltrn">
-                  {(select) =>
-                    <option value="0">{select}</option>
-                  }
-                </IntlMessages>
-
-                <IntlMessages id="openorder.cancelalllimit">
-                  {(select) =>
-                    <option value="1">{select}</option>
-                  }
-                </IntlMessages>
-
-                <IntlMessages id="openorder.cancelallmarket">
-                  {(select) =>
-                    <option value="2">{select}</option>
-                  }
-                </IntlMessages>
-
-                {/* <IntlMessages id="openorder.cancelallspot">
-                  {(select) =>
-                    <option value="3">{select}</option>
-                  }
-                </IntlMessages> *}
-
-                {/* <IntlMessages id="openorder.cancelallstop">
-                          {(select) =>
-                            <option value="4">{select}</option>
-                          }
-                        </IntlMessages> *}
-
-                <IntlMessages id="openorder.cancelallstop-limit">
-                  {(select) =>
-                    <option value="4">{select}</option>
-                  }
-                </IntlMessages>
-              </Input>
-            </Col>
-          </Row> */
-          }
           <div className="table-responsive-design" >
             {this.props.loading && <JbsSectionLoader />}
             <Table className="m-0 p-0">

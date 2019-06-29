@@ -7,7 +7,6 @@
 import React, { Component, Fragment } from 'react'
 import { connect } from "react-redux";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
-import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import IntlMessages from "Util/IntlMessages";
 import { NotificationManager } from "react-notifications";
 import { AffiliateSmsPromo } from "Actions/MyAccount";
@@ -74,7 +73,6 @@ class SmsWdgt extends Component {
         const { MobileNumberList } = this.state.MobileNumberList;
         return (
             <Fragment>
-                {/* {this.state.smsloading && <JbsSectionLoader />} */}
                 <Form>
                     <FormGroup>
                         <Label for="MobileNumberList"><IntlMessages id="sidebar.enterMobileNo" /><span className="text-danger">*</span></Label>

@@ -49,7 +49,7 @@ class ScanQrWdgt extends Component {
 	}
 
 	render() {
-		const { SharedKey, AuthenticatorUri } = this.state.data;
+		const {  AuthenticatorUri } = this.state.data;
 		const { loading, simgUrl } = this.state;
 		return (
 			<div className="border border-dark">

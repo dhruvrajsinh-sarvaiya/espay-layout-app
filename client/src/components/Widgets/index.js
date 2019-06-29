@@ -25,7 +25,7 @@ const TwitterFeeds = Loadable({
 })
 
 const ContactRequestWidget = Loadable({
-   loader: () => import("./ContactRequest"),
+   loader: () => import("./ContactRequestWidget"),
    loading: MyLoadingComponent
 })
 
@@ -45,20 +45,20 @@ const TwitterFeedsV2 = Loadable({
 })
 
 const Announcement = Loadable({
-    loader: () => import("./Announcement"),
-    loading: MyLoadingComponent
- })
- 
- //added Nirmit For phone number for international/national
- const PhoneWidget = Loadable({
-    loader: () => import("./PhoneWidget"),
-    loading: MyLoadingComponent
- })
+   loader: () => import("./Announcement"),
+   loading: MyLoadingComponent
+})
+
+//added Nirmit For phone number for international/national
+const PhoneWidget = Loadable({
+   loader: () => import("./PhoneWidget"),
+   loading: MyLoadingComponent
+})
 
 // Added By Megha Kariya (13/02/2019)
 const FacebookFeeds = Loadable({
-    loader: () => import("./FacebookFeeds"),
-    loading: MyLoadingComponent
+   loader: () => import("./FacebookFeeds"),
+   loading: MyLoadingComponent
 });
 
 export {

@@ -3,7 +3,7 @@
  * Created Date 06/03/19
  * Component For List Referral Reward 
  */
-import React, { Component  , Fragment} from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import MUIDataTable from "mui-datatables";
 import IntlMessages from "Util/IntlMessages";
@@ -64,15 +64,13 @@ class ListReferralRewards extends Component {
     open: false,
     getFilter: {
       PageIndex: 1,
-      Page_Size:AppConfig.totalRecordDisplayInList,
+      Page_Size: AppConfig.totalRecordDisplayInList,
       FromDate: "",
-      //Service: ""
     },
-    isDisable: true,
     serviceData: [],
     showReset: false,
     totalCount: 0,
-    errors:{}
+    errors: {}
   }
 
   onClick = () => {
@@ -97,7 +95,6 @@ class ListReferralRewards extends Component {
     newObj.PageIndex = 1;
     newObj.Page_Size = AppConfig.totalRecordDisplayInList;
     this.setState({ getFilter: newObj });
-    //this.props.getServiceList({ PayTypeId: 0 });
     this.props.referralRewardReport(newObj);
   }
 
@@ -109,8 +106,7 @@ class ListReferralRewards extends Component {
     newObj.ToDate = today;
     newObj.PageIndex = 1;
     newObj.Page_Size = 10;
-    //newObj.Service = "";
-    this.setState({ showReset: false, getFilter: newObj, isDisable: true ,errors:{}});
+    this.setState({ showReset: false, getFilter: newObj, errors: {} });
     this.props.referralRewardReport(newObj);
   }
 
@@ -131,10 +127,10 @@ class ListReferralRewards extends Component {
 
   getFilterData = () => {
 
-      //Added by Saloni 
+    //Added by Saloni 
     var newObj = Object.assign({}, this.state.getFilter);
     const { isValid, errors } = validateReferralProgram(newObj);
-		this.setState({ errors: errors })
+    this.setState({ errors: errors })
     //end
 
     if (isValid) {
@@ -154,7 +150,6 @@ class ListReferralRewards extends Component {
           NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
         } else {
 
-          // var newObj = Object.assign({}, this.state.getFilter);
           newObj.PageIndex = 1;
           newObj.Page_Size = AppConfig.totalRecordDisplayInList;
           this.props.referralRewardReport(newObj);
@@ -197,11 +192,11 @@ class ListReferralRewards extends Component {
   handleChange = (event) => {
     var newObj = Object.assign({}, this.state.getFilter);
     newObj[event.target.name] = event.target.value;
-    this.setState({ getFilter: newObj, isDisable: false });
+    this.setState({ getFilter: newObj });
   }
 
   render() {
-    const { Data, totalCount, isDisable,errors } = this.state;
+    const { Data, totalCount, errors } = this.state;
     const { loading } = this.props;
     const { PageIndex, Page_Size, FromDate, ToDate } = this.state.getFilter;
     let today = new Date();
@@ -236,68 +231,63 @@ class ListReferralRewards extends Component {
         );
       },
       onTableChange: (action, tableState) => {
-        switch (action) {
-          case 'changeRowsPerPage' || "changePage":
-            this.setState({
-              GetData: {
-                ...this.state.Getdata,
-                PageIndex: tableState.page,
-                Page_Size: tableState.rowsPerPage
-              }
-            });
-            this.props.referralRewardReport({
+        if (action === 'changeRowsPerPage' || action === 'changePage') {
+          this.setState({
+            GetData: {
               ...this.state.Getdata,
               PageIndex: tableState.page,
               Page_Size: tableState.rowsPerPage
-            });
-            break;
-          default:
-            break;
+            }
+          });
+          this.props.referralRewardReport({
+            ...this.state.Getdata,
+            PageIndex: tableState.page,
+            Page_Size: tableState.rowsPerPage
+          });
         }
       }
     };
     return (
       <Fragment>
         {loading && <JbsSectionLoader />}
-       < JbsCollapsibleCard>
-        <Form>
-          <Row form>
-            <Col md="2" xs="6" sm="6">
-              <FormGroup>
-                <Label for="startDate"><IntlMessages id="widgets.startDate" /><span className="text-danger">*</span></Label>
-                <Input type="date" name="FromDate" id="FromDate" placeholder="dd/mm/yyyy" value={FromDate} max={today} onChange={this.handleChange} />
-                {errors.FromDate && <span className="text-danger text-left"><IntlMessages id={errors.FromDate} /></span>}
-              </FormGroup>
-            </Col>
-            <Col md="2" xs="6" sm="6">
-              <FormGroup>
-                <Label for="endDate"><IntlMessages id="widgets.endDate" /><span className="text-danger">*</span></Label>
-                <Input type="date" name="ToDate" id="ToDate" placeholder="dd/mm/yyyy" value={ToDate} min={FromDate} max={today} onChange={this.handleChange} />
-                {errors.ToDate && <span className="text-danger text-left"><IntlMessages id={errors.ToDate} /></span>}
-              </FormGroup>
-            </Col>                       
-            <Col md="2" xs="6" sm="6">
-              <Row>
-                <Col md="4" xs="4" sm="4">
-                  <FormGroup className="mt-30">
-                    <Button className="perverbtn rounded-0 border-0 " disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
-                  </FormGroup>
-                </Col>
-                <Col md="4" xs="4" sm="4">
-                  {this.state.showReset && <FormGroup className="mt-30">
-                    <Button className="btn-danger rounded-0 border-0 text-white" onClick={this.clearFilter}>
-                      <IntlMessages id="button.clear" />
-                    </Button>
-                  </FormGroup>}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+        < JbsCollapsibleCard>
+          <Form>
+            <Row form>
+              <Col md="2" xs="6" sm="6">
+                <FormGroup>
+                  <Label for="startDate"><IntlMessages id="widgets.startDate" /><span className="text-danger">*</span></Label>
+                  <Input type="date" name="FromDate" id="FromDate" placeholder="dd/mm/yyyy" value={FromDate} max={today} onChange={this.handleChange} />
+                  {errors.FromDate && <span className="text-danger text-left"><IntlMessages id={errors.FromDate} /></span>}
+                </FormGroup>
+              </Col>
+              <Col md="2" xs="6" sm="6">
+                <FormGroup>
+                  <Label for="endDate"><IntlMessages id="widgets.endDate" /><span className="text-danger">*</span></Label>
+                  <Input type="date" name="ToDate" id="ToDate" placeholder="dd/mm/yyyy" value={ToDate} min={FromDate} max={today} onChange={this.handleChange} />
+                  {errors.ToDate && <span className="text-danger text-left"><IntlMessages id={errors.ToDate} /></span>}
+                </FormGroup>
+              </Col>
+              <Col md="2" xs="6" sm="6">
+                <Row>
+                  <Col md="4" xs="4" sm="4">
+                    <FormGroup className="mt-30">
+                      <Button className="perverbtn rounded-0 border-0 " disabled={((FromDate === "" || ToDate === "") ? true : false)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
+                    </FormGroup>
+                  </Col>
+                  <Col md="4" xs="4" sm="4">
+                    {this.state.showReset && <FormGroup className="mt-30">
+                      <Button className="btn-danger rounded-0 border-0 text-white" onClick={this.clearFilter}>
+                        <IntlMessages id="button.clear" />
+                      </Button>
+                    </FormGroup>}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
           </Form>
-          </ JbsCollapsibleCard>
+        </ JbsCollapsibleCard>
         <div className="StackingHistory statusbtn-comm">
           <MUIDataTable
-            // title={<IntlMessages id="my_account.convert" />}
             columns={columns}
             options={options}
             data={
@@ -319,7 +309,7 @@ class ListReferralRewards extends Component {
             }
           />
         </div>
-        </Fragment>
+      </Fragment>
     )
   }
 }

@@ -15,11 +15,15 @@ const INIT_STATE = {
     loading: true
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
     switch (action.type) {
 
         case LOGIN_HISTORY_LIST:
-            return { ...state, loading: true, data : '' };
+            return { ...state, loading: true, data: '' };
 
         case LOGIN_HISTORY_LIST_SUCCESS:
             return { ...state, loading: false, data: action.payload };
@@ -27,7 +31,7 @@ export default (state = INIT_STATE, action) => {
         case LOGIN_HISTORY_LIST_FAILURE:
             return { ...state, loading: false, data: action.payload };
 
-        default: 
+        default:
             return { ...state };
     }
 }

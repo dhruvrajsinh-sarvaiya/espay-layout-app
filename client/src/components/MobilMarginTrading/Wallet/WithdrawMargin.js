@@ -42,7 +42,6 @@ class WithdrawMargin extends Component {
 			}
 		}
 		if (nextProps.preConfirmationDetails.hasOwnProperty('ReturnCode') && this.state.flag) {
-			// this.setState({ flag: false });
 			if (nextProps.preConfirmationDetails.ReturnCode === 1) {
 				NotificationManager.error(
 					<IntlMessages id={`apiWalletErrCode.${nextProps.preConfirmationDetails.ErrorCode}`} />
@@ -57,7 +56,6 @@ class WithdrawMargin extends Component {
 		this.setState({
 			showModal: !this.state.showModal,
 			notificationFlag: false,
-			// flag: false,
 		});
 	};
 	/**
@@ -85,7 +83,7 @@ class WithdrawMargin extends Component {
 		this.props.delavrageConfirm(this.state.Currency);
 	};
 	render() {
-		const { showModal, showConfirmModal } = this.state;
+		const { showModal } = this.state;
 		const intl = this.props.intl;
 		return (
 			<Fragment>

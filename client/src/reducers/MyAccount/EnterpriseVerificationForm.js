@@ -7,31 +7,34 @@ import {
     ENTERPRISE_VERIFICATION,
     ENTERPRISE_VERIFICATION_SUCCESS,
     ENTERPRISE_VERIFICATION_FAILURE
- } from 'Actions/types';
- 
- 
- /*
- * Initial State
- */
+} from 'Actions/types';
+
+/*
+* Initial State
+*/
 const INIT_STATE = {
-    loading : false,
-    data : []
+    loading: false,
+    data: []
 }
 
 //Check Action for Enterprise Verification Form...
-export default (state = INIT_STATE, action) => {
-    switch(action.type) 
-    {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
+    switch (action.type) {
+
         case ENTERPRISE_VERIFICATION:
-            return { ...state, loading : true, data: '' };
+            return { ...state, loading: true, data: '' };
 
         case ENTERPRISE_VERIFICATION_SUCCESS:
-            return { ...state, loading : false, data : action.payload };
+            return { ...state, loading: false, data: action.payload };
 
         case ENTERPRISE_VERIFICATION_FAILURE:
-            return { ...state, loading : false, data : action.payload };
+            return { ...state, loading: false, data: action.payload };
 
-        default : 
+        default:
             return { ...state };
     }
 }

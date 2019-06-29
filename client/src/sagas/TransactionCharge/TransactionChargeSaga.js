@@ -2,13 +2,10 @@
 
 // for call axios call or API Call
 import api from 'Api';
-
 // effects for redux-saga
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
 // types for set actions and reducers
 import { GET_TRANSACTION_CHARGE } from 'Actions/types';
-
 // action sfor set data or response
 import { getTransactionChargeSuccess, getTransactionChargeFailure } from 'Actions/TransactionCharge';
 
@@ -18,16 +15,16 @@ function* getTransactionCharge() {
 }
 
 // Function for set response to data and Call Function for Api Call
-function* getTransactionChargeData({payload}) {
+function* getTransactionChargeData({ payload }) {
     const { Pair } = payload;
     try {
-        const response = yield call(getTransactionChargeRequest,Pair)
+        const response = yield call(getTransactionChargeRequest, Pair)
 
         // set response if its available else set error message
-        if (response && response != null && response != undefined) {
+        if (response && response !== null && response !== 'undefined') {
             yield put(getTransactionChargeSuccess(response))
         } else {
-            yield put(getTransactionChargeFailure(error))
+            yield put(getTransactionChargeFailure(response))
         }
     } catch (error) {
         yield put(getTransactionChargeFailure(error))
@@ -39,7 +36,6 @@ const getTransactionChargeRequest = async (transactionChargeRequest) =>
     await api.get('TransactionCharge.js')
         .then(response => response)
         .catch(error => error)
-
 
 // Function for root saga 
 export default function* rootSaga() {

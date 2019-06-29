@@ -32,7 +32,10 @@ const INITIAL_STATE = {
     MarginCurrency: []
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
     switch (action.type) {
         // get Site Token
         case GET_SITE_TOKEN:

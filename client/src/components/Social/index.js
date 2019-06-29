@@ -3,8 +3,7 @@
  */
 import React, { Component,Fragment } from 'react';
 import MatButton from '@material-ui/core/Button';
-// intl messages
-import IntlMessages from 'Util/IntlMessages';
+
 // app config
 import AppConfig from 'Constants/AppConfig';
 

@@ -36,7 +36,6 @@ class UpdateCustomLimits extends Component {
     // construcrtor
     constructor(props) {
         super(props)
-        //console.log(props)
         this.state = {
             customLimits: props.customLimits ? props.customLimits : {},
             SubscribeID: props.SubscribeID !== 0 ? props.SubscribeID : 0,
@@ -132,22 +131,11 @@ class UpdateCustomLimits extends Component {
 
     // set state for textboxes
     HandleChangeMaxCall = (event) => {
-
         const regexNumeric = /^[0-9]+$/;
-
-        if (event.target.value === "") {
-
+        if ((event.target.value === "") || (validator.matches(event.target.value, regexNumeric))) {
             this.setState({
                 [event.target.name]: event.target.value
             })
-
-        }
-        else if (validator.matches(event.target.value, regexNumeric)) {
-
-            this.setState({
-                [event.target.name]: event.target.value
-            })
-
         }
     }
 

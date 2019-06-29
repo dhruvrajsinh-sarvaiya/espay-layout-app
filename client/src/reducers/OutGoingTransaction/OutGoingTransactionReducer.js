@@ -9,7 +9,11 @@ const INITIAL_STATE = {
   Loading: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+  if (typeof state === 'undefined') {
+      return INITIAL_STATE;
+  }
+  
   switch (action.type) {
     case GET_OUTGOINGTRANSACTION_REPORT:
       return { ...state, Loading: true };

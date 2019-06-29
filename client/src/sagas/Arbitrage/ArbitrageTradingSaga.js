@@ -5,7 +5,7 @@ Date  : 11/6/2019
 */
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
@@ -37,15 +37,13 @@ function* arbitrageTradeOrder() {
 function* arbitrageTradeOrderList({ payload }) {
 
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    //const response = yield call(swaggerGetAPI, 'api/Transaction/GetBuyerBook/' + payload.Pair + isMargin, {});
-    //const response = yield call(swaggerPostAPI, 'api/Transaction/CreateTransactionOrderArbitrage/' + payload.Pair, payload, headers);
     const response = yield call(swaggerPostAPI, 'api/Transaction/CreateTransactionOrderSmartArbitrage/' + payload.Pair, payload, headers);
 
     try {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            var staticRes = staticResponse(response.statusCode);
             yield put(arbitrageTradeOrderFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(arbitrageTradeOrderSuccess(response));

@@ -16,7 +16,6 @@ class HistoricalPerformanceChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // LeaderId : 0,
             loading: false,
             currentYear: '',
             data: [],
@@ -30,12 +29,6 @@ class HistoricalPerformanceChart extends Component {
                     styledMode: true,
                     type: 'column'
                 },
-                /* plotOptions: {
-                    column:{
-                        pointWidth:100 //line width
-                    },
-                    connectNulls:true
-                }, */
                 title: {
                     text: ''
                 },

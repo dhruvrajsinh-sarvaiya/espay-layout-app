@@ -12,16 +12,18 @@ import {
     UPGRADE_LOAN,
     UPGRADE_LOAN_SUCCESS,
     UPGRADE_LOAN_FAILURE
-
 } from "Actions/types";
 //initial state
 const INITIAL_STATE = {
     loading: false,
     Report: [],
     TotalCount: 0,
-    updateLoan:[]
+    updateLoan: []
 };
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
     switch (action.type) {
         //List action
         case GET_LEVERAGE_REPORT_LIST:
@@ -44,25 +46,21 @@ export default (state = INITIAL_STATE, action) => {
                 Report: [],
                 TotalCount: 0
             };
-            case UPGRADE_LOAN:
+        case UPGRADE_LOAN:
             return {
                 ...state,
                 loading: true,
-                updateLoan:[]
+                updateLoan: []
             };
 
         case UPGRADE_LOAN_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                updateLoan: action.payload,
-            };
         case UPGRADE_LOAN_FAILURE:
             return {
                 ...state,
                 loading: false,
                 updateLoan: action.payload,
             };
+
         default:
             return { ...state };
     }

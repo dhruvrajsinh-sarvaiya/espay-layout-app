@@ -1,11 +1,11 @@
 // sagas For get charge type list  By Tejas Date : 6/2/2019
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
-import { swaggerPostAPI,swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import {swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 
 // types for set actions and reducers
 import { GET_CHARGES_LIST } from 'Actions/types';
@@ -23,13 +23,12 @@ function* getChargeList() {
 
 // Function for Open Oders
 function* getChargeListData({payload}) {   
-
+    var methodName = 'api/Wallet/ListChargesTypeWise';
     // code changed by devang parekh for handling margintrading data (23-2-2019)
     if(payload.hasOwnProperty('marginTrading') && payload.marginTrading === 1) {
-        var methodName = 'api/MarginWalletControlPanel/ListMarginChargesTypeWise';
-    } else {
-        var methodName = 'api/Wallet/ListChargesTypeWise';
+         methodName = 'api/MarginWalletControlPanel/ListMarginChargesTypeWise';
     }
+    
     // end
     
     var headers =  {'Authorization': AppConfig.authorizationToken}
@@ -40,7 +39,7 @@ function* getChargeListData({payload}) {
         if(lgnErrCode.includes(response.statusCode)){
             redirectToLogin();
         } else if(statusErrCode.includes(response.statusCode)){               
-            staticRes = staticResponse(response.statusCode);
+          var staticRes = staticResponse(response.statusCode);
             yield put(getChargeListFailure(staticRes));
         } else if(response.statusCode === 200) {
             yield put(getChargeListSuccess(response));

@@ -23,11 +23,9 @@ class MembershipLevelsCompWdgt extends Component {
    * On onChangePersonalVerificationView
    */
   onChangePersonalVerificationView(plan_type) {
-    if (plan_type === "Basic") {
-    } else if (plan_type === "Standard") {
+   if (plan_type === "Standard") {
       this.props.changeComponentView("View2");
-    } else if (plan_type === "Premium") {
-    }
+    } 
   }
 
   componentWillMount() {
@@ -136,10 +134,10 @@ class MembershipLevelsCompWdgt extends Component {
 }
 
 // map state to props
-const mapStateToProps = ({ membershipLevel }) => {
+const mapStateToProps = ({ membershipLevelRdcer }) => {
   var response = {
-    membersData: membershipLevel.membershipData,
-    loading: membershipLevel.loading
+    membersData: membershipLevelRdcer.membershipData,
+    loading: membershipLevelRdcer.loading
   };
   return response;
 };

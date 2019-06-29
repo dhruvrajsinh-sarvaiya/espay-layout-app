@@ -5,7 +5,7 @@
  */
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
@@ -14,14 +14,13 @@ import {
     ARBITRAGE_TRADE_HISTORY_REPORT,
     ARBITRAGE_OPEN_ORDER_REPORT,
     DO_CANCEL_ORDER_ARBITRAGE,
-    ARBITRAGE_ACTIVE_ORDER_REPORT,
-    ARBITRAGE_RECENT_ORDER_REPORT,
+
     ARBITRAGE_CHART_DATA,
     ARBITRAGE_MARKET_TRADE_HISTORY
 } from 'Actions/types';
 
 //Get function form helper for Swagger API Call
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponses, statusErrCodeList } from 'Helpers/helpers';
 
 import {
     getArbitrageChartDataSuccess,
@@ -94,7 +93,7 @@ function* doCancelOrderDataArbitrage({ payload }) {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            let staticRes = staticResponses(response.statusCode);
             yield put(doCancelOrderArbitrageFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(doCancelOrderArbitrageSuccess(response));
@@ -136,22 +135,22 @@ export function* arbitrageMarketTradeHistory() {
 // Function for Seller Ordedr
 function* getArbitrageChartDataList({ payload }) {
 
-    var isMargin = '', staticRes = {};
+    var isMargin = '', staticResponse = {};
     if (payload.hasOwnProperty('IsMargin') && payload.IsMargin === 1) {
         isMargin = '?IsMargin=1';
     }
     // end
 
-    var headers = { 'Authorization': AppConfig.authorizationToken }
+
     const response = yield call(swaggerGetAPI, 'api/Transaction/GetGraphDetailArbitrage/' + payload.Pair + "/" + payload.Interval + isMargin, {});
-    // const response = yield call(swaggerGetAPI, 'api/Transaction/GetSellerBookArbitrage/' + "LTC_BTC" + isMargin, {});
+
 
     try {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
-            yield put(getArbitrageChartDataFailure(staticRes));
+            staticResponse = staticResponse(response.statusCode);
+            yield put(getArbitrageChartDataFailure(staticResponse));
         } else if (response.statusCode === 200) {
             yield put(getArbitrageChartDataSuccess(response));
         } else {
@@ -166,8 +165,8 @@ function* getArbitrageChartDataList({ payload }) {
 
 //Function for Market TRade  History Report By Tejas 12/6/2019
 function* arbitrageMarketTradeHistoryData({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    //    const response = yield call(swaggerPostAPI, 'api/Transaction/GetOrderhistoryArbitrage/' + payload.Pair, payload, headers);
+
+
 
     var isMargin = '', Pair = "";
     if (payload.hasOwnProperty('marginTrading') && payload.marginTrading === 1) {

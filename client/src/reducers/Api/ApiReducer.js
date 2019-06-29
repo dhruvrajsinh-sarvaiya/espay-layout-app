@@ -19,10 +19,12 @@ const INIT_STATE = {
     apiloading: false,
 };
 
-export default (state = INIT_STATE, action) => {
-   // console.log("actiontype",action.type);
-    switch (action.type) {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
 
+    switch (action.type) {
         // get Api
         case GET_API:
             return { ...state,apiloading:true};

@@ -9,13 +9,13 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import AffiliateDashboard from './dashboard';
 import AffiliateCmsPtrn from './commission-pattern';
 import AffiliatePromotion from './promotion';
-import AffiliateSendMailReport from './reports/send-mail';
-import AffiliateSendSMSReport from './reports/send-sms';
-import AffiliateFacebookShareReport from './reports/facebook-share';
-import AffiliateTwitterShareReport from './reports/twitter-share';
-import AffiliateSignupReport from './reports/signup';
-import AffiliateClickOnLinkReport from './reports/click-on-link';
-import AffiliateCommissionReport from './reports/commission';
+import AffiliateSendMailReport from './reports/AffiliateSendMailReport';
+import AffiliateSendSMSReport from './reports/AffiliateSendSMSReport';
+import AffiliateFacebookShareReport from './reports/AffiliateFacebookShareReport';
+import AffiliateTwitterShareReport from './reports/AffiliateTwitterShareReport';
+import AffiliateSignupReport from './reports/AffiliateSignupReport';
+import AffiliateClickOnLinkReport from './reports/AffiliateClickOnLinkReport';
+import AffiliateCommissionReport from './reports/AffiliateCommissionReport';
 import AffiliateInviteFriends from './invite-friends';
 
 const Affiliate = ({ match }) => (

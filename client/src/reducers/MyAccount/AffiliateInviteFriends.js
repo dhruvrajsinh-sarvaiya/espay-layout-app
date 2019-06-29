@@ -28,64 +28,68 @@ const INIT_STATE = {
     SocialSharingData: [],
     loading: false,
     smsloading: false,
-    socialloading:false,
+    socialloading: false,
     PromotionLinkData: []
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
     switch (action.type) {
         //For Afiiliate email promo
         case AFFILIATE_EMAIL_PROMO:
-            return { ...state, loading: true, AffiliateEmailData: []
+            return {
+                ...state, loading: true, AffiliateEmailData: []
             };
 
         case AFFILIATE_EMAIL_PROMO_SUCCESS:
-            return { ...state, loading: false, AffiliateEmailData: action.payload
-            };
-
         case AFFILIATE_EMAIL_PROMO_FAILURE:
-            return {...state, loading: false, AffiliateEmailData: action.payload
+            return {
+                ...state, loading: false, AffiliateEmailData: action.payload
             };
 
         //For  Affiliate sms promo
         case AFFILIATE_SMS_PROMO:
-            return {...state, smsloading: true, AffiliateSmsData: []
+            return {
+                ...state, smsloading: true, AffiliateSmsData: []
             };
 
         case AFFILIATE_SMS_PROMO_SUCCESS:
-            return {...state, smsloading: false, AffiliateSmsData: action.payload
+        case AFFILIATE_SMS_PROMO_FAILURE:
+            return {
+                ...state, smsloading: false, AffiliateSmsData: action.payload
             };
 
-        case AFFILIATE_SMS_PROMO_FAILURE:
-            return {...state, smsloading: false, AffiliateSmsData: action.payload
-            };
+
 
         //For  Affiliate social sharing Report
         case AFFILIATE_SOCIAL_SHARING_PROMO:
-            return { ...state, loading: true, SocialSharingData: []
+            return {
+                ...state, loading: true, SocialSharingData: []
             };
 
         case AFFILIATE_SOCIAL_SHARING_PROMO_SUCCESS:
-            console.log("socialsharing", action.payload);
-            return {...state, loading: false, SocialSharingData: action.payload
+        case AFFILIATE_SOCIAL_SHARING_PROMO_FAILURE:
+            return {
+                ...state, loading: false, SocialSharingData: action.payload
             };
 
-        case AFFILIATE_SOCIAL_SHARING_PROMO_FAILURE:
-            return {...state, loading: false, SocialSharingData: action.payload
-            };
+
 
         //For  Affiliate PROMOTION LINK
         case GET_AFFILIATE_PROMOTION_LINK:
-            return { ...state, socialloading: true, PromotionLinkData: []
+            return {
+                ...state, socialloading: true, PromotionLinkData: []
             };
 
         case GET_AFFILIATE_PROMOTION_LINK_SUCCESS:
-            return {...state, socialloading: false, PromotionLinkData: action.payload
+        case GET_AFFILIATE_PROMOTION_LINK_FAILURE:
+            return {
+                ...state, socialloading: false, PromotionLinkData: action.payload
             };
 
-        case GET_AFFILIATE_PROMOTION_LINK_FAILURE:
-            return {...state, socialloading: false, PromotionLinkData: action.payload
-            };
+
         default:
             return { ...state };
     }

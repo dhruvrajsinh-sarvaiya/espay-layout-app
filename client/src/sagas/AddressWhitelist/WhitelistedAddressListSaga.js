@@ -1,7 +1,6 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 import AppConfig from 'Constants/AppConfig';
 import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
 // import types for dispatch puropse
 import {
     GET_COIN_LIST,
@@ -32,6 +31,7 @@ import {
     deleteAddressSuccess,
     deleteAddressFailure
 } from "Actions/AddressWhitelist";
+const lgnErrCode = loginErrCode();
 /* SERVER REQUEST */
 
 /* GET COIN LIST */
@@ -124,8 +124,8 @@ function* getAllWhithdrawalAddress() {
     yield takeEvery(FETCH_WITHDRAWALADDRESS, getWithdrwalAddressSocket);
 }
 /* Add to whitelist form */
-function* addWithdrawalAddressSocket(payload) {
-    var payload = payload.request;
+function* addWithdrawalAddressSocket(payloadValue) {
+    var payload = payloadValue.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
     const responseFromSocket = yield call(
         swaggerPostAPI,

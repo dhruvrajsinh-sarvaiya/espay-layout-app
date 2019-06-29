@@ -3,7 +3,6 @@
     Date : 18-09-2018
     File Comment : Withdraw Reducer action manager
 */
-import { NotificationManager } from 'react-notifications';
 // import only required withdraw actions
 import {
     // get currency lsit
@@ -72,7 +71,11 @@ const INITIAL_STATE = {
     withdrawalPolicy: {}
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
         // get currency list
         case GET_WD_CURRENCY:
@@ -159,21 +162,18 @@ export default (state = INITIAL_STATE, action) => {
         case WITHDRAWCONFRIMATION:
             return { ...state, confirmationResponse: { loading: true }, errors: {}, resendMailResponse: {} }
         case WITHDRAWCONFRIMATION_SUCCESS:
-            action.payload['loading'] = false;
-            return { ...state, confirmationResponse: action.payload, errors: {} }
         case WITHDRAWCONFRIMATION_FAILURE:
             action.payload['loading'] = false;
             return { ...state, confirmationResponse: action.payload, errors: {} }
         //get withdrawal history...
         case GET_WITHDRAW_HISTORY:
+        case RESENDMAIL:
             return { ...state, withdrawhistoryLoading: true, resendMailResponse: {} };
         case GET_WITHDRAW_HISTORY_SUCCESS:
             return { ...state, withdrawhistoryLoading: false, withdrawhistory: action.payload };
         case GET_WITHDRAW_HISTORY_FAILURE:
             return { ...state, withdrawhistoryLoading: false, withdrawhistory: [] };
         //resend mail confirmation
-        case RESENDMAIL:
-            return { ...state, withdrawhistoryLoading: true, resendMailResponse: {} };
         case RESENDMAIL_SUCCESS:
             return { ...state, withdrawhistoryLoading: false, resendMailResponse: action.payload };
         case RESENDMAIL_FAILURE:
@@ -182,11 +182,9 @@ export default (state = INITIAL_STATE, action) => {
         case WITHDRAW_POLICY:
             return { ...state, withdrawalPolicy: {} }
         case WITHDRAW_POLICY_SUCCESS:
-            return { ...state, withdrawalPolicy: action.payload }
         case WITHDRAW_POLICY_FAILURE:
             return { ...state, withdrawalPolicy: action.payload }
 
         default: return { ...state };
-
     }
 }

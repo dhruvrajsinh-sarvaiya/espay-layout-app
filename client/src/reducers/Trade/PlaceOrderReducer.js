@@ -17,7 +17,7 @@ import {
     from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     loading:false,
     sellOrderLoading:false,
     buyOrderLoading: false,
@@ -28,8 +28,10 @@ const INITIAL_STATE = {
     error: []
 };
 
-export default (state = INITIAL_STATE, action) => {
-
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         // get Buyer Order list

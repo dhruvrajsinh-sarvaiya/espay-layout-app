@@ -13,12 +13,15 @@ import {
     DECENT_ADDRESS_GEN_FAILURE
 } from 'Actions/types';
 
-const INITIAL_STATE = {
+const INIT_STATE = {
     currencies: [],
     showLoading: false
 }
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         case GET_CURRENCY:
@@ -28,7 +31,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, showLoading: false, currencies: action.payload };
 
         case GET_CURRENCY_FAILURE:
-            console.log(action.payload);
             return { ...state, showLoading: false };
 
         case DECENT_ADDRESS_GENERATION:
@@ -38,7 +40,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, showLoading: false, reponse: action.payload };
 
         case DECENT_ADDRESS_GEN_FAILURE:
-            console.log(action.payload);
             return { ...state, showLoading: false };
 
         default:

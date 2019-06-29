@@ -15,7 +15,10 @@ const INIT_STATE = {
     referralCodeFromURL: {}
 }
 
-export default (state = INIT_STATE, action) => {
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         case REFERRAL_URL_CLICK:
             return { ...state, loading: true };

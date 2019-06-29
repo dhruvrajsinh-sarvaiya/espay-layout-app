@@ -12,13 +12,15 @@ import {
 } from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     profitIndicatorLoader: false,
     arbitrageProfitIndicator: []
 };
 
-export default (state = INITIAL_STATE, action) => {
-
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         //  Profit Indicator
         case GET_ARBITRAGE_PROFITINDICATOR:

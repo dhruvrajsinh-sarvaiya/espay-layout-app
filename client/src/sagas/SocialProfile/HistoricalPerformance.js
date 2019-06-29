@@ -5,7 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import {
     GET_HISTORICAL_PERFORMANCE_CHART_DATA
@@ -18,14 +18,14 @@ import {
 } from 'Actions/SocialProfile';
 
 import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
+import { swaggerGetAPI } from 'Helpers/helpers';
 
 
 //Function for Get Historical Performance Chart API
 function* getHistoricalPerformanceChartAPI({ payload }) {
     var headers =  {'Authorization': AppConfig.authorizationToken}
 	const response = yield call(swaggerGetAPI,'api/Transaction/GetHistoricalPerformance/'+payload.LeaderId,{},headers);
-	// console.log('Response :',response);
+	
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getHistoricalPerformanceChartDataSuccess(response));

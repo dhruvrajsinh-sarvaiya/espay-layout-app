@@ -6,8 +6,7 @@
     Description : handle State for HelpCenter Action
 */
 import React from 'react';
-import { NotificationManager } from 'react-notifications';
-import IntlMessages from "Util/IntlMessages";
+
 
 import {
     GET_HELPMANUALMODUALS,
@@ -32,8 +31,10 @@ const INIT_STATE = {
     searchHelpText: '',
 };
 
-export default (state = INIT_STATE, action) => {
-
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
     switch (action.type) {
 
         // get help manual module

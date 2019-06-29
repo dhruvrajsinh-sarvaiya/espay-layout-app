@@ -20,7 +20,7 @@ import {
     from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     placeOrderLoader: false,
     arbitragePlaceOrder: [],
     arbitragePlaceOrderBit: 0,
@@ -28,8 +28,10 @@ const INITIAL_STATE = {
 
 };
 
-export default (state = INITIAL_STATE, action) => {
-
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         //  Place Order
         case ARBITRAGE_PLACE_ORDER:

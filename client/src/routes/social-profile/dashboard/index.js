@@ -1,14 +1,14 @@
 /**
  * Ecommerce Dashboard
  */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 // page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import Divider from '@material-ui/core/Divider';
-import { JbsCard, JbsCardContent, JbsCardHeading } from 'Components/JbsCard';
+import { JbsCard, JbsCardContent } from 'Components/JbsCard';
 
 import {
 	TopGainerList,
@@ -16,7 +16,6 @@ import {
 	TopLeaderList,
 	HistoricalPerformanceChart,
 	Portfolio,
-	RecentTradingHistory,
 	MyWatchListTbl
 } from "Components/SocialProfile";
 
@@ -30,44 +29,41 @@ export default class SocialProfileDashboard extends Component {
 				<JbsCard colClasses="col-sm-full">
 					<h2 className="clearfix jbs-block-title py-10">
 						<IntlMessages id="sidebar.topGainer" />
-						{/* <Link className="float-right" to="/app/social-profile/top-gainer"><IntlMessages id="sidebar.viewAll" /></Link> */}
 					</h2>
 					<Divider />
-        			<JbsCardContent>						
+					<JbsCardContent>
 						<TopGainerList />
 					</JbsCardContent>
 				</JbsCard>
 				<JbsCard colClasses="col-sm-full">
 					<h2 className="clearfix jbs-block-title py-10">
 						<IntlMessages id="sidebar.topLooser" />
-						{/* <Link className="float-right" to="/app/social-profile/top-looser"><IntlMessages id="sidebar.viewAll" /></Link> */}
 					</h2>
 					<Divider />
-        			<JbsCardContent>
+					<JbsCardContent>
 						<TopLooserList />
 					</JbsCardContent>
 				</JbsCard>
 				<JbsCard colClasses="col-sm-full">
 					<h2 className="clearfix jbs-block-title py-10">
 						<IntlMessages id="sidebar.topLeaders" />
-						{/* <Link className="float-right" to="/app/social-profile/top-leader"><IntlMessages id="sidebar.viewAll" /></Link> */}
 					</h2>
 					<Divider />
-        			<JbsCardContent>
+					<JbsCardContent>
 						<TopLeaderList />
 					</JbsCardContent>
 				</JbsCard>
 				<JbsCard colClasses="col-sm-full">
 					<h2 className="clearfix jbs-block-title py-10"><IntlMessages id="sidebar.historicalPerformance" /></h2>
 					<Divider />
-        			<JbsCardContent>
+					<JbsCardContent>
 						<HistoricalPerformanceChart />
 					</JbsCardContent>
 				</JbsCard>
 				<JbsCard colClasses="col-sm-full">
 					<h2 className="clearfix jbs-block-title py-10"><IntlMessages id="sidebar.watchlists" /></h2>
 					<Divider />
-        			<JbsCardContent>
+					<JbsCardContent>
 						<MyWatchListTbl />
 					</JbsCardContent>
 				</JbsCard>
@@ -77,16 +73,16 @@ export default class SocialProfileDashboard extends Component {
 						<Link className="float-right" to="/app/social-profile/portfolio"><IntlMessages id="sidebar.viewAll" /></Link>
 					</h2>
 					<Divider />
-        			<JbsCardContent>
+					<JbsCardContent>
 						<Portfolio isfilter={false} />
 					</JbsCardContent>
-				</JbsCard>				
+				</JbsCard>
 				<JbsCard colClasses="col-sm-full">
 					<h2 className="clearfix jbs-block-title py-10"><IntlMessages id="sidebar.recentTradingHistory" /></h2>
 					<Divider />
-        			<JbsCardContent>
+					<JbsCardContent>
 						<MyOrder {...this.props}
-							hubConnection={this.props.location.state.hubConnection} 
+							hubConnection={this.props.location.state.hubConnection}
 							isShowHeader={false}
 							isHidePair={false}
 							customClass="my_acc_rsnt_trd_hstry"

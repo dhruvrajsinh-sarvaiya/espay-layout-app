@@ -3,7 +3,7 @@
  *   Date : 05-03-2019
  *   Component: Leverge Report
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import classnames from "classnames";
@@ -28,7 +28,6 @@ import {
     getUpgradeLoan
 } from 'Actions/MarginTrading';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -203,10 +202,9 @@ class LeverageReport extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <span className={classnames({
-                                "badge badge-danger": (value === 3),
+                                "badge badge-warning": (value === 3),
                                 "badge badge-danger": (value === 9),
                                 "badge badge-info": (value === 6 || value === 0 || value === 5),
-                                //"badge badge-warning": (value === 4),
                                 "badge badge-success": (value === 1)
                             })} >
                                 {intl.formatMessage({ id: "margin.historyStatus." + value })}
@@ -279,6 +277,8 @@ class LeverageReport extends Component {
                             Status: this.state.Status,
                             WalletTypeId: this.state.WalletTypeId
                         });
+                        break;
+                    default:
                         break;
                 }
             }
@@ -466,17 +466,13 @@ class LeverageReport extends Component {
                                                 <td className="w-25 font-weight-bold">{this.state.Report.SafetyMarginAmount.toFixed(8)}</td>
                                                 <td className="w-25"><IntlMessages id="leverageReport.Status" /></td>
                                                 <td><span className={classnames({
-                                                            "badge badge-danger": (this.state.Report.Status === 3),
-                                                            "badge badge-danger": (this.state.Report.Status === 9),
-                                                            "badge badge-info": (this.state.Report.Status === 6 || this.state.Report.Status === 0 || this.state.Report.Status === 5),
-                                                            //"badge badge-warning": (value === 4),
-                                                            "badge badge-success": (this.state.Report.Status === 1)
-                                                        })} >
-                                                <IntlMessages id={"margin.historyStatus." + this.state.Report.Status} />
-                                                </span>
-                                                {/* <IntlMessages id="leverageReport.Status" /></td>
-                                                <td className="w-25 font-weight-bold">{this.state.Report.Status} */}
-                                                </td>
+                                                    "badge badge-warning": (this.state.Report.Status === 3),
+                                                    "badge badge-danger": (this.state.Report.Status === 9),
+                                                    "badge badge-info": (this.state.Report.Status === 6 || this.state.Report.Status === 0 || this.state.Report.Status === 5),
+                                                    "badge badge-success": (this.state.Report.Status === 1)
+                                                })} >
+                                                    <IntlMessages id={"margin.historyStatus." + this.state.Report.Status} />
+                                                </span></td>
                                             </tr>}
                                             {(this.state.Report.hasOwnProperty('RequestRemarks') && this.state.Report.hasOwnProperty('TrnDate')) && <tr>
                                                 <td className="w-25"><IntlMessages id="table.RequestRemarks" /></td>

@@ -6,7 +6,7 @@
  */
 import React, { Component, Fragment } from "react";
 import MUIDataTable from "mui-datatables";
-import { Badge, Alert } from 'reactstrap';
+import {  Alert } from 'reactstrap';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // intl messages
 import IntlMessages from "Util/IntlMessages";

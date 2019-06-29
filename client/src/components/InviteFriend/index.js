@@ -14,20 +14,8 @@ import {
   LinkedinShareButton,
   TwitterShareButton,
   PinterestShareButton,
-  VKShareButton,
-  OKShareButton,
   TelegramShareButton,
   WhatsappShareButton,
-  RedditShareButton,
-  EmailShareButton,
-  TumblrShareButton,
-  LivejournalShareButton,
-  MailruShareButton,
-  ViberShareButton,
-  WorkplaceShareButton,
-  LineShareButton,
-  WeiboShareButton,
-
   FacebookIcon,
   TwitterIcon,
   GooglePlusIcon,
@@ -35,16 +23,6 @@ import {
   PinterestIcon,
   WhatsappIcon,
   TelegramIcon,
-  VKIcon,
-  OKIcon,
-  RedditIcon,
-  TumblrIcon,
-  MailruIcon,
-  EmailIcon,
-  LivejournalIcon,
-  ViberIcon,
-  WorkplaceIcon,
-  LineIcon,
 } from 'react-share';
 
 export default class InviteFriend extends Component {
@@ -55,7 +33,6 @@ export default class InviteFriend extends Component {
   render() {
     const shareUrl = 'https://new-stack-front.azurewebsites.net';
 	const title = AppConfig.brandName;
-	const applogo = require('Assets/img/cool_dex_one.png');
 	const shareLogo ='https://miro.medium.com/fit/c/240/240/1*kmeXr3HB5QWbY3SnOsruvw.jpeg';
     return (
 		<Fragment>
@@ -124,114 +101,7 @@ export default class InviteFriend extends Component {
 						</TelegramShareButton>
 					</li>
 
-					{/* <li><VKShareButton
-							url={shareUrl}
-							image={`${String(window.location)}/${applogo}`}
-							windowWidth={660}
-							windowHeight={460}
-							className="social_share-button">
-							<VKIcon
-							size={40}
-							round />
-						</VKShareButton>
-					</li>
-
-					<li><OKShareButton
-							url={shareUrl}
-							image={`${String(window.location)}/${applogo}`}
-							windowWidth={660}
-							windowHeight={460}
-							className="social_share-button">
-							<OKIcon
-							size={32}
-							round />
-						</OKShareButton>
-					</li>
-
-					<li><RedditShareButton
-							url={shareUrl}
-							title={title}
-							windowWidth={660}
-							windowHeight={460}
-							className="social_share-button">
-							<RedditIcon
-							size={32}
-							round />
-						</RedditShareButton>
-					</li>
-
-					<li><TumblrShareButton
-							url={shareUrl}
-							title={title}
-							windowWidth={660}
-							windowHeight={460}
-							className="social_share-button">
-							<TumblrIcon
-							size={32}
-							round />
-						</TumblrShareButton>
-					</li>
-
-					<li><LivejournalShareButton
-							url={shareUrl}
-							title={title}
-							description={shareUrl}
-							className="social_share-button"
-						>
-							<LivejournalIcon size={32} round />
-						</LivejournalShareButton>
-					</li>
-
-					<li><MailruShareButton
-							url={shareUrl}
-							title={title}
-							className="social_share-button">
-							<MailruIcon
-							size={32}
-							round />
-						</MailruShareButton>
-					</li>
-
-					<li><EmailShareButton
-							url={shareUrl}
-							subject={title}
-							body="body"
-							className="social_share-button">
-							<EmailIcon
-							size={32}
-							round />
-						</EmailShareButton>
-					</li>
-					<li><ViberShareButton
-							url={shareUrl}
-							title={title}
-							body="body"
-							className="social_share-button">
-							<ViberIcon
-							size={32}
-							round />
-						</ViberShareButton>
-					</li>
-
-					<li><WorkplaceShareButton
-							url={shareUrl}
-							quote={title}
-							className="social_share-button">
-							<WorkplaceIcon
-							size={32}
-							round />
-						</WorkplaceShareButton>
-					</li>
-
-					<li><LineShareButton
-							url={shareUrl}
-							title={title}
-							className="social_share-button">
-							<LineIcon
-							size={32}
-							round />
-						</LineShareButton>
-					</li> */}
+					
 				</ul>
 			</div>
 		</Fragment>

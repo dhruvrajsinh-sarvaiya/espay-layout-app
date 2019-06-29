@@ -5,27 +5,27 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import {
-    GET_TOP_LEADER_LIST
+	GET_TOP_LEADER_LIST
 } from 'Actions/types';
 
 //Action methods..
 import {
-    getTopLeaderListSuccess,
-    getTopLeaderListFailure
+	getTopLeaderListSuccess,
+	getTopLeaderListFailure
 } from 'Actions/SocialProfile';
 
 import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
+import { swaggerGetAPI } from 'Helpers/helpers';
 
 
 //Function for Get Top Leader List API
 function* getTopLeaderListAPI() {
-    var headers =  {'Authorization': AppConfig.authorizationToken}
-	const response = yield call(swaggerGetAPI,'api/Transaction/TopLeadersList',{},headers);
-	
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/Transaction/TopLeadersList', {}, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getTopLeaderListSuccess(response));
@@ -39,12 +39,12 @@ function* getTopLeaderListAPI() {
 
 /* Create Sagas method for Get Top Leader List */
 export function* getTopLeaderListSagas() {
-    yield takeEvery(GET_TOP_LEADER_LIST, getTopLeaderListAPI);
+	yield takeEvery(GET_TOP_LEADER_LIST, getTopLeaderListAPI);
 }
 
 /* Export methods to rootSagas */
 export default function* rootSaga() {
-    yield all([
-        fork(getTopLeaderListSagas)
-    ]);
+	yield all([
+		fork(getTopLeaderListSagas)
+	]);
 }

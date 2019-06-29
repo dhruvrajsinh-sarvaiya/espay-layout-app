@@ -5,9 +5,7 @@
 */
 import React from 'react';
 import PropTypes from 'prop-types';
-import IntlMessages from "Util/IntlMessages";
-import { JbsCard, JbsCardContent, JbsCardHeading } from 'Components/JbsCard';
-import Divider from '@material-ui/core/Divider';
+import { JbsCard, JbsCardContent } from 'Components/JbsCard';
 import CountUp from 'react-countup';
 
 const CountCard = ({ title, count, icon, bgClass, clickEvent, data, createCount, createTitle }) => (

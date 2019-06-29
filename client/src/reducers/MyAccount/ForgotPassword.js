@@ -4,35 +4,38 @@
  * Forgot Password Reducers
  */
 import {
-    FORGOT_PASSWORD, 
-    FORGOT_PASSWORD_SUCCESS, 
+    FORGOT_PASSWORD,
+    FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_FAILURE
- } from 'Actions/types';
- 
- 
- /*
- * Initial State
- */
+} from 'Actions/types';
+
+/*
+* Initial State
+*/
 const INIT_STATE = {
-    loading : false,
-    data : [],
-    error : ''
+    loading: false,
+    data: [],
+    error: ''
 }
 
 //Check Action for Forgot Password...
-export default (state = INIT_STATE, action) => {
-    switch(action.type) 
-    {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
+    switch (action.type) {
+
         case FORGOT_PASSWORD:
-            return { ...state, loading : true, error : '', data : '' };
+            return { ...state, loading: true, error: '', data: '' };
 
         case FORGOT_PASSWORD_SUCCESS:
-            return { ...state, loading : false, data : action.payload };
+            return { ...state, loading: false, data: action.payload };
 
         case FORGOT_PASSWORD_FAILURE:
-        return { ...state, loading : false, data : action.payload };
+            return { ...state, loading: false, data: action.payload };
 
-        default : 
+        default:
             return { ...state };
     }
 }

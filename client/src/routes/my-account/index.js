@@ -33,12 +33,12 @@ import tradeSummary from "./trade-summary";
 import topGainers from "./top-gainers";
 import topLosers from "./top-losers";
 import ipWhitelist from "./ip-whitelist";
-import addIpWhitelist from "./ip-whitelist/add";
+import addIpWhitelist from "./ip-whitelist/addIPWhiteList";
 import deviceList from "./device-whitelisting";
 
 // Manish Vora
 import myAccountDashboard from "./my-account-dashboard";
-import myProfileInfo from "./my-account-dashboard/my-profile-info";
+import myProfileInfo from "./my-account-dashboard/myprofileinfo";
 
 /* Salimbhai.... */
 import ForgotPassword from "./forgot-password";
@@ -50,8 +50,8 @@ import ReferraleProgram from "./referrale-program";
 import ThemeConfiguration from "./theme-configuration";
 import DeviceWhitelisting from "./device-whitelisting";
 import ListComplain from "./help-and-support";
-import RaiseComplainForm from "./help-and-support/raise_complain";
-import ComplainReplayForms from "./help-and-support/replay_complain";
+import RaiseComplainForm from "./help-and-support/RaiseComplainForm";
+import ComplainReplayForms from "./help-and-support/ComplainReplayForms";
 
 //Sanjay
 import ChartAccount from './chart-account';

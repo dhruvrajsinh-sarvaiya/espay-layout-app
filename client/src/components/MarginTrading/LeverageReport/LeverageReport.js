@@ -28,7 +28,6 @@ import {
     getUpgradeLoan
 } from 'Actions/MarginTrading';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
@@ -84,8 +83,8 @@ class LeverageReport extends Component {
         this.state = initState;
         this.handlePageChange = this.handlePageChange.bind(this);
     }
-     //Pagination Change Method...
-     handlePageChange(pageNumber) {
+    //Pagination Change Method...
+    handlePageChange(pageNumber) {
         this.getListFromServer(pageNumber);
     }
     //Row Per Page Change Method...
@@ -133,12 +132,12 @@ class LeverageReport extends Component {
     /* apply filter */
     applyFilter() {
         if (this.state.Status !== '' || this.state.WalletTypeId !== '' || (this.state.FromDate != "" && this.state.ToDate != "" && this.state.FromDate <= this.state.today && this.state.ToDate <= this.state.today) && (this.state.ToDate >= this.state.FromDate)) {
-            this.setState({ showReset: true },this.getListFromServer(1, this.state.PageSize));
+            this.setState({ showReset: true }, this.getListFromServer(1, this.state.PageSize));
         }
     }
     /* reset filter options */
     clearFilter() {
-        this.setState(initState,() => this.getListFromServer(1, this.state.PageSize));
+        this.setState(initState, () => this.getListFromServer(1, this.state.PageSize));
     }
     /* on chane handler select search */
     onChangeSelectCurrency(e) {
@@ -215,7 +214,7 @@ class LeverageReport extends Component {
                     customBodyRender: (value, tableMeta, updateValue) => {
                         return (
                             <span className={classnames({
-                                "badge badge-danger": (value === 3),
+                                "badge badge-warning": (value === 3),
                                 "badge badge-danger": (value === 9),
                                 "badge badge-info": (value === 6 || value === 0 || value === 5),
                                 //"badge badge-warning": (value === 4),
@@ -261,8 +260,8 @@ class LeverageReport extends Component {
                     toolTip: intl.formatMessage({ id: "wallet.sort" }),
                 }
             },
-            customFooter: (count, page, rowsPerPage) => {
-                var page = page > 0 ? page + 1 : 1;
+            customFooter: (count, pageNo, rowsPerPage) => {
+                var page = pageNo > 0 ? pageNo + 1 : 1;
                 return (
                     <CustomFooter count={count} page={page} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
@@ -319,7 +318,7 @@ class LeverageReport extends Component {
                 </JbsCollapsibleCard>
                 <div className="StackingHistory">
                     <MUIDataTable
-                        data={Report.map((item,key) => {
+                        data={Report.map((item, key) => {
                             return [
                                 key + 1 + (this.state.PageNo * this.state.PageSize),
                                 item.WalletTypeName,
@@ -451,7 +450,7 @@ class LeverageReport extends Component {
                                                 <td className="w-25 font-weight-bold">{this.state.Report.SafetyMarginAmount.toFixed(8)}</td>
                                                 <td className="w-25"><IntlMessages id="leverageReport.Status" /></td>
                                                 <td><span className={classnames({
-                                                    "badge badge-danger": (this.state.Report.Status === 3),
+                                                    "badge badge-warning": (this.state.Report.Status === 3),
                                                     "badge badge-danger": (this.state.Report.Status === 9),
                                                     "badge badge-info": (this.state.Report.Status === 6 || this.state.Report.Status === 0 || this.state.Report.Status === 5),
                                                     //"badge badge-warning": (value === 4),

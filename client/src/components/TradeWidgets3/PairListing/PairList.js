@@ -104,11 +104,11 @@ class PairList extends React.Component {
                             this.state.socketData.length === 0) ||
                         (this.state.socketData.length !== 0 &&
                             pairListDataDetail.EventTime >=
-                                this.state.socketData.EventTime)
+                            this.state.socketData.EventTime)
                     ) {
                         if (
                             typeof pairListDataDetail.IsMargin !==
-                                "undefined" &&
+                            "undefined" &&
                             pairListDataDetail.IsMargin === 0
                         ) {
                             pairList.map((value, key) => {
@@ -147,7 +147,7 @@ class PairList extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
     }
@@ -172,11 +172,11 @@ class PairList extends React.Component {
                             this.state.socketData.length === 0) ||
                         (this.state.socketData.length !== 0 &&
                             pairListDataDetail.EventTime >=
-                                this.state.socketData.EventTime)
+                            this.state.socketData.EventTime)
                     ) {
                         if (
                             typeof pairListDataDetail.IsMargin !==
-                                "undefined" &&
+                            "undefined" &&
                             pairListDataDetail.IsMargin === 1
                         ) {
                             pairList.map((value, key) => {
@@ -361,11 +361,11 @@ class PairList extends React.Component {
             var oldPairLists = this.state.oldPairLists;
             this.state.pairList.map((value, key) => {
                 value.PairList.map((newPairItem, indexValue) => {
-                    var isAvailable = this.state.favouritesPairList.findIndex(
+                    var isAvailablePairList = this.state.favouritesPairList.findIndex(
                         (fav) => fav.pair === newPairItem.PairId
                     );
 
-                    if (isAvailable !== -1) {
+                    if (isAvailablePairList !== -1) {
                         favouriteList.push(newPairItem);
                     }
                 });
@@ -414,7 +414,7 @@ class PairList extends React.Component {
                         newChange={value.ChangePer}
                         oldChange={lastChange}
                         newVolume={value.Volume}
-                        addToFavourite = {this.addToFavourite}
+                        addToFavourite={this.addToFavourite}
                         oldVolume={lastVolume}
                         openModal={this.openModal}
                         isAvailable={isAvailable}
@@ -426,6 +426,7 @@ class PairList extends React.Component {
                         changeBit={value.changeBit ? value.changeBit : 0}
                     />
                 );
+                return [];
             });
         } else if (
             this.state.pairList.length !== 0 &&
@@ -502,7 +503,7 @@ class PairList extends React.Component {
                                         oldPrice={lastPrice}
                                         newChange={newPairItem.ChangePer}
                                         oldChange={lastChange}
-                                        addToFavourite = {this.addToFavourite}
+                                        addToFavourite={this.addToFavourite}
                                         isAvailable={isAvailable}
                                         newVolume={newPairItem.Volume}
                                         oldVolume={lastVolume}
@@ -573,7 +574,7 @@ class PairList extends React.Component {
                                     newChange={newPairItem.ChangePer}
                                     oldChange={lastChange}
                                     newVolume={newPairItem.Volume}
-                                    addToFavourite = {this.addToFavourite}
+                                    addToFavourite={this.addToFavourite}
                                     oldVolume={lastVolume}
                                     openModal={this.openModal}
                                     indexValue={indexValue}
@@ -653,7 +654,7 @@ class PairList extends React.Component {
                                                     active:
                                                         this.props
                                                             .secondCurrency ===
-                                                            value.Abbrevation &&
+                                                        value.Abbrevation &&
                                                         !this.props
                                                             .displayFavourite,
                                                 },
@@ -678,7 +679,7 @@ class PairList extends React.Component {
 
                 {this.state.showLoader &&
                     <JbsSectionLoader />
-                    }
+                }
 
                 <div className="table-responsive-design p-5">
                     <div
@@ -729,46 +730,46 @@ class PairList extends React.Component {
                                 </Scrollbars>
                             </div>
                         ) : (
-                            <div>
-                                <Table className="m-0 p-0">
-                                    <thead>
-                                        <tr className="bg-light">
-                                            <th>
-                                                {
-                                                    <IntlMessages id="trading.currencypair.label.pair" />
-                                                }
-                                            </th>
-                                            <th>
-                                                {
-                                                    <IntlMessages id="trading.currencypair.label.price" />
-                                                }
-                                            </th>
-                                            <th className="numeric">
-                                                {
-                                                    <IntlMessages id="trading.currencypair.label.change" />
-                                                }
-                                            </th>
-                                            <th className="numeric">
-                                                {
-                                                    <IntlMessages id="trading.currencypair.label.volume" />
-                                                }
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                </Table>
-                                <Scrollbars
-                                    className="jbs-scroll"
-                                    autoHeight
-                                    autoHeightMin={250}
-                                    autoHeightMax={360}
-                                    autoHide
-                                >
+                                <div>
                                     <Table className="m-0 p-0">
-                                        <tbody>{pairsRow}</tbody>
+                                        <thead>
+                                            <tr className="bg-light">
+                                                <th>
+                                                    {
+                                                        <IntlMessages id="trading.currencypair.label.pair" />
+                                                    }
+                                                </th>
+                                                <th>
+                                                    {
+                                                        <IntlMessages id="trading.currencypair.label.price" />
+                                                    }
+                                                </th>
+                                                <th className="numeric">
+                                                    {
+                                                        <IntlMessages id="trading.currencypair.label.change" />
+                                                    }
+                                                </th>
+                                                <th className="numeric">
+                                                    {
+                                                        <IntlMessages id="trading.currencypair.label.volume" />
+                                                    }
+                                                </th>
+                                            </tr>
+                                        </thead>
                                     </Table>
-                                </Scrollbars>
-                            </div>
-                        )}
+                                    <Scrollbars
+                                        className="jbs-scroll"
+                                        autoHeight
+                                        autoHeightMin={250}
+                                        autoHeightMax={360}
+                                        autoHide
+                                    >
+                                        <Table className="m-0 p-0">
+                                            <tbody>{pairsRow}</tbody>
+                                        </Table>
+                                    </Scrollbars>
+                                </div>
+                            )}
                     </div>
                 </div>
             </div>
@@ -828,13 +829,13 @@ class PairListRow extends React.Component {
                         }}
                     >
                         {this.props.isAvailable === -1 ||
-                        this.props.isAvailable === null ? (
-                            // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.fillstar" />}</i> :
-                            // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.star" />}</i>}</a>
-                            <i className="material-icons">star_border</i>
-                        ) : (
-                            <i className="material-icons">star</i>
-                        )}
+                            this.props.isAvailable === null ? (
+                                // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.fillstar" />}</i> :
+                                // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.star" />}</i>}</a>
+                                <i className="material-icons">star_border</i>
+                            ) : (
+                                <i className="material-icons">star</i>
+                            )}
                     </a>
                     {this.props.pair}
                 </td>
@@ -855,8 +856,8 @@ class PairListRow extends React.Component {
                         this.props.newChange === 0
                             ? "text-default"
                             : this.props.newChange > 0
-                            ? "text-success"
-                            : "text-danger"
+                                ? "text-success"
+                                : "text-danger"
                     }
                 >
                     {parseFloat(this.props.newChange).toFixed(2)} %

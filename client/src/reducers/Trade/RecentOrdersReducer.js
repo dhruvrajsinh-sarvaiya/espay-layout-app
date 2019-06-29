@@ -9,14 +9,17 @@ import {
 
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     loading: false,
     OpenOrder: [],
     cancelOrder: [],
     recentOrderBit:1
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         // get Active Open Order list

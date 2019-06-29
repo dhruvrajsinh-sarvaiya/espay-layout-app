@@ -30,7 +30,7 @@ class ReferralCountCardsWdgt extends Component {
     }
 
     render() {
-        const { TotalParticipants, Invite, Clicks, Converts, EmailInvite, FacebookShare, TwitterShare, SMSInvite, Messenger, WhatsApp, LinkedIn, GoogleShare, InstaShare, Pinterest, Telegram } = this.state.data;
+        const { TotalParticipants, Invite, Clicks, Converts, EmailInvite, FacebookShare, TwitterShare, SMSInvite, Messenger, WhatsApp, LinkedIn, Pinterest, Telegram } = this.state.data;
         return (
             <Row className="referral-Dashboard">
                 {this.props.loading && <JbsSectionLoader />}

@@ -7,18 +7,13 @@
  *  for handle open order response and signalr in this and pass into child component
 */
 
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";
-import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 import { Tabs, Tab, TabPanel, TabList } from "react-web-tabs";
-import { Button } from 'reactstrap';
 import OpenOrder from './OpenOrder';
-import TradeHistory from './TradeHistory';
 import MyTradeHistory from './MyTradeHistory';
 import { arbitrageOpenOrder, arbitrageTradeHistory, arbitrageMarketTradeHistory } from 'Actions/Arbitrage';
-//import {arbitrageMarketTradeHistory} from "Actions/Arbitrage";
 import $ from 'jquery';
 
 
@@ -54,7 +49,6 @@ class OrderTabList extends Component {
                 page: 0,
                 marketType: "",
                 exchangeName: ""
-                // isMargin:0  use in treadArbitrage API as parameter
             },
             OpenOrderList: [],
             activeOrderSignalRData: [],
@@ -102,11 +96,7 @@ class OrderTabList extends Component {
         }
 
         //process for market trade history
-        if (nextProps.marketTradeList && nextProps.marketTradeList.length) {
-            this.setState({
-                marketTradeList: nextProps.marketTradeList
-            })
-        } else if (nextProps.marketTradeList && !nextProps.marketTradeList.length) {
+        if ((nextProps.marketTradeList && nextProps.marketTradeList.length) || (nextProps.marketTradeList && !nextProps.marketTradeList.length)) {
             this.setState({
                 marketTradeList: nextProps.marketTradeList
             })
@@ -121,10 +111,8 @@ class OrderTabList extends Component {
         // Call When Get Data From Socket/SignalR      
         this.props.hubConnection.on('RecieveActiveOrderArbitrage', (openOrderDetail) => {
 
-            //console.log("call from SignalR RecieveActiveOrderArbitrage", openOrderDetail);
             if (this.isComponentActive === 1 && openOrderDetail !== null) {
 
-                //var openorders = this.state.OpenOrderList;  
                 try {
 
                     const openOrderDetailData = JSON.parse(openOrderDetail);
@@ -134,11 +122,8 @@ class OrderTabList extends Component {
 
                         const newData = openOrderDetailData.Data
                         if (parseFloat(newData.Price) >= 0) {
-                            //console.log("length: ", this.state.OpenOrderList.length);
                             var openorders = $.extend(true, [], this.state.OpenOrderList);
-                            //console.log("findIndexOrderId start ",(new Date()))
                             var findIndexOrderId = openorders.findIndex(openorder => parseFloat(openorder.Id) === parseFloat(newData.Id));
-                            //console.log("findIndexOrderId end ",findIndexOrderId,(new Date()))
                             if (findIndexOrderId === -1) {
 
                                 if (parseFloat(newData.Amount) > 0) {
@@ -154,7 +139,6 @@ class OrderTabList extends Component {
                                 }
 
                             }
-                            //console.log("length: ", openorders.length);
                             this.setState({ OpenOrderList: openorders, activeOrderSignalRData: openOrderDetailData });
 
                         }
@@ -162,17 +146,11 @@ class OrderTabList extends Component {
                     }
 
                 } catch (error) {
-                    //console.log("errorRecieveActiveOrder ",error)
                 }
 
             }
 
         });
-
-        /*  if (this.props.isLogin === undefined) {
-             console.log('fdh')
-             this.props.arbitrageOpenOrder(this.state.data);
-         } */
 
     }
 
@@ -182,7 +160,6 @@ class OrderTabList extends Component {
 
         this.props.hubConnection.on("RecieveTradeHistoryArbitrage", (receivedMessage) => {
 
-            //console.log("call from SignalR RecieveTradeHistoryArbitrage", receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
 
                 try {
@@ -202,7 +179,6 @@ class OrderTabList extends Component {
                     }
 
                 } catch (error) {
-                    //console.log(error)
                 }
 
             }
@@ -217,7 +193,6 @@ class OrderTabList extends Component {
 
         this.props.hubConnection.on("RecieveOrderHistory", (receivedMessage) => {
 
-            //console.log("call from SignalR RecieveTradeHistoryArbitrage", receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
 
                 try {
@@ -227,24 +202,19 @@ class OrderTabList extends Component {
                     if ((receivedMessageData.EventTime && this.state.marketTradeSignalRData.length === 0) || (this.state.marketTradeSignalRData.length !== 0 &&
                         receivedMessageData.EventTime > this.state.marketTradeSignalRData.EventTime)) {
 
-                        //if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== "undefined"
-                          //  && receivedMessageData.IsMargin === 0) {
+                        var orderHistory = $.extend(true, [], this.state.marketTradeList);
 
-                            var orderHistory = $.extend(true, [], this.state.marketTradeList);
+                        orderHistory.unshift(receivedMessageData.Data);
 
-                            orderHistory.unshift(receivedMessageData.Data);
+                        this.setState({
+                            marketTradeList: orderHistory,
+                            marketTradeSignalRData: receivedMessageData,
+                        });
 
-                            this.setState({
-                                marketTradeList: orderHistory,
-                                marketTradeSignalRData: receivedMessageData,
-                            });
-
-                        //}
 
                     }
 
                 } catch (error) {
-                    //console.log(error)
                 }
             }
         });
@@ -258,25 +228,23 @@ class OrderTabList extends Component {
         return (
             <Tabs defaultTab={defaultTab} className="arbitrage_tabs">
                 <TabList className="tab_list clearfix">
-                    <Tab tabFor="open_order" className="d-flex">                        
+                    <Tab tabFor="open_order" className="d-flex">
                         <IntlMessages id="sidebar.arbitrageOpenOrder" />
                         &nbsp;
                         ({this.state.OpenOrderList.length})</Tab>
                     <Tab tabFor="my_trade_history" className="d-flex">
-                        <IntlMessages id="sidebar.arbitrageMyTradeHistory" />                       
+                        <IntlMessages id="sidebar.arbitrageMyTradeHistory" />
                         &nbsp;
                         ({this.state.myTradeHistory.length})</Tab>
                     <Tab tabFor="balance" className="d-flex">
                         <IntlMessages id="trading.holdingorder.label.balance" />
-                        
-                        </Tab>
-                    {/*<Tab tabFor="position">Position</Tab>*/}
+
+                    </Tab>
                     <Tab tabFor="trade_history" className="d-flex">
                         <IntlMessages id="trading.newTrading.markettrade.text" />
-                        
-                        </Tab>
-                    {/* <Tab tabFor="pricing_alerts">Pricing Alerts</Tab>
-                    <Tab tabFor="logs">Logs</Tab> */}
+
+                    </Tab>
+
                 </TabList>
                 <div className="tab_cnt_area">
                     <TabPanel tabId="open_order">
@@ -293,22 +261,12 @@ class OrderTabList extends Component {
                     <TabPanel tabId="balance">
                         <Balance Wallet={this.props.Wallet} />
                     </TabPanel>
-                    {/*<TabPanel tabId="position">
-                        Position
-                    </TabPanel>*/}
                     <TabPanel tabId="trade_history">
-                        {/* <TradeHistory isShowTitle={false} {...this.props} /> */}
                         <MarketTradeHistory
                             currencyPair={this.props.currencyPair}
                             isShowTitle={false} {...this.props}
                             marketTradeList={this.state.marketTradeList} />
                     </TabPanel>
-                    {/*<TabPanel tabId="pricing_alerts">
-                        Pricing Alerts
-                    </TabPanel>
-                    <TabPanel tabId="logs">
-                        Logs
-                    </TabPanel>*/}
                 </div>
             </Tabs>
         );
@@ -334,5 +292,3 @@ export default connect(mapStateToProps, {
     arbitrageTradeHistory,
     arbitrageMarketTradeHistory
 })(OrderTabList);
-
-//export default OrderTabList;

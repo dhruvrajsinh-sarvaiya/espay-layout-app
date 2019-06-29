@@ -5,7 +5,7 @@
  */
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 // import actions methods for handle response
 import {
@@ -19,7 +19,7 @@ import {
 } from 'Actions/types';
 
 import AppConfig from 'Constants/AppConfig';
-import { swaggerGetAPI, redirectToLogin, loginErrCode, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 
 // function for call api function and check/ handle response and call necessary methods of actions
@@ -35,14 +35,21 @@ function* myLedgerData({ payload }) {
             //unauthorized or invalid token
             redirectToLogin()
         } else {
-            if (responseFromSocket.statusCode == 200 && typeof responseFromSocket.BizResponseObj !== 'undefined' && responseFromSocket.BizResponseObj.ReturnCode == 0) // success
-            yield put(myLedgerSuccess(responseFromSocket.WalletLedgers));
-        else if (responseFromSocket.statusCode == 200 && typeof responseFromSocket.BizResponseObj !== 'undefined' && responseFromSocket.BizResponseObj.ReturnCode == 1) // failure
+            if (responseFromSocket.statusCode == 200 && typeof responseFromSocket.BizResponseObj !== 'undefined' && responseFromSocket.BizResponseObj.ReturnCode == 0){
+                    // success
+                     yield put(myLedgerSuccess(responseFromSocket.WalletLedgers));
+            } 
+        else if (responseFromSocket.statusCode == 200 && typeof responseFromSocket.BizResponseObj !== 'undefined' && responseFromSocket.BizResponseObj.ReturnCode == 1){
+                // failure
             yield put(myLedgerFailure(responseFromSocket));
-        else if (responseFromSocket.statusCode != 200 && typeof responseFromSocket.BizResponseObj !== 'undefined') // other then 200 statuscode
+        } 
+        else if (responseFromSocket.statusCode != 200 && typeof responseFromSocket.BizResponseObj !== 'undefined'){
+                // other then 200 statuscode
                 yield put(myLedgerFailure(responseFromSocket));
-            else 
+        } 
+            else {
                 yield put(myLedgerFailure(responseFromSocket));
+            }
         }
 
     } catch (error) {

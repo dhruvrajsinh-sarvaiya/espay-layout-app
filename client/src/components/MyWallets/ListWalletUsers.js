@@ -3,13 +3,12 @@
     Date : 09-01-2019
     File Comment : list of wallet users
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import IntlMessages from "Util/IntlMessages";
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 import MUIDataTable from "mui-datatables";
-import AppConfig from 'Constants/AppConfig';
 import IconButton from '@material-ui/core/IconButton';
 import { NotificationManager } from 'react-notifications';
 import { Form, FormGroup, Label, Input, Button, Modal, ModalHeader, ModalBody, ModalFooter, } from 'reactstrap';

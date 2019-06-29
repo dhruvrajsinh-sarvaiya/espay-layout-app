@@ -6,7 +6,6 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
 import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
 // import types for dispatch puropse
 import {
     GET_WITHDRAW_HISTORY,
@@ -19,10 +18,11 @@ import {
     resendMailConfirmationSuccess,
     resendMailConfirmationFailure
 } from 'Actions/Withdraw';
+const lgnErrCode = loginErrCode();
 
-function* getWithdrawHistoryData(payload) {
+function* getWithdrawHistoryData(payloadValue) {
     var url = '';
-    var payload = payload.request;
+    var payload = payloadValue.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
     if (payload.Coin == undefined)
         url = 'api/Wallet/WithdrawalHistoy/' + payload.FromDate + '/' + payload.ToDate;

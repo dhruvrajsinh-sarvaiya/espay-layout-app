@@ -3,14 +3,13 @@
     Date : 19-02-2019
     File Comment : list & create a margin wallets
 */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import classnames from "classnames";
 import MUIDataTable from "mui-datatables";
 import { connect } from 'react-redux';
 import { changeDateFormat } from "Helpers/helpers";
-// import CreateWallet from './CreateWallet';
 import AddMarginBalance from './AddMarginBalance';
 import Select from "react-select";
 import IconButton from '@material-ui/core/IconButton';
@@ -34,7 +33,6 @@ import {
 import {
     getCurrency,
 } from "Actions/Withdraw";
-import SiteTokenConversion from 'Components/SiteTokenConversion/index.js'
 const initState = {
     WalletTypeObj: null,
     WalletTypeId: '',
@@ -138,10 +136,6 @@ class ListMarginWallets extends Component {
                 name: intl.formatMessage({ id: "wallet.Role" }),
                 options: { filter: true, sort: true }
             },
-            // {
-            //     name: intl.formatMessage({ id: "wallet.usageType" }),
-            //     options: { filter: true, sort: true }
-            // },
             {
                 name: intl.formatMessage({ id: "components.expiryDate" }),
                 options: { filter: false, sort: true }
@@ -189,10 +183,6 @@ class ListMarginWallets extends Component {
                 name: intl.formatMessage({ id: "wallet.Role" }),
                 options: { filter: true, sort: true }
             },
-            // {
-            //     name: intl.formatMessage({ id: "wallet.usageType" }),
-            //     options: { filter: true, sort: true }
-            // },
             {
                 name: intl.formatMessage({ id: "components.expiryDate" }),
                 options: { filter: false, sort: true }
@@ -217,17 +207,7 @@ class ListMarginWallets extends Component {
                     noMatch: intl.formatMessage({ id: "wallet.emptyTable" }),
                     toolTip: intl.formatMessage({ id: "wallet.sort" }),
                 }
-            },
-            // customToolbar: () => {
-            //     return (
-            //         <Fragment>
-            //             <IconButton color="primary" aria-label="Refresh" onClick={(e) => this.props.getMaringWalletList({})}>
-            //                 <i className="zmdi zmdi-refresh"></i>
-            //             </IconButton>
-            //             <AddMarginBalance {...this.props} widgetType={1} />
-            //         </Fragment>
-            //     );
-            // },
+            }
         };
         return (
             <div className={this.props.darkMode ? 'DepositWithdrawHistory-darkmode tbl_overflow_auto' : 'DepositWithdrawHistory tbl_overflow_auto'}>
@@ -246,20 +226,6 @@ class ListMarginWallets extends Component {
                                 placeholder={intl.formatMessage({ id: "widgets.search" })}
                             />
                         </FormGroup>
-                        {/* <FormGroup className="col-md-2 col-sm-4">
-                            <Label for="WalletUsageType">{intl.formatMessage({ id: "wallet.usageType" })}</Label>
-                            <Input
-                                type="select"
-                                name="WalletUsageType"
-                                id="WalletUsageType"
-                                value={this.state.WalletUsageType}
-                                onChange={(e) => this.onChangeHander(e)}>
-                                <option value="">{intl.formatMessage({ id: "wallet.selectUsageType" })}</option>
-                                <option value="5">{intl.formatMessage({ id: "wallet.usagetypes.5" })}</option>
-                                <option value="6">{intl.formatMessage({ id: "wallet.usagetypes.6" })}</option>
-                                <option value="7">{intl.formatMessage({ id: "wallet.usagetypes.7" })}</option>
-                            </Input>
-                        </FormGroup> */}
                         <FormGroup className="col-md-2 col-sm-4">
                             <Label for="Status">{intl.formatMessage({ id: "wallet.DWTableStatus" })}</Label>
                             <Input
@@ -333,11 +299,10 @@ class ListMarginWallets extends Component {
                                         parseFloat(wallet.InBoundBalance).toFixed(8),
                                         wallet.Status,
                                         wallet.RoleName,
-                                        // intl.formatMessage({ id: "wallet.usagetypes." + wallet.WalletUsageType }),
                                         changeDateFormat(wallet.ExpiryDate, 'YYYY-MM-DD', false),
                                         <div className="list-action">
                                             <AddMarginBalance {...this.props} widgetType={2} walletTypeName={wallet.CoinName} />
-                                            <WithdrawMargin  widgetType={2} walletTypeName={wallet.CoinName}/>
+                                            <WithdrawMargin widgetType={2} walletTypeName={wallet.CoinName} />
                                             <Tooltip title="Convert Token" placement="bottom">
                                                 <a
                                                     href="javascript:void(0)"
@@ -347,7 +312,7 @@ class ListMarginWallets extends Component {
                                                 </a>
                                             </Tooltip>
                                         </div>
-                                        
+
                                     ]
                                 })}
                                 columns={columnsMargin}
@@ -367,7 +332,6 @@ class ListMarginWallets extends Component {
                                         parseFloat(wallet.InBoundBalance).toFixed(8),
                                         wallet.Status,
                                         wallet.RoleName,
-                                        // intl.formatMessage({ id: "wallet.usagetypes." + wallet.WalletUsageType }),
                                         changeDateFormat(wallet.ExpiryDate, 'YYYY-MM-DD', false),
                                     ]
                                 })}
@@ -388,7 +352,6 @@ class ListMarginWallets extends Component {
                                         parseFloat(wallet.InBoundBalance).toFixed(8),
                                         wallet.Status,
                                         wallet.RoleName,
-                                        // intl.formatMessage({ id: "wallet.usagetypes." + wallet.WalletUsageType }),
                                         changeDateFormat(wallet.ExpiryDate, 'YYYY-MM-DD', false),
                                     ]
                                 })}

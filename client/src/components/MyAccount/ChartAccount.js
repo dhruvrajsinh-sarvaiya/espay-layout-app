@@ -17,7 +17,7 @@ export default class ChartAccount extends Component {
             text: 'USD to EUR exchange rate from 2006 through 2008'   
          },
          subtitle : {
-            text: document.ontouchstart === undefined ?
+            text: document.ontouchstart === 'undefined' ?
             'Click and drag in the plot area to zoom in' :
             'Pinch the chart to zoom in'
          },

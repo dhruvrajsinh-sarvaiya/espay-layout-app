@@ -26,8 +26,11 @@ const INIT_STATE = {
     taskList: []
 };
 
-export default (state = INIT_STATE, action) => {
-    // console.log('Reducer', action.type);
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }    
+    
     switch (action.type) {
 
         // get pair list

@@ -20,7 +20,7 @@ import $ from 'jquery';
 import { NotificationManager } from "react-notifications";
 
 // import for design page
-import { FormGroup, Label, Input, Button, Form, Row, Col } from 'reactstrap';
+import { Input, Button, Form, Row, Col } from 'reactstrap';
 
 // Method for get wallets data
 import { getCurrencyList, getCurrencyData } from "Actions/Trade";
@@ -160,8 +160,7 @@ class SiteTokenConversion extends React.Component {
             }
         }
         // set state for currencyData for list currency
-        if (this.props.history.location.state.IsMargin) {
-        } else {
+        if (!(this.props.history.location.state.IsMargin)) {
             if (nextprops.currencyData && nextprops.currencyData.length > 0) {
                 this.setState({
                     currencyData: nextprops.currencyData
@@ -664,7 +663,7 @@ class SiteTokenConversion extends React.Component {
                             <div className="col-md-4 col-sm-4 col-4">
                                 <IntlMessages id="sidebar.siteTokern.currenctrate" />
                             </div>
-                            
+
                             <div className="col-md-8 col-sm-8 col-8 text-right">
                                 <span>{this.state.baseCurrencyRate !== "" ? parseFloat(this.state.baseCurrencyRate).toFixed(8) : 0} {this.state.baseCurrencyName}</span>
                             </div>
@@ -700,16 +699,6 @@ class SiteTokenConversion extends React.Component {
                             </div>
                         </Row>
 
-                        {/* <Row className="m-10">
-                            <Col md={4} >
-                                <IntlMessages id="sidebar.siteTokenReport.totoken" />
-                            </Col>
-
-                            <div className="col-md-8 col-sm-8 col-8 text-right">
-                                <span>{this.state.token == "" ? 0 : parseFloat(this.state.token).toFixed(8) }  {this.state.selectedSiteToken}</span>
-                            </Col>
-                        </Row> */}
-
                         <Row className="m-10">
                             <div className="col-md-4 col-sm-4 col-4">
                                 <IntlMessages id="sidebar.fees" />
@@ -743,7 +732,7 @@ class SiteTokenConversion extends React.Component {
 
                             <div className="col-md-4 col-sm-4 col-6">
                                 <Button color="primary"
-                                className="text-white perverbtn"
+                                    className="text-white perverbtn"
                                     onClick={this.ConvertToken}
                                 >
                                     <IntlMessages id={`sidebar.sitetoken.btn.add`}

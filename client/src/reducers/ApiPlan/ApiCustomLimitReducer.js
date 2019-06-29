@@ -34,7 +34,10 @@ const INITIAL_STATE = {
     setDefaultLimitError: [],
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
     switch (action.type) {
         // get Get API Custom Limit
         case GET_CUSTOM_LIMITS:

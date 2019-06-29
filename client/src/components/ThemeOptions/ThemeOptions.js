@@ -3,7 +3,6 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import classnames from 'classnames';
 import { DropdownToggle, DropdownMenu, Dropdown } from 'reactstrap';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Scrollbars } from 'react-custom-scrollbars';

@@ -1,7 +1,7 @@
 /**
  * Auther : Salim Deraiya
  * Created : 14/02/2019
- * Updated By:Saloni Rathod(13th APril 2019)
+ * Updated By:Saloni Rathod(13th April 2019)
  * Monthly Commission Average  Chart
  */
 import React, { Component, Fragment } from "react";
@@ -20,9 +20,7 @@ class EarningChart extends Component {
             Deposition: [],
             BuyTrading: [],
             SellTrading:[],
-        
-
-        };        
+          };        
     }
 
     componentWillMount() {

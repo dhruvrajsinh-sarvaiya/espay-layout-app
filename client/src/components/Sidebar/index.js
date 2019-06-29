@@ -27,15 +27,13 @@ class Sidebar extends Component {
       selectedSidebarImage,
       isDarkSidenav
     } = this.props;
-    if (
+
+    return (
       enableSidebarBackgroundImage !== nextProps.enableSidebarBackgroundImage ||
       selectedSidebarImage !== nextProps.selectedSidebarImage ||
       isDarkSidenav !== nextProps.isDarkSidenav
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    ) ? true : false;
+
   }
 
   componentDidMount() {
@@ -48,7 +46,6 @@ class Sidebar extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { windowWidth } = this.state;
-    const { collapsedSidebar } = this.props;
     if (nextProps.location !== this.props.location) {
       if (windowWidth <= 1199) {
         this.props.collapsedSidebarAction(false);
@@ -106,7 +103,7 @@ class Sidebar extends Component {
                 style={{ height: "calc(100vh - 60px)" }}
               >
                 <UserBlock />
-                { <SidebarContent /> }
+                {<SidebarContent />}
               </Scrollbars>
             </div>
           </div>

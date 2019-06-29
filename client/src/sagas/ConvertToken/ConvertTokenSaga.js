@@ -4,10 +4,7 @@
     File Comment : Convert Token saga implementation
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
-//import api from 'Api';
 import api from 'Api';
-
 import {
     GET_CTINFO,
     SUBMIT_CTREQUEST

@@ -3,9 +3,9 @@
  * Add more locales here
  */
 import { addLocaleData } from "react-intl";
-import enLang from "./entries/en-US";
+import enLang from "./entries/en_US";
 import frLang from "./entries/fr_FR";
-import zhLang from "./entries/zh-Hans-CN";
+import zhLang from "./entries/zh_Hans_CN";
 import arLang from "./entries/ar_SA";
 import heLang from "./entries/he_HE";
 import deLang from "./entries/de_DE";

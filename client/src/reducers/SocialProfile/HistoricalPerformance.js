@@ -19,9 +19,12 @@ const INIT_STATE = {
     loading: false
 };
 
-export default (state = INIT_STATE, action) => {
-    switch (action.type) 
-    {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
+    switch (action.type) {
         //Edit Profile
         case GET_HISTORICAL_PERFORMANCE_CHART_DATA:
             return { ...state, loading: true, chartData: '' };

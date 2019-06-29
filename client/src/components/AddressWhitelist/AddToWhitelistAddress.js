@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { Col, Form, Input, Label, FormGroup, Button, Row } from "reactstrap";
-import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import IntlMessages from "Util/IntlMessages";
@@ -56,7 +55,7 @@ class AddToWhitelistAddress extends Component {
         if (nextProps.preferenceResponse.hasOwnProperty('ReturnCode') && nextProps.preferenceResponse.ReturnCode === 0) {
             NotificationManager.success(nextProps.preferenceResponse.ReturnMsg);
             this.props.getPreference();
-        } else if (nextProps.preferenceResponse.hasOwnProperty('ReturnCode') && nextProps.preferenceResponse.ReturnCode === 0) {
+        } else if (nextProps.preferenceResponse.hasOwnProperty('ReturnCode') && nextProps.preferenceResponse.ReturnCode > 0) {
 
             NotificationManager.error(nextProps.preferenceResponse.ReturnMsg);
         }
@@ -71,7 +70,7 @@ class AddToWhitelistAddress extends Component {
             });
             NotificationManager.success(nextProps.submitResponse.ReturnMsg);
             this.props.getAllWhithdrawalAddress();
-        } else if (nextProps.submitResponse.hasOwnProperty('ReturnCode') && nextProps.submitResponse.ReturnCode === 0) {
+        } else if (nextProps.submitResponse.hasOwnProperty('ReturnCode') && nextProps.submitResponse.ReturnCode > 0) {
             NotificationManager.error(nextProps.submitResponse.ReturnMsg);
         }
         if (nextProps.response2fa.hasOwnProperty("ErrorCode") && nextProps.response2fa.ErrorCode === 0 && this.state.show2FA) {
@@ -184,11 +183,7 @@ class AddToWhitelistAddress extends Component {
                                         </h3>
                                     </div>
                                     <div className="d-flex align-items-end">
-                                        <Switch
-                                            checked={this.state.checkedSwitch}
-                                            onChange={this.handleCheckChange("checkedSwitch")}
-                                        />
-                                        <p>{(this.state.checkedSwitch) ? <IntlMessages id="wallet.lblWhitelistedOn" /> : <IntlMessages id="wallet.lblWhitelistedOff" />}</p>
+
                                     </div>
                                 </li>
                             </ul>

@@ -228,7 +228,7 @@ const reducers = combineReducers({
   ipWhitelist: ipWhitelistReducer,
   deviceRdcer: deviceWhitelistingReducer,
   themeConfig: themeConfigReducer,
-  forgotConfirmation: forgotConfirmationReducer,
+  forgotConfirmationReducer: forgotConfirmationReducer,
 
   socialProfileRdcer: socialProfileReducer,
 
@@ -290,8 +290,8 @@ const reducers = combineReducers({
   transactionCharge: transactionChargeReducer,
 
   // added by devang parekh
-  transactionHistory: transactionHistoryReducer,
-  openOrders: openOrdersReducer,
+  transactionHistoryReducer: transactionHistoryReducer,
+  openOrdersReducer: openOrdersReducer,
   //Added by Kushal
   contactus: contactusReducer,
   news: newsReducer,
@@ -321,9 +321,9 @@ const reducers = combineReducers({
   incomingTransactionsReducer: incomingTransactionsReducer,
   outGoingTransactionsReducer: outGoingTransactionsReducer,
   //added Nirmit
-  tradingledger: tradingledgerReducer,
+  tradingledgerReducer: tradingledgerReducer,
   // added by Tejas
-  myLedger: myLedgerReducer,
+  myLedgerReducer: myLedgerReducer,
   //added by kushal
   coinlist: coinlistReducer,
   coinSlider: coinSliderReducer,
@@ -355,7 +355,7 @@ const reducers = combineReducers({
   //added By Tejas 14/3/2019
   customLimits: APICustomLimits,
   ProfitLossReducer: ProfitLossReducer, //added by vishva
-  OpenPositionReport: OpenPositionReportReducer, // added by parth andhariya 22-04-2019
+  OpenPositionReportRdcr: OpenPositionReportReducer, // added by parth andhariya 22-04-2019
   ArbitrageLedgerReducer: ArbitrageLedgerReducer, //added by vishva
   ArbitrageWalletReducer: ArbitrageWalletReducer, //added by vishva
 
@@ -369,8 +369,8 @@ const reducers = combineReducers({
   ArbitrageTrading: ArbitrageTrading,
 
   //a dded by Tejas 12/6/2019
-  ArbitrageExchange:ArbitrageExchange,
-  AnalyticReducer : AnalyticReducer, //added by vishva
+  ArbitrageExchange: ArbitrageExchange,
+  AnalyticReducer: AnalyticReducer, //added by vishva
 
 });
 

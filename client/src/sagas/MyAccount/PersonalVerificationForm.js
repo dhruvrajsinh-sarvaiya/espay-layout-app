@@ -6,7 +6,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import { PERSONAL_VERIFICATION, GET_KYC_STATUS } from "Actions/types";
 //Action methods..

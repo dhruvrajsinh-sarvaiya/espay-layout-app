@@ -72,17 +72,11 @@ class ActivityListWdgt extends Component {
             },
             getList: [],
             errors: '',
-            isDisable: true,
             totalCount: '',
             showReset: false,
         }
     }
 
-
-    //Pagination Change Method...
-    handlePageChange = (pageNumber) => {
-        this.props.activityList(pageNumber);
-    }
     //to apply filter
     applyFilter() {
         const { FromDate, ToDate } = this.state.datalist;
@@ -111,7 +105,7 @@ class ActivityListWdgt extends Component {
     onChange = (event) => {
         var newObj = Object.assign({}, this.state.datalist);
         newObj[event.target.name] = event.target.value;
-        this.setState({ datalist: newObj, isDisable: false });
+        this.setState({ datalist: newObj });
     }
     //to clear filter
     clearFilter = () => {
@@ -123,12 +117,12 @@ class ActivityListWdgt extends Component {
         newObj.Mode = '';
         newObj.Location = '';
         newObj.Device = '';
-        this.setState({ datalist: newObj, showReset: false, errors: '', isDisable: true, });
+        this.setState({ datalist: newObj, showReset: false, errors: '' });
         setTimeout(() => {
             this.props.activityList(newObj);
         }, 100)
     }
-    handlePageChange = (pageNumber) => {
+    tblHandlePageChange = (pageNumber) => {
         this.getActivityList(pageNumber);
     }
 
@@ -164,7 +158,7 @@ class ActivityListWdgt extends Component {
     }
 
     render() {
-        const { getList, totalCount, errors, showReset, isDisable } = this.state;
+        const { getList, totalCount, errors, showReset } = this.state;
         const { pageIndex, pageSize, Location, Device, Mode, FromDate, ToDate } = this.state.datalist;
         let today = new Date();
         today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
@@ -195,7 +189,7 @@ class ActivityListWdgt extends Component {
             customFooter: (count, page, rowsPerPage) => {
                 var page1 = page > 0 ? page + 1 : 1;
                 return (
-                    <CustomFooter count={count} page={page1} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
+                    <CustomFooter count={count} page={page1} rowsPerPage={rowsPerPage} handlePageChange={this.tblHandlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
             },
             onTableChange: (action, tableState) => {
@@ -239,7 +233,7 @@ class ActivityListWdgt extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-3 col-sm-6">
                             <div className="btn_area">
-                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10 rounded-0 border-0  text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 rounded-0 border-0  text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger rounded-0 border-0  ctext-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>

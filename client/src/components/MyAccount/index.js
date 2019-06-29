@@ -340,46 +340,22 @@ const DeviceWhitelistingWdgt = Loadable({
     loading: MyLoadingComponent
 });
 
-//Normal Register Widget
-/* const NormalRegistrationWdgt = Loadable({
-    loader: () => import("./NormalRegistrationWdgt"),
-    loading: MyLoadingComponent
-}); */
+
 import NormalRegistrationWdgt from './NormalRegistrationWdgt';
 
-//Signup Email With OTP Widget
-/* const SignupEmailWithOTPWdgt = Loadable({
-    loader: () => import("./SignupEmailWithOTPWdgt"),
-    loading: MyLoadingComponent
-}); */
+
 import SignupEmailWithOTPWdgt from './SignupEmailWithOTPWdgt';
 
-//Signup Mobile With OTP Widget
-/* const SignupMobileWithOTPWdgt = Loadable({
-    loader: () => import("./SignupMobileWithOTPWdgt"),
-    loading: MyLoadingComponent
-}); */
+
 import SignupMobileWithOTPWdgt from './SignupMobileWithOTPWdgt';
 
-//Normal Login Widget
-/* const NormalLoginWdgt = Loadable({
-    loader: () => import("./NormalLoginWdgt"),
-    loading: MyLoadingComponent
-}); */
+
 import NormalLoginWdgt from './NormalLoginWdgt';
 
-//Signin Email With OTP Widget
-/* const SigninEmailWithOTPWdgt = Loadable({
-    loader: () => import("./SigninEmailWithOTPWdgt"),
-    loading: MyLoadingComponent
-}); */
+
 import SigninEmailWithOTPWdgt from './SigninEmailWithOTPWdgt';
 
-//Signin Mobile With OTP Widget
-/* const SigninMobileWithOTPWdgt = Loadable({
-    loader: () => import("./SigninMobileWithOTPWdgt"),
-    loading: MyLoadingComponent
-}); */
+
 import SigninMobileWithOTPWdgt from './SigninMobileWithOTPWdgt';
 
 //Email Confirmation Widget

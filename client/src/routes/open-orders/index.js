@@ -6,7 +6,7 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 
-import { Form, Label, FormGroup, Input, Row, Col } from "reactstrap";
+import { Form, Label, FormGroup, Input } from "reactstrap";
 import Button from "@material-ui/core/Button";
 
 // import neccessary actions
@@ -231,114 +231,114 @@ class OpenOrders extends Component {
                             <div className="top-filter orderlist-search">
                                 <Form name="frm_search" className="mb-10 row">
                                     <FormGroup className="col-md-2 col-sm-4">
-                                            <Label for="startDate">
-                                                {
-                                                    <IntlMessages id="sidebar.openOrders.filterLabel.startDate" />
-                                                }
-                                            </Label>
+                                        <Label for="startDate">
+                                            {
+                                                <IntlMessages id="sidebar.openOrders.filterLabel.startDate" />
+                                            }
+                                        </Label>
+                                        <Input
+                                            type="date"
+                                            name="start_date"
+                                            value={
+                                                this.state
+                                                    .start_date
+                                            }
+                                            id="startDate"
+                                            placeholder="dd/mm/yyyy"
+                                            onChange={
+                                                this.handleChange
+                                            }
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="col-md-2 col-sm-4">
+                                        <Label for="endDate">
+                                            {
+                                                <IntlMessages id="sidebar.openOrders.filterLabel.endDate" />
+                                            }
+                                        </Label>
+                                        <Input
+                                            type="date"
+                                            name="end_date"
+                                            value={
+                                                this.state.end_date
+                                            }
+                                            id="endDate"
+                                            placeholder="dd/mm/yyyy"
+                                            onChange={
+                                                this.handleChange
+                                            }
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="col-md-2 col-sm-4">
+                                        <Label for="Select-2">
+                                            {
+                                                <IntlMessages id="sidebar.openOrders.filterLabel.type" />
+                                            }
+                                        </Label>
+                                        <div className="app-selectbox-sm">
                                             <Input
-                                                type="date"
-                                                name="start_date"
+                                                type="select"
+                                                name="type"
                                                 value={
-                                                    this.state
-                                                        .start_date
+                                                    this.state.type
                                                 }
-                                                id="startDate"
-                                                placeholder="dd/mm/yyyy"
+                                                id="Select-2"
                                                 onChange={
-                                                    this.handleChange
+                                                    this
+                                                        .handleChangeType
                                                 }
-                                            />
-                                        </FormGroup>
-                                        <FormGroup className="col-md-2 col-sm-4">
-                                            <Label for="endDate">
-                                                {
-                                                    <IntlMessages id="sidebar.openOrders.filterLabel.endDate" />
-                                                }
-                                            </Label>
+                                            >
+                                                <IntlMessages id="transactioncharge.report.filter.option.label.select">
+                                                    {(select) => (
+                                                        <option value="">
+                                                            {select}
+                                                        </option>
+                                                    )}
+                                                </IntlMessages>
+                                                <IntlMessages id="sidebar.transactionHistory.filterLabel.type.buy">
+                                                    {(buy) => (
+                                                        <option value="buy">
+                                                            {buy}
+                                                        </option>
+                                                    )}
+                                                </IntlMessages>
+                                                <IntlMessages id="sidebar.transactionHistory.filterLabel.type.sell">
+                                                    {(sell) => (
+                                                        <option value="sell">
+                                                            {sell}
+                                                        </option>
+                                                    )}
+                                                </IntlMessages>
+                                            </Input>
+                                        </div>
+                                    </FormGroup>
+                                    <FormGroup className="col-md-2 col-sm-4">
+                                        <Label for="Select-1">
+                                            {
+                                                <IntlMessages id="sidebar.openOrders.filterLabel.currencyPair" />
+                                            }
+                                        </Label>
+                                        <div className="app-selectbox-sm">
                                             <Input
-                                                type="date"
-                                                name="end_date"
+                                                type="select"
+                                                name="pair"
                                                 value={
-                                                    this.state.end_date
+                                                    this.state.pair
                                                 }
-                                                id="endDate"
-                                                placeholder="dd/mm/yyyy"
+                                                id="Select-1"
                                                 onChange={
-                                                    this.handleChange
+                                                    this
+                                                        .handleChangeCurrency
                                                 }
-                                            />
-                                        </FormGroup>
-                                        <FormGroup className="col-md-2 col-sm-4">
-                                            <Label for="Select-2">
-                                                {
-                                                    <IntlMessages id="sidebar.openOrders.filterLabel.type" />
-                                                }
-                                            </Label>
-                                            <div className="app-selectbox-sm">
-                                                <Input
-                                                    type="select"
-                                                    name="type"
-                                                    value={
-                                                        this.state.type
-                                                    }
-                                                    id="Select-2"
-                                                    onChange={
-                                                        this
-                                                            .handleChangeType
-                                                    }
-                                                >
-                                                    <IntlMessages id="transactioncharge.report.filter.option.label.select">
-                                                        {(select) => (
-                                                            <option value="">
-                                                                {select}
-                                                            </option>
-                                                        )}
-                                                    </IntlMessages>
-                                                    <IntlMessages id="sidebar.transactionHistory.filterLabel.type.buy">
-                                                        {(buy) => (
-                                                            <option value="buy">
-                                                                {buy}
-                                                            </option>
-                                                        )}
-                                                    </IntlMessages>
-                                                    <IntlMessages id="sidebar.transactionHistory.filterLabel.type.sell">
-                                                        {(sell) => (
-                                                            <option value="sell">
-                                                                {sell}
-                                                            </option>
-                                                        )}
-                                                    </IntlMessages>
-                                                </Input>
-                                            </div>
-                                        </FormGroup>
-                                        <FormGroup className="col-md-2 col-sm-4">
-                                            <Label for="Select-1">
-                                                {
-                                                    <IntlMessages id="sidebar.openOrders.filterLabel.currencyPair" />
-                                                }
-                                            </Label>
-                                            <div className="app-selectbox-sm">
-                                                <Input
-                                                    type="select"
-                                                    name="pair"
-                                                    value={
-                                                        this.state.pair
-                                                    }
-                                                    id="Select-1"
-                                                    onChange={
-                                                        this
-                                                            .handleChangeCurrency
-                                                    }
-                                                >
-                                                    <option value="">
-                                                        <IntlMessages id="transactioncharge.report.filter.option.label.select" />
-                                                    </option>
-                                                    {pairs.map(
-                                                        (
-                                                            currency,
-                                                            key
-                                                        ) => (
+                                            >
+                                                <option value="">
+                                                    <IntlMessages id="transactioncharge.report.filter.option.label.select" />
+                                                </option>
+                                                {pairs.map(
+                                                    (
+                                                        currency,
+                                                        key
+                                                    ) => (
                                                             <option
                                                                 key={
                                                                     key
@@ -352,15 +352,15 @@ class OpenOrders extends Component {
                                                                 }
                                                             </option>
                                                         )
-                                                    )}
-                                                </Input>
-                                            </div>
-                                        </FormGroup>
-                                        <FormGroup className="col-md-2 col-sm-4">
-                                            <div className="btn_area">
+                                                )}
+                                            </Input>
+                                        </div>
+                                    </FormGroup>
+                                    <FormGroup className="col-md-2 col-sm-4">
+                                        <div className="btn_area">
                                             <Button onClick={this.onApply} variant="raised" className="mr-10 text-white perverbtn"><IntlMessages id="sidebar.openOrders.button.apply" /></Button>
-                                            </div>
-                                        </FormGroup>
+                                        </div>
+                                    </FormGroup>
                                 </Form>
                             </div>
                         </JbsCollapsibleCard>
@@ -372,21 +372,21 @@ class OpenOrders extends Component {
                                         var type =
                                             item.Type === "BUY"
                                                 ? intl.formatMessage({
-                                                      id:
-                                                          "sidebar.openOrders.filterLabel.type.buy",
-                                                  })
+                                                    id:
+                                                        "sidebar.openOrders.filterLabel.type.buy",
+                                                })
                                                 : intl.formatMessage({
-                                                      id:
-                                                          "sidebar.openOrders.filterLabel.type.sell",
-                                                  });
+                                                    id:
+                                                        "sidebar.openOrders.filterLabel.type.sell",
+                                                });
                                     }
                                     return [
                                         item.Id,
                                         item.Price === 0
                                             ? intl.formatMessage({
-                                                  id:
-                                                      "trading.placeorder.label.market",
-                                              })
+                                                id:
+                                                    "trading.placeorder.label.market",
+                                            })
                                             : parseFloat(item.Price).toFixed(8),
                                         parseFloat(item.Amount).toFixed(8),
                                         parseFloat(item.SettledQty).toFixed(8),
@@ -409,8 +409,8 @@ class OpenOrders extends Component {
 }
 
 // map states to props when changed in states from reducer
-const mapStateToProps = ({ openOrders, tradePairList }) => {
-    const { openOrdersList, loading, errorCode } = openOrders;
+const mapStateToProps = ({ openOrdersReducer, tradePairList }) => {
+    const { openOrdersList, loading, errorCode } = openOrdersReducer;
     const { pairList } = tradePairList;
     return { openOrdersList, pairList, loading, errorCode };
 };

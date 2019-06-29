@@ -69,7 +69,7 @@ class ChangePasswordWdgt extends Component {
 	}
 
 	render() {
-		const { oldPassword, newPassword, confirmPassword, loading, errors } = this.state;
+		const { loading, errors,oldPassword,newPassword,confirmPassword } = this.state;
 		return (
 			<Fragment>
 				<div className="m-auto col-md-9 col-sm-12">
@@ -80,10 +80,8 @@ class ChangePasswordWdgt extends Component {
 							<div className="col-md-8">
 								<IntlMessages id="myaccount.enterOldPass">
 									{(placeholder) =>
-										/*Added By Bharat Jograna
-										<Input type="password" tabIndex="1" name="oldPassword" value={oldPassword} placeholder={placeholder} id="oldPassword" onChange={this.onChange} />*/
-										<Input type="password" tabIndex="1" name="oldPassword" placeholder={placeholder} id="oldPassword" onChange={this.onChange} />
-									}
+										<Input type="password" tabIndex="1" name="oldPassword" value={oldPassword} placeholder={placeholder} id="oldPassword" onChange={this.onChange} />
+											}
 								</IntlMessages>
 								{errors.oldPassword && <div className="text-danger text-left"><IntlMessages id={errors.oldPassword} /></div>}
 							</div>
@@ -93,9 +91,8 @@ class ChangePasswordWdgt extends Component {
 							<div className="col-md-8">
 								<IntlMessages id="myaccount.enterNewPass">
 									{(placeholder) =>
-										/*Added By Bharat Jograna
-										<Input type="password" tabIndex="2" name="newPassword" value={newPassword} id="newPassword" placeholder={placeholder} onChange={this.onChange} />*/
-										<Input type="password" tabIndex="2" name="newPassword" id="newPassword" placeholder={placeholder} onChange={this.onChange} />
+										<Input type="password" tabIndex="2" name="newPassword" value={newPassword} id="newPassword" placeholder={placeholder} onChange={this.onChange} />
+
 									}
 								</IntlMessages>
 								{errors.newPassword && <div className="text-danger text-left"><IntlMessages id={errors.newPassword} /></div>}
@@ -106,9 +103,8 @@ class ChangePasswordWdgt extends Component {
 							<div className="col-md-8">
 								<IntlMessages id="myaccount.enterCofirmNewPass">
 									{(placeholder) =>
-										/*Added By Bharat Jograna
-										<Input type="password" tabIndex="3" name="confirmPassword" value={confirmPassword} id="confirmPassword" placeholder={placeholder} onChange={this.onChange} />*/
-										<Input type="password" tabIndex="3" name="confirmPassword" id="confirmPassword" placeholder={placeholder} onChange={this.onChange} />
+											<Input type="password" tabIndex="3" name="confirmPassword" value={confirmPassword} id="confirmPassword" placeholder={placeholder} onChange={this.onChange} />
+									
 									}
 								</IntlMessages>
 								{errors.confirmPassword && <div className="text-danger text-left"><IntlMessages id={errors.confirmPassword} /></div>}

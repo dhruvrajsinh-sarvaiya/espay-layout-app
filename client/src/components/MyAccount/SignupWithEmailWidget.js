@@ -75,7 +75,7 @@ class SignupWithEmailWidget extends Component {
   }
 
   render() {
-    const { err_alert, err_msg, btn_disabled, email, password, confirmpassword, referalid, selectedValue, errors } = this.state;
+    const { err_alert, err_msg, btn_disabled, email, referalid, selectedValue, errors } = this.state;
     return (
       <Fragment>
         {err_msg && <div className="alert_area">

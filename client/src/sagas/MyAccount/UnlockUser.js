@@ -23,7 +23,7 @@ import AppConfig from 'Constants/AppConfig';
 const socketApiUrl = AppConfig.socketAPIUrl;
 
 //WebSocket Call...
-const watchMessages = (socket,request) => eventChannel((emit) => {
+const watchMessages = (socket, request) => eventChannel((emit) => {
     socket.onopen = () => {
         socket.send(JSON.stringify(request)) // Send data to server
     };
@@ -37,29 +37,32 @@ const watchMessages = (socket,request) => eventChannel((emit) => {
 });
 
 //Function for unlockUser
-function* unlockUserAPI({payload}) {
+function* unlockUserAPI({ payload }) {
     const socket = new WebSocket(socketApiUrl);
-    
+
     let request = {
-        m : 0,
-        i : 0,
-        n : 'UnLockUser',
-        t : 1,
-        r : 2,
-        o : payload
+        m: 0,
+        i: 0,
+        n: 'UnLockUser',
+        t: 1,
+        r: 2,
+        o: payload
     }
 
-    const socketChannel = yield call(watchMessages, socket, request);    
+    const socketChannel = yield call(watchMessages, socket, request);
     while (true) {
         try {
             const response = yield take(socketChannel);
-            if(response.statusCode === 200) {
+            if (response.statusCode === 200) {
                 yield put(unlockUserSuccess(response));
+                break;
             } else {
                 yield put(unlockUserFailure(response));
+                break;
             }
         } catch (error) {
             yield put(unlockUserFailure(error));
+            break;
         }
     }
 }

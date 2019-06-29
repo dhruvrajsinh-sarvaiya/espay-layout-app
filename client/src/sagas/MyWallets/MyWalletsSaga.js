@@ -3,12 +3,9 @@
     Date : 09-01-2019
     File Comment : wallet sharing saga methods 
 */
-import { all, call, fork, take, put, takeEvery } from 'redux-saga/effects';
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
 import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
-const lgnErrCode = loginErrCode();
-const statusErrCode = statusErrCodeList();
 //my wallets constant...
 import {
     LISTALLWALLETS,
@@ -30,11 +27,12 @@ import {
     walletRequestActionSuccess,
     walletRequestActionFailed
 } from 'Actions/MyWallets';
+const lgnErrCode = loginErrCode();
 
 //get all wallets request...
 function* getAllWalletsRequest(payload) {
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    var qs = (payload.request)? "?Coin=" + payload.request : "";
+    var qs = (payload.request) ? "?Coin=" + payload.request : "";
     const responseFromSocket = yield call(swaggerGetAPI, 'api/WalletOpnAdvanced/ListWalletNew' + qs, payload.request, headers);
     try {
         // check response code
@@ -48,7 +46,6 @@ function* getAllWalletsRequest(payload) {
                 yield put(getAllWalletsFailed(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(getAllWalletsFailed(error));
     }
 
@@ -73,7 +70,6 @@ function* getWalletUserListRequest(payload) {
                 yield put(getWalletUserListFailed(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(getWalletUserListFailed(error));
     }
 
@@ -99,7 +95,6 @@ function* addWalletUserRequest(payload) {
                 yield put(addWalletUserFailed(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(addWalletUserFailed(error));
     }
 
@@ -125,7 +120,6 @@ function* listWalletRequestsRequest(payload) {
                 yield put(listWalletRequestsFailed(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(listWalletRequestsFailed(error));
     }
 
@@ -153,7 +147,6 @@ function* walletRequestActionRequest(payload) {
                 yield put(walletRequestActionFailed(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(walletRequestActionFailed(error));
     }
 

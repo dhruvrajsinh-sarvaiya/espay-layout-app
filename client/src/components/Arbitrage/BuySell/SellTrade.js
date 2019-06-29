@@ -15,7 +15,7 @@ import classnames from 'classnames';
 import { Table, Button } from "reactstrap";
 
 // Import For Loader
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
@@ -28,6 +28,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
+
+const buySellRecordCount = 13//AppConfig.buySellRecordCount;
+
 // class fro set row data
 class SellOrderRow extends Component {
 
@@ -42,24 +45,23 @@ class SellOrderRow extends Component {
 	//renders the component
 	render() {
 
-		var lastClass = "text-danger price-data",
-			changeClass = "";
-
-		if (this.props.UpDownBit === 1) {
-			changeClass = "blink_me sellOrderClass";
-		} else {
-			changeClass = "sellOrderClass";
-		}
+		var lastClass = "text-danger price-data";
+			
 
 	return (
 			<tr
-				key={this.props.indexValue.toString()}
-				style={{background: this.props.bgColorData}}
-				className={changeClass}
-			>
+					key={(this.props.indexValue* Math.random()).toString()}
+					style={{
+						background: this.props.bgColorData,
+					}}
+					
+					className={(this.props.OldLTP !== undefined && this.props.Price !== this.props.OldLTP) ? "blink_me sellOrderClass" : 'sellOrderClass'}
+				>
 				{
 					<td className="lbl-data askBidbtn">
+						{this.props.Price !== '-' ?
 						<FormControlLabel
+						className="check_btn"
 							control={
 								<Checkbox
 									checked={this.props.isMultiSelect === true}
@@ -69,16 +71,25 @@ class SellOrderRow extends Component {
 								/>
 							}
 						/>
+						:
+						"-"
+						}
 					</td>}
-				<td className="exchange-name">{this.props.exchangeName ? this.props.exchangeName : "-"}</td>
-				<td className="price-data">{parseFloat(this.props.Fees).toFixed(8)}</td>
+					<td className="exchange-name">{this.props.exchangeName ? this.props.exchangeName : "-"}</td>
+				<td className="price-data">
+				{this.props.Price !== '-' ?
+					parseFloat(this.props.Fees).toFixed(8)
+					:
+					"-"
+				}</td>
 				<td className="calculate-btns">
+				{this.props.Price !== '-' ?
 					<div className="d-flex">
 						<Button
 							value="25"
 							className={classnames(
 								{ active: (this.props.selectedSellValue === 25 && this.props.isMultiSelect) },
-								"btnsell-per btn-xs w-25"
+								"btnbuy-per-arbitrage btn-xs w-25"
 							)}
 							onClick={event => {
 								this.props.changeSelectedSellValue(25, this.props.order, true);
@@ -91,7 +102,7 @@ class SellOrderRow extends Component {
 							value="50"
 							className={classnames(
 								{ active: (this.props.selectedSellValue === 50 && this.props.isMultiSelect) },
-								"btnsell-per btn-xs w-25"
+								"btnbuy-per-arbitrage btn-xs w-25"
 							)}
 							onClick={event => {
 								this.props.changeSelectedSellValue(50, this.props.order, true);
@@ -104,7 +115,7 @@ class SellOrderRow extends Component {
 							value="75"
 							className={classnames(
 								{ active: (this.props.selectedSellValue === 75 && this.props.isMultiSelect) },
-								"btnsell-per btn-xs w-25"
+								"btnbuy-per-arbitrage btn-xs w-25"
 							)}
 							onClick={event => {
 								this.props.changeSelectedSellValue(75, this.props.order, true);
@@ -117,7 +128,7 @@ class SellOrderRow extends Component {
 							value="100"
 							className={classnames(
 								{ active: (this.props.selectedSellValue === 100 && this.props.isMultiSelect) },
-								"btnsell-per btn-xs w-25"
+								"btnbuy-per-arbitrage btn-xs w-25"
 							)}
 							onClick={event => {
 								this.props.changeSelectedSellValue(100, this.props.order, true);
@@ -127,11 +138,20 @@ class SellOrderRow extends Component {
                   </Button>
 
 					</div>
-				</td>
-				<td className={lastClass}>{this.props.Price !== '-' ? parseFloat(this.props.Price).toFixed(8) : '-'}</td>
-				<td className="askBidbtn"><a href="javascript:void(0)" onClick={() => this.SetPlaceOrder(this.props.indexValue, undefined)}>
-					<IntlMessages id="trading.placeorder.label.buy" />
-				</a></td>
+				:
+				"-"
+					}
+			</td>
+			<td className={lastClass}>{this.props.Price !== '-' ? parseFloat(this.props.Price).toFixed(8) : '-'}</td>
+			<td className="askBidbtn">
+			{this.props.Price !== '-' ?
+				<a href="javascript:void(0)" onClick={() => this.SetPlaceOrder(this.props.indexValue, undefined)}>
+				<IntlMessages id="trading.placeorder.label.buy" />
+			</a>
+			:
+			"-"
+				}
+			</td>
 
 			</tr>
 		);
@@ -169,7 +189,7 @@ class SellTrade extends Component {
 					price = value.LTP
 					LpType = value.LPType
 				}
-				//return null
+				
 			});
 		}
 
@@ -181,6 +201,7 @@ class SellTrade extends Component {
 	}
 
 	//set background color of row
+
 	LightenDarkenColor = (col, amt) => {
 
 		var usePound = false;
@@ -217,10 +238,7 @@ class SellTrade extends Component {
 		var total = "", amount = "";
 		var LpType = data.LPType;
 
-		if (this.state.selectedSellValue === value) {
-
-		} else {
-
+		if (this.state.selectedSellValue !== value) {
 			// calculation process of Amount
 			if (
 				data.LTP !== ""
@@ -246,8 +264,7 @@ class SellTrade extends Component {
 
 
 	// Render Component for Seller Order
-	render() {
-		
+	render() {		
 		this.props.sellerOrderList.sort(function (a, b) {
 			return parseFloat(a.LTP) - parseFloat(b.LTP)
 		})
@@ -255,10 +272,15 @@ class SellTrade extends Component {
 		var colData = "";
 		var sellOrderListRow = [];
 
+		$(".sellOrderClass").removeClass('blink_me');
 		var countSell = (this.props.sellerOrderList.length - 1);
+		var keyIndex = 0;
+		const diffLimit = buySellRecordCount - this.props.sellerOrderList.length;
+
 		this.props.sellerOrderList.map((newSellOrder, indexValue) => {
-				
 				sellOrderListRow.push(
+
+					keyIndex <= 8 ?
 					<SellOrderRow
 						exchangeName={newSellOrder.ProviderName}
 						key={indexValue}
@@ -266,27 +288,83 @@ class SellTrade extends Component {
 						Fees={newSellOrder.Fees}
 						indexValue={countSell--}
 						setOrders={this.setOrders}
-						UpDownBit={newSellOrder.UpDownBit}
+
+						
+						OldLTP={newSellOrder.OldLTP}
 						isMultiSelect={newSellOrder.isMultiSelect}
 						length={this.props.sellerOrderList.length}
 						bgColorData={colData !== ""
 							? colData = this.LightenDarkenColor(colData, 20)
-							: colData = this.LightenDarkenColor("#ff0000", 20)
+							: colData = this.LightenDarkenColor("#004C00", 20)
 						}
 						amount_size={newSellOrder.amount_size}
 						validateQty={this.validateQty}
 						order={newSellOrder}
 						changeSelectedSellValue={this.changeSelectedSellValue}
-						selectedSellValue={(newSellOrder.checkedBtn === undefined || newSellOrder.checkedBtn === 0) ? 25 : newSellOrder.checkedBtn}
+						selectedSellValue={(newSellOrder.checkedBtn === 'undefined' || newSellOrder.checkedBtn === 0) ? 25 : newSellOrder.checkedBtn}
+					/>
+					:
+					<SellOrderRow
+						exchangeName={newSellOrder.ProviderName}
+						key={indexValue}
+						Price={newSellOrder.LTP}
+						Fees={newSellOrder.Fees}
+						indexValue={countSell--}
+						setOrders={this.setOrders}
+						
+						
+						OldLTP={newSellOrder.OldLTP}
+						isMultiSelect={newSellOrder.isMultiSelect}
+						length={this.props.sellerOrderList.length}
+						bgColorData={colData !== ""
+							? colData = this.LightenDarkenColor(colData, -20)
+							: colData = this.LightenDarkenColor("#004C00", -20)
+						}
+						amount_size={newSellOrder.amount_size}
+						validateQty={this.validateQty}
+						order={newSellOrder}
+						changeSelectedSellValue={this.changeSelectedSellValue}
+						selectedSellValue={(newSellOrder.checkedBtn === 'undefined' || newSellOrder.checkedBtn === 0) ? 25 : newSellOrder.checkedBtn}
 					/>
 				);
-			//	return null
+				keyIndex = keyIndex + 1;				
+			
 		});
 
-		/* setTimeout(function(){
-			$(".sellOrderClass").removeClass('blink_me');
-		},1000) */
+		if (diffLimit <= buySellRecordCount) {
+			for (var lastIndex = this.props.sellerOrderList.length; lastIndex < buySellRecordCount; lastIndex++) {
+				keyIndex <= 8 ?
+				sellOrderListRow.push(<SellOrderRow
+					exchangeName=""
+					key={lastIndex}
+					Price={"-"}
+					Amount={"-"}
+					setOrders={this.setOrders}
+					indexValue={lastIndex}
+					UpDownBit={0}
+					bgColorData={colData !== "" ? colData = this.LightenDarkenColor(colData, 20)
+					: colData = this.LightenDarkenColor("#004C00", 20)
+				}
 
+				/>)
+				:
+				sellOrderListRow.push(<SellOrderRow
+					exchangeName=""
+					key={lastIndex}
+					Price={"-"}
+					Amount={"-"}
+					setOrders={this.setOrders}
+					indexValue={lastIndex}
+					UpDownBit={0}
+					bgColorData={colData !== "" ? colData = this.LightenDarkenColor(colData, -20)
+					: colData = this.LightenDarkenColor("#004C00", -20)
+				}
+
+				/>);
+				keyIndex = keyIndex + 1;
+			}
+		}
+		
 		return (
 			<Fragment>
 				
@@ -324,7 +402,7 @@ class SellTrade extends Component {
 					autoHeightMax={this.props.autoHeightMax}
 					autoHide
 				>
-					{this.props.sellerBookLoader && <JbsBarLoader />}
+					{this.props.sellerBookLoader && <JbsLoader />}
 					<Table className="table m-0 p-0 buy-table">
 						{sellOrderListRow && sellOrderListRow.length ?
 							<tbody>

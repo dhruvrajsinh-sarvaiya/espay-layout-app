@@ -1,7 +1,7 @@
 import appLocaleData from 'react-intl/locale-data/hu';
 import saMessages from '../locales/hu_HU';
 
-const huLang = {
+const hu_HU = {
    messages: {
       ...saMessages
    },
@@ -9,4 +9,4 @@ const huLang = {
    data: appLocaleData
 };
 
-export default huLang;
+export default hu_HU;

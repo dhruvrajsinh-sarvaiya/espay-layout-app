@@ -40,7 +40,11 @@ const INITIAL_STATE = {
     arbitragePairListBit: 0
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
 
     switch (action.type) {
         // get Buyer Order list

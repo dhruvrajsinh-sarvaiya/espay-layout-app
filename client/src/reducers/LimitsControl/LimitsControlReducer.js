@@ -26,7 +26,10 @@ const INITIAL_STATE = {
     response: {}
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
     switch (action.type) {
         // get wallets
         case GET_LC_WALLETS:

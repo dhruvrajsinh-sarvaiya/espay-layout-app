@@ -6,22 +6,17 @@
     Description : Announcement Widget
 */
 import React, { Component, Fragment } from "react";
-import { Badge } from "reactstrap";
-// intl messages
-import IntlMessages from "Util/IntlMessages";
+
+
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
-import ReactHtmlParser, {
-  processNodes,
-  convertNodeToElement,
-  htmlparser2
-} from "react-html-parser";
+import ReactHtmlParser from "react-html-parser";
 import { getAnnoucements } from "Actions/Announcement";
 import { connect } from "react-redux";
 
-import { Route, Link } from "react-router-dom";
+
 
 class Announcement extends Component {
   constructor(props) {

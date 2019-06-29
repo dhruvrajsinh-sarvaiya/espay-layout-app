@@ -19,12 +19,7 @@ const CreateArbitrageWallet = Loadable({
     loader: () => import("./CreateArbitrageWallet"),
     loading: MyLoadingComponent
 });
-// const Leverage = Loadable({
-//     loader: () => import("./Leverage"),
-//     loading: MyLoadingComponent
-// })
 export {
     ListArbitrageWallet,
     CreateArbitrageWallet,
-    // Leverage
 }

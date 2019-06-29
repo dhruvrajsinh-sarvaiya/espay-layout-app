@@ -38,7 +38,6 @@ import socialProfileSagas from "./SocialProfile/SocialProfile";
 //Salimbhai....
 import twoFAAuthenticationSagas from "./MyAccount/2FAAuthentication";
 import forgotPasswordSagas from "./MyAccount/ForgotPassword";
-import loginSagas from "./MyAccount/Login";
 import personalVerificationFormSagas from "./MyAccount/PersonalVerificationForm";
 import enterpriseVerificationFormSagas from "./MyAccount/EnterpriseVerificationForm";
 import referralFriendsSagas from "./MyAccount/ReferralFriends";
@@ -80,9 +79,6 @@ import affiliateReportSagas from "./MyAccount/AffiliateReport";
 import tradeSagas from "./Trade/Pair";
 import pairListSagas from "./Trade/PairList";
 import holdingsSaga from "./Trade/HoldingsSaga";
-// import sellerOrderSaga from './Trade/SellerOrderSaga';
-// import buyerOrderSaga from './Trade/BuyerOrderSaga';
-// import marketTradeHistorySaga from './Trade/MarketTradeHistorySaga';
 import openOrderSaga from "./Trade/OpenOrdersSaga";
 import recentOrderSaga from "./Trade/RecentOrdersSaga";
 import currentMarketCapSaga from "./Trade/CurrentMarketCapSaga";
@@ -242,7 +238,6 @@ export default function* rootSaga(getState) {
     //Salimbhai....
     twoFAAuthenticationSagas(),
     forgotPasswordSagas(),
-    loginSagas(),
     personalVerificationFormSagas(),
     enterpriseVerificationFormSagas(),
     referralFriendsSagas(),
@@ -283,9 +278,6 @@ export default function* rootSaga(getState) {
     pairListSagas(),
     tradeSagas(),
     holdingsSaga(),
-    // sellerOrderSaga(),
-    // buyerOrderSaga(),
-    // marketTradeHistorySaga(),
     openOrderSaga(),
     recentOrderSaga(),
     currentMarketCapSaga(),

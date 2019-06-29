@@ -753,7 +753,7 @@ body.dark-mode .app-boxed .jbs-page {
    }
 
    .loader-overlay-bar {
-    background-color: $white;
+    background-color: $black;
  }
 
    .sidebar-overlay-light {
@@ -2038,6 +2038,58 @@ body.dark-mode .app-boxed .jbs-page {
 }
 
 
+.dark-mode{
+  .arbitrage{
+    .rwt__tab {
+      color: $white;
+      border-color: transparent;
+      font-size: 14px !important;      
+      margin: 0 !important;
+      background: transparent;
+      border-radius: 5px;
+    }
+  
+    .rwt__tab[aria-selected="false"]:hover,
+    .rwt__tab:focus {
+      outline: 0;                  
+      border-top: 1px solid #F4F7FA;
+      border-bottom: none;
+      border-left: 1px solid #F4F7FA !important;
+      border-right: 1px solid #F4F7FA;    
+      line-height: 20px;
+      background-color: transparent !important;       
+      border-radius: 3px !important;     
+      cursor: pointer;
+      border-color: #F4F7FA #F4F7FA #EBEDF2;
+      text-decoration: none;
+    }
+  
+    .rwt__tab[aria-selected="true"] {
+        color: #F4F7FA;
+        background: transparent !important;
+        border-top: 1px solid #F4F7FA;
+        border-bottom: none;
+        border-left: 1px solid #F4F7FA;
+        border-right: 1px solid #F4F7FA;
+      }
+  }
+  
+  .btnbuy-per-arbitrage {
+    //background:transparent;
+    &:hover{
+      background:#008000;
+    }
+  }
+  .btnsell-per-arbitrage{
+    //background:transparent;
+    &:hover{
+      background:$coolred;
+    }
+  }
+  }
+
+  
+  
 //My Account Start
 .dark-mode{ 
   .TowFactorlist{
@@ -2161,5 +2213,227 @@ body.dark-mode .app-boxed .jbs-page {
   }
 }
 
+}
+
+.dark-mode{
+
+  .css-xp4uvy{
+    color: $white !important;
+}
+  .css-10nd86i{
+    .css-15k3avv{
+      background-color: $black !important;   
+        div {
+          background-color: #2c3644 !important;
+          &:hover, .active{
+            background-color: #5D92F4 !important;
+        }     
+      }           
+  }
+ 
+}
+.exchange_area{    
+  .css-10nd86i{
+      .css-15k3avv{
+        color: $white;
+        background-color: $black !important;   
+          div {
+            color: $white;
+            background-color: #2c3644 !important;
+            &:hover, .active{
+              color: $white;
+              background-color: #5D92F4 !important;
+          }     
+        }           
+    }
+   
+  }
+}
+}
+.dark-mode{
+  .arbitrage-dashboard { background: transparent; color: #fff; padding: 10px 15px 10px 0; }
+  .arbiTrage_wallet-cards{
+    background: #132c46 !important;
+    border-radius: 5px;
+  }
+
+  .exchange_area {     
+    background: #2c3644;
+    border: none;
+}
+
+.exchange_area .card {   
+   color: $white;    
+   border: 1px solid $white !important;
+   }
+
+   .buy_sell_area {    
+    background: #2c3644;
+    color: white;    
+    border: none;
+   }
+
+   .buy_sell_area_inner { 
+    border: 1px solid #333;     
+    background: #2c3644;    
+ }
+
+ .buy_sell_area_inner .buy_book, .sell_book {
+    border: 1px solid #333;  
+     background: #2c3644
+  }
+
+  .buy_book .table thead th, .sell_book .table thead th { 
+      background: #2c3644;    
+      color: $white !important; 
+    }
+
+    .arbitrage_reports{
+      background: #2c3644;      
+  }
+
+  .arbitrage_tabs {
+    .rwt__tab[aria-selected="true"]{      
+      color: #F4F7FA;
+      background: transparent;
+      border-top: 1px solid #F4F7FA;
+      border-bottom: none;
+      border-left: 1px solid #F4F7FA;
+      border-right: 1px solid #F4F7FA;
+    }
+}
+
+.arbitrage-btnmore{
+  a{color:$white;}
+}
+
+.opn_ord_list thead tr th,
+.opn_ord_list tbody tr th {
+  border-bottom: 1px solid #F4F7FA;
+  border-top: 1px solid #F4F7FA;
+    color : #fff;    
+}
+
+.arbitrage_tabs .tab_list {   
+  border-bottom: 1px solid;
+ }
+
+ .opn_ord_list thead tr{
+  background-color: transparent;
+}
+
+.trade_history_table {    
+  thead{
+      tr{
+          background: $black;
+          th{
+              
+              border-bottom: 1px solid #F4F7FA;
+              border-top: 1px solid #F4F7FA;            
+              color : #fff;
+              background: #2c3644;                    
+          }
+      }
+  }    
+}
+
+.arbitrage_btn_redirect{  
+  background: $black;
+  color: $white;
+  border: 1px solid $white;
+}
+
+.arbitrage_marketTrade{
+
+  table{
+      thead{
+          background: $black;
+          tr{
+              th{
+                  //border : 1px solid #F4F7FA;
+                  border-top: 1px solid #F4F7FA;
+                  border-bottom: 1px solid #F4F7FA;
+                  background: #2c3644;               
+                  color : #fff;                    
+              }
+        }        
+      }
+
+      tbody{
+          background: #2c3644;
+        td{
+          color: $white;                      
+        }
+      }
+  }
+}
+
+.arbitrage-trading{
+  .css-10nd86i{
+    .css-15k3avv{
+      background-color: $black !important;   
+        div {
+          background-color: #2c3644 !important;
+          &:hover, .active{
+            background-color: #5D92F4 !important;
+        }     
+      }          
+  } 
+}
+}
+
+.arbitrage_header_menu{
+  button.active{
+      color:$coolblue;
+  }
+  button[type=button].active  {
+    border-bottom: 2px solid #FFD700 !important;
+    span{
+      font-size:12px;
+    }
+  }
+ 
+  button{
+      min-height:44px;
+      > span {
+        > span {
+          > span{
+            color:#fff;
+            font-weight:600;
+          }
+        }
+      }
+  }
+  .TabIndicator-colorSecondary-190, .TabIndicator-colorSecondary-371{
+    background-color:transparent !important;
+ }
+}
+
+.opn_ord_list tbody tr td {  
+  color : #fff;    
+}
+
+.trd_hst_list tbody tr td {  
+  color : #fff;    
+}
+
+.social-card-arbitrage {  
+  background-color: $black;
+  color: $white;
+  
+  .social-icon {      
+      background-color: transparent;      
+  }
+
+  span:last-child {
+      border-left: 1px dashed transparent;
+  }
+  
+}
+
+  .fnd_blnc_area{
+    background: #2c3644;
+  }
+  
 }
 //Dark Mode Css End

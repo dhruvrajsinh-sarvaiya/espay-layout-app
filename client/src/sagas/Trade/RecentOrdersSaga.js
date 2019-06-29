@@ -1,7 +1,7 @@
 // sagas For Active Open Order By Tejas Date : 14/9/2018
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
@@ -21,25 +21,25 @@ function* getRecentOrderList() {
 }
 
 // Function for Open Oders
-function* getRecentOrderListData({payload}) {
-    
-     // code changed by devang parekh for handling margintrading data (23-2-2019)
-     var isMargin = '';
-     if(payload.hasOwnProperty('IsMargin') && payload.IsMargin === 1) {
+function* getRecentOrderListData({ payload }) {
+
+    // code changed by devang parekh for handling margintrading data (23-2-2019)
+    var isMargin = '';
+    if (payload.hasOwnProperty('IsMargin') && payload.IsMargin === 1) {
         isMargin = '?IsMargin=1';
     }
-     // end
-     
-    var headers =  {'Authorization': AppConfig.authorizationToken}
-    const response = yield call(swaggerPostAPI,'api/Transaction/GetRecentOrder'+isMargin,payload.Pair,headers);   
-    
+    // end
+
+    var headers = { 'Authorization': AppConfig.authorizationToken }
+    const response = yield call(swaggerPostAPI, 'api/Transaction/GetRecentOrder' + isMargin, payload.Pair, headers);
+
     try {
-        if(lgnErrCode.includes(response.statusCode)){
+        if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
-        } else if(statusErrCode.includes(response.statusCode)){               
-            staticRes = staticResponse(response.statusCode);
+        } else if (statusErrCode.includes(response.statusCode)) {
+            var staticRes = staticResponse(response.statusCode);
             yield put(getRecentOrderListFailure(staticRes));
-        } else if(response.statusCode === 200) {
+        } else if (response.statusCode === 200) {
             yield put(getRecentOrderListSuccess(response));
         } else {
             yield put(getRecentOrderListFailure(response));

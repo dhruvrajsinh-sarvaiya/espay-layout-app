@@ -73,8 +73,8 @@ class EditProfileWdgt extends Component {
 		newObj[event.target.name] = event.target.value;
 		this.setState({ data: newObj });
 	}
+
 	onCancel(event) {
-	
 		this.setState({
 			data: {
 				...this.state.data,

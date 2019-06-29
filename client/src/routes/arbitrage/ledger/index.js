@@ -3,7 +3,7 @@
     Date : 04-06-2019
     File Comment : Arbitrage report
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import {LedgerReport} from 'Components/Arbitrage';

@@ -4,14 +4,11 @@
     UpdatedBy : Salim Deraiya 24-12-2018
     File Comment : Social Profile Configuration Component
 */
-import React, { Component, Fragment } from "react";
-import { connect } from 'react-redux';
+import React, { Component } from "react";
 // page title bar
 import PageTitleBar from "Components/PageTitleBar/PageTitleBar";
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-// jbs collapsible card
-import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 import SocialSubscriptionPlan from "../../../components/SocialProfile/SocialSubscriptionPlan";
 
 export default class SocialProfileSubscription extends Component {

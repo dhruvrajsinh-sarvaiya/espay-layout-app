@@ -7,7 +7,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Row, Col } from "reactstrap";
 import CircularProgress from '@material-ui/core/CircularProgress';
 // redux action
 import { deviceAuthorize } from "Actions/MyAccount";
@@ -85,7 +84,6 @@ class DeviceAuthorizeScreen extends Component {
                 <div className="container">
                     <div className="inner_box rmv_brd">
                         <div className="text-center mb-30 mt-30">
-                            {/* <a href="/"><img src={AppConfig.appLogo} alt="session-logo" /></a> */}
                         </div>
                         <div className="card p-20 my-50 forgotconfirmradius">
                             {loading

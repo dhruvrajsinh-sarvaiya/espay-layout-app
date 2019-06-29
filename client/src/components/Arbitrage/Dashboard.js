@@ -12,7 +12,7 @@ import { connect } from "react-redux";
 // import components
 import {
     BuySellTrade,
-    ExchangeList,    
+    ExchangeList,
     OrderTabList,
     PairSelection,
 } from "Components/Arbitrage";
@@ -35,11 +35,12 @@ import AppConfig from 'Constants/AppConfig';
 import $ from 'jquery';
 
 import {
-    getCurrencyList,    
+    getCurrencyList,
 } from 'Actions/Trade';
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"; // added by devang parekh (19-6-2019) for display modal
 
 // email promotion class
 class Dashboard extends Component {
@@ -68,7 +69,8 @@ class Dashboard extends Component {
             pairId: '',
             isBulkBuyOrder: false,
             isBulkSellOrder: false,
-            isBothOrder:false
+            isBothOrder: false,
+            isShowModal: false, // aded by devang parekh for modal default false
         };
     }
 
@@ -76,15 +78,25 @@ class Dashboard extends Component {
     componentDidMount() {
         //load Currency List        
         this.props.getCurrencyList();
-
         this.props.getArbitrageWalletList({});
     }
 
     // invoke before Compoent render
     componentWillMount() {
+
+        // added by devang parekh (19-6-2019) check bit if priviously agree or not
+        var accessPer = localStorage.getItem("_SmartTrading");
+        if (accessPer === 'undefined' || accessPer === null || !accessPer) {
+            this.setState({ isShowModal: true });
+        }
+        //end
+
         const self = this;
         //load Currency List
         this.props.getArbitragePairList({});
+
+        self.state.hubConnection.on("RecieveTradeHistoryArbitrage", (tradeHistoryDetail) => {
+        });
 
         self.state.hubConnection.onclose(e => {
             setTimeout(function () {
@@ -93,7 +105,6 @@ class Dashboard extends Component {
         });
 
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
-            //console.log("'RecieveWalletBal", walletBalance);
             try {
                 walletBalance = JSON.parse(walletBalance);
                 if (self.state.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
@@ -110,7 +121,6 @@ class Dashboard extends Component {
                                 if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID) {
                                     walletList[key].Balance = walletCoinDetail.Balance
                                 }
-                                //return null
                             });
                             self.setState({ Wallet: walletList, socketBuyData: walletBalance })
                         }
@@ -146,9 +156,7 @@ class Dashboard extends Component {
                         });
 
                     }
-                   // return null
                 })
-             //   return null
             });
 
         } else {
@@ -171,7 +179,6 @@ class Dashboard extends Component {
                             firstCurrencyWalletId: value.AccWalletID
                         });
                     }
-                  //  return null
                 });
             }
 
@@ -186,7 +193,7 @@ class Dashboard extends Component {
         if (isMultiple === true) {
 
             bulkBuyOrder = this.state.bulkBuyOrder;
-            if (price && price !== 0) {
+            if (typeof price !== 'undefined' && price != 0) {
 
                 if (totalData !== "" && totalData !== undefined && bulkBuyOrder && bulkBuyOrder.length) {
 
@@ -197,31 +204,31 @@ class Dashboard extends Component {
                         let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                         bulkBuyOrder[isAvailable].rate = price;
                         bulkBuyOrder[isAvailable].quantity = parseFloat(amount);
-                        bulkBuyOrder[isAvailable].total = totalData !== "" ? totalData : total;
+                        bulkBuyOrder[isAvailable].total = (totalData != "" && totalData != undefined) ? totalData : total;
                         bulkBuyOrder[isAvailable].LpType = bulkBuyOrder[isAvailable].LpType
                     } else {
                         let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                         bulkBuyOrder.push({
                             "rate": price,
                             "quantity": parseFloat(amount),
-                            "total": (totalData !== "" && totalData !== undefined) ? totalData : total,
+                            "total": (totalData != "" && totalData !== 'undefined') ? totalData : total,
                             "LpType": LpType
                         })
                         bulkBuyOrder.formType = 1
                     }
 
-                    bulkBuyOrder.bulkPercentage = (totalData !== "" && totalData !== undefined) ? true : false
+                    bulkBuyOrder.bulkPercentage = (totalData != "" && totalData !== 'undefined') ? true : false
 
                 } else {
                     let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                     bulkBuyOrder.push({
                         "rate": price,
                         "quantity": amount,
-                        "total": (totalData !== "" && totalData !== undefined) ? totalData : total,
+                        "total": (totalData != "" && totalData !== 'undefined') ? totalData : total,
                         "LpType": LpType
                     })
                     bulkBuyOrder.formType = 1
-                    bulkBuyOrder.bulkPercentage = (totalData !== "" && totalData !== undefined) ? true : false
+                    bulkBuyOrder.bulkPercentage = (totalData != "" && totalData !== 'undefined') ? true : false
                 }
 
             }
@@ -230,17 +237,17 @@ class Dashboard extends Component {
                 isBulkBuyOrder: true,
                 bulkBuyOrder: bulkBuyOrder,
                 isBulkSellOrder: false,
-                isBothOrder:false,
+                isBothOrder: false,
                 bulkSellOrder: []
             })
         } else if (isMultiple === false) {
             if (this.state.bulkBuyOrder && this.state.bulkBuyOrder.length) {
-                if (price && price !== 0) {
+                if (price && price != 0) {
 
                     this.state.bulkBuyOrder.map((item, index) => {
                         if (item.LpType === LpType) {
-                            if(this.state.bulkBuyOrder.length === 1){
-                                bulkBuyOrder=[]
+                            if (this.state.bulkBuyOrder.length === 1) {
+                                bulkBuyOrder = []
                             }
                         } else {
                             item.formType = 1
@@ -256,14 +263,14 @@ class Dashboard extends Component {
                             bulkBuyOrder: bulkBuyOrder,
                             isBulkSellOrder: false,
                             bulkSellOrder: [],
-                            isBothOrder:false,
+                            isBothOrder: false,
                         });
                     } else {
 
                         this.setState({
                             isBulkBuyOrder: false,
                             bulkBuyOrder: bulkBuyOrder,
-                            isBothOrder:true,
+                            isBothOrder: true,
                             isBulkSellOrder: false,
                             bulkSellOrder: []
                         });
@@ -277,14 +284,14 @@ class Dashboard extends Component {
                     bulkBuyOrder: bulkBuyOrder,
                     isBulkSellOrder: false,
                     bulkSellOrder: [],
-                    isBothOrder:false,
+                    isBothOrder: false,
                 });
             }
         }
 
-        if (isMultiple === undefined) {
-            if (price && price !== 0) {
-               bulkBuyOrder.rate = price;
+        if (isMultiple === 'undefined') {
+            if (price && price != 0) {
+                bulkBuyOrder.rate = price;
                 bulkBuyOrder.quantity = "";//amount;
                 bulkBuyOrder.total = ""//(totalData !== "" && totalData !== undefined) ? totalData : total;
                 bulkBuyOrder.formType = 1
@@ -295,7 +302,7 @@ class Dashboard extends Component {
                 bulkBuyOrder: bulkBuyOrder,
                 isBulkSellOrder: false,
                 bulkSellOrder: [],
-                isBothOrder:false,
+                isBothOrder: false,
             });
         }
 
@@ -310,7 +317,7 @@ class Dashboard extends Component {
 
             bulkSellOrder = this.state.bulkSellOrder;
 
-            if (price && price !== 0) {
+            if (price && price != 0) {
 
                 if (totalData !== "" && totalData !== undefined && bulkSellOrder && bulkSellOrder.length) {
 
@@ -321,20 +328,20 @@ class Dashboard extends Component {
                         let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                         bulkSellOrder[isAvailable].rate = price;
                         bulkSellOrder[isAvailable].quantity = parseFloat(amount);
-                        bulkSellOrder[isAvailable].total = totalData !== "" ? totalData : total;
+                        bulkSellOrder[isAvailable].total = (totalData != "" && totalData != undefined) ? totalData : total;
                         bulkSellOrder[isAvailable].LpType = bulkSellOrder[isAvailable].LpType
                     } else {
                         let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                         bulkSellOrder.push({
                             "rate": price,
                             "quantity": parseFloat(amount),
-                            "total": (totalData !== "" && totalData !== undefined) ? totalData : total,
+                            "total": (totalData != "" && totalData != undefined) ? totalData : total,
                             "LpType": LpType
                         })
                         bulkSellOrder.formType = 2
                     }
 
-                    bulkSellOrder.bulkPercentage = (totalData !== "" && totalData !== undefined) ? true : false
+                    bulkSellOrder.bulkPercentage = (totalData != "" && totalData != undefined) ? true : false
 
                 } else {
                     let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
@@ -345,7 +352,7 @@ class Dashboard extends Component {
                         "LpType": LpType
                     })
                     bulkSellOrder.formType = 2
-                    bulkSellOrder.bulkPercentage = (totalData !== "" && totalData !== undefined) ? true : false
+                    bulkSellOrder.bulkPercentage = (totalData != "" && totalData !== undefined) ? true : false
                 }
 
             }
@@ -355,25 +362,24 @@ class Dashboard extends Component {
                 bulkSellOrder: bulkSellOrder,
                 isBulkBuyOrder: false,
                 bulkBuyOrder: [],
-                isBothOrder:false,
+                isBothOrder: false,
             })
 
         } else if (isMultiple === false) {
 
             if (this.state.bulkSellOrder && this.state.bulkSellOrder.length) {
-                if (price && price !== 0) {
+                if (price && price != 0) {
 
                     this.state.bulkSellOrder.map((item, index) => {
 
                         if (item.LpType === LpType) {
-                            if(this.state.bulkSellOrder.length === 1){
-                                bulkSellOrder=[]
+                            if (this.state.bulkSellOrder.length === 1) {
+                                bulkSellOrder = []
                             }
                         } else {
                             item.formType = 2;
-                            bulkSellOrder.push(item)                            
+                            bulkSellOrder.push(item)
                         }
-                     //   return null
                     })
                 }
 
@@ -384,8 +390,8 @@ class Dashboard extends Component {
                         bulkSellOrder: bulkSellOrder,
                         isBulkSellOrder: true,
                         bulkBuyOrder: [],
-                        isBothOrder:false,
-                        
+                        isBothOrder: false,
+
                     });
                 } else {
 
@@ -393,7 +399,7 @@ class Dashboard extends Component {
                     this.setState({
                         isBulkBuyOrder: false,
                         bulkBuyOrder: [],
-                        isBothOrder:true,
+                        isBothOrder: true,
                         isBulkSellOrder: false,
                         bulkSellOrder: bulkSellOrder
                     });
@@ -406,27 +412,27 @@ class Dashboard extends Component {
                     bulkSellOrder: bulkSellOrder,
                     isBulkBuyOrder: false,
                     bulkBuyOrder: [],
-                    isBothOrder:false,
+                    isBothOrder: false,
                 });
             }
         }
-        if (isMultiple === undefined) {
-            if (price && price !== 0) {
+        if (isMultiple === 'undefined') {
+            if (price && price != 0) {
                 let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
-                   bulkSellOrder.rate = price;
+                bulkSellOrder.rate = price;
                 bulkSellOrder.quantity = amount;
                 bulkSellOrder.total = total;
                 bulkSellOrder.formType = 2
                 bulkSellOrder.LpType = LpType
-                
+
             }
-            
+
             this.setState({
                 isBulkSellOrder: false,
                 bulkSellOrder: bulkSellOrder,
                 isBulkBuyOrder: false,
                 bulkBuyOrder: [],
-                isBothOrder:false,
+                isBothOrder: false,
             });
         }
 
@@ -435,11 +441,11 @@ class Dashboard extends Component {
     ClearAllFields = () => {
 
         this.setState({
-            bulkBuyOrder:[],
-            bulkSellOrder:[],
-            isBulkBuyOrder:false,
-            isBulkSellOrder:false,
-            isBothOrder:false
+            bulkBuyOrder: [],
+            bulkSellOrder: [],
+            isBulkBuyOrder: false,
+            isBulkSellOrder: false,
+            isBothOrder: false
         })
     }
 
@@ -465,21 +471,19 @@ class Dashboard extends Component {
                 bulkBuyOrder: [],
             });
             this.state.hubConnection.invoke("AddArbitragePairSubscription", pair, oldPair)
-                .catch((err) => console.error("AddArbitragePairSubscription", err));
+                .catch((err) => { }
+                );
 
             const tempSecondCurrency = value.PairName.split("_")[1];
             if (this.state.secondCurrency !== tempSecondCurrency) {
 
                 this.state.hubConnection.invoke("AddArbitrageMarketSubscription", tempSecondCurrency, this.state.secondCurrency)
-                    .catch((err) =>
-                        console.error("AddArbitrageMarketSubscription", err)
+                    .catch((err) => { }
                     );
                 this.setState({
                     secondCurrency: tempSecondCurrency,
                 });
             }
-
-        } else {
 
         }
 
@@ -492,6 +496,16 @@ class Dashboard extends Component {
 
     }
 
+    // code added by devang parekh for handle modal (19-6-2019)
+    closeModel() {
+        window.location.href = AppConfig.afterLoginRedirect;
+    }
+
+    agreeModal = () => {
+        localStorage.setItem("_SmartTrading", 1);
+        this.setState({ isShowModal: false });
+    }
+    // end
 
     render() {
         var firstCurrencyWalletId = 0;
@@ -506,7 +520,6 @@ class Dashboard extends Component {
                 secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID
             } else {
                 this.state.secondCurrencyBalance = 0
-                secondCurrencyWalletId = 0
             }
 
             if (firstCurrencyBal !== -1) {
@@ -515,7 +528,7 @@ class Dashboard extends Component {
 
             } else {
                 this.state.firstCurrencyBalance = 0
-                firstCurrencyWalletId = 0
+
 
             }
         }
@@ -523,92 +536,117 @@ class Dashboard extends Component {
         if (this.state.currentMarket) {
             this.state.currentMarket.map(value => {
                 if (value.firstCurrency === this.state.firstCurrency) {
-                    this.state.currentBuyPrice = value.BuyPrice,
-                    this.state.currentSellPrice = value.SellPrice
+                    this.state.currentBuyPrice = value.BuyPrice
+                        this.state.currentSellPrice = value.SellPrice
 
                 }
-               // return null
+                // return null
             });
         }
 
         return (
             <Fragment>
-                <div className="d-flex arbitrage_area">
-                    <div className="col-md-2 col-sm-3 col-xs-12 exchange_area">
-                        <PairSelection
-                            {...this.props}
-                            state={this.state}
-                            pairData={this.state.pairList}
-                            firstCurrency={this.state.firstCurrency}
-                            secondCurrency={this.state.secondCurrency}
-                            currencyPair={this.state.currencyPair}
-                            displayFavouritePair={this.openFavourite}
-                            changePairs={this.changeCurrencyPair}
-                            hubConnection={this.state.hubConnection}
-                        />
-                        <ExchangeList
-                            currencyPair={this.state.currencyPair}                            
-                            autoHeightMin={370}
-                            autoHeightMax={370}
-                            hubConnection={this.state.hubConnection}
-                            {...this.props}
-                        />
-                    </div>
-                    <div className="col-md-10 col-sm-9 col-xs-12 buy_sell_area">
-                        <div className="row">
-                            <div className="col-sm-12 col-md-6 col-lg-6">
-                                <h2 className="text-left">                                    
-                                    <IntlMessages id="sidebar.arbitrageOrderBook" />
-                                </h2>
-                            </div>
-                            <div className="col-sm-12 col-md-6 col-lg-6">
-                                <span className="text-right">
-                                <IntlMessages id="trading.holdingorder.label.balance" />
-                                {": "}
-                                    {this.state.secondCurrencyBalance.toFixed(8)} {" "} {this.state.secondCurrency} -- {this.state.firstCurrencyBalance.toFixed(8)} {" "} {this.state.firstCurrency}
-                                </span>
-                            </div>
 
+                {this.state.isShowModal === false ? // check condition if agreed or not if yes then load dashboard otherwise not. (devang parekh 19-6-2019)
+                    <div>
+                        <div className="d-flex arbitrage_area">
+                            <div className="col-md-2 col-sm-3 col-xs-12 exchange_area">
+                                <PairSelection
+                                    {...this.props}
+                                    state={this.state}
+                                    pairData={this.state.pairList}
+                                    firstCurrency={this.state.firstCurrency}
+                                    secondCurrency={this.state.secondCurrency}
+                                    currencyPair={this.state.currencyPair}
+                                    displayFavouritePair={this.openFavourite}
+                                    changePairs={this.changeCurrencyPair}
+                                    hubConnection={this.state.hubConnection}
+                                />
+                                <ExchangeList
+                                    currencyPair={this.state.currencyPair}
+                                    autoHeightMin={380}
+                                    autoHeightMax={380}
+                                    hubConnection={this.state.hubConnection}
+                                    {...this.props}
+                                />
+                            </div>
+                            <div className="col-md-10 col-sm-9 col-xs-12 buy_sell_area">
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-6 col-lg-6">
+                                        <h2 className="text-left pl-5">
+                                            <IntlMessages id="sidebar.arbitrageOrderBook" />
+                                        </h2>
+                                    </div>
+                                    <div className="col-sm-12 col-md-6 col-lg-6">
+                                        <span className="text-right pr-5">
+                                            <IntlMessages id="trading.holdingorder.label.balance" />
+                                            {": "}
+                                            {this.state.secondCurrencyBalance.toFixed(8)} {" "} {this.state.secondCurrency} -- {this.state.firstCurrencyBalance.toFixed(8)} {" "} {this.state.firstCurrency}
+                                        </span>
+                                    </div>
+
+                                </div>
+                                <BuySellTrade
+                                    {...this.props}
+                                    firstCurrency={this.state.firstCurrency}
+                                    secondCurrency={this.state.secondCurrency}
+                                    currencyPair={this.state.currencyPair}
+                                    firstCurrencyBalance={this.state.firstCurrencyBalance}
+                                    secondCurrencyBalance={this.state.secondCurrencyBalance}
+                                    autoHeightMin={160}
+                                    autoHeightMax={160}
+                                    UpDownBit={this.state.UpDownBit}
+                                    hubConnection={this.state.hubConnection}
+                                    currencyPairID={this.state.currencyPairID}
+                                    state={this.state}
+                                    buyPrice={this.state.currentBuyPrice}
+                                    sellPrice={this.state.currentSellPrice}
+                                    bulkBuyOrder={this.state.bulkBuyOrder}
+                                    bulkSellOrder={this.state.bulkSellOrder}
+                                    isBulkBuyOrder={this.state.isBulkBuyOrder}
+                                    isBulkSellOrder={this.state.isBulkSellOrder}
+                                    firstCurrencyWalletId={firstCurrencyWalletId}
+                                    secondCurrencyWalletId={secondCurrencyWalletId}
+                                    takers={this.state.takersValue}
+                                    makers={this.state.makersValue}
+
+                                    setBuyOrders={this.setBuyOrders}
+                                    setSellOrders={this.setSellOrders}
+                                    isBothOrder={this.state.isBothOrder}
+                                    ClearAllFields={this.ClearAllFields}
+                                />
+                            </div>
                         </div>
-                        <BuySellTrade
-                            {...this.props}
-                            firstCurrency={this.state.firstCurrency}
-                            secondCurrency={this.state.secondCurrency}
-                            currencyPair={this.state.currencyPair}
-                            firstCurrencyBalance={this.state.firstCurrencyBalance}
-                            secondCurrencyBalance={this.state.secondCurrencyBalance}
-                            autoHeightMin={160}
-                            autoHeightMax={160}
-                            UpDownBit={this.state.UpDownBit}
-                            hubConnection={this.state.hubConnection}
-                            currencyPairID={this.state.currencyPairID}
-                            state={this.state}
-                            buyPrice={this.state.currentBuyPrice}
-                            sellPrice={this.state.currentSellPrice}
-                            bulkBuyOrder={this.state.bulkBuyOrder}
-                            bulkSellOrder={this.state.bulkSellOrder}
-                            isBulkBuyOrder={this.state.isBulkBuyOrder}
-                            isBulkSellOrder={this.state.isBulkSellOrder}
-                            firstCurrencyWalletId={firstCurrencyWalletId}
-                            secondCurrencyWalletId={secondCurrencyWalletId}
-                            takers={this.state.takersValue}
-                            makers={this.state.makersValue}
-
-                            setBuyOrders={this.setBuyOrders}
-                            setSellOrders={this.setSellOrders}
-                            isBothOrder={this.state.isBothOrder}
-                            ClearAllFields={this.ClearAllFields}
-                        />
+                        {/* <div className="col-12 mt-25 arbitrage"> */}
+                        <div className="mt-25 arbitrage arbitrage_reports">
+                            <OrderTabList
+                                currencyPair={this.state.currencyPair}
+                                defaultTab="open_order" {...this.props}
+                                hubConnection={this.state.hubConnection}
+                                Wallet={this.state.Wallet}
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="col-12 mt-25">
-                    <OrderTabList
-                        currencyPair={this.state.currencyPair}
-                        defaultTab="open_order" {...this.props}
-                        hubConnection={this.state.hubConnection}
-                        Wallet={this.state.Wallet}
-                    />
-                </div>
+                    :	/* Code added by devang parekh for display modal when load dashbaord */
+                    <Modal isOpen={this.state.isShowModal} className="mdl_announcement modal-dialog-centered big_mdl_80">
+                        <ModalHeader>
+                            <IntlMessages id="widgets.note" />
+                        </ModalHeader>
+                        <ModalBody>
+                            <IntlMessages id="sidebar.noteMessageForSmarttrading" />
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button
+                                //color="primary"
+                                className={"btn-comman mr-10 border-0 rounded-0"}
+                                onClick={this.agreeModal}><IntlMessages id="wallet.btnAgree" /></Button>{' '}
+                            <Button
+                                color="danger"
+                                className="mr-10 border-0 rounded-0"
+                                onClick={this.closeModel}><IntlMessages id="sidebar.btnDisagree" /></Button>
+                        </ModalFooter>
+                    </Modal>
+                }
             </Fragment>
         )
     }
@@ -623,8 +661,8 @@ export default connect(mapStateToProps, {
     getArbitragePairList,
     getArbitrageChartData,
     atbitrageBuyerBook,
-    atbitrageSellerBook,    
-    getCurrencyList,    
+    atbitrageSellerBook,
+    getCurrencyList,
     getArbitrageWalletList,
     arbitrageMarketTradeHistory,
     arbitrageGetExchangeList,

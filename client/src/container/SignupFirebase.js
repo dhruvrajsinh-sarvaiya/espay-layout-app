@@ -45,7 +45,7 @@ class SignupFirebase extends Component {
 	}
 
 	render() {
-		const { name, email, password } = this.state;
+		const { name, email} = this.state;
 		const { loading } = this.props;
 		return (
 			<QueueAnim type="bottom" duration={2000}>

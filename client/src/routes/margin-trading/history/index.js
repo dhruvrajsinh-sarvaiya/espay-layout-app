@@ -3,7 +3,7 @@
     Date : 6-03-2019
     File Comment : margin trading history
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { MarginTradingHistory } from 'Components/MarginTrading';

@@ -2,9 +2,7 @@
  * Active User Component
  */
 import React, { Component, Fragment } from "react";
-
 import { Input, Button } from "reactstrap";
-
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -29,7 +27,6 @@ export default class LostYourGoogleAuthenticator extends Component {
   };
 
   render() {
-    const { data } = this.state;
     return (
       <Fragment>
         <Dialog

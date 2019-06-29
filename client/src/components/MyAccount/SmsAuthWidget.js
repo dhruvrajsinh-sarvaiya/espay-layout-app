@@ -7,7 +7,7 @@
 import React, { Component } from "react";
 import { Form, FormGroup, Label, Input, Col, Button,Row } from "reactstrap";
 import { connect } from "react-redux";
-import MyProfileInfoWdgt from "./MyProfileInfoWdgt";
+
 // redux action
 import { sendSmsauth, submitSendSmsauth } from "Actions";
 // intl messages

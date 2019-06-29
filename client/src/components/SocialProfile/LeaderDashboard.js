@@ -5,7 +5,7 @@
  */
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Button } from "reactstrap";
 import Divider from '@material-ui/core/Divider';
 import { Tabs, Tab, TabPanel, TabList } from "react-web-tabs";
@@ -115,18 +115,5 @@ class LeaderDashboard extends Component {
         );
     }
 }
-
-// map state to props
-/* const mapStateToProps = ({ forgotPassRdcer }) => {
-    var response = {
-        data: forgotPassRdcer.data,
-        loading: forgotPassRdcer.loading
-    };
-    return response;
-};
-
-export default withRouter(connect(mapStateToProps, {
-    forgotPassword
-})(LeaderDashboard)); */
 
 export default withRouter(LeaderDashboard);

@@ -3,7 +3,7 @@
     Date : 1-03-2019
     File Comment : list margin wallets Ledger
 */
-import React, { Component,Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import MUIDataTable from "mui-datatables";
@@ -87,7 +87,7 @@ class ListMarginWalletLedger extends Component {
     //apply filter
     applyFilter = () => {
         if (this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") {
-            this.setState({ showReset: true},this.getListFromServer(1, this.state.PageSize));
+            this.setState({ showReset: true }, this.getListFromServer(1, this.state.PageSize));
         }
     };
 
@@ -142,7 +142,6 @@ class ListMarginWalletLedger extends Component {
 
         ]
         const options = {
-            // fixedHeader : false,
             filterType: 'dropdown',
             responsive: 'scroll',
             selectableRows: false,
@@ -160,8 +159,8 @@ class ListMarginWalletLedger extends Component {
                     toolTip: intl.formatMessage({ id: "wallet.sort" }),
                 }
             },
-            customFooter: (count, page, rowsPerPage) => {
-                var page = page > 0 ? page + 1 : 1;
+            customFooter: (count, pageNo, rowsPerPage) => {
+                var page = pageNo > 0 ? pageNo + 1 : 1;
                 return (
                     <CustomFooter count={count} page={page} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
@@ -194,7 +193,7 @@ class ListMarginWalletLedger extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                            <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
+                                <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
                                 {this.state.showReset && <Button className="ml-15 border-0 btn-danger rounded-0" onClick={(e) => this.clearFilter()}>{intl.formatMessage({ id: "button.clear" })}</Button>}
                             </div>
                         </FormGroup>

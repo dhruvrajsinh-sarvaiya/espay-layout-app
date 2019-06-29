@@ -5,27 +5,23 @@ import React, { Component, Fragment } from 'react';
 import { Row, Col, Card } from 'reactstrap';
 
 import {
-    //getCurrencyList,
+
     getCurrentPrice,
     getMarketCapList,
-    //getActiveMyOpenOrderList,
-    //getActiveOpenOrderList,
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,
-    //getHoldingList,
+
     getMarketTradeHistory,
-    //CHANGE_MARKET_TRADE_HISTORY_SOCKET,
+
     getTickersList,
     getPairList,
-    //changeBuyPairSocket,
-    //changeSellPairSocket,
-    //changeMarketTradeSocketConnection,
+
     getVolumeData,
     getMarketDepth
 } from 'Actions/Trade';
 
-//import { getWallets } from 'Actions/Withdraw';
+
 
 // import connect for redux store
 import { connect } from 'react-redux';
@@ -36,16 +32,9 @@ import {
     PairList,
     PlaceOrder,
     MarketTrade,
-    //ActiveOrders,
+
     BuySellTrade,
     TradingChart,
-    //CoinBasicList,  
-    //MarketDepth,
-    //NewsList,
-    //InviteList,
-    //TokenValue,
-    //TopGainer,
-    //TopLoser
 } from "Components/CooldexTrading";
 
 import {
@@ -65,33 +54,33 @@ import {
 
 } from "Components/MobileCooldexTrading";
 
-// import {
-//     MarginAccountDetail,
-//     MarginActiveOrders
-// } from "Components/MarginTrading";
-
-
 import AppConfig from 'Constants/AppConfig';
 
 //Tabmenu Start 
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 
 //Material Dialogs
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
+
+
+
+import $ from 'jquery';
+
+import {
+    getMaringWalletList
+} from 'Actions/MarginTrading';
+
+import {
+    getLeverageDetail
+} from "Actions/MarginTrading";
 
 function Transition(props) {
     return <Slide direction="up" {...props} />;
@@ -105,9 +94,6 @@ function TabContainer({ children }) {
         </Typography>
     );
 }
-//   TabContainer.propTypes = {
-//     children: PropTypes.node.isRequired,
-//   };
 
 const styles = theme => ({
     root: {
@@ -116,18 +102,6 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
     },
 });
-//Tabmenu End   
-
-
-import $ from 'jquery';
-
-import {
-    getMaringWalletList
-} from 'Actions/MarginTrading';
-
-import {
-    getLeverageDetail
-} from "Actions/MarginTrading";
 
 
 // Component for margin trading dashboard
@@ -165,7 +139,7 @@ class MarginTrading extends Component {
             isComponentActive: 1,
             firstCurrencyMarginDetail: {},
             secondCurrencyMarginDetail: {},
-            //pairsInfo:[],
+
             width: window.innerWidth, //Added by salim dt:15/05/2019,
             activeIndex: 0,
         }
@@ -173,7 +147,7 @@ class MarginTrading extends Component {
         this.changeSecondCurrency = this.changeSecondCurrency.bind(this)
         this.setBuyOrders = this.setBuyOrders.bind(this)
         this.setSellOrders = this.setSellOrders.bind(this)
-        // this.openFavourite = this.openFavourite.bind(this)
+
     }
 
 
@@ -185,23 +159,19 @@ class MarginTrading extends Component {
         this.props.getPairList({ marginTrading: 1 });
 
         self.state.hubConnection.on("RecieveTradeHistory", (tradeHistoryDetail) => {
-            //console.log("Get Data from signalR RecieveTradeHistory", tradeHistoryDetail);
+
 
         });
 
         self.state.hubConnection.onclose(e => {
-            //console.log('disconnected server');
-            //console.log(window.JbsHorizontalLayout);
             setTimeout(function () {
-                //console.log(window.JbsHorizontalLayout)
-                //console.log(self.state);
                 window.JbsHorizontalLayout.props.location.state.connectSignalR(self.state.currencyPair, self.state.secondCurrency);
             }, 1000);
         });
 
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
 
-            //console.log("response from signalr RecieveWalletBal",walletBalance); 
+
             try {
 
                 walletBalance = JSON.parse(walletBalance);
@@ -214,55 +184,31 @@ class MarginTrading extends Component {
 
                             const walletCoinDetail = walletBalance.Data;
                             if (walletCoinDetail.CoinName !== '') {
-                                //var walletList = self.state.Wallet;
+
                                 var walletList = $.extend(true, [], self.state.Wallet);
                                 var latestStateDetail = {}; // handle multiple state echange evnet into single
 
                                 walletList.map((value, key) => {
 
-                                    //if (self.state.secondCurrency === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID ) {
+
                                     if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID) {
                                         walletList[key].Balance = walletCoinDetail.Balance
-
-                                        // code for save first and second currency detail 
-                                        /*  if(self.state.firstCurrency === walletCoinDetail.CoinName && self.state.firstCurrencyWalletId === walletCoinDetail.AccWalletID) {
-                                             console.log("innn1")
-                                             latestStateDetail.firstCurrencyMarginDetail = walletCoinDetail;
-                                         }
-                                         if(self.state.secondCurrency === walletCoinDetail.CoinName && self.state.secondCurrencyWalletId === walletCoinDetail.AccWalletID) {
-                                             console.log("first 2")
-                                             latestStateDetail.secondCurrencyMarginDetail = walletCoinDetail;
-                                         } */
-                                        // end
-
                                     }
-
-                                    //if (self.state.firstCurrency === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID ) {
-                                    // comment code by devang parekh 
-                                    // no need to check again same condition because bal only come with singl coin information
-                                    /* if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID ) {
-                                        walletList[key].Balance = walletCoinDetail.Balance
-                                    } */
-
                                 });
 
                                 latestStateDetail.Wallet = walletList;
                                 latestStateDetail.socketBuyData = walletBalance;
 
-                                //self.setState({Wallet : walletList,socketBuyData:walletBalance})
                                 self.setState(latestStateDetail); // handle multiple change for state
                             }
 
-                        } else {
-                            //console.log(walletBalance)
                         }
 
                     }
-
                 }
 
             } catch (error) {
-                console.log("error", error)
+
             }
 
         });
@@ -272,7 +218,7 @@ class MarginTrading extends Component {
     // invoke After Compoent render
     componentDidMount() {
         //load Currency List        
-        //this.props.getCurrencyList();
+
         this.props.getMaringWalletList({});
 
     }
@@ -288,7 +234,7 @@ class MarginTrading extends Component {
 
     // invoke when component recive props
     componentWillReceiveProps(nextprops) {
-        //console.log("marginWalletList",nextprops.marginWalletList)
+
         if (nextprops.pairList.length && nextprops.pairList !== null && nextprops.pairList !== this.state.pairList) {
             // set Currency list if gets from API only          
             this.setState({
@@ -310,53 +256,25 @@ class MarginTrading extends Component {
             })
         }
 
-        /* if (nextprops.wallet && nextprops.wallet !== null) {
-            
-            //console.log("wallet ",nextprops.wallet);
-            if (nextprops.wallet.length !== 0) {
-                nextprops.wallet.map(value => {
-                    if (this.state.secondCurrency === value.CoinName) {
-                        this.setState({secondCurrencyBalance : value.Balance,
-                                       secondCurrencyWalletId : value.AccWalletID});
-                    }
-    
-                    if (this.state.firstCurrency === value.CoinName) {
-                        this.setState({firstCurrencyBalance : value.Balance,
-                                       firstCurrencyWalletId : value.AccWalletID});
-                    }
-                })
-            }
 
-            this.setState({
-                Wallet: nextprops.wallet
-            })
-            //console.log("inde first",this.state.firstCurrencyBalance);
-            //console.log("inde first",this.state.secondCurrencyBalance);
-        } */
 
         if (nextprops.marginWalletList && nextprops.marginWalletList !== null && nextprops.marginWalletList.length !== 0) {
 
             // code change by devang parekh for handle margin trading wallet changes
             // initialize default params
-            var firstCurrencyMarginDetail = {}, secondCurrencyMarginDetail = {}, secondCurrencyBalance = 0, secondCurrencyWalletId = 0, firstCurrencyBalance = 0, firstCurrencyWalletId = 0;
+            var secondCurrencyBalance = 0, secondCurrencyWalletId = 0, firstCurrencyBalance = 0, firstCurrencyWalletId = 0;
 
             nextprops.marginWalletList.map(value => {
                 if (this.state.secondCurrency === value.CoinName && value.WalletUsageType === AppConfig.marginTradingWalletId) {
-                    /* this.setState({secondCurrencyBalance : value.Balance,
-                                    secondCurrencyWalletId : value.AccWalletID,
-                                    secondCurrencyMarginDetail:value}); */
+
                     secondCurrencyBalance = value.Balance;
                     secondCurrencyWalletId = value.AccWalletID;
-                    secondCurrencyMarginDetail = value;
                 }
 
                 if (this.state.firstCurrency === value.CoinName && value.WalletUsageType === AppConfig.marginTradingWalletId) {
-                    /* this.setState({firstCurrencyBalance : value.Balance,
-                                    firstCurrencyWalletId : value.AccWalletID,
-                                    firstCurrencyMarginDetail:value}); */
+
                     firstCurrencyBalance = value.Balance;
                     firstCurrencyWalletId = value.AccWalletID;
-                    firstCurrencyMarginDetail = value;
                 }
             })
 
@@ -364,10 +282,10 @@ class MarginTrading extends Component {
                 Wallet: nextprops.marginWalletList,
                 firstCurrencyBalance: firstCurrencyBalance,
                 firstCurrencyWalletId: firstCurrencyWalletId,
-                //firstCurrencyMarginDetail : firstCurrencyMarginDetail,
+
                 secondCurrencyBalance: secondCurrencyBalance,
                 secondCurrencyWalletId: secondCurrencyWalletId,
-                //secondCurrencyMarginDetail : secondCurrencyMarginDetail,
+
             })
 
         }
@@ -381,9 +299,9 @@ class MarginTrading extends Component {
 
     setBuyOrders = (price, amount) => {
         var bulkBuyOrder = []
-        if ((price && price !== 0) && (amount && amount !== 0)) {
+        if ((price != 0) && (amount != 0)) {
             var total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8)
-            // bulkBuyOrder.push({"Price":price,"Amount":amount,"Total":total})    
+
             bulkBuyOrder.Price = price;
             bulkBuyOrder.Amount = amount;
             bulkBuyOrder.Total = total;
@@ -396,7 +314,7 @@ class MarginTrading extends Component {
 
     setSellOrders = (price, amount) => {
         var bulkSellOrder = []
-        if ((price && price !== 0) && (amount && amount !== 0)) {
+        if ((price != undefined && price != 0) && (amount != undefined && amount != 0)) {
             var total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8)
             bulkSellOrder.Price = price;
             bulkSellOrder.Amount = amount;
@@ -411,8 +329,6 @@ class MarginTrading extends Component {
     // function for change second currency 
     changeSecondCurrency(value) {
 
-        //if(this.state.currencyPair !== value.PairName) {
-
         if (this.state.secondCurrency !== value.Abbrevation || (this.state.displayFavourite && this.state.secondCurrency === value.Abbrevation)) {
 
             const pair = value.PairList[0].PairName
@@ -421,7 +337,6 @@ class MarginTrading extends Component {
             const UpDownBit = value.PairList[0].UpDownBit
             const takers = value.PairList[0].SellFees
             const makers = value.PairList[0].BuyFees
-            var pairs = '';
 
             const OldBaseCurrency = this.state.secondCurrency;
             const oldPair = this.state.currencyPair;
@@ -437,33 +352,26 @@ class MarginTrading extends Component {
                 bulkSellOrder: [],
                 bulkBuyOrder: []
             })
-            //console.log("AddPairSubscription",(new Date()));
+
             this.state.hubConnection.invoke('AddPairSubscription', pair, oldPair).catch(err => console.error("AddPairSubscription", err));
-            //console.log("AddMarketSubscription",(new Date()));
+
             this.state.hubConnection.invoke('AddMarketSubscription', value.Abbrevation, OldBaseCurrency).catch(err => console.error("AddMarketSubscription", err))
 
             // call All methods that are use in child components
             this.props.getMarketCapList({ Pair: pair, marginTrading: 1 });
-            //this.props.getActiveMyOpenOrderList({ Pair: pair, page: 1 });
-            //this.props.getActiveOpenOrderList({ Pair: pair });
-            //this.props.changeBuyPairSocket({ Pair: pair });
-            // this.props.changeSellPairSocket({ Pair: pair });
+
             this.props.getBuyerOrderList({ Pair: pair, marginTrading: 1 });
             this.props.getSellerOrderList({ Pair: pair, marginTrading: 1 });
             this.props.getChartData({ Pair: pair, Interval: '1m', marginTrading: 1 });
-            //this.props.getHoldingList({ Pair: pair });
+
             this.props.getMarketTradeHistory({ Pair: pair, marginTrading: 1 });
             this.props.getMarketDepth({ Pair: pair, marginTrading: 1 })
             this.props.getLeverageDetail({ firstCurrency: firstCurrency, secondCurrency: value.Abbrevation });
-            //this.props.getCurrentPrice({Pair: pair});
-            // this.props.changeMarketTradeSocketConnection({ Pair: pair });
-            //this.props.getTickersList({ Pair: pair })
-            //this.props.getVolumeData(this.state.secondCurrency)
-            //this.props.getPairList({ Pair: pair })
+
 
         }
 
-        //}
+
 
     }
 
@@ -475,7 +383,7 @@ class MarginTrading extends Component {
             const oldPair = this.state.currencyPair;
             const pair = value.PairName
             const pairId = value.PairId
-            //const currencies = pair.split('_');
+
             const firstCurrency = value.Abbrevation
             pairs = value.PairName
             this.setState({
@@ -488,7 +396,7 @@ class MarginTrading extends Component {
                 bulkSellOrder: [],
                 bulkBuyOrder: [],
             })
-            //console.log("AddPairSubscription",(new Date()));
+
             this.state.hubConnection.invoke('AddPairSubscription', pair, oldPair).catch(err => console.error("AddPairSubscription", err));
 
             const tempSecondCurrency = value.PairName.split('_')[1];
@@ -502,28 +410,19 @@ class MarginTrading extends Component {
             this.props.getLeverageDetail({ firstCurrency: firstCurrency, secondCurrency: this.state.secondCurrency });
 
         } else {
-            //const pair = this.state.firstCurrency + '/' + this.state.secondCurrency;
+
             this.setState({ currencyPair: pair })
         }
 
         // call All methods that are use in child components
         this.props.getMarketCapList({ Pair: pairs, marginTrading: 1 });
-        // this.props.getActiveMyOpenOrderList({ Pair: pairs, page: 1 });
-        //  this.props.getActiveOpenOrderList({ Pair: pairs });
-        //this.props.changeBuyPairSocket({ Pair: pairs });
-        //this.props.changeSellPairSocket({ Pair: pairs });
+
         this.props.getBuyerOrderList({ Pair: pairs, marginTrading: 1 });
         this.props.getSellerOrderList({ Pair: pairs, marginTrading: 1 });
         this.props.getChartData({ Pair: pairs, Interval: '1m', marginTrading: 1 });
-        //this.props.getHoldingList({ Pair: pairs });
+
         this.props.getMarketTradeHistory({ Pair: pairs, marginTrading: 1 });
         this.props.getMarketDepth({ Pair: pairs, marginTrading: 1 })
-
-        //this.props.getCurrentPrice({Pair: pairs});
-        //this.props.changeMarketTradeSocketConnection({ Pair: pairs }),
-        //this.props.getTickersList({ Pair: pairs })
-        //  this.props.getVolumeData(this.state.secondCurrency)
-        // this.props.getPairList({ Pair: pairs })
 
     }
 
@@ -553,8 +452,6 @@ class MarginTrading extends Component {
         const { width } = this.state;
         const isMobile = width < 768;
 
-        var secondCurrencyBalance = 0;
-        var firstCurrencyBalance = 0;
         var firstCurrencyWalletId = 0;
         var secondCurrencyWalletId = 0;
 
@@ -567,7 +464,6 @@ class MarginTrading extends Component {
                 secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID;
             } else {
                 this.state.secondCurrencyBalance = 0
-                secondCurrencyWalletId = 0;
             }
 
             if (firstCurrencyBal !== -1) {
@@ -575,7 +471,6 @@ class MarginTrading extends Component {
                 firstCurrencyWalletId = this.state.Wallet[firstCurrencyBal].AccWalletID
             } else {
                 this.state.firstCurrencyBalance = 0;
-                firstCurrencyWalletId = 0;
             }
 
             // code added by devang parekh for fetching only pair wallets detail like margin safety and profit
@@ -594,14 +489,11 @@ class MarginTrading extends Component {
 
         }
 
-        const { match } = this.props;
-        var currentBuyPrice = 0
-        var currentSellPrice = 0
         if (this.state.currentMarket) {
             this.state.currentMarket.map(value => {
                 if (value.firstCurrency == this.state.firstCurrency) {
-                    this.state.currentBuyPrice = value.BuyPrice,
-                        this.state.currentSellPrice = value.SellPrice
+                    this.state.currentBuyPrice = value.BuyPrice;
+                    this.state.currentSellPrice = value.SellPrice;
                 }
             })
         }
@@ -653,7 +545,7 @@ class MarginTrading extends Component {
                                             />
                                         </div>
                                     </Card>
-                                    {/* <div class="selectcoin" onClick={this.handleClickOpen}>Demo</div> */}
+
                                     <Dialog fullScreen
                                         open={this.state.open}
                                         onClose={this.handleClose}
@@ -664,7 +556,7 @@ class MarginTrading extends Component {
                                                     <CloseIcon />
                                                 </IconButton>
                                                 <h3>Markets</h3>
-                                                {/* <Button color="inherit" onClick={this.handleClose}>save</Button> */}
+
                                             </Toolbar>
                                         </AppBar>
                                         <div className="mt-70">
@@ -760,24 +652,7 @@ class MarginTrading extends Component {
                                         hubConnection={this.state.hubConnection}
                                         marginTrading={1} />
                                 </div>
-                                {/* <Card className="">
-                            <MobilePairList
-                                {...this.props} 
-                                    state={this.state}
-                                    pairData={this.state.pairList}
-                                    firstCurrency={this.state.firstCurrency}
-                                    secondCurrency={this.state.secondCurrency}
-                                    currencyPair={this.state.currencyPair}
-                                    displayFavouritePair={this.openFavourite} 
-                                    displayFavourite={this.state.displayFavourite} 
-                                    changePairs={this.changeCurrencyPair}
-                                    changeSecondCurrency={this.changeSecondCurrency}
-                                    hubConnection={this.state.hubConnection}
-                                    marginTrading={1}
-                                    autoHeightMin={218}
-                                    autoHeightMax={218}
-                                />
-                            </Card> */}
+
 
                             </TabContainer>}
                         </div>
@@ -935,23 +810,19 @@ const mapStateToProps = state => ({
 
 
 export default connect(mapStateToProps, {
-    //getCurrencyList,
+
     getMarketCapList,
-    //getActiveMyOpenOrderList,
-    //getActiveOpenOrderList,
+
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,
-    //getHoldingList,
-    //CHANGE_MARKET_TRADE_HISTORY_SOCKET,
+
     getTickersList,
     getMarketTradeHistory,
     getPairList,
-    //changeBuyPairSocket,
-    //changeSellPairSocket,
-    //changeMarketTradeSocketConnection,
+
     getVolumeData,
-    //getWallets,
+
     getCurrentPrice,
     getMarketDepth,
     getMaringWalletList,

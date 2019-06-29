@@ -12,7 +12,7 @@ import Tab from "@material-ui/core/Tab";
 // function for connect store
 import { connect } from "react-redux";
 
-//import { getCurrentPrice,getChargeList } from "Actions/Trade";
+
 
 //import  Limit Order type Component
 import LimitOrder from "./LimitOrders";
@@ -29,13 +29,7 @@ import SpotOrder from "./SpotOrder";
 // import for internationalization
 import IntlMessages from "Util/IntlMessages";
 
-//import { getWallets } from "Actions/Withdraw";
-
-//import Popover from '@material-ui/core/Popover';
-//import Typography from '@material-ui/core/Typography';
 import { findDOMNode } from 'react-dom';
-//import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-//import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
 class PlaceOrder extends Component {
@@ -61,20 +55,6 @@ class PlaceOrder extends Component {
 
   // invoke before Compoent render
   componentDidMount() {
-    // code changed by devang parekh for handling margin trading process
-    /* if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-    
-      this.props.getChargeList({marginTrading:1})
-      //load Currency List
-      //this.props.getCurrentPrice({ Pair: this.props.currencyPair,marginTrading:1 });    
-    
-    } else {
-
-      this.props.getChargeList({})
-      //load Currency List
-      //this.props.getCurrentPrice({ Pair: this.props.currencyPair });    
-      
-    } */
     
   }
 
@@ -93,42 +73,7 @@ class PlaceOrder extends Component {
   };
   componentWillReceiveProps(nextprops) {
 
-    /* if(nextprops.chargesList && nextprops.chargesList.length > 0){
-      nextprops.chargesList.map((value,key) =>{
-        
-        if(this.props.secondCurrency == value.WalletTypeName){
-          if(value.Charges.length > 0){
-            value.Charges.map((item,key1) =>{
-              if(item.TrnTypeId == 3){
-                this.setState({
-                  Takers:item.TakerCharge,
-                  Makers:item.MakerCharge,
-                  chargeCurrency:item.DeductWalletTypeName
-                })
-              }
-            })
-          }
-        }
-
-        if(this.props.firstCurrency == value.WalletTypeName){
-          if(value.Charges.length > 0){
-            value.Charges.map((item,key1) =>{
-              if(item.TrnTypeId == 3){
-                this.setState({
-                  firstCurrencyTakers:item.TakerCharge,
-                  firstCurrencyMakers:item.MakerCharge,
-                  firstCurrencyChargeCurrency:item.DeductWalletTypeName
-                })
-              }
-            })
-          }
-        }
-        
-      })
-      this.setState({
-        chargesList:nextprops.chargesList
-      })
-    } */
+    
     
     if(nextprops.currencyPair !== this.props.currencyPair){
       this.setState({
@@ -165,11 +110,11 @@ class PlaceOrder extends Component {
 
     return (
       <Fragment>
-        {/* {this.props.loading && <JbsSectionLoader />} */}
+       
         <div>
           <Row className="pt-0. pl-0 pr-15">
             <Col md={7} className="cooldexplsheader pr-0">
-              {/* <h4>{<IntlMessages id="trading.placeorder.label.title" />}</h4> */}
+             
               <AppBar
                 position="static"
                 className={classnames(
@@ -180,11 +125,9 @@ class PlaceOrder extends Component {
                 <Tabs
                   value={this.state.value}
                   onChange={this.handleChange}
-                  //indicatorColor="primary"
+                
                   textColor="primary"
                   fullWidth
-                  // scrollable
-                  // scrollButtons="off"
                 >
                   {<Tab
                     label={<IntlMessages id="trading.placeorder.label.limit" />}
@@ -232,57 +175,7 @@ class PlaceOrder extends Component {
               <div  className="mt-10 mr-10">
               <Link to="/app/pages/fees" className="float-right"><IntlMessages id="sidebar.fees" /></Link>
               
-              {/* <IntlMessages id="trading.placeorder.label.fee" /> (%) : 
-              <IntlMessages id="trading.placeorder.label.takers" /> {" " + this.state.Takers} {" "}
-              <IntlMessages id="trading.placeorder.label.makers" /> {" " + this.state.Makers} 
-             
-              <a href="javascript:void(0)" className="ml-10 mp-10" ref={node => { this.button = node; }} onClick={this.handleClickButton} >
-                <i className="material-icons">info</i>
-              </a>
-              <Popover open={this.state.open} anchorEl={this.state.anchorEl} anchorReference={"anchorEl"} anchorPosition={{ top: 300, left: 800 }}
-                onClose={this.handleClose}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center", }}
-                transformOrigin={{ vertical: "top", horizontal: "center", }} >
-                <Typography className="p-15">
-                  <div className="row">
-                      <div className="col-sm-12 font-weight-bold text-center">
-                        <IntlMessages id="trading.placeorder.label.fee" />
-                      </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-4 font-weight-bold">
-                    </div>
-                    <div className="col-sm-4 font-weight-bold">
-                      <IntlMessages id="trading.placeorder.label.takers" />
-                    </div>
-                    <div className="col-sm-4 font-weight-bold">
-                      <IntlMessages id="trading.placeorder.label.makers" />
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-4 font-weight-bold">
-                      {this.props.firstCurrency}
-                    </div>
-                    <div className="col-sm-4">
-                      {this.state.firstCurrencyTakers} 
-                    </div>
-                    <div className="col-sm-4">
-                      {this.state.firstCurrencyMakers} 
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-sm-4 font-weight-bold">
-                      {this.props.secondCurrency}
-                    </div>
-                    <div className="col-sm-4">
-                      {this.state.Takers} 
-                    </div>
-                    <div className="col-sm-4">
-                      {this.state.Makers} 
-                    </div>
-                  </div>
-                </Typography>
-              </Popover> */}
+              }
 
               </div>         
             </Col>
@@ -374,7 +267,7 @@ const mapStateToProps = ({ settings, currency, currentMarketCap/* ,chargeList */
   const { loading, buyOrderLoading, sellOrderLoading } = currency;
   const currentPrice = currentMarketCap.currentMarketCap;
   const lastPriceBit = currentMarketCap.lastPriceBit;
-  //const {chargesList} = chargeList;
+  
   
   return { darkMode, currentPrice, loading, buyOrderLoading, sellOrderLoading,lastPriceBit /* ,chargesList */ };
 };
@@ -382,8 +275,6 @@ const mapStateToProps = ({ settings, currency, currentMarketCap/* ,chargeList */
 export default connect(
   mapStateToProps,
   {
-    //getCurrentPrice,
-    //getWallets,
-    //getChargeList
+    
   }
 )(PlaceOrder);

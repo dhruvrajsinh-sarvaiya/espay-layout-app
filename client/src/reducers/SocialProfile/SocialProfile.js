@@ -79,14 +79,13 @@ import {
     GET_WATCHLIST,
     GET_WATCHLIST_SUCCESS,
     GET_WATCHLIST_FAILURE,
-    
+
     //Get Leader watchlist
     GET_LEADER_WATCH_LIST,
     GET_LEADER_WATCH_LIST_SUCCESS,
     GET_LEADER_WATCH_LIST_FAILURE,
 
 } from 'Actions/types';
-
 
 /*
 * Initial State
@@ -101,63 +100,52 @@ const INIT_STATE = {
     leaderData: [],
     followerData: [],
     subscriptionData: [],
-    watchlst : [],
-    watchGrpData : [],
-    watchData : [],
-    getLeaderWatchlist : [],
+    watchlst: [],
+    watchGrpData: [],
+    watchData: [],
+    getLeaderWatchlist: [],
     subscribeData: {}
 }
 
 //Check Action for Complain...
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         //Get Leader Profile Configuration..
+        //Edit Leader Profile Configuration..
         case GET_LEADER_CONFIG:
-            return { ...state, loading: true, leaderData : '' };
+        case EDIT_LEADER_CONFIG:
+            return { ...state, loading: true, leaderData: '' };
 
         case GET_LEADER_CONFIG_SUCCESS:
-            return { ...state, loading: false, leaderData: action.payload };
-
-        case GET_LEADER_CONFIG_FAILURE:
-            return { ...state, loading: false, leaderData: action.payload };
-
-        //Edit Leader Profile Configuration..
-        case EDIT_LEADER_CONFIG:
-            return { ...state, loading: true, leaderData : '' };
-
-        case EDIT_LEADER_CONFIG_SUCCESS:
-            return { ...state, loading: false, leaderData: action.payload };
-
         case EDIT_LEADER_CONFIG_FAILURE:
+        case EDIT_LEADER_CONFIG_SUCCESS:
+        case GET_LEADER_CONFIG_FAILURE:
             return { ...state, loading: false, leaderData: action.payload };
 
         //Get Follower Profile Configuration..
         case GET_FOLLOWER_CONFIG:
-            return { ...state, loading: true, followerData : '' };
+            return { ...state, loading: true, followerData: '' };
 
         case GET_FOLLOWER_CONFIG_SUCCESS:
-            return { ...state, loading: false, followerData: action.payload };
-
         case GET_FOLLOWER_CONFIG_FAILURE:
             return { ...state, loading: false, followerData: action.payload };
 
         //Edit Follower Profile Configuration..
         case EDIT_FOLLOWER_CONFIG:
-            return { ...state, loading: true, followerData : '' };
+            return { ...state, loading: true, followerData: '' };
 
         case EDIT_FOLLOWER_CONFIG_SUCCESS:
-            return { ...state, loading: false, followerData: action.payload };
-
         case EDIT_FOLLOWER_CONFIG_FAILURE:
             return { ...state, loading: false, followerData: action.payload };
 
         //Get Social Profile Subscription...
         case GET_SOCIAL_PROFILE_SUBSCRIPTION:
-            return { ...state, loading: true, subscribeData : '', subscriptionData : '' };
+            return { ...state, loading: true, subscribeData: '', subscriptionData: '' };
 
         case GET_SOCIAL_PROFILE_SUBSCRIPTION_SUCCESS:
-            return { ...state, loading: false, subscriptionData: action.payload };
-
         case GET_SOCIAL_PROFILE_SUBSCRIPTION_FAILURE:
             return { ...state, loading: false, subscriptionData: action.payload };
 
@@ -166,8 +154,6 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case SOCIAL_PROFILE_SUBSCRIBE_SUCCESS:
-            return { ...state, loading: false, subscribeData: action.payload };
-
         case SOCIAL_PROFILE_SUBSCRIBE_FAILURE:
             return { ...state, loading: false, subscribeData: action.payload };
 
@@ -176,98 +162,78 @@ export default (state = INIT_STATE, action) => {
             return { ...state, loading: true };
 
         case SOCIAL_PROFILE_UNSUBSCRIBE_SUCCESS:
-            return { ...state, loading: false, subscribeData: action.payload };
-
         case SOCIAL_PROFILE_UNSUBSCRIBE_FAILURE:
             return { ...state, loading: false, subscribeData: action.payload };
 
         //Get Leader List...
         case GET_LEADER_LIST:
-            return { ...state, loading: true, getLeaderList : [], response : [] };
+            return { ...state, loading: true, getLeaderList: [], response: [] };
 
         case GET_LEADER_LIST_SUCCESS:
-            return { ...state, loading: false, getLeaderList: action.payload };
-
         case GET_LEADER_LIST_FAILURE:
             return { ...state, loading: false, getLeaderList: action.payload };
 
         //Get Follower List...
         case GET_FOLLOWER_LIST:
-            return { ...state, loading: true, getFollowerList : [] };
+            return { ...state, loading: true, getFollowerList: [] };
 
         case GET_FOLLOWER_LIST_SUCCESS:
-            return { ...state, loading: false, getFollowerList: action.payload };
-
         case GET_FOLLOWER_LIST_FAILURE:
             return { ...state, loading: false, getFollowerList: action.payload };
 
         //Get Leader Follow By ID...
         case GET_LEADER_FOLLOW_BY_ID:
-            return { ...state, loading: true, followerData : [] };
+            return { ...state, loading: true, followerData: [] };
 
         case GET_LEADER_FOLLOW_BY_ID_SUCCESS:
-            return { ...state, loading: false, followerData: action.payload };
-
         case GET_LEADER_FOLLOW_BY_ID_FAILURE:
             return { ...state, loading: false, followerData: action.payload };
 
         //Unfollow Leader...
         case UNFOLLOW_LEADER:
-            return { ...state, loading: true, response : [] };
+            return { ...state, loading: true, response: [] };
 
         case UNFOLLOW_LEADER_SUCCESS:
-            return { ...state, loading: false, response: action.payload };
-
         case UNFOLLOW_LEADER_FAILURE:
             return { ...state, loading: false, response: action.payload };
 
         //Add Watchlist Group...
         case ADD_WATCHLIST_GROUP:
-            return { ...state, loading: true, response : [] };
+            return { ...state, loading: true, response: [] };
 
         case ADD_WATCHLIST_GROUP_SUCCESS:
-            return { ...state, loading: false, response: action.payload };
-
         case ADD_WATCHLIST_GROUP_FAILURE:
             return { ...state, loading: false, response: action.payload };
 
         //Add Watchlist...
         case ADD_WATCHLIST:
-            return { ...state, loading: true, response : [] };
+            return { ...state, loading: true, response: [] };
 
         case ADD_WATCHLIST_SUCCESS:
-            return { ...state, loading: false, response: action.payload };
-
         case ADD_WATCHLIST_FAILURE:
             return { ...state, loading: false, response: action.payload };
 
         //Remove Watchlist...
         case REMOVE_WATCHLIST:
-            return { ...state, loading: true, response : [] };
+            return { ...state, loading: true, response: [] };
 
         case REMOVE_WATCHLIST_SUCCESS:
-            return { ...state, loading: false, response: action.payload };
-
         case REMOVE_WATCHLIST_FAILURE:
             return { ...state, loading: false, response: action.payload };
 
         //Get Watchlist...
         case GET_WATCHLIST:
-            return { ...state, loading: true, watchlst : [], response : [] };
+            return { ...state, loading: true, watchlst: [], response: [] };
 
         case GET_WATCHLIST_SUCCESS:
-            return { ...state, loading: false, watchlst: action.payload };
-
         case GET_WATCHLIST_FAILURE:
             return { ...state, loading: false, watchlst: action.payload };
 
         //Get Leader watchlist...
         case GET_LEADER_WATCH_LIST:
-            return { ...state, loading: true, getLeaderWatchlist : [], response : [] };
+            return { ...state, loading: true, getLeaderWatchlist: [], response: [] };
 
         case GET_LEADER_WATCH_LIST_SUCCESS:
-            return { ...state, loading: false, getLeaderWatchlist: action.payload };
-
         case GET_LEADER_WATCH_LIST_FAILURE:
             return { ...state, loading: false, getLeaderWatchlist: action.payload };
 

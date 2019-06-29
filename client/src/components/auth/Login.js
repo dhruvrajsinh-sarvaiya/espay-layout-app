@@ -74,7 +74,6 @@ class Login extends Component {
                   placeholder="Password"
                   name="password"
                   type="password"
-                  // value={this.state.password} //Added By Bharat Jograna
                   onChange={this.onChange}
                   error={errors.password}
                 />

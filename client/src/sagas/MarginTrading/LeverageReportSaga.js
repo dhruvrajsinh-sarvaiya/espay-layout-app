@@ -5,9 +5,9 @@
  */
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { swaggerGetAPI,swaggerPostAPI } from 'Helpers/helpers';
+import { swaggerGetAPI, swaggerPostAPI } from 'Helpers/helpers';
 
-import { GET_LEVERAGE_REPORT_LIST ,UPGRADE_LOAN} from "Actions/types";
+import { GET_LEVERAGE_REPORT_LIST, UPGRADE_LOAN } from "Actions/types";
 import {
     getLeverageReportListSuccess,
     getLeverageReportListFailure,
@@ -35,8 +35,6 @@ function* getLeverageReportListDetails(payload) {
         if (request.hasOwnProperty("WalletTypeId") && request.WalletTypeId != "") {
             url += '&WalletTypeId=' + request.WalletTypeId;
         }
-        // delete request.PageNo;
-        // delete request.PageSize;
         const response = yield call(swaggerGetAPI, url, request, headers);
         if (response.ReturnCode === 0) {
             yield put(getLeverageReportListSuccess(response));
@@ -52,24 +50,24 @@ function* getLeverageReportList() {
     yield takeEvery(GET_LEVERAGE_REPORT_LIST, getLeverageReportListDetails);
 }
 
-function* getUpdateFromApi( payload ) {
+function* getUpdateFromApi(payload) {
     var request = payload.payload;
-        var headers = { 'Authorization': AppConfig.authorizationToken };
-        var url ="api/MarginWallet/UpgradeLoan?"
-        if (request.hasOwnProperty("LoanID") && request.LoanID != "") {
-            url += '&LoanID=' + request.LoanID;
-        }
-        if (request.hasOwnProperty("LeverageX") && request.LeverageX != "") {
-            url += '&LeverageX=' + request.LeverageX;
-        }
-        const response = yield call(swaggerPostAPI,url ,request, headers);
-        try{
+    var headers = { 'Authorization': AppConfig.authorizationToken };
+    var url = "api/MarginWallet/UpgradeLoan?"
+    if (request.hasOwnProperty("LoanID") && request.LoanID != "") {
+        url += '&LoanID=' + request.LoanID;
+    }
+    if (request.hasOwnProperty("LeverageX") && request.LeverageX != "") {
+        url += '&LeverageX=' + request.LeverageX;
+    }
+    const response = yield call(swaggerPostAPI, url, request, headers);
+    try {
         if (response.ReturnCode === 0) {
             yield put(getUpgradeLoanSuccess(response));
         } else {
             yield put(getUpgradeLoanFailure(response));
         }
-    
+
     } catch (error) {
         yield put(getUpgradeLoanFailure(error));
     }

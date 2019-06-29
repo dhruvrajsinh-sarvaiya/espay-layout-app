@@ -1,10 +1,10 @@
 // Component for displaying Market Cap history Data By:Tejas Date : 12/9/2018
 
 import React from "react";
-import {Row, Col, Alert } from "reactstrap";
+import { Row, Col, Alert } from "reactstrap";
 
 //import section loader
-import JbsPropogateLoader from "Components/JbsPageLoader/JbsPropagateLoader";
+import JbsPropogateLoader from "Components/JbsPageLoader/JbsPropogateLoader";
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
@@ -68,7 +68,7 @@ class CurrentMarket extends React.Component {
                             this.state.socketData.length === 0) ||
                         (this.state.socketData.length !== 0 &&
                             marketCap.EventTime >
-                                this.state.socketData.EventTime)
+                            this.state.socketData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -83,7 +83,7 @@ class CurrentMarket extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
 
@@ -98,7 +98,7 @@ class CurrentMarket extends React.Component {
                             this.state.socketLastPriceData.length === 0) ||
                         (this.state.socketLastPriceData.length !== 0 &&
                             marketCap.EventTime >
-                                this.state.socketLastPriceData.EventTime)
+                            this.state.socketLastPriceData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -113,7 +113,7 @@ class CurrentMarket extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
     }
@@ -131,7 +131,7 @@ class CurrentMarket extends React.Component {
                             this.state.socketData.length === 0) ||
                         (this.state.socketData.length !== 0 &&
                             marketCap.EventTime >
-                                this.state.socketData.EventTime)
+                            this.state.socketData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -163,7 +163,7 @@ class CurrentMarket extends React.Component {
                             this.state.socketLastPriceData.length === 0) ||
                         (this.state.socketLastPriceData.length !== 0 &&
                             marketCap.EventTime >
-                                this.state.socketLastPriceData.EventTime)
+                            this.state.socketLastPriceData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -178,7 +178,7 @@ class CurrentMarket extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
     }
@@ -201,15 +201,15 @@ class CurrentMarket extends React.Component {
                 oldMarketCapData: this.props.currentMarket,
                 currentMarket: nextprops.currentMarketCap,
                 showLoader: false,
-                lastPrice:nextprops.currentMarketCap.LastPrice ? nextprops.currentMarketCap.LastPrice : 0
+                lastPrice: nextprops.currentMarketCap.LastPrice ? nextprops.currentMarketCap.LastPrice : 0
             });
         }
     }
 
     // Render Component for Current MArket List
     render() {
-        
-        var price = 0;
+
+        var price = null;
 
         // get price and old price
         if (
@@ -234,93 +234,93 @@ class CurrentMarket extends React.Component {
                             <JbsPropogateLoader loading={this.props.loading} />
                         )}
                         <Col xs={12} className="Mobilecurrentmarkettop">
-                        <Row>
-                            <Col xs={6} className="mobileupdown">
-                                {this.state.upDownBit ? (
-                                    <span className="text-center text-success">
-                                        {parseFloat(price).toFixed(8)}{" "}
-                                        <i className="ti-arrow-up" />
-                                    </span>
-                                ) : (
-                                    <span className="text-center text-danger">
-                                        {parseFloat(price).toFixed(8)}{" "}
-                                        <i className="ti-arrow-down" />{" "}
-                                    </span>
-                                )}
-                            </Col>
-                            <Col xs={6}>
-                                <p>{
+                            <Row>
+                                <Col xs={6} className="mobileupdown">
+                                    {this.state.upDownBit ? (
+                                        <span className="text-center text-success">
+                                            {parseFloat(price).toFixed(8)}{" "}
+                                            <i className="ti-arrow-up" />
+                                        </span>
+                                    ) : (
+                                            <span className="text-center text-danger">
+                                                {parseFloat(price).toFixed(8)}{" "}
+                                                <i className="ti-arrow-down" />{" "}
+                                            </span>
+                                        )}
+                                </Col>
+                                <Col xs={6}>
+                                    <p>{
                                         <IntlMessages id="trading.marketcap.label.24hchange" />
                                     }
-                                </p>
-                                <h3
-                                    className={
-                                        this.state.Change24 <
-                                        this.state.currentMarket.Change24
-                                            ? "text-success"
-                                            : "text-danger"
-                                    }
-                                >
-                                    {this.state.currentMarket.Change24 !==
-                                    undefined
-                                        ? parseFloat(
+                                    </p>
+                                    <h3
+                                        className={
+                                            this.state.Change24 <
+                                                this.state.currentMarket.Change24
+                                                ? "text-success"
+                                                : "text-danger"
+                                        }
+                                    >
+                                        {this.state.currentMarket.Change24 !==
+                                            undefined
+                                            ? parseFloat(
                                                 this.state.currentMarket
                                                     .Change24
                                             ).toFixed(8)
-                                        : 0}
-                                </h3>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col xs={4}> 
-                                <p>
-                                    {
-                                        <IntlMessages id="trading.marketcap.label.24hhigh" />
-                                    }
-                                </p>
-                                <h3>
-                                    {this.state.currentMarket.High24 !==
-                                    undefined
-                                        ? parseFloat(
+                                            : 0}
+                                    </h3>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={4}>
+                                    <p>
+                                        {
+                                            <IntlMessages id="trading.marketcap.label.24hhigh" />
+                                        }
+                                    </p>
+                                    <h3>
+                                        {this.state.currentMarket.High24 !==
+                                            undefined
+                                            ? parseFloat(
                                                 this.state.currentMarket
                                                     .High24
                                             ).toFixed(8)
-                                        : 0}
-                                </h3>
-                            </Col>
-                            <Col xs={4}> 
-                                <p>
-                                    {
-                                        <IntlMessages id="trading.marketcap.label.24hlow" />
-                                    }
-                                </p>
-                                <h3>
-                                    {this.state.currentMarket.Low24 !==
-                                    undefined
-                                        ? parseFloat(
+                                            : 0}
+                                    </h3>
+                                </Col>
+                                <Col xs={4}>
+                                    <p>
+                                        {
+                                            <IntlMessages id="trading.marketcap.label.24hlow" />
+                                        }
+                                    </p>
+                                    <h3>
+                                        {this.state.currentMarket.Low24 !==
+                                            undefined
+                                            ? parseFloat(
                                                 this.state.currentMarket.Low24
                                             ).toFixed(8)
-                                        : 0}
-                                </h3>
-                            </Col>
-                            <Col xs={4}> 
-                                <p>
-                                    {
-                                        <IntlMessages id="trading.marketcap.label.24hvoulme" />
-                                    }
-                                </p>
-                                <h3>
-                                    {this.state.currentMarket.Volume24 !==
-                                    undefined
-                                        ? parseFloat(
+                                            : 0}
+                                    </h3>
+                                </Col>
+                                <Col xs={4}>
+                                    <p>
+                                        {
+                                            <IntlMessages id="trading.marketcap.label.24hvoulme" />
+                                        }
+                                    </p>
+                                    <h3>
+                                        {this.state.currentMarket.Volume24 !==
+                                            undefined
+                                            ? parseFloat(
                                                 this.state.currentMarket
                                                     .Volume24
                                             ).toFixed(8)
-                                        : 0}
-                                </h3>
-                            </Col>
-                        </Row>
-                            
+                                            : 0}
+                                    </h3>
+                                </Col>
+                            </Row>
+
                         </Col>
                         <Col md={12}>
                             <ul className="currentmarkettop">
@@ -331,12 +331,12 @@ class CurrentMarket extends React.Component {
                                             <i className="ti-arrow-up" /> <p />
                                         </span>
                                     ) : (
-                                        <span className="text-center text-danger">
-                                            {parseFloat(price).toFixed(8)}{" "}
-                                            <i className="ti-arrow-down" />{" "}
-                                            <p />
-                                        </span>
-                                    )}
+                                            <span className="text-center text-danger">
+                                                {parseFloat(price).toFixed(8)}{" "}
+                                                <i className="ti-arrow-down" />{" "}
+                                                <p />
+                                            </span>
+                                        )}
                                 </li>
                                 <li>
                                     <p>
@@ -348,17 +348,17 @@ class CurrentMarket extends React.Component {
                                     <h3
                                         className={
                                             this.state.Change24 <
-                                            this.state.currentMarket.Change24
+                                                this.state.currentMarket.Change24
                                                 ? "text-success"
                                                 : "text-danger"
                                         }
                                     >
                                         {this.state.currentMarket.Change24 !==
-                                        undefined
+                                            undefined
                                             ? parseFloat(
-                                                  this.state.currentMarket
-                                                      .Change24
-                                              ).toFixed(8)
+                                                this.state.currentMarket
+                                                    .Change24
+                                            ).toFixed(8)
                                             : 0}
                                     </h3>
                                 </li>
@@ -370,11 +370,11 @@ class CurrentMarket extends React.Component {
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.High24 !==
-                                        undefined
+                                            undefined
                                             ? parseFloat(
-                                                  this.state.currentMarket
-                                                      .High24
-                                              ).toFixed(8)
+                                                this.state.currentMarket
+                                                    .High24
+                                            ).toFixed(8)
                                             : 0}
                                     </h3>
                                 </li>
@@ -387,10 +387,10 @@ class CurrentMarket extends React.Component {
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.Low24 !==
-                                        undefined
+                                            undefined
                                             ? parseFloat(
-                                                  this.state.currentMarket.Low24
-                                              ).toFixed(8)
+                                                this.state.currentMarket.Low24
+                                            ).toFixed(8)
                                             : 0}
                                     </h3>
                                 </li>
@@ -402,11 +402,11 @@ class CurrentMarket extends React.Component {
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.Volume24 !==
-                                        undefined
+                                            undefined
                                             ? parseFloat(
-                                                  this.state.currentMarket
-                                                      .Volume24
-                                              ).toFixed(8)
+                                                this.state.currentMarket
+                                                    .Volume24
+                                            ).toFixed(8)
                                             : 0}
                                     </h3>
                                 </li>
@@ -414,16 +414,16 @@ class CurrentMarket extends React.Component {
                         </Col>
                     </div>
                 ) : (
-                    <div>
-                        <span>
-                            <Alert color="danger" className="text-center fs-32">
-                                {
-                                    <IntlMessages id="trading.marketcap.label.nodata" />
-                                }
-                            </Alert>
-                        </span>
-                    </div>
-                )}
+                        <div>
+                            <span>
+                                <Alert color="danger" className="text-center fs-32">
+                                    {
+                                        <IntlMessages id="trading.marketcap.label.nodata" />
+                                    }
+                                </Alert>
+                            </span>
+                        </div>
+                    )}
             </div>
         );
     }

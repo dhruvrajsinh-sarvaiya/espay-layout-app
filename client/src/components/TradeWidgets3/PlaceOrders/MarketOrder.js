@@ -93,7 +93,7 @@ class MarketOrder extends React.Component {
                     this.setState({
                         totalBuy: parseFloat(
                             parseFloat(this.state.amountBuy) *
-                                parseFloat(event.target.value)
+                            parseFloat(event.target.value)
                         ).toFixed(8),
                         isTotalBuyValid: true,
                     });
@@ -141,13 +141,11 @@ class MarketOrder extends React.Component {
                 ),
                 lastPriceBit: nextprops.lastPriceBit,
                 amountBuy: "",
-                //totalBuy:"",
                 amountSell: "",
-                //totalSell:""
             });
         }
 
-        if (typeof nextprops.buyOrder.response !== undefined) {
+        if (nextprops.buyOrder.response !== undefined) {
             if (this.state.buyMarketOrderBit) {
                 if (
                     nextprops.buyOrder.statusCode === 200 &&
@@ -190,7 +188,7 @@ class MarketOrder extends React.Component {
                 <IntlMessages
                     id={`error.trading.transaction.${
                         nextprops.error.ErrorCode
-                    }`}
+                        }`}
                 />
             );
 
@@ -250,7 +248,7 @@ class MarketOrder extends React.Component {
                 <IntlMessages
                     id={`error.trading.transaction.${
                         nextprops.error.ErrorCode
-                    }`}
+                        }`}
                 />
             );
 
@@ -281,7 +279,7 @@ class MarketOrder extends React.Component {
                     this.setState({
                         totalBuy: parseFloat(
                             parseFloat(event.target.value) *
-                                parseFloat(this.state.priceBuy)
+                            parseFloat(this.state.priceBuy)
                         ).toFixed(8),
                         isTotalBuyValid: true,
                     });
@@ -306,7 +304,6 @@ class MarketOrder extends React.Component {
     };
 
     validateBuyTotal = (event) => {
-        //  console.log(event.target.value);
         if (validateOnlyNumeric(event.target.value)) {
             this.setState({ totalBuy: event.target.value });
 
@@ -323,7 +320,7 @@ class MarketOrder extends React.Component {
                     this.setState({
                         amountBuy: parseFloat(
                             parseFloat(event.target.value) /
-                                parseFloat(this.state.priceBuy)
+                            parseFloat(this.state.priceBuy)
                         ).toFixed(8),
                         isAmountBuyValid: true,
                     });
@@ -347,7 +344,6 @@ class MarketOrder extends React.Component {
     };
 
     validateSellPrice = (event) => {
-        //    console.log(event.target.value);
         if (validateOnlyNumeric(event.target.value)) {
             this.setState({ priceSell: event.target.value });
 
@@ -363,7 +359,7 @@ class MarketOrder extends React.Component {
                     this.setState({
                         totalSell: parseFloat(
                             parseFloat(this.state.amountSell) *
-                                parseFloat(event.target.value)
+                            parseFloat(event.target.value)
                         ).toFixed(8),
                         isTotalSellValid: true,
                     });
@@ -384,7 +380,6 @@ class MarketOrder extends React.Component {
     };
 
     validateSellAmount = (event) => {
-        //     console.log(event.target.value);
         if (validateOnlyNumeric(event.target.value)) {
             const { isValid, errors } = validateSellAmount(event.target.value);
 
@@ -399,7 +394,7 @@ class MarketOrder extends React.Component {
                     this.setState({
                         totalSell: parseFloat(
                             parseFloat(event.target.value) *
-                                parseFloat(this.state.priceSell)
+                            parseFloat(this.state.priceSell)
                         ).toFixed(8),
                         isTotalSellValid: true,
                     });
@@ -424,7 +419,6 @@ class MarketOrder extends React.Component {
     };
 
     validateSellTotal = (event) => {
-        //  console.log(event.target.value);
         if (validateOnlyNumeric(event.target.value)) {
             this.setState({ totalSell: event.target.value });
 
@@ -441,7 +435,7 @@ class MarketOrder extends React.Component {
                     this.setState({
                         amountSell: parseFloat(
                             parseFloat(event.target.value) /
-                                parseFloat(this.state.priceSell)
+                            parseFloat(this.state.priceSell)
                         ).toFixed(8),
                         isAmountSellValid: true,
                     });
@@ -466,7 +460,6 @@ class MarketOrder extends React.Component {
 
     changeSelectedBuyValue = (value) => {
         if (this.state.selectedBuyValue === value) {
-        } else {
             if (
                 this.state.priceBuy !== "" &&
                 this.state.isPriceBuyValid &&
@@ -476,7 +469,7 @@ class MarketOrder extends React.Component {
                 var total = parseFloat(
                     parseFloat(
                         parseFloat(this.props.secondCurrencyBalance) *
-                            parseFloat(value)
+                        parseFloat(value)
                     ) / 100
                 ).toFixed(8);
                 this.setState({
@@ -500,7 +493,6 @@ class MarketOrder extends React.Component {
 
     changeSelectedSellValue = (value) => {
         if (this.state.selectedSellValue === value) {
-        } else {
             if (
                 this.state.priceSell !== "" &&
                 this.state.isPriceSellValid &&
@@ -510,7 +502,7 @@ class MarketOrder extends React.Component {
                 var amount = parseFloat(
                     parseFloat(
                         parseFloat(this.props.firstCurrencyBalance) *
-                            parseFloat(value)
+                        parseFloat(value)
                     ) / 100
                 ).toFixed(8);
                 this.setState({
@@ -537,7 +529,7 @@ class MarketOrder extends React.Component {
         const info = this.props.info;
         if (
             this.state.priceSell === "" ||
-            typeof this.state.priceSell === undefined ||
+            typeof this.state.priceSell === 'undefined' ||
             this.state.priceSell === 0
         ) {
             this.setState({ showLoader: false, sellMarketOrderBit: 0 });
@@ -546,7 +538,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.state.amountSell === "" ||
-            typeof this.state.amountSell === undefined ||
+            typeof this.state.amountSell === 'undefined' ||
             this.state.amountSell === 0
         ) {
             this.setState({ showLoader: false, sellMarketOrderBit: 0 });
@@ -555,7 +547,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             info.currencyPairID === "" ||
-            typeof info.currencyPairID === undefined ||
+            typeof info.currencyPairID === 'undefined' ||
             info.currencyPairID === 0
         ) {
             this.setState({ showLoader: false, sellMarketOrderBit: 0 });
@@ -564,7 +556,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.props.secondCurrencyWalletId === "" ||
-            typeof this.props.secondCurrencyWalletId === undefined ||
+            typeof this.props.secondCurrencyWalletId === 'undefined' ||
             this.props.secondCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, sellMarketOrderBit: 0 });
@@ -573,7 +565,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.props.firstCurrencyWalletId === "" ||
-            typeof this.props.firstCurrencyWalletId === undefined ||
+            typeof this.props.firstCurrencyWalletId === 'undefined' ||
             this.props.firstCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, sellMarketOrderBit: 0 });
@@ -641,8 +633,6 @@ class MarketOrder extends React.Component {
                         buyMarketOrderBit: 0,
                     });
 
-                    //this.props.doSellOrder(data);
-
                     if (
                         this.state.amountSell <= this.props.firstCurrencyBalance
                     ) {
@@ -674,7 +664,7 @@ class MarketOrder extends React.Component {
 
         if (
             this.state.priceBuy === "" ||
-            typeof this.state.priceBuy === undefined ||
+            typeof this.state.priceBuy === 'undefined' ||
             this.state.priceBuy === 0
         ) {
             this.setState({ showLoader: false, buyMarketOrderBit: 0 });
@@ -683,7 +673,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.state.amountBuy === "" ||
-            typeof this.state.amountBuy === undefined ||
+            typeof this.state.amountBuy === 'undefined' ||
             this.state.amountBuy === 0
         ) {
             this.setState({ showLoader: false, buyMarketOrderBit: 0 });
@@ -692,7 +682,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.state.totalBuy === "" ||
-            typeof this.state.totalBuy === undefined ||
+            typeof this.state.totalBuy === 'undefined' ||
             this.state.totalBuy === 0
         ) {
             this.setState({ showLoader: false, buyMarketOrderBit: 0 });
@@ -701,7 +691,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             info.currencyPairID === "" ||
-            typeof info.currencyPairID === undefined ||
+            typeof info.currencyPairID === 'undefined' ||
             info.currencyPairID === 0
         ) {
             this.setState({ showLoader: false, buyMarketOrderBit: 0 });
@@ -710,7 +700,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.props.secondCurrencyWalletId === "" ||
-            typeof this.props.secondCurrencyWalletId === undefined ||
+            typeof this.props.secondCurrencyWalletId === 'undefined' ||
             this.props.secondCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, buyMarketOrderBit: 0 });
@@ -719,7 +709,7 @@ class MarketOrder extends React.Component {
             );
         } else if (
             this.props.firstCurrencyWalletId === "" ||
-            typeof this.props.firstCurrencyWalletId === undefined ||
+            typeof this.props.firstCurrencyWalletId === 'undefined' ||
             this.props.firstCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, buyMarketOrderBit: 0 });
@@ -816,7 +806,6 @@ class MarketOrder extends React.Component {
         const data = this.props.info;
         return (
             <div className="col-sm-12 p-0 d-flex pb-30">
-                {/* {this.props.loading && <JbsSectionLoader />} */}
                 <div className="col-sm-6 comminborderright">
                     <div className="col-sm-12 ">
                         <div className="pl-0 pr-0 pt-5 pb-0 d-flex justify-content-between">
@@ -827,20 +816,20 @@ class MarketOrder extends React.Component {
                                 {data.firstCurrency}
                             </h4>
                             <p className="fs-14 mb-0">
-                            {this.props.marginTrading ? <AddMarginBalance
-                                {...this.props}
-                                widgetType={3}
-                                walletTypeName={data.secondCurrency}
-                                CurrencyBalance={this.props.secondCurrencyBalance ?
-                                parseFloat(this.props.secondCurrencyBalance).toFixed(8)
-                                : parseFloat(0).toFixed(8)
-                                } /> : <a href="javascript:void(0)">
-                                <i className="zmdi zmdi-balance-wallet">
-                                    {" "}
-                                    {this.props.secondCurrencyBalance ? parseFloat(this.props.secondCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
-                                    } <span>{data.secondCurrency}</span>
-                                </i>
-                                </a>}
+                                {this.props.marginTrading ? <AddMarginBalance
+                                    {...this.props}
+                                    widgetType={3}
+                                    walletTypeName={data.secondCurrency}
+                                    CurrencyBalance={this.props.secondCurrencyBalance ?
+                                        parseFloat(this.props.secondCurrencyBalance).toFixed(8)
+                                        : parseFloat(0).toFixed(8)
+                                    } /> : <a href="javascript:void(0)">
+                                        <i className="zmdi zmdi-balance-wallet">
+                                            {" "}
+                                            {this.props.secondCurrencyBalance ? parseFloat(this.props.secondCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
+                                            } <span>{data.secondCurrency}</span>
+                                        </i>
+                                    </a>}
                             </p>
                         </div>
 
@@ -853,7 +842,6 @@ class MarketOrder extends React.Component {
                                                 className="col-form-label"
                                                 for="Price"
                                             >
-                                                {/* <IntlMessages id="trading.placeorder.market.label.price" /> */}
                                                 <IntlMessages id="trading.placeorder.limit.label.price" />
                                             </Label>
                                         </Col>
@@ -908,7 +896,7 @@ class MarketOrder extends React.Component {
                                             type="text"
                                             disabled={
                                                 this.state.selectedBuyValue !==
-                                                0
+                                                    0
                                                     ? true
                                                     : false
                                             }
@@ -1117,20 +1105,20 @@ class MarketOrder extends React.Component {
                                 {data.firstCurrency}
                             </h4>
                             <p className="fs-14 mb-0">
-                            {this.props.marginTrading ? <AddMarginBalance
+                                {this.props.marginTrading ? <AddMarginBalance
                                     {...this.props}
                                     widgetType={3}
                                     walletTypeName={data.firstCurrency}
                                     CurrencyBalance={this.props.firstCurrencyBalance ?
-                                    parseFloat(this.props.firstCurrencyBalance).toFixed(8)
-                                    : parseFloat(0).toFixed(8)
+                                        parseFloat(this.props.firstCurrencyBalance).toFixed(8)
+                                        : parseFloat(0).toFixed(8)
                                     } /> :
                                     <a href="javascript:void(0)">
-                                    <i className="zmdi zmdi-balance-wallet">
-                                        {" "}
-                                        {this.props.firstCurrencyBalance ? parseFloat(this.props.firstCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
-                                        } <span>{data.firstCurrency}</span>
-                                    </i>
+                                        <i className="zmdi zmdi-balance-wallet">
+                                            {" "}
+                                            {this.props.firstCurrencyBalance ? parseFloat(this.props.firstCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
+                                            } <span>{data.firstCurrency}</span>
+                                        </i>
                                     </a>}
                             </p>
                         </div>
@@ -1192,7 +1180,7 @@ class MarketOrder extends React.Component {
                                             type="text"
                                             disabled={
                                                 this.state.selectedSellValue !==
-                                                0
+                                                    0
                                                     ? true
                                                     : false
                                             }
@@ -1372,17 +1360,17 @@ class MarketOrder extends React.Component {
                                                 {data.firstCurrency}
                                                 {this.props
                                                     .sellOrderLoading && (
-                                                    <CircularProgress
-                                                        size={18}
-                                                        style={{
-                                                            top: "5px",
-                                                            position:
-                                                                "absolute",
-                                                            right: "25px",
-                                                            color: "white",
-                                                        }}
-                                                    />
-                                                )}
+                                                        <CircularProgress
+                                                            size={18}
+                                                            style={{
+                                                                top: "5px",
+                                                                position:
+                                                                    "absolute",
+                                                                right: "25px",
+                                                                color: "white",
+                                                            }}
+                                                        />
+                                                    )}
                                             </Button>
                                         </Col>
                                     </Row>

@@ -7,8 +7,6 @@ import deviceParser from 'ua-parser-js';
 
 import api from '../api';
 
-import setAuthToken from '../utils/setAuthToken';
-
 //Added by salim
 import axios from 'axios';
 import { configureStore } from '../store';
@@ -62,8 +60,8 @@ export function textTruncate(str, length, ending) {
 /**
  * Get Date
  */
-export function getTheDate(timestamp, format, addBit) {
-    var timestamp = timestamp * 1000;
+export function getTheDate(timestmp, format, addBit) {
+    var timestamp = timestmp * 1000;
     let formatDate = format ? format : 'MM-DD-YYYY';
     // return moment(time).format(formatDate);
     if (addBit) {
@@ -114,9 +112,13 @@ export function getCookie(cname) {
  */
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    var expires = "expires=" + d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    if(exdays !== '') {
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    } else {
+        document.cookie = cname + "=" + cvalue + ";";
+    }
 }
 
 /**
@@ -130,11 +132,7 @@ export function getDeviceInfo() {
     var strDevice = deviceInfo.browser.name + '_' + deviceInfo.browser.version;
     strDevice = strDevice + '|' + deviceInfo.os.name + '_' + deviceInfo.os.version;
     strDevice = strDevice + '|' + deviceInfo.cpu.architecture;
-    /* strDevice = strDevice + '|' + deviceInfo.engine.name + '_' + deviceInfo.engine.version;
-    strDevice = strDevice + '|' + screen.colorDepth;
-    strDevice = strDevice + '|' + screen.pixelDepth;
-    strDevice = strDevice + '|' + screen.width;
-    strDevice = strDevice + '|' + screen.height; */
+  
 
     return strDevice;
 }
@@ -149,7 +147,7 @@ function getDeviceInfo2(callback) {
     device.pixelDepth = screen.pixelDepth;
     device.width = screen.width;
     device.height = screen.height;
-    //return device;
+   
     callback(device);
 }
 
@@ -157,23 +155,16 @@ function getDeviceInfo2(callback) {
 * get security token from api and stored in localstorage
 */
 export function setSessionToken() {
-    // var deviceInfo = getDeviceInfo2();
-    //console.log('here');
+   
     getDeviceInfo2(function (deviceInfo) {
-        //console.log(deviceInfo);
+        
         api.post('/public/generateToken', { data: deviceInfo })
             .then(function (response) {
-                // console.log("setSessionToken",response.data);
-                //console.log(response.data.data.token_id);
-                // localStorage.setItem('access_token', response.data.token);        
-                // localStorage.setItem('id_token', response.data.refreshToken);
+                
                 //Added by Devangbhai..
                 localStorage.setItem('front_access_token', response.data.tokenData.token);
                 localStorage.setItem('front_refresh_token', response.data.tokenData.refreshToken);
-                //return {accessToken:response.data.data.token_id, idToken: response.data.data.refresh_token_id}
-
-                //console.log('set jwt tokwn in header');
-                //setAuthToken(response.data.tokenData.token);
+                
                 ipAddress = response.data.ipAddress;
             })
             .catch(error => error, {});
@@ -242,7 +233,7 @@ async function nodeIPAddress() {
     } else {
         if (window.location.hostname === 'localhost' || ValidateIPaddress(window.location.hostname)) {
             _ipAddress = '45.116.123.43';
-            // } else if(ipAddress === '') {
+            
         } else {
             await api.get('/api/private/v1/sitesetting/getIpAddress')
                 .then(function (response) {
@@ -251,9 +242,7 @@ async function nodeIPAddress() {
                     }
                 })
                 .catch(error => error, {});
-        } /* else {
-            _ipAddress = ipAddress;
-        } */
+        } 
     }
 
     return _ipAddress;
@@ -264,8 +253,7 @@ async function nodeIPAddress() {
  * Function to get IP Address
  */
 export function getIPAddress() {
-    // return ipAddress; //'45.116.123.43'; //ip.address();
-    // return window.location.hostname === 'localhost' ? '45.116.123.43' : ipAddress;
+    
     return nodeIPAddress();
 }
 
@@ -285,7 +273,7 @@ function ValidateIPaddress(ipaddress) {
  * Function to get hostname
  */
 export function getHostName() {
-    //return 'paro'; //window.location.hostname;
+    
     return window.location.hostname === 'localhost' ? AppConfig.brandName : window.location.hostname;
 }
 
@@ -302,7 +290,7 @@ export function getMode() {
  * Function to 401 Error Token Expire
  */
 export function redirectToLogin() {
-    // localStorage.removeItem('tokenID');    
+       
     localStorage.removeItem('gen_access_token');
     localStorage.removeItem('gen_id_token');
     localStorage.removeItem('gen_refresh_token');
@@ -317,7 +305,7 @@ export function redirectToLogin() {
  * Function to refresh token
  */
 export function autoRefreshToken() {
-    // console.log('autoRefreshToken');
+    
     let store = configureStore();
 
     var now = new Date();
@@ -325,8 +313,7 @@ export function autoRefreshToken() {
 
     (function callRefreshFunction(NewTime) {
         setTimeout(function () {
-            // console.log('callRefreshFunction');
-            var now = new Date();
+             
             localStorage.setItem('timestamp', now.getTime() + AppConfig.refreshTokenInterval);
             store.dispatch({ type: 'REFRESH_TOKEN', payload: {} });
             callRefreshFunction(AppConfig.refreshTokenInterval);
@@ -338,8 +325,8 @@ export function autoRefreshToken() {
  * Added by salim
  * Function to Convert text to image
  */
-export function textToImage(textStr) {
-    var textStr = textStr.toUpperCase()
+export function textToImage(Str) {
+    var textStr = Str.toUpperCase()
     var tCtx = document.getElementById('textCanvas').getContext('2d');
     tCtx.canvas.width = tCtx.measureText(textStr).width + 50;
     tCtx.font = "12px Arial";
@@ -365,7 +352,7 @@ export function changeDateFormat(date, format, addBit = true) {
  * Function to After login generate localstorage variable
  */
 export function generateLocalStorageVariable(access_token, id_token, refresh_token = '') {
-    // localStorage.setItem('tokenID', tokenID);
+    
     localStorage.setItem('gen_access_token', access_token);
     localStorage.setItem('gen_id_token', id_token);
     if (refresh_token !== '') {
@@ -386,7 +373,7 @@ export const swaggerPostAPI = async (methodName, request, headers = {}) => {
     //added by salim dt:06/02/2019
     //Check internet connection.
     if(!checkInternet() && isCheckInternet) {
-        alert('Please check you internet connection.');
+        
         isCheckInternet = false;
         var closeInterval = setInterval(() => {
             if(checkInternet()) {
@@ -405,44 +392,23 @@ export const swaggerPostAPI = async (methodName, request, headers = {}) => {
         var responseData = await axios.post(AppConfig.myAccountSwaggerUrl + methodName, request)
             .then(response => JSON.parse(JSON.stringify(response)))
             .catch(error => JSON.parse(JSON.stringify(error.response)));
-        /* .interceptors.response.use(null, (error) => {
-            console.log('interceptors',error);
-        }); */
-        /* .catch(function (error) {
-            var errCode = statusErrCode();
-            var resError = JSON.parse(JSON.stringify(error.response));
-            var error = {};
-            console.log('swaggerPostAPI',resError);
-
-            if (errCode.includes(resError.status)) {
-                error = staticResponseObj(resError.status);
-            } else {
-                error = resError.data;
-            }
-            return error;
-        }); */
-        // console.log('Response :',responseData.status);
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
-        var response = {};
+        var responses = {};
         try {
-            //console.log('try',errCode.includes(responseData.status));
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
             } else if (errCode.includes(responseData.status)) {
-                response = staticResponseObj(responseData.status);
+                responses = staticResponseObj(responseData.status);
             } else {
-                response = responseData.data;
+                responses = responseData.data;
             }
 
         } catch (error) {
-            //console.log('catch',staticResponseObj(responseData.status));
-            response = staticResponseObj(responseData.status);
+            responses = staticResponseObj(responseData.status);
         }
-        response.statusCode = responseData.status;
-        // console.log('End Response :',response);
-        // delete axios.defaults.headers.common;
-        return response;
+        responses.statusCode = responseData.status;
+        return responses;
     }
 }
 
@@ -456,32 +422,16 @@ export const swaggerPostHeaderFormAPI = async (methodName, request) => {
     var responseData = await axios.post(AppConfig.myAccountSwaggerUrl + methodName, qs.stringify(request))
         .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => JSON.parse(JSON.stringify(error.response)));
-    /* .catch(function (error) {
-        var errCode = statusErrCode();
-        var resError = JSON.parse(JSON.stringify(error.response));
-        console.log('Catch',resError);
-        var error = {};
-
-        if (errCode.includes(resError.status)) {
-            error = staticResponseObj(resError.status);
-        } else {
-            error = resError.data;
-        }
-        return error;
-    }); */
-    //console.log('sdfdsf',responseData.status);
     const errCode = statusErrCode();
     const lgnErrCode = loginErrCode();
-    var response = {};
+    var rsp = {};
     try {
-        //console.log('try',errCode.includes(responseData.status));
         if (lgnErrCode.includes(responseData.status)) {
             redirectToLogin();
         } else if (errCode.includes(responseData.status)) {
-            response = staticResponseObj(responseData.status);
-            //console.log('if',response);
+            rsp = staticResponseObj(responseData.status);
         } else {
-            response = {
+            rsp = {
                 ReturnCode: 0,
                 ErrorCode: 0,
                 ReturnMsg: 'Success',
@@ -489,26 +439,24 @@ export const swaggerPostHeaderFormAPI = async (methodName, request) => {
                 refresh_token: responseData.data.refresh_token,
                 id_token: responseData.data.id_token
             }
-            //console.log('else',response);
         }
     } catch (error) {
-        //console.log('catch',staticResponseObj(responseData.status));
-        response = staticResponseObj(responseData.status);
+        rsp = staticResponseObj(responseData.status);
     }
-    response.statusCode = responseData.status;
-    return response;
+    rsp.statusCode = responseData.status;
+    return rsp;
 }
 
 /**
  * Added by salim (dt:27/10/2018)
  * Function to Swagger Get API
  */
-export const swaggerGetAPI = async (methodName, request, headers = {}) => {
+export const swaggerGetAPI = async (methodName, request, headers = {}, isPassCookie = false) => {
 
     //added by salim dt:06/02/2019
     //Check internet connection.
     if(!checkInternet() && isCheckInternet) {
-        alert('Please check you internet connection.');
+        
         isCheckInternet = false;
         var closeInterval = setInterval(() => {
             if(checkInternet()) {
@@ -518,6 +466,12 @@ export const swaggerGetAPI = async (methodName, request, headers = {}) => {
     } else if(!isCheckInternet) {
         return false;
     } else {
+        //Added by salim dt:19/06/2019
+        if(isPassCookie) {
+            axios.defaults.withCredentials = true;
+            headers.AuthTokenID = getCookie('SL_AuthTokenID');
+        }
+
         // code by devang parekh for getting latest token value in request
         if (typeof headers.Authorization !== 'undefined' && headers.Authorization !== '') {
             headers.Authorization = AppConfig.authorizationToken + localStorage.getItem('gen_access_token');
@@ -528,29 +482,22 @@ export const swaggerGetAPI = async (methodName, request, headers = {}) => {
             .then(response => JSON.parse(JSON.stringify(response)))
             .catch(error => JSON.parse(JSON.stringify(error.response)));
 
-        /* delete axios.defaults.headers.common; 
-        return responseData; */
-        // console.log('Response :',responseData);
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
-        var response = {};
+        var rsp = {};
         try {
-            //console.log('try',errCode.includes(responseData.status));
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
             } else if (errCode.includes(responseData.status)) {
-                response = staticResponseObj(responseData.status);
+                rsp = staticResponseObj(responseData.status);
             } else {
-                response = responseData.data;
+                rsp = responseData.data;
             }
         } catch (error) {
-            //console.log('catch',staticResponseObj(responseData.status));
-            response = staticResponseObj(responseData.status);
+            rsp = staticResponseObj(responseData.status);
         }
-        response.statusCode = responseData.status;
-        // console.log('End Response :',response);
-        // delete axios.defaults.headers.common;
-        return response;
+        rsp.statusCode = responseData.status;
+        return rsp;
     }
 }
 
@@ -604,7 +551,7 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
 
     //Check internet connection.
     if(!checkInternet() && isCheckInternet) {
-        alert('Please check you internet connection.');
+        
         isCheckInternet = false;
         var closeInterval = setInterval(() => {
             if(checkInternet()) {
@@ -621,14 +568,14 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
 
         axios.defaults.headers.common = headers;
         var responseData = await axios.delete(AppConfig.myAccountSwaggerUrl + methodName, request)
-            .then(response => JSON.parse(JSON.stringify(response)))
-            .catch(error => JSON.parse(JSON.stringify(error.response)));
+            .then(res => JSON.parse(JSON.stringify(res)))
+            .catch(error => JSON.parse(JSON.stringify(error.res)));
         
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
         var response = {};
         try {
-            //console.log('try',errCode.includes(responseData.status));
+            
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
             } else if (errCode.includes(responseData.status)) {
@@ -638,7 +585,7 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
             }
 
         } catch (error) {
-            //console.log('catch',staticResponseObj(responseData.status));
+            
             response = staticResponseObj(responseData.status);
         }
         response.statusCode = responseData.status;        
@@ -765,7 +712,7 @@ export function setSitesetting() {
 
                 //Add by Jayesh on 26-12-2018
                 localStorage.setItem('chat', btoa(JSON.stringify(setting.chatscript)));
-                //localStorage.setItem('ganalytics',btoa(JSON.stringify(setting.seo)));
+                
 
                 // Added by Jayesh for google analytics on 28-12-2018 updated on 23-01-2019
                 /* <!-- Global site tag (gtag.js) - Google Analytics --> */
@@ -804,47 +751,7 @@ export function setSitesetting() {
         .catch(error => error, {});
 }
 
-/**
- * Added by salim (dt:06/11/2018)
- * Function to MUIDatatable Option language text.
- */
-/* export function dataTableOptionsText() {
-    let textLabels = {
-        body: {
-            noMatch: <IntlMessages id="wallet.emptyTable" />,
-            toolTip: <IntlMessages id="wallet.sort" />,
-        },
-        pagination: {
-            next: <IntlMessages id="datatable.nextPage" />,
-            previous: <IntlMessages id="datatable.previousPage" />,
-            rowsPerPage: <IntlMessages id="datatable.rowsPerPage" />,
-            displayRows: <IntlMessages id="datatable.of" />,
-        },
-        toolbar: {
-            search: <IntlMessages id="datatable.search" />,
-            downloadCsv: <IntlMessages id="datatable.downloadCSV" />,
-            print: <IntlMessages id="datatable.print" />,
-            viewColumns: <IntlMessages id="datatable.viewColumns" />,
-            filterTable: <IntlMessages id="datatable.filterTable" />,
-        },
-        filter: {
-            all: <IntlMessages id="datatable.all" />,
-            title: <IntlMessages id="datatable.filters" />,
-            reset: <IntlMessages id="datatable.reset" />,
-        },
-        viewColumns: {
-            title: <IntlMessages id="datatable.showColumns" />,
-            titleAria: <IntlMessages id="datatable.show_hide_table_cols" />,
-        },
-        selectedRows: {
-            text: <IntlMessages id="datatable.rowsSelected" />,
-            delete: <IntlMessages id="datatable.delete" />,
-            deleteAria: <IntlMessages id="datatable.deleteSelectedRows" />,
-        }
-    }
 
-    return textLabels;
-} */
 
 /*
 * Added by salim (dt:26-11-2018)
@@ -891,7 +798,7 @@ export function isScriptTag(string) {
  * Function to Convert Object to string with seprated value
  */
 export function convertObjectToString(obj, sepration = ',') {
-    // console.log('convert string :',Object.keys(obj).map(function(k){return items[k]}).join(sepration)); 
+    
     return Object.values(obj).join(sepration);
 }
 
@@ -1052,79 +959,57 @@ export function setServiceManager() {
     let applicationKey = "BM0yH9JtGnmzF8Mm3Tn_ua36PA9FZzufsmFYF2Ul8MZOoXW13hvZo9NYVeIPDZCaG_gBrdE20QwoYetxpo0wuh8";
     // Installing service worker
     if ('serviceWorker' in navigator && 'PushManager' in window) {
-        console.log('Service Worker and Push is supported');
+        
         navigator.serviceWorker.register('sw.js')
             .then(function (swReg) {
-                console.log('service worker registered');
+                
 
                 swRegistration = swReg;
 
                 swRegistration.pushManager.getSubscription()
                     .then(function (subscription) {
-                        console.log("subscription", subscription);
+                        
                         isSubscribed = !(subscription === null);
 
                         if (isSubscribed) {
-                            console.log('User is subscribed');
+                            
                         } else {
                             swRegistration.pushManager.subscribe({
                                 userVisibleOnly: true,
                                 applicationServerKey: urlB64ToUint8Array(applicationKey)
                             })
                                 .then(function (subscription) {
-                                    console.log(subscription);
-                                    console.log('User is subscribed');
+                                  
 
                                     saveSubscription(subscription);
 
                                     isSubscribed = true;
                                 })
                                 .catch(function (err) {
-                                    console.log('Failed to subscribe user: ', err);
+                                    
                                 })
                         }
                     })
             })
             .catch(function (error) {
-                console.error('Service Worker Error', error);
+                
             });
     } else {
-        console.warn('Push messaging is not supported');
+        
     }
 }
 
 // Send request to database for add new subscriber
 function saveSubscription(subscription) {
-    console.log("=======", JSON.stringify(subscription));
+    
     let jsondata = JSON.stringify(subscription);
     api.post('/api/private/v1/subscribe', { jsondata })
 
         .then(function (response) {
-            console.log("response", response);
-            // if (typeof response.data.data != 'undefined' && response.data.responseCode == 0) {
-
-            // }
+            
+           
         })
         .catch(error => error, {});
-
-    // let xmlHttp = new XMLHttpRequest();
-    // xmlHttp.open("POST", "http://localhost:5000/api/private/v1/subscribe");
-    // xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    // xmlHttp.setRequestHeader("Authorization", 'JWT ' + localStorage.getItem('front_access_token'));
-    // xmlHttp.onreadystatechange = function () {
-    //     if (xmlHttp.readyState != 4) return;
-    //     if (xmlHttp.status != 200 && xmlHttp.status != 304) {
-    //         console.log('HTTP error ' + xmlHttp.status, null);
-    //     } else {
-    //         console.log("User subscribed to server");
-    //     }
-    // };
-
-    // xmlHttp.send(JSON.stringify(subscription));
-
-    // await api.post('/api/private/v1/contactus/addContact', {contactdata})
-    // .then(response => response)
-    // .catch(error => JSON.parse(JSON.stringify(error.response)));
 
 }
 

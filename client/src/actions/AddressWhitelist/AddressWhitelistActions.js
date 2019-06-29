@@ -40,11 +40,11 @@ export const getCurrency = () => ({
 export const getCurrencySuccess = (response) => ({
     type: GET_COIN_LIST_SUCCESS,
     payload: response
-})
+});
 export const getCurrencyFailure = (error) => ({
     type: GET_COIN_LIST_FAILURE,
     payload: error
-})
+});
 
 // GET PREFERENCE
 export const getPreference = () => ({

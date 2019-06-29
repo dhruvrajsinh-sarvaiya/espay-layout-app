@@ -5,27 +5,27 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import {
-    GET_LEADER_PORTFOLIO_LIST
+	GET_LEADER_PORTFOLIO_LIST
 } from 'Actions/types';
 
 //Action methods..
 import {
-    getLeaderPortfolioListSuccess,
-    getLeaderPortfolioListFailure
+	getLeaderPortfolioListSuccess,
+	getLeaderPortfolioListFailure
 } from 'Actions/SocialProfile';
 
 import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
+import { swaggerPostAPI } from 'Helpers/helpers';
 
 
 //Function for Get Leader Portfolio List API
 function* getLeaderPortfolioListAPI({ payload }) {
-    var headers =  {'Authorization': AppConfig.authorizationToken}
-	const response = yield call(swaggerPostAPI,'api/Transaction/GetCopiedLeaderOrders',payload,headers);
-	
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/Transaction/GetCopiedLeaderOrders', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getLeaderPortfolioListSuccess(response));
@@ -39,12 +39,12 @@ function* getLeaderPortfolioListAPI({ payload }) {
 
 /* Create Sagas method for Get Leader Portfolio List */
 export function* getLeaderPortfolioListSagas() {
-    yield takeEvery(GET_LEADER_PORTFOLIO_LIST, getLeaderPortfolioListAPI);
+	yield takeEvery(GET_LEADER_PORTFOLIO_LIST, getLeaderPortfolioListAPI);
 }
 
 /* Export methods to rootSagas */
 export default function* rootSaga() {
-    yield all([
-        fork(getLeaderPortfolioListSagas)
-    ]);
+	yield all([
+		fork(getLeaderPortfolioListSagas)
+	]);
 }

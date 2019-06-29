@@ -74,7 +74,6 @@ module.exports = {
     "sidebar.materialIcons": "Material Icons",
     "sidebar.fontAwesome": "Font Awesome",
     "sidebar.tables": "Tables",
-    "sidebar.basic": "Basic",
     "sidebar.dataTable": "Data Table",
     "sidebar.responsive": "Responsive",
     "sidebar.reactTable": "React Table",
@@ -808,16 +807,13 @@ module.exports = {
     "sidebar.location": "Location",
     "sidebar.when": "When",
     "sidebar.web": "Web",
-    "sidebar.api": "API",
     "sidebar.apps": "Apps",
     "sidebar.apiKeyColon": "API Key:",
     "sidebar.secretKeyColon": "Secret Key:",
-    "sidebar.signupWithEmail": "Signup With Email",
     "sidebar.googleAuth": "Google Authentication",
     "sidebar.disableSmsAuth": "Disable SMS Authentication",
     "sidebar.disableGoogleAuth": "Disable Google Authentication",
     "sidebar.signupWithBlockchain": "Signup With Blockchain",
-    "sidebar.signupWithMobile": "Signup With Mobile",
     "sidebar.themeConfiguration": "Theme Configuration",
     "sidebar.deviceWhitelisting": "Device Whitelisting",
     "sidebar.complain": "Complain List",
@@ -837,11 +833,9 @@ module.exports = {
     "sidebar.mobile": "Mobile",
     "sidebar.mobileNumber": "Mobile Number",
     "sidebar.normalSignin": "Sign-In With Password",
-    "sidebar.normalSignup": "Sign-Up With Password",
+    "sidebar.normalSignup": "Signup With Password",
     "sidebar.signinWithEmail": "Sign-In With Email",
-    "sidebar.signupWithEmail": "Sign-Up With Email",
     "sidebar.signinWithMobile": "Sign-In With Mobile",
-    "sidebar.signupWithMobile": "Sign-Up With Mobile",
     "sidebar.orLoginWith": "Or Login With",
     "sidebar.linkCopied": "Referral Link Copied",
 
@@ -866,7 +860,6 @@ module.exports = {
     "sidebar.colStatus": "Status",
     "sidebar.colRemarks": "Remarks",
     "sidebar.colActions": "Actions",
-    "sidebar.colDevice": "Device Name",
     "sidebar.colComplainNumber": "Complain Number",
 
     "sidebar.colAliasName": "Alias Name",
@@ -936,7 +929,6 @@ module.exports = {
     "my_account.err.codeRequired": "Code field is required",
     "my_account.err.codeGoogleFormat": "Google auth code length 6 numeric value",
     "my_account.err.codeSMSFormat": "SMS code length 4 numeric value",
-    "my_account.err.passwordRequired": "Password field is required",
     "my_account.err.emailFormat": "Please enter valid Email Address.",
     "my_account.err.privateKeyRequired": "Private Key field is required",
     "my_account.err.fieldAlpha": " This Field should contain only lower And  upper case letters.",
@@ -1341,6 +1333,8 @@ module.exports = {
     "apiErrCode.14056": "Your account has been activated, Successfully send reset password link in your mail.",
     "apiErrCode.14057": "Please Enter Parent ID",
     "apiErrCode.14058": "Invalid Invite Link",
+    "apiErrCode.14062": "Email Already Subscribed",
+    "apiErrCode.14065": "Device UnAuthorize",
 
     //MyAccount Success Msg
     "apiErrCode.99001": "Your profile updated successfully.",
@@ -1397,21 +1391,20 @@ module.exports = {
     "my_account.err.phoneRequired": "Please enter Phone Number!",
     "my_account.err.emailRequired": "Please enter Email Address!",
     "my_account.err.countryRequired": "Please Select your country!",
-    "my_account.err.passwordRequired": "Please enter your login password!",
     "my_account.err.scriptTag": "Script tag not allow.",
     "my_account.err.htmlTag": "Html tag not allow.",
 
     /* Kevinbhai... */
     //For Signup with Email    
     "sidebar.signupWith": "Signup With Email",
-    "sidebar.signupWithemail": "Signup With Email",
+    "sidebar.signupWithEmail": "Signup With Email",
     "sidebar.registerwithemail": "Register with Email",
 
     "sidebar.signupmobile": "Register with Mobile",
     "sidebar.Register": "Register",
 
     // For Signup with Mobile
-    "sidebar.signupWithmobile": "Signup With Mobile",
+    "sidebar.signupWithMobile": "Signup With Mobile",
 
     // For Signup with Blockchain
     "sidebar.signupWithBlochChain": "Signup With BlockChain",
@@ -1962,9 +1955,7 @@ module.exports = {
     "contactus.contactform.error.descriptionCharLimit":
         "Description must be between 10 and 300 characters",
 
-    /* "contactus.contactform.error.requireattachedFile" : "Please select attachment file",
-          "contactus.contactform.error.validateattachedFile" : "Please select file with .jpg, .png, .jpeg, .gif, .pdf",
-          "contactus.contactform.error.fileMaxSize" : "Please select file less then 1 Mb", */
+   
 
     /* Wallet */
     "sidebar.Wallet": "Wallet",
@@ -1973,13 +1964,11 @@ module.exports = {
 
     /* Deposits */
     "sidebar.deposit": "Deposit",
-    "sidebar.deposits": "Deposit",
     "wallet.history": "History",
     "wallet.viewall": "View All",
     "sidebar.history": "History",
 
     //History Page
-    "sidebar.transactionHistory": "Transaction History",
     "sidebar.depositHistory": "Deposit History",
     "sidebar.withdrawHistory": "Withdraw History",
     "wallet.historyDepositTitle": "Deposit",
@@ -2053,8 +2042,8 @@ module.exports = {
     "wallet.errWDLessthenLimit":
         "Amount must be less than daily withdrawal limit",
     "wallet.errWDLessthenBalance": "Amount must be less than available balance",
-    "wallet.errWDMinWithdraw": "Amount must be greater than minimum withdraw",
-    "wallet.errWDMaxWithdraw": "Amount must be less than maximum withdraw",
+    "wallet.errWDMinWithdraw": "Amount must be at least ",
+    "wallet.errWDMaxWithdraw": "Amount must be less than or ",
     "button.submit": "Submit",
     //API errors
     "4617": "Please Enter Required Parameters",
@@ -2183,8 +2172,7 @@ module.exports = {
     "wallet.deleteConf": "Are you sure you want to delete ?",
 
     // added By tejas For TrnsactionCharge Report
-
-    "sidebar.transactionhistory": "Transaction History",
+    
     "sidebar.transactioncharge": "Transaction Charge",
     "sidebar.transactioncharge.list": "Transaction Charge Report",
     "sidebar.transactionchargeReport": "Transaction Charge Report",
@@ -2391,7 +2379,6 @@ module.exports = {
     "apiWalletErrCode.4244": "Invalid Limit Per Hour, Must Be Between 0 To 99999",
     "apiWalletErrCode.4245": "Invalid Limit Per Transaction, Must Be Between 0 To 99999",
     "apiWalletErrCode.4246": "Invalid LifeTime Value, Must Be Between 0 To 999999",
-    "apiWalletErrCode.4577": "No self address withdrawal is allowed",
     /* Jayesh - for Contact Form */
     "contactus.button.submit": "Submit",
 
@@ -2678,60 +2665,10 @@ module.exports = {
     "error.trading.transaction.11078": "Please Enter Method Name ",
     "error.trading.transaction.11079": "Please Enter Plan Master ID",
     "error.trading.transaction.11080": "Priority Already Exists",
-    "error.trading.transaction.11081": "Subscribe API Plan InValid Requested Plan",
-    "error.trading.transaction.11082": "Subscribe API Plan Requested Is Activated",
-    "error.trading.transaction.11083": "Subscribe API Plan Requested In Process",
-    "error.trading.transaction.11084": "Subscribe API Plan Requested Is In Pending",
     "error.trading.transaction.11085": "Please Enter Priority",
     "error.trading.transaction.11086": "Please Enter Plan Validity",
     "error.trading.transaction.11087": "Please Enter Plan Validity Type",
     "error.trading.transaction.11089": "InValid Validity Type",
-    "error.trading.transaction.11090": "Subscribe API Plan InValid Subscribe ID",
-    "error.trading.transaction.11091": "SubscribeAPI Plan InValid Requested Plan Or Disable",
-    "error.trading.transaction.11092": "Subscribe API Plan, Plan Is Not Recursive",
-    "error.trading.transaction.11093": "Subscribe API Plan, Plan Already Renewed",
-    "error.trading.transaction.11094": "Subscribe API Plan, Invalid Next Auto RenewID",
-    "error.trading.transaction.11095": "Subscribe API Plan, Current Plan Is Active",
-    "error.trading.transaction.11096": "Subscribe API Plan, InValid IP Access",
-    "error.trading.transaction.11097": "Subscribe API Plan, Active Plan Not Found",
-    "error.trading.transaction.11098": "Subscribe API Plan, Duplicate AliasName",
-    "error.trading.transaction.11099": "Subscribe API Plan InValid API Key",
-    "error.trading.transaction.11100": "Subscribe API Plan,Setting Freezed",
-    "error.trading.transaction.11101": "Subscribe API Plan,Add Limit Exceed",
-    "error.trading.transaction.11102": "Subscribe API Plan,Per Day Add Limit Exceed",
-    "error.trading.transaction.11103": "Subscribe API Plan,Add Frequency Limit Exceed",
-    "error.trading.transaction.11104": "Subscribe API Plan,Delete Limit Exceed",
-    "error.trading.transaction.11105": "Subscribe API Plan, Per Day Delete Limit Exceed",
-    "error.trading.transaction.11106": "Subscribe API Plan, Delete Frequency Limit Exceed",
-    "error.trading.transaction.11107": "Please Enter IP Address",
-    "error.trading.transaction.11108": "Please Enter API Id",
-    "error.trading.transaction.11109": "Please Enter Alias Name",
-    "error.trading.transaction.11110": "Please Enter API Access",
-    "error.trading.transaction.11111": "Subscribe API Plan, IP Whitelist Limit Exceed",
-    "error.trading.transaction.11112": "Subscribe API Plan, Invalid IP",
-    "error.trading.transaction.11113": "Subscribe API Plan,Enter Current Subscribe ID",
-    "error.trading.transaction.11114": "Subscribe API Plan,Custome Limit Already Exist",
-    "error.trading.transaction.11115": "Subscribe API Plan,Max Per Minute Limit Exceed",
-    "error.trading.transaction.11116": "Subscribe API Plan,Max Per Day Limit Exceed",
-    "error.trading.transaction.11117": "Subscribe API Plan,Max Per Month Limit Exceed",
-    "error.trading.transaction.11118": "Subscribe API Plan,Max Order Per Sec Limit Exceed",
-    "error.trading.transaction.11119": "Subscribe API Plan,Max Rec Per Request Limit Exceed",
-    "error.trading.transaction.11120": "Subscribe API Plan,Max Req Size Limit Exceed",
-    "error.trading.transaction.11121": "Subscribe API Plan,Max Res Size Limit Exceed",
-    "error.trading.transaction.11122": "Subscribe API Plan,Whitelisted End Points Limit Exceed",
-    "error.trading.transaction.11123": "Subscribe API Plan, Concurrent End Points Limit Exceed",
-    "error.trading.transaction.11124": "Subscribe API Plan,Historical Data Month Limit Exceed",
-    "error.trading.transaction.11125": "Subscribe API Plan,Invalid Cus time LimitID",
-    "error.trading.transaction.11126": "API LP Fail ",
-    "error.trading.transaction.11127": "API LP Success",
-    "error.trading.transaction.11128": "API LP InternalError",
-    "error.trading.transaction.11129": "Subscribe API Plan,Invalid Frequency Type",
-    "error.trading.transaction.11130": "Subscribe API Plan,Current Plan Not Found",
-    "error.trading.transaction.11131": "Subscribe API Plan, Duplicate IP",
-    "error.trading.transaction.11132": "Subscribe API Plan,Plan Already Auto Renew",
-    "error.trading.transaction.11133": "Subscribe API Plan,Plan Is Not Auto Renew",
-    "error.trading.transaction.11134": "Subscribe API Plan,Duplicate IP Address",
-    "error.trading.transaction.11135": "InValid Priority",
     "error.trading.transaction.11136": "Invalid Transaction Status",
     "error.trading.transaction.11137": "Transaction Status Not Success",
     "error.trading.transaction.11138": "Transaction Status Not Fail",
@@ -2767,7 +2704,6 @@ module.exports = {
     "error.trading.transaction.11169": "The Maximum Length For Account Number Validation Regex Is 80",
     "error.trading.transaction.11170": "Please Enter Required Parameter Transaction Type",
     "error.trading.transaction.11171": "Invalid Transaction Type",
-    "error.trading.transaction.11172": "Site Token Source Currency Should Be From Base Market",
     "error.trading.transaction.11173": "Site Token Target Currency Should Not Be From Base Market",
 
 
@@ -3651,7 +3587,6 @@ module.exports = {
     "activityNotification.message.4299": "Master Daily Limit Validation Fail Transaction number {Param1}",
     "activityNotification.message.4304": "Master Lifetime Limit Validation Fail Transaction number {Param1}",
     "activityNotification.message.4302": "Master Limit Validation Fail Transaction number {Param1}",
-    "activityNotification.message.4303": "Master Time Validation Fail Transaction number {Param1}",
     "activityNotification.message.4280": "Limit Validation Fail Transaction number {Param1}",
     "activityNotification.message.4034": "Invalid Request Detail. Transaction number : {Param1}",
     "activityNotification.message.4031": "Invalid Request Detail. Transaction number : {Param1}",
@@ -3659,7 +3594,6 @@ module.exports = {
     "activityNotification.message.4377": "Invalid Trade RefNo. Transaction number : {Param1}",
     "activityNotification.message.2251": "Invalid Amount. Transaction number : {Param1}",
     "activityNotification.message.4235": "Invalid Wallet or wallet is disabled. Transaction number : {Param1}",
-    "activityNotification.message.4238": "Insufficeint Balance. Transaction number : {Param1}",
     "activityNotification.message.4378": "Invalid Wallet or wallet is disabled. Transaction number : {Param1}",
     "activityNotification.message.4281": "Transaction Can Only Be Done Between {Param2} To {Param3} Users Limit. Transaction number : {Param1}",
     "activityNotification.message.4279": "The Maximum User Limit Per Transaction Is {Param3}. Transaction number : {Param1}",
@@ -3672,8 +3606,8 @@ module.exports = {
     "activityNotification.message.4379": "Exceed Shadow Limit. Transaction number : {Param1}",
     "activityNotification.message.4375": "Duplicate Request for same Ref No. Transaction number : {Param1}",
     "activityNotification.message.4345": "Insufficient balance. Transaction number : {Param1}",
-    // "activityNotification.message.4585": "Service or Product Not Available. Transaction number : {Param1}",
-    "activityNotification.message.4585" : "Provider Not Available",
+    
+    "activityNotification.message.4585": "Provider Not Available",
     "activityNotification.message.4577": "You cannot withdraw to own address. Transaction number : {Param1}",
     "activityNotification.message.4624": "Invalid Debit Account ID. Transaction number : {Param1}",
     "activityNotification.message.4576": "Duplicate Transaction for Same Address, Please Try After 10 Minutes. Transaction number : {Param1}",
@@ -3682,7 +3616,6 @@ module.exports = {
     "activityNotification.message.4238": "Beneficiary Not Found. Transaction number : {Param1}",
     "activityNotification.message.4239": "Invalid Address. Transaction number : {Param1}",
     "activityNotification.message.4241": "Wallet Not Found. Transaction number : {Param1}",
-    "activityNotification.message.4279": "Amount Must be Between: {Param2} AND {Param3}. Transaction number : {Param1}",
     "activityNotification.message.7066": "Self Address withdrawal not Allowed. Transaction number : {Param1}",
     "activityNotification.message.7067": "Address Mismatching. Transaction number : {Param1}",
     "activityNotification.message.7012": "Internal Error. Transaction number : {Param1}",
@@ -3703,7 +3636,6 @@ module.exports = {
     "sidebar.siteTokenReport.fromcurrency": "Wallet Currency",
     "sidebar.siteTokenReport.walletcurrency": "Wallet Currency",
     "sidebar.siteTokenReport.tocurrency": "Token Currency",
-    "sidebar.siteTokenReport.srcqty": "Source Quantity",
     "sidebar.siteTokenReport.srcqty": "Wallet Quantity",
     "sidebar.siteTokenReport.targetqty": "Token Quantity",
     "sidebar.siteTokenReport.src2base": "Source To Price",
@@ -3859,10 +3791,8 @@ module.exports = {
     "sidebar.apiplan.button.viewmore": "View More",
     "sidebar.ApiPlan.apiplnadetails": "API Plan Details",
     "sidebar.ApiPlan.plnadetails": "Plan Details",
-    "sidebar.ApiPlan.whitelist": "WhiteList IP Address Limit",
 
     "sidebar.ApiPlan.whitelist": "WhiteList IP Address",
-    "sidebar.ApiPlan.title.renew": "Renew",
     "sidebar.ApiPlan.title.setAutorenew": "Set Auto Renew",
     "sidebar.ApiPlan.title.stopautorenew": "Stop Auto Renew",
     "sidebar.ApiPlan.title.renew": "Renew Now",
@@ -3971,12 +3901,6 @@ module.exports = {
     "sidebar.referralRewards": "Converts",
     "my_account.Reward": "Reward",
 
-    /* Adde by Nishant on 07-03-2018 */
-    "wallet.WDPleaseNoteLimit": "You can withdraw daily maximum of ",
-    "wallet.WDPleaseNoteLimitCurrency": "USD",
-    "activityNotification.message.21047": "System Daily Withdraw Limit Reached To {Param3} {Param4}. TrnNo: {Param1}",
-    "activityNotification.message.21071": "Insufficient balance for Charge",
-
     // added by Tejas
     "sidebar.ApiPlans": "API Plans",
     "sidebar.ApiKey": "API Key",
@@ -4078,9 +4002,6 @@ module.exports = {
     "sidebar.apiplan.success.ipwhitelist": "IP WhiteList SuccessFully",
     "sidebar.apiplan.success.removewhitelist": "IP WhiteList SuccessFully",
     "sidebar.settleAmount": "Settle Amount",
-
-    /* withdrawal - added by nishant */
-    "wallet.errWDinvalidAddress": "Invalid Address",
 
     //added by Tejas
     "sidebar.apiplan.stopAutoRenew.apiplan": "Stop Auto Renew APIPlan Subscription",
@@ -4673,7 +4594,6 @@ module.exports = {
     "apiWalletErrCode.15042": "Loan is not open,Invalid Status",
     "apiWalletErrCode.15039": "You can only Upgrade leverage",
     "apiWalletErrCode.51011": "Failed",
-    "apiWalletErrCode.15038": "Invalid Leverage Value",
     //added by vishva shah
     "sidebar.profitlossReport": "Profit & Loss Report",
     "table.ProfitAmount": "Profit Amount",
@@ -5257,26 +5177,84 @@ module.exports = {
     "activityNotification.message.4587": "Transaction is pending, TrnNo:{Param1}",
     "activityNotification.message.4590": "Transaction failed from provider, TrnNo:{Param1}",
     //added by vishva
-    "arbitrage.TotalChanges" : "Total Change",
-    "arbitrage.Change" : "Change",
-    "arbitrage.TotalChange24H" : "24 Hours",
-    "arbitrage.TotalChange7D" : "7 DAYS",
-    "arbitrage.TotalChange30D" : "30 DAYS",
-    "arbitrage.totalValue" : "Total Value",
-    "arbitrage.Amount" : "Amount",
-    "arbitrage.WalletNote" : "To transfer balance from main wallet to arbitrage wallet",
-    "sidebar.openOrder" : "Open orders",
+    "arbitrage.TotalChanges": "Total Change",
+    "arbitrage.Change": "Change",
+    "arbitrage.TotalChange24H": "24 Hours",
+    "arbitrage.TotalChange7D": "7 DAYS",
+    "arbitrage.TotalChange30D": "30 DAYS",
+    "arbitrage.totalValue": "Total Value",
+    "arbitrage.Amount": "Amount",
+    "arbitrage.WalletNote": "To transfer balance from main wallet to arbitrage wallet",
+    "sidebar.openOrder": "Open orders",
 
     //added by Tejas 
     "sidebar.arbitrageConfigWallet": "Configure Wallet",
+    "wallet.minPlsChrg": " (Min + Fee)",
     "sidebar.arbitrageOrderBook": "Order Book",
     "sidebar.arbitrageOpenOrder": "Open Order",
     "sidebar.arbitrageMyTradeHistory": "My Trade History",
-    "sidebar.arbitrageAll" : "ALL",
+    "sidebar.arbitrageAll": "ALL",
     "sidebar.arbitrageLpType": "LpType Not Available",
-    "sidebar.arbitrageSelectOrder" : "Please Select Order from Order book for place order",
+    "sidebar.arbitrageSelectOrder": "Please Select Order from Order book for place order",
     "sidebar.arbiTragePleaseAdd": "Please Add {Param1} Balance",
-    "sidebar.arbiTragePleaseAddBoth" : "Please Add {Param1} And {Param2} Balance",
+    "sidebar.arbiTragePleaseAddBoth": "Please Add {Param1} And {Param2} Balance",
 
     "sidebar.arbitrageAverage": "Average Rate : {Param1}",
+
+    /* added by Nishant Vadgama on 21-06-2019 */
+    "sidebar.createWalletSuccess": "Arbitrage Wallet Created Successfully.",
+    "sidebar.trnToWallet": "Transfer to main wallet",
+    "sidebar.transfer": "Transfer",
+    "sidebar.targetWallet": "Target Wallet",
+    "apiErrCode.16025": "Insufficient Amount.",
+    "apiErrCode.16021": "Invalid Currency Name.",
+    "apiErrCode.16024": "Invalid Trading Wallet.",
+    "apiErrCode.16023": "Invalid Arbitrage Wallet.",
+    "sidebar.transferSuccess": "Transfer to main wallet successfully.",
+    
+    "activityNotification.message.16014": "System Monthly Withdraw Limit {Param3} Reached To Its Maximum Limit",
+    "activityNotification.message.16015": "System Weekly Withdraw Limit {Param3} Reached To Its Maximum Limit",
+    "activityNotification.message.16016": "System Weekly Withdraw Velocity Address Limit {Param3} Reached To Its Maximum Limit",
+    "activityNotification.message.16017": "System Monthly Withdraw Velocity Address Limit {Param3} Reached To Its Maximum Limit",
+    "activityNotification.message.16018": "System Monthly Withdraw Velocity Address Count {Param3} Reached To Its Maximum Count",
+    "activityNotification.message.16019": "System Weekly Withdraw Velocity Address Count {Param3} Reached To Its Maximum Count",
+    "activityNotification.message.16020": "The Amount Must Be Between #Param2# AND {Param3}",
+    "activityNotification.message.16021": "The Amount Must Be Between #Param2# AND {Param3}",
+
+    // added by devang parekh (19-6-2019)
+    "sidebar.noteMessageForSmarttrading": "This is Smart Trading Please Verify Rate and all the detail before perform any Action.",
+    "sidebar.btnDisagree": "Disagree",
+    "sidebar.smartTrading" : "Smart Dashboard",
+	// code added by devang aprekh (19-6-2019)
+	"sidebar.cookieAcceptMessage" : "This website uses cookies to give you the best, most relevent experience. Using this website means you're Ok with this.",
+    "sidebar.cookieAccept" : "Accept!!",
+    "sidebar.arbiTrageBuyFrom" : "Buy From",
+    "sidebar.arbiTrageSellTO" : "Sell To",
+    "sidebar.arbitrageBalanceTo" : "Balance To Be Used",
+
+    //added by Tejas 22/6/2019
+    "activityNotification.message.11178": "Transaction Was Stopped",
+    "activityNotification.message.11179": "Transaction Succesful From Provider",
+    "activityNotification.message.11180": "Transaction Partially Success From Provider",
+    "activityNotification.message.11182": "Invalid Transaction",
+    "activityNotification.message.11183": "Buy and Sell Both Order Compulsory",
+    "activityNotification.message.11184": "Transaction Cancel From Provider",
+    "activityNotification.message.11185": "Transaction Hold From Provider",
+    "activityNotification.message.16028": "Service Provider Temprorily Unavailable",
+    "activityNotification.message.11187" : "price is too high or too low or not following the rule for the Binance market.",
+    "activityNotification.message.11188" : "price is too high or too low from the average weighted price for the Binance market.",
+    "activityNotification.message.11189" : "quantity is too high, too low or not following the step size rule for the Binance market.",
+    "activityNotification.message.11190" : "order is too low for the Binance market.",
+    "activityNotification.message.11191" : "ICEBERG order would break into too many parts. icebergQty is too small for the Binance market.",
+    "activityNotification.message.11192" : "MARKET order's quantity is too high or too low or not following the step size rule for the Binance market.",
+    "activityNotification.message.11193" : "Please try after sometime for the Binance market.",
+    "activityNotification.message.11194" : "Please try after sometime for the Binance market.",
+    "activityNotification.message.11195" : "Please try after sometime for the Binance market.",
+    "activityNotification.message.11196" : "Please try after sometime for the Binance market.",
+    "activityNotification.message.11197" : "Please try after sometime for the Binance market.",
+    "activityNotification.message.11198" : "Service Provider Timeout for the Binance market.",
+    "activityNotification.message.11199" : "Trade Requirment not match for the Bittrex market.",
+    "activityNotification.message.11200" : "Service provider unavailable for the Bittrex market.",
+    "activityNotification.message.11201" : "Service provider unavailable for the Tradesatoshi market.",
+    "activityNotification.message.11202" : "Service provider unavailable for the Binance market.",
 };

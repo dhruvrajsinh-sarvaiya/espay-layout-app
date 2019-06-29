@@ -17,7 +17,6 @@ import {
 // server Request
 function* getAnalyticRequestAPI(payload) {
   const request = payload.request;
-  // console.log("request",request)
   var headers = { 'Authorization': AppConfig.authorizationToken }
   var URL = 'api/ArbitrageWallet/AnalyticsGraphAPI/' + request.CurrencyName;
   const response = yield call(swaggerGetAPI, URL, request, headers);

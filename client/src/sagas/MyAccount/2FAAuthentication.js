@@ -46,18 +46,16 @@ const watchMessages = (socket, request) => eventChannel((emit) => {
 
 //Function for Google Authentication
 function* googleAuthenticationAPI({ payload }) {
-	const response = yield call(swaggerPostAPI,'api/Signin/VerifyCode',payload);
-    // console.log('2Fa Request',payload);
-    // console.log('2Fa Response',response);
-    try {
-        if(response.ReturnCode === 0) {
-            yield put(twoFAGoogleAuthenticationSuccess(response));
-        } else {
-            yield put(twoFAGoogleAuthenticationFailure(response));
-        }
-    } catch (error) {
-        yield put(twoFAGoogleAuthenticationFailure(error));
-    }
+	const response = yield call(swaggerPostAPI, 'api/Signin/VerifyCode', payload);
+	try {
+		if (response.ReturnCode === 0) {
+			yield put(twoFAGoogleAuthenticationSuccess(response));
+		} else {
+			yield put(twoFAGoogleAuthenticationFailure(response));
+		}
+	} catch (error) {
+		yield put(twoFAGoogleAuthenticationFailure(error));
+	}
 }
 
 //Function for SMS Authentication
@@ -74,17 +72,15 @@ function* smsAuthenticationAPI({ payload }) {
 	}
 
 	const socketChannel = yield call(watchMessages, socket, request);
-	while (true) {
-		try {
-			const response = yield take(socketChannel);
-			if (response.statusCode === 200) {
-				yield put(twoFASMSAuthenticationSuccess(response));
-			} else {
-				yield put(twoFASMSAuthenticationFailure(response));
-			}
-		} catch (error) {
-			yield put(twoFASMSAuthenticationFailure(error));
+	try {
+		const response = yield take(socketChannel);
+		if (response.statusCode === 200) {
+			yield put(twoFASMSAuthenticationSuccess(response));
+		} else {
+			yield put(twoFASMSAuthenticationFailure(response));
 		}
+	} catch (error) {
+		yield put(twoFASMSAuthenticationFailure(error));
 	}
 }
 
@@ -100,19 +96,17 @@ function* sendSMSAPI({ payload }) {
 		r: 0,
 		o: payload
 	}
-	
+
 	const socketChannel = yield call(watchMessages, socket, request);
-	while (true) {
-		try {
-			const response = yield take(socketChannel);
-			if (response.statusCode === 200) {
-				yield put(sendSMSSuccess(response));
-			} else {
-				yield put(sendSMSFailure(response));
-			}
-		} catch (error) {
-			yield put(sendSMSFailure(error));
+	try {
+		const response = yield take(socketChannel);
+		if (response.statusCode === 200) {
+			yield put(sendSMSSuccess(response));
+		} else {
+			yield put(sendSMSFailure(response));
 		}
+	} catch (error) {
+		yield put(sendSMSFailure(error));
 	}
 }
 

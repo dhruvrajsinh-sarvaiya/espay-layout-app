@@ -10,15 +10,17 @@ import {
     from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     loading: false,
     buyerOrder: [],
-    buyerOrderBit:0,
+    buyerOrderBit: 0,
     bulkOrder: []
 };
 
-export default (state = INITIAL_STATE, action) => {
-
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         // get Buyer Order list
         case GET_BUYER_ORDER_LIST:
@@ -27,12 +29,12 @@ export default (state = INITIAL_STATE, action) => {
         // set Data Of  Buyer Order list
         case GET_BUYER_ORDER_LIST_SUCCESS:
 
-            return { ...state, buyerOrder: action.payload, loading: false,buyerOrderBit:++state.buyerOrderBit };
+            return { ...state, buyerOrder: action.payload, loading: false, buyerOrderBit: ++state.buyerOrderBit };
 
         // Display Error for Buyer Order list failure
         case GET_BUYER_ORDER_LIST_FAILURE:
 
-            return { ...state, loading: false, buyerOrder: [],buyerOrderBit:++state.buyerOrderBit};
+            return { ...state, loading: false, buyerOrder: [], buyerOrderBit: ++state.buyerOrderBit };
 
         // close socket connection
         case CLOSE_SOCKET_CONNECTION:

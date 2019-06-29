@@ -8,7 +8,7 @@ import React, { Component, Fragment } from "react";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import { CustomFooter } from 'Components/MyAccount/Widgets';
-import { FormGroup, Label, Input, Button, Col, Row } from 'reactstrap';
+import { FormGroup, Label, Input, Button } from 'reactstrap';
 import MUIDataTable from "mui-datatables";
 import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";
@@ -61,7 +61,6 @@ class TwitterShareReport extends Component {
             showReset: false,
             loading: false,
             totalCount: 0,
-            isDisable: true,
             errors: {},
             list: []
         }
@@ -92,7 +91,7 @@ class TwitterShareReport extends Component {
         newObj.ToDate = new Date().toISOString().slice(0, 10);
         newObj.PageNo = 0;
         newObj.PageSize = AppConfig.totalRecordDisplayInList;
-        this.setState({ showReset: false, data: newObj, isDisable: true });
+        this.setState({ showReset: false, data: newObj });
         this.props.affiliateShareOnTwitterReport(newObj);
     }
 
@@ -127,7 +126,7 @@ class TwitterShareReport extends Component {
     onChange = (event) => {
         var newObj = Object.assign({}, this.state.data);
         newObj[event.target.name] = event.target.value;
-        this.setState({ data: newObj, isDisable: false });
+        this.setState({ data: newObj });
     }
 
     componentWillReceiveProps(nextProps) {
@@ -149,7 +148,7 @@ class TwitterShareReport extends Component {
 
     render() {
         const { FromDate, ToDate, PageNo, PageSize } = this.state.data;
-        const { showReset, loading, list, totalCount, errors, isDisable } = this.state;
+        const { showReset, loading, list, totalCount, errors } = this.state;
         let today = new Date();
         today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
         const options = {
@@ -203,7 +202,7 @@ class TwitterShareReport extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>
@@ -211,7 +210,6 @@ class TwitterShareReport extends Component {
                 </JbsCollapsibleCard>
                 <div className="StackingHistory">
                     <MUIDataTable
-                        // title={<IntlMessages id="sidebar.twitterShareReport" />}
                         columns={columns}
                         options={options}
                         data={list.map((lst, key) => {

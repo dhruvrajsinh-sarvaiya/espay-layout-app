@@ -29,7 +29,6 @@ export default class PhoneNumberUnavailable extends Component {
   };
 
   render() {
-    const { data } = this.state;
     return (
       <Fragment>
         <Dialog

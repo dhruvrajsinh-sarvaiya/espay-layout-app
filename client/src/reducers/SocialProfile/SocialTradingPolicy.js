@@ -19,7 +19,10 @@ const INIT_STATE = {
 }
 
 //Check Action for Complain...
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         case GET_SOCIAL_TRADING_POLICY:
             return { ...state, loading: true, socialTradePolicyData : [] };

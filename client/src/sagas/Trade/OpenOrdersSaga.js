@@ -1,18 +1,20 @@
 // sagas For Active My Open Order By Tejas Date : 14/9/2018
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
 import { swaggerPostAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 
 // types for set actions and reducers
-import { GET_ACTIVE_OPEN_MY_ORDER_LIST,DO_CANCEL_ORDER } from 'Actions/types';
+import { GET_ACTIVE_OPEN_MY_ORDER_LIST, DO_CANCEL_ORDER } from 'Actions/types';
 
 // action sfor set data or response
-import { getOpenOrderListSuccess, getOpenOrderListFailure,
-    doCancelOrderSuccess, doCancelOrderFailure } from 'Actions/Trade';
+import {
+    getOpenOrderListSuccess, getOpenOrderListFailure,
+    doCancelOrderSuccess, doCancelOrderFailure
+} from 'Actions/Trade';
 
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
@@ -23,19 +25,19 @@ function* getOpenOrderList() {
 }
 
 // Function for Open Oders
-function* getOpenOrderListData({payload}) {
-   
-    var headers =  {'Authorization': AppConfig.authorizationToken}
-    const response = yield call(swaggerPostAPI,'api/Transaction/GetActiveOrder',payload,headers);   
-    
+function* getOpenOrderListData({ payload }) {
+
+    var headers = { 'Authorization': AppConfig.authorizationToken }
+    const response = yield call(swaggerPostAPI, 'api/Transaction/GetActiveOrder', payload, headers);
+
     try {
 
-        if(lgnErrCode.includes(response.statusCode)){
+        if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
-        } else if(statusErrCode.includes(response.statusCode)){               
-            staticRes = staticResponse(response.statusCode);
+        } else if (statusErrCode.includes(response.statusCode)) {
+            var staticRes = staticResponse(response.statusCode);
             yield put(getOpenOrderListFailure(staticRes));
-        } else if(response.statusCode === 200) {
+        } else if (response.statusCode === 200) {
             yield put(getOpenOrderListSuccess(response));
         } else {
             yield put(getOpenOrderListFailure(response));
@@ -51,30 +53,28 @@ function* getOpenOrderListData({payload}) {
 function* doCancelOrder() {
     yield takeEvery(DO_CANCEL_ORDER, doCancelOrderData)
 }
-    
+
 // Function for set do Bulk Order data and Call Function for Api Call
-function* doCancelOrderData({payload}) {    
-    
-    const { Order } = payload    
-    //console.log("Cancel Request :",Order);
-    var headers =  {'Authorization': AppConfig.authorizationToken}
-    var requestObject = { TranNo : Order.TranNo,CancelAll:Order.CancelAll,OrderType:Order.OrderType }
-    
-    if(Order.hasOwnProperty('IsMargin') && Order.IsMargin === 1) {
+function* doCancelOrderData({ payload }) {
+
+    const { Order } = payload
+    var headers = { 'Authorization': AppConfig.authorizationToken }
+    var requestObject = { TranNo: Order.TranNo, CancelAll: Order.CancelAll, OrderType: Order.OrderType }
+
+    if (Order.hasOwnProperty('IsMargin') && Order.IsMargin === 1) {
         requestObject.IsMargin = 1
     }
-    
-    const response = yield call(swaggerPostAPI,'api/Transaction/CancelOrder',requestObject,headers);   
-    //console.log(response);
+
+    const response = yield call(swaggerPostAPI, 'api/Transaction/CancelOrder', requestObject, headers);
 
     try {
 
-        if(lgnErrCode.includes(response.statusCode)){
+        if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
-        } else if(statusErrCode.includes(response.statusCode)){               
-            staticRes = staticResponse(response.statusCode);
+        } else if (statusErrCode.includes(response.statusCode)) {
+            var staticRes = staticResponse(response.statusCode);
             yield put(doCancelOrderFailure(staticRes));
-        } else if(response.statusCode === 200) {
+        } else if (response.statusCode === 200) {
             yield put(doCancelOrderSuccess(response));
         } else {
             yield put(doCancelOrderFailure(response));

@@ -35,7 +35,11 @@ const INITIAL_STATE = {
     walletRequestResponse: {}
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
         //list all wallets...
         case LISTALLWALLETS:
@@ -72,7 +76,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, loading: false, walletRequestResponse: action.payload }
         case ACCEPTREJECTWALLETREQUEST_FAILURE:
             return { ...state, loading: false, walletRequestResponse: action.payload }
-
         default:
             return { ...state };
     }

@@ -10,13 +10,12 @@ import { connect } from "react-redux";
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 import { Link } from "react-router-dom";
-// import Button from "@material-ui/core/Button";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 // redux action
 import { forgotConfirmation } from "Actions/MyAccount";
 import qs from "query-string";
 // app config
-import AppConfig from 'Constants/AppConfig';
+
 import ResetPasswordWdgt from './ResetPasswordWdgt';
 
 class ForgotConfirmationWdgt extends Component {
@@ -45,16 +44,15 @@ class ForgotConfirmationWdgt extends Component {
 			if (nextProps.data.Id !== '') {
 				this.setState({
 					Id: nextProps.data.Id,
-					err:nextProps.data.ErrorCode
+					err: nextProps.data.ErrorCode
 				})
 			}
 		}
-		else if(nextProps.data.ReturnCode === 1 || nextProps.data.ReturnCode === 9)
-		{
+		else if (nextProps.data.ReturnCode === 1 || nextProps.data.ReturnCode === 9) {
 			this.setState({
 				err: nextProps.data.ErrorCode
 			})
-	
+
 		}
 	}
 
@@ -63,10 +61,10 @@ class ForgotConfirmationWdgt extends Component {
 		return (
 			<div className="jbs-session-wrapper inner_bg">
 				<div className="container">
-                    <div className="inner_box rmv_brd">
+					<div className="inner_box rmv_brd">
 						<div className="site-logo text-center mb-20">
 							<Link to="/" className="logo-normal">
-								{/* <img src={AppConfig.appLogo} className="img-fluid" alt="site-logo" width="150" height="25" /> */}
+
 							</Link>
 						</div>
 
@@ -87,10 +85,10 @@ class ForgotConfirmationWdgt extends Component {
 								</div>
 							</div>
 						) : (
-						<div className="session-inner-wrapper">
-							<ResetPasswordWdgt Id={Id} />
-						</div>
-						)}
+								<div className="session-inner-wrapper">
+									<ResetPasswordWdgt Id={Id} />
+								</div>
+							)}
 					</div>
 				</div>
 			</div >
@@ -99,8 +97,8 @@ class ForgotConfirmationWdgt extends Component {
 	}
 }
 // map state to props
-const mapStateToProps = ({ forgotConfirmation }) => {
-	const { data, loading } = forgotConfirmation;
+const mapStateToProps = ({ forgotConfirmationReducer }) => {
+	const { data, loading } = forgotConfirmationReducer;
 	return { data, loading };
 };
 

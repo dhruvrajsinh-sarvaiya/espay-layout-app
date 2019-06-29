@@ -5,11 +5,9 @@ Date  : 3/6/2019
 */
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import AppConfig from 'Constants/AppConfig';
-
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 // types for set actions and reducers
 import {
   ARBITRAGE_BUYER_BOOK_LIST,
@@ -44,104 +42,6 @@ function* getArbitrageBuyerBookList({ payload }) {
   }
   // end
 
-  var headers = { 'Authorization': AppConfig.authorizationToken }
-  //const response = yield call(swaggerGetAPI, 'api/Transaction/GetBuyerBook/' + payload.Pair + isMargin, {}); 
-  /*  const response = {
-    "ReturnCode": 0,
-    "ReturnMsg": "Success",
-    "ErrorCode": 2253,
-    "statusCode": 200,
-    "response": [
-        {
-            "Amount": 10,
-            "Price": 0.000024,
-            "OrderId": "bfc61ded-9a96-471e-8513-447ec92ff4fc",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BINANCE"
-          },
-          {
-            "Amount": 10,
-            "Price": 0.000024,
-            "OrderId": "bfc61ded-9a96-471e-8513-447ec92ff4fc",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"POLONIX"
-          },
-          {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"COINBASE"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BITTREX"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"TRADESATOSHI"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"UPBIT"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"OLEXCHANGE"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"CEX.IO"
-          },  
-          {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BITFINEX"
-          },    
-          {
-            "Amount": 15,
-            "Price": 0.051501,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BITSTAMP"
-          },
-          {
-            "Amount": 10,
-            "Price": 0.0152301,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"KRAKEN"
-          }
-    ]
-  } */
   const response = yield call(swaggerGetAPI, 'api/Transaction/GetBuyerBookArbitrage/' + payload.Pair + isMargin, {});
 
   try {
@@ -161,7 +61,6 @@ function* getArbitrageBuyerBookList({ payload }) {
 
 }
 
-
 // Sagas Function for get Seller Book data 
 function* getArbitrageSellerBook() {
   yield takeEvery(ARBITRAGE_SELLER_BOOK_LIST, getArbitrageSellerBookList)
@@ -176,104 +75,6 @@ function* getArbitrageSellerBookList({ payload }) {
   }
   // end
 
-  var headers = { 'Authorization': AppConfig.authorizationToken }
-  //const response = yield call(swaggerGetAPI, 'api/Transaction/GetSellerBook/' + payload.Pair + isMargin, {});
-  /*  const response = {
-    "ReturnCode": 0,
-    "ReturnMsg": "Success",
-    "ErrorCode": 2253,
-    "statusCode": 200,
-    "response": [
-        {
-            "Amount": 10,
-            "Price": 0.000024,
-            "OrderId": "bfc61ded-9a96-471e-8513-447ec92ff4fc",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BINANCE"
-          },
-          {
-            "Amount": 10,
-            "Price": 0.000024,
-            "OrderId": "bfc61ded-9a96-471e-8513-447ec92ff4fc",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"POLONIX"
-          },
-          {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"COINBASE"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BITTREX"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"TRADESATOSHI"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"UPBIT"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"OLEXCHANGE"
-          },
-           {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"CEX.IO"
-          },  
-          {
-            "Amount": 10,
-            "Price": 0.000001,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BITFINEX"
-          },  
-          {
-            "Amount": 15,
-            "Price": 0.051501,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"BITSTAMP"
-          },
-          {
-            "Amount": 10,
-            "Price": 0.0152301,
-            "OrderId": "560742aa-35c7-4ab8-949d-81a510043a84",
-            "RecordCount": 1,
-            "IsStopLimit": 0,
-            "exchangeName":"KRAKEN"
-          }
-    ]
-  } */
   const response = yield call(swaggerGetAPI, 'api/Transaction/GetSellerBookArbitrage/' + payload.Pair + isMargin, {});
   try {
     if (lgnErrCode.includes(response.statusCode)) {
@@ -306,10 +107,7 @@ function* getArbitragePairListList({ payload }) {
   }
   // end
 
-  var headers = { 'Authorization': AppConfig.authorizationToken }
-  const response = yield call(swaggerGetAPI, 'api/Transaction/GetTradePairAsset' + isMargin, {});
-  //console.log("pairList", response)
-  // const response = yield call(swaggerGetAPI, 'api/Transaction/GetSellerBookArbitrage/' + "LTC_BTC" + isMargin, {});
+  const response = yield call(swaggerGetAPI, 'api/Transaction/GetTradePairAssetArbitrage' + isMargin, {});
 
   try {
     if (lgnErrCode.includes(response.statusCode)) {

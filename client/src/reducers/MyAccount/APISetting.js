@@ -29,7 +29,10 @@ const INIT_STATE = {
 }
 
 //Check Action for API Setting...
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
     switch(action.type) 
     {
         case API_SETTING_CREATE:

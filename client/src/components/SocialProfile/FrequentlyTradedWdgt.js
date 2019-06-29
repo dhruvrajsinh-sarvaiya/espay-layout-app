@@ -5,10 +5,6 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import IconButton from '@material-ui/core/IconButton';
-// intl messages
-import IntlMessages from "Util/IntlMessages";
 import { AveProfitLossLayout, ProfitableCircle } from './Widgets';
 
 class FrequentlyTradedWdgt extends Component {
@@ -16,13 +12,13 @@ class FrequentlyTradedWdgt extends Component {
         super(props);
         this.state = {
         };
-    }    
+    }
 
     render() {
         return (
             <Fragment>
                 <h2>Frequently Traded</h2>
-                <ul className="list-group mb-50">                    
+                <ul className="list-group mb-50">
                     <li className="list-group-item">
                         <h2 className="ds-block">24.04 (213 Trades)</h2>
                         <div className="row">
@@ -76,20 +72,7 @@ class FrequentlyTradedWdgt extends Component {
 
 // default props value
 FrequentlyTradedWdgt.defaultProps = {
-    LeaderId : 0
+    LeaderId: 0
 }
-
-// map state to props
-/* const mapStateToProps = ({ forgotPassRdcer }) => {
-    var response = {
-        data: forgotPassRdcer.data,
-        loading: forgotPassRdcer.loading
-    };
-    return response;
-};
-
-export default withRouter(connect(mapStateToProps, {
-    forgotPassword
-})(FrequentlyTradedWdgt)); */
 
 export default FrequentlyTradedWdgt;

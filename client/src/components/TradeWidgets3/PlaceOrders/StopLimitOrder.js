@@ -190,7 +190,7 @@ class StopLimitOrder extends React.Component {
                 <IntlMessages
                     id={`error.trading.transaction.${
                         nextprops.error.ErrorCode
-                    }`}
+                        }`}
                 />
             );
             if (nextprops.error.ReturnCode === 9) {
@@ -250,7 +250,7 @@ class StopLimitOrder extends React.Component {
                 <IntlMessages
                     id={`error.trading.transaction.${
                         nextprops.error.ErrorCode
-                    }`}
+                        }`}
                 />
             );
 
@@ -319,7 +319,7 @@ class StopLimitOrder extends React.Component {
                     this.setState({
                         totalSell: parseFloat(
                             parseFloat(this.state.amountSell) *
-                                parseFloat(event.target.value)
+                            parseFloat(event.target.value)
                         ).toFixed(8),
                         isTotalSellValid: true,
                     });
@@ -376,7 +376,7 @@ class StopLimitOrder extends React.Component {
                     this.setState({
                         totalBuy: parseFloat(
                             parseFloat(this.state.amountBuy) *
-                                parseFloat(event.target.value)
+                            parseFloat(event.target.value)
                         ).toFixed(8),
                         isTotalBuyValid: true,
                     });
@@ -410,7 +410,7 @@ class StopLimitOrder extends React.Component {
                     this.setState({
                         totalBuy: parseFloat(
                             parseFloat(event.target.value) *
-                                parseFloat(this.state.limitBuy)
+                            parseFloat(this.state.limitBuy)
                         ).toFixed(8),
                         isTotalBuyValid: true,
                     });
@@ -448,7 +448,7 @@ class StopLimitOrder extends React.Component {
                     this.setState({
                         amountBuy: parseFloat(
                             parseFloat(event.target.value) /
-                                parseFloat(this.state.limitBuy)
+                            parseFloat(this.state.limitBuy)
                         ).toFixed(8),
                         isAmountBuyValid: true,
                     });
@@ -487,7 +487,7 @@ class StopLimitOrder extends React.Component {
                     this.setState({
                         totalSell: parseFloat(
                             parseFloat(event.target.value) *
-                                parseFloat(this.state.limitSell)
+                            parseFloat(this.state.limitSell)
                         ).toFixed(8),
                         isTotalSellValid: true,
                     });
@@ -525,7 +525,7 @@ class StopLimitOrder extends React.Component {
                     this.setState({
                         amountSell: parseFloat(
                             parseFloat(event.target.value) /
-                                parseFloat(this.state.limitSell)
+                            parseFloat(this.state.limitSell)
                         ).toFixed(8),
                         isAmountSellValid: true,
                     });
@@ -562,7 +562,7 @@ class StopLimitOrder extends React.Component {
                 var total = parseFloat(
                     parseFloat(
                         parseFloat(this.props.secondCurrencyBalance) *
-                            parseFloat(value)
+                        parseFloat(value)
                     ) / 100
                 ).toFixed(8);
                 this.setState({
@@ -600,7 +600,7 @@ class StopLimitOrder extends React.Component {
                 var amount = parseFloat(
                     parseFloat(
                         parseFloat(this.props.firstCurrencyBalance) *
-                            parseFloat(value)
+                        parseFloat(value)
                     ) / 100
                 ).toFixed(8);
                 this.setState({
@@ -628,7 +628,7 @@ class StopLimitOrder extends React.Component {
 
         if (
             this.state.stopSell === "" ||
-            typeof this.state.stopSell === undefined ||
+            typeof this.state.stopSell === 'undefined' ||
             this.state.stopSell === 0
         ) {
             this.setState({ showLoader: false, sellStopOrderBit: 0 });
@@ -638,7 +638,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.state.limitSell === "" ||
-            typeof this.state.limitSell === undefined ||
+            typeof this.state.limitSell === 'undefined' ||
             this.state.limitSell === 0
         ) {
             NotificationManager.error(
@@ -646,7 +646,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.state.amountSell === "" ||
-            typeof this.state.amountSell === undefined ||
+            typeof this.state.amountSell === 'undefined' ||
             this.state.amountSell === 0
         ) {
             this.setState({ showLoader: false, sellStopOrderBit: 0 });
@@ -655,7 +655,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.state.totalSell === "" ||
-            typeof this.state.totalSell === undefined ||
+            typeof this.state.totalSell === 'undefined' ||
             this.state.totalSell === 0
         ) {
             this.setState({ showLoader: false, sellStopOrderBit: 0 });
@@ -664,7 +664,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             info.currencyPairID === "" ||
-            typeof info.currencyPairID === undefined ||
+            typeof info.currencyPairID === 'undefined' ||
             info.currencyPairID === 0
         ) {
             this.setState({ showLoader: false, sellStopOrderBit: 0 });
@@ -673,7 +673,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.props.secondCurrencyWalletId === "" ||
-            typeof this.props.secondCurrencyWalletId === undefined ||
+            typeof this.props.secondCurrencyWalletId === 'undefined' ||
             this.props.secondCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, sellStopOrderBit: 0 });
@@ -682,7 +682,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.props.firstCurrencyWalletId === "" ||
-            typeof this.props.firstCurrencyWalletId === undefined ||
+            typeof this.props.firstCurrencyWalletId === 'undefined' ||
             this.props.firstCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, sellStopOrderBit: 0 });
@@ -774,7 +774,7 @@ class StopLimitOrder extends React.Component {
 
         if (
             this.state.stopBuy === "" ||
-            typeof this.state.stopBuy === undefined ||
+            typeof this.state.stopBuy === 'undefined' ||
             this.state.stopBuy === 0
         ) {
             this.setState({ showLoader: false, buyStopOrderBit: 0 });
@@ -784,7 +784,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.state.limitBuy === "" ||
-            typeof this.state.limitBuy === undefined ||
+            typeof this.state.limitBuy === 'undefined' ||
             this.state.limitBuy === 0
         ) {
             NotificationManager.error(
@@ -792,7 +792,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.state.amountBuy === "" ||
-            typeof this.state.amountBuy === undefined ||
+            typeof this.state.amountBuy === 'undefined' ||
             this.state.amountBuy === 0
         ) {
             this.setState({ showLoader: false, buyStopOrderBit: 0 });
@@ -801,7 +801,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.state.totalBuy === "" ||
-            typeof this.state.totalBuy === undefined ||
+            typeof this.state.totalBuy === 'undefined' ||
             this.state.totalBuy === 0
         ) {
             this.setState({ showLoader: false, buyStopOrderBit: 0 });
@@ -810,7 +810,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             info.currencyPairID === "" ||
-            typeof info.currencyPairID === undefined ||
+            typeof info.currencyPairID === 'undefined' ||
             info.currencyPairID === 0
         ) {
             this.setState({ showLoader: false, buyStopOrderBit: 0 });
@@ -819,7 +819,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.props.secondCurrencyWalletId === "" ||
-            typeof this.props.secondCurrencyWalletId === undefined ||
+            typeof this.props.secondCurrencyWalletId === 'undefined' ||
             this.props.secondCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, buyStopOrderBit: 0 });
@@ -828,7 +828,7 @@ class StopLimitOrder extends React.Component {
             );
         } else if (
             this.props.firstCurrencyWalletId === "" ||
-            typeof this.props.firstCurrencyWalletId === undefined ||
+            typeof this.props.firstCurrencyWalletId === 'undefined' ||
             this.props.firstCurrencyWalletId === 0
         ) {
             this.setState({ showLoader: false, buyStopOrderBit: 0 });
@@ -944,20 +944,20 @@ class StopLimitOrder extends React.Component {
                                 {data.firstCurrency}
                             </h4>
                             <p className="fs-14 mb-0">
-                            {this.props.marginTrading ? <AddMarginBalance
-                                {...this.props}
-                                widgetType={3}
-                                walletTypeName={data.secondCurrency}
-                                CurrencyBalance={this.props.secondCurrencyBalance ?
-                                parseFloat(this.props.secondCurrencyBalance).toFixed(8)
-                                : parseFloat(0).toFixed(8)
-                                } /> : <a href="javascript:void(0)">
-                                <i className="zmdi zmdi-balance-wallet">
-                                    {" "}
-                                    {this.props.secondCurrencyBalance ? parseFloat(this.props.secondCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
-                                    } <span>{data.secondCurrency}</span>
-                                </i>
-                                </a>}
+                                {this.props.marginTrading ? <AddMarginBalance
+                                    {...this.props}
+                                    widgetType={3}
+                                    walletTypeName={data.secondCurrency}
+                                    CurrencyBalance={this.props.secondCurrencyBalance ?
+                                        parseFloat(this.props.secondCurrencyBalance).toFixed(8)
+                                        : parseFloat(0).toFixed(8)
+                                    } /> : <a href="javascript:void(0)">
+                                        <i className="zmdi zmdi-balance-wallet">
+                                            {" "}
+                                            {this.props.secondCurrencyBalance ? parseFloat(this.props.secondCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
+                                            } <span>{data.secondCurrency}</span>
+                                        </i>
+                                    </a>}
                             </p>
                         </div>
                         <div className="mt-5 mb-5">
@@ -1045,7 +1045,7 @@ class StopLimitOrder extends React.Component {
                                             type="text"
                                             disabled={
                                                 this.state.selectedBuyValue !==
-                                                0
+                                                    0
                                                     ? true
                                                     : false
                                             }
@@ -1252,21 +1252,21 @@ class StopLimitOrder extends React.Component {
                                 {data.firstCurrency}
                             </h4>
                             <p className="fs-14 mb-0">
-                            {this.props.marginTrading ? <AddMarginBalance
-                                {...this.props}
-                                widgetType={3}
-                                walletTypeName={data.firstCurrency}
-                                CurrencyBalance={this.props.firstCurrencyBalance ?
-                                parseFloat(this.props.firstCurrencyBalance).toFixed(8)
-                                : parseFloat(0).toFixed(8)
-                                } /> :
-                                <a href="javascript:void(0)">
-                                <i className="zmdi zmdi-balance-wallet">
-                                    {" "}
-                                    {this.props.firstCurrencyBalance ? parseFloat(this.props.firstCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
-                                    } <span>{data.firstCurrency}</span>
-                                </i>
-                                </a>}
+                                {this.props.marginTrading ? <AddMarginBalance
+                                    {...this.props}
+                                    widgetType={3}
+                                    walletTypeName={data.firstCurrency}
+                                    CurrencyBalance={this.props.firstCurrencyBalance ?
+                                        parseFloat(this.props.firstCurrencyBalance).toFixed(8)
+                                        : parseFloat(0).toFixed(8)
+                                    } /> :
+                                    <a href="javascript:void(0)">
+                                        <i className="zmdi zmdi-balance-wallet">
+                                            {" "}
+                                            {this.props.firstCurrencyBalance ? parseFloat(this.props.firstCurrencyBalance).toFixed(8) : parseFloat(0).toFixed(8)
+                                            } <span>{data.firstCurrency}</span>
+                                        </i>
+                                    </a>}
                             </p>
                         </div>
                         <div className="mt-5 mb-5">
@@ -1353,7 +1353,7 @@ class StopLimitOrder extends React.Component {
                                             type="text"
                                             disabled={
                                                 this.state.selectedSellValue !==
-                                                0
+                                                    0
                                                     ? true
                                                     : false
                                             }
@@ -1485,7 +1485,7 @@ class StopLimitOrder extends React.Component {
                                     <Col sm={8}>
                                         <Input
                                             type="text"
-                                            value={this.state.totalSell}                                            
+                                            value={this.state.totalSell}
                                             name="total"
                                             id="total"
                                             onChange={this.validateSellTotal}
@@ -1531,17 +1531,17 @@ class StopLimitOrder extends React.Component {
                                                 {data.firstCurrency}
                                                 {this.props
                                                     .sellOrderLoading && (
-                                                    <CircularProgress
-                                                        size={18}
-                                                        style={{
-                                                            top: "5px",
-                                                            position:
-                                                                "absolute",
-                                                            right: "25px",
-                                                            color: "white",
-                                                        }}
-                                                    />
-                                                )}
+                                                        <CircularProgress
+                                                            size={18}
+                                                            style={{
+                                                                top: "5px",
+                                                                position:
+                                                                    "absolute",
+                                                                right: "25px",
+                                                                color: "white",
+                                                            }}
+                                                        />
+                                                    )}
                                             </Button>
                                         </Col>
                                     </Row>

@@ -5,10 +5,6 @@ import React from "react";
 // import component buy trade
 import BuyTrade from "./BuyTrade";
 
-// intl messages
-import IntlMessages from "Util/IntlMessages";
-
-
 // import component Sell trade
 import SellTrade from "./SellTrade";
 // import connect function for store

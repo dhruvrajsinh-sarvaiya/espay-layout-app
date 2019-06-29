@@ -5,7 +5,6 @@
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
 import AppConfig from 'Constants/AppConfig';
 import {
     GET_STAKHISTORY,
@@ -20,7 +19,7 @@ import {
     postUnstakRequestSuccess,
     postUnstakRequestFailure
 } from 'Actions/TokenStaking';
-
+const lgnErrCode = loginErrCode();
 /* get history request */
 function* getStakHistoryData(payload) {
     const request = payload.request;

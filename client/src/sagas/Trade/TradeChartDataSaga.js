@@ -1,7 +1,7 @@
 // sagas For Trade Chart Data Actions By Tejas Date : 25/9/2018
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 // types for set actions and reducers
 import { GET_CHART_DATA,GET_MARKET_DEPTH } from 'Actions/types';
@@ -33,8 +33,6 @@ function* getChartDataDetail({ payload }) {
         // end
         
         const response = yield call(swaggerGetAPI, 'api/Transaction/GetGraphDetail/' + payload.Pair + "/" + payload.Interval+isMargin, {});
-        //console.log('GetGraphDetail Response',response,new Date());
-
         if (response.ReturnCode === 0) {
             yield put(getChartDataSuccess(response));
         } else {
@@ -65,8 +63,6 @@ function* getMarketDepthDetail({ payload }) {
         // end
 
         const response = yield call(swaggerGetAPI, 'api/Transaction/GetMarketDepthChart/' + payload.Pair+isMargin, {});
-        //console.log('GetGraphDetail Response',response,new Date());
-
         if (response.ReturnCode === 0) {
             yield put(getMarketDepthSuccess(response));
         } else {

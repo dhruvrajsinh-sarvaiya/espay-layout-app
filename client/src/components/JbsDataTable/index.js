@@ -10,19 +10,19 @@ const MyLoadingComponent = () => (
 )
 
 const DataTableFilter = Loadable({
-    loader: () => import("./Filter3"),
-    loading: MyLoadingComponent
- });
+   loader: () => import("./Demo"),
+   loading: MyLoadingComponent
+});
 
- const DataTableWithApi = Loadable({
-    loader: () => import("./DataTableWithApi"),
-    loading: MyLoadingComponent
- });
+const DataTableWithApi = Loadable({
+   loader: () => import("./DataTableWithApi"),
+   loading: MyLoadingComponent
+});
 
- const VirtualTable = Loadable({
-    loader: () => import("./VirtualTable"),
-    loading: MyLoadingComponent
- });
+const VirtualTable = Loadable({
+   loader: () => import("./VirtualTableWidget"),
+   loading: MyLoadingComponent
+});
 
 export {
    DataTableFilter,

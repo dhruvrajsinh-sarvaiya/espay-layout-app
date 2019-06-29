@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {Card, Row, Col } from 'reactstrap';
-import { Link } from "react-router-dom";;
+import { Row, Col } from 'reactstrap';
+import { Link } from "react-router-dom";
 
 export default class CooldexHigherLower extends Component {
   render() {

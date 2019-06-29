@@ -1,7 +1,7 @@
 /**
  * SMS Auth Sagas
  */
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, fork, put, takeEvery } from "redux-saga/effects";
 
 import { DISABLE_SEND_SMSAUTH, DISABLE_SUBMIT_SEND_SMSAUTH } from "Actions/types";
 

@@ -38,14 +38,6 @@ import { getOpenOrderList, getRecentOrderList } from "Actions/Trade";
 
 import $ from 'jquery';
 
-// const orderTypes = [
-//   { "type": "LIMIT", "ID": "1" },
-//   { "type": "MARKET", "ID": "2" },
-//   // { "type": "SPOT", "ID": "3" },
-//   { "type": "STOP_Limit", "ID": "4" },
-// ]
-
-
 class ActiveOrder extends Component {
   state = {
     selectedOrderType: 0,
@@ -112,10 +104,8 @@ class ActiveOrder extends Component {
     // Call When Get Data From Socket/SignalR      
     this.props.hubConnection.on('RecieveActiveOrder', (openOrderDetail) => {
 
-      //console.log("call from SignalR RecieveOpenOrder",openOrderDetail);
       if (this.isComponentActive === 1 && openOrderDetail !== null) {
 
-        //var openorders = this.state.activeMyOpenOrder;  
         try {
 
           const openOrderDetailData = JSON.parse(openOrderDetail);
@@ -127,13 +117,11 @@ class ActiveOrder extends Component {
             if (parseFloat(newData.Price) >= 0) {
 
               var openorders = $.extend(true, [], this.state.activeMyOpenOrder);
-              //console.log("findIndexOrderId start ",(new Date()))
-              var findIndexOrderId = openorders.findIndex(openorders => parseFloat(openorders.Id) === parseFloat(newData.Id));
-              //console.log("findIndexOrderId end ",findIndexOrderId,(new Date()))
+              var findIndexOrderId = openorders.findIndex(openorder => parseFloat(openorder.Id) === parseFloat(newData.Id));
               if (findIndexOrderId === -1) {
 
                 if (parseFloat(newData.Amount) > 0) {
-                  openorders.unshift(newData);                  
+                  openorders.unshift(newData);
                 }
 
               } else {
@@ -153,7 +141,6 @@ class ActiveOrder extends Component {
           }
 
         } catch (error) {
-          //console.log("errorRecieveActiveOrder ",error)
         }
 
       }
@@ -170,10 +157,8 @@ class ActiveOrder extends Component {
     // Invoke When Get Response From Socket/SignalR
     this.props.hubConnection.on('RecieveRecentOrder', (openOrderDetail) => {
 
-      //console.log("Get Data from signalR RecieveRecentOrder", openOrderDetail);
       if (this.isComponentActive === 1 && openOrderDetail !== null) {
 
-        //var recentOrders = this.state.activeOpenOrder   
         try {
 
           const openOrderDetailData = JSON.parse(openOrderDetail);
@@ -186,9 +171,7 @@ class ActiveOrder extends Component {
             if (parseFloat(newData.TrnNo) > 0) {
 
               var recentOrders = $.extend(true, [], this.state.activeOpenOrder);
-              //console.log("findIndexOrderId start ",(new Date()))
-              var findIndexOrderId = recentOrders.findIndex(recentOrders => parseFloat(recentOrders.TrnNo) === parseFloat(newData.TrnNo));
-              //console.log("findIndexOrderId end ",findIndexOrderId,(new Date()))                  
+              var findIndexOrderId = recentOrders.findIndex(recentOrder => parseFloat(recentOrder.TrnNo) === parseFloat(newData.TrnNo));
               if (findIndexOrderId === -1) {
 
                 if (parseFloat(newData.Qty) > 0) {
@@ -210,7 +193,6 @@ class ActiveOrder extends Component {
           }
 
         } catch (error) {
-          //console.log("errorRecieveRecentOrder ",error)
         }
 
       }
@@ -245,8 +227,6 @@ class ActiveOrder extends Component {
 
     }
 
-    //console.log("nextprops", nextprops)
-    //console.log("this.state.recentOrderBit !== nextprops.recentOrderBit", this.state.recentOrderBit , nextprops.recentOrderBit)
     // recent order process
     if (nextprops.activeOpenOrder && nextprops.activeOpenOrder.length !== 0 && this.state.recentOrderBit !== nextprops.recentOrderBit) {
 
@@ -276,9 +256,6 @@ class ActiveOrder extends Component {
   // render Component and view for Acive order component
   render() {
 
-    //console.log("this.state",this.state)
-    // const darkMode = this.props.darkMode;
-    
     return (
       <Fragment>
         <Card>
@@ -293,7 +270,6 @@ class ActiveOrder extends Component {
                   value={this.state.selectedOrderType}
                   onChange={this.handleChange}
                   textColor="primary"
-                // fullWidth            
                 >
                   <Tab
                     label={<IntlMessages id="trading.activeorders.label.openorder" />}
@@ -363,18 +339,6 @@ class ActiveOrder extends Component {
                     }
                   </IntlMessages>
 
-                  {/* <IntlMessages id="openorder.cancelallspot">
-          {(select) =>
-            <option value="3">{select}</option>
-          }
-        </IntlMessages> */}
-
-                  {/* <IntlMessages id="openorder.cancelallstop">
-                  {(select) =>
-                    <option value="4">{select}</option>
-                  }
-                </IntlMessages> */}
-
                   <IntlMessages id="openorder.cancelallstop-limit">
                     {(select) =>
                       <option value="4">{select}</option>
@@ -427,10 +391,10 @@ class ActiveOrder extends Component {
 const mapStateToProps = ({ settings, openOrder, recentOrder }) => {
 
   const { darkMode } = settings;
-  const { activeOpenMyOrder, loading, activeOrderBit } = openOrder;  
+  const { activeOpenMyOrder, loading, activeOrderBit } = openOrder;
   const { OpenOrder, recentOrderBit } = recentOrder;
 
-  var activeMyOpenOrder = activeOpenMyOrder,activeOpenOrder=OpenOrder;
+  var activeMyOpenOrder = activeOpenMyOrder, activeOpenOrder = OpenOrder;
 
   return { darkMode, activeMyOpenOrder, loading, activeOrderBit, activeOpenOrder, recentOrderBit };
 

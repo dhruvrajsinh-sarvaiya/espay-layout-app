@@ -118,9 +118,7 @@ class TokenStaking extends React.Component {
     // handle change event...
     onChangeHanlder(e, key) {
         e.preventDefault();
-        if (key === 'amount' && (validator.isDecimal(e.target.value, { force_decimal: false, decimal_digits: '0,8' }) || e.target.value == "")) {
-            this.setState({ [key]: e.target.value });
-        } else if (key !== 'amount') {
+        if ((key === 'amount' && validator.isDecimal(e.target.value, { force_decimal: false, decimal_digits: '0,8' }) || e.target.value == "") || (key !== 'amount')) {
             this.setState({ [key]: e.target.value });
         }
         if (key === 'StatkingTypeID' && this.state.CurrencyTypeID != '') {
@@ -185,7 +183,7 @@ class TokenStaking extends React.Component {
         this.setState({ detailedFlag: false, isEditable: true })
         this.props.postUnstakRequest({
             StakingHistoryId: this.state.UnstakingDetail.StakingHistoryId,
-            Type: 2, // Full = 1,Partial = 2
+            Type: 2,
             StakingPolicyDetailId: parseFloat(this.state.StakeUnstakeRes.PolicyDetailID),
             Amount: parseFloat(this.state.MaturityDetail.Amount),
             ChannelId: 21,
@@ -406,7 +404,6 @@ class TokenStaking extends React.Component {
                                                                 disabled={!this.state.getQuoteEnable}
                                                                 variant="raised"
                                                                 className="rounded-0 border-0 w-20 perverbtn"
-                                                                // color="primary"
                                                                 onClick={e => this.onSubmit(e)}
                                                             >
                                                                 <IntlMessages id="wallet.getQuote" />
@@ -495,7 +492,6 @@ class TokenStaking extends React.Component {
                                                         onChange={(e) => this.onChangeSwitch(e)}
                                                     />
                                                 }
-                                                // label={<IntlMessages id="wallet.EnableAutoUnstaking" />}
                                             />
                                         </div>
                                     </React.Fragment>

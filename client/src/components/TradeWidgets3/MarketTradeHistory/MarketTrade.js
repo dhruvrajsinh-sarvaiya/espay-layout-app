@@ -43,9 +43,6 @@ class MarketTradeRow extends React.Component {
             lastClass = "text-success";
         } else if (this.props.Type === "Sell") {
             lastClass = "text-danger";
-        } else {
-            lastClass = "";
-            changeClass = "";
         }
 
         return (

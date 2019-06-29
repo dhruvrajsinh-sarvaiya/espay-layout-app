@@ -144,33 +144,18 @@ class ListMarginWalletLedger extends Component {
                 }
             },
             onTableChange: (action, tableState) => {
-                switch (action) {
-                    case "changeRowsPerPage":
-                        this.setState({
-                            Page: tableState.page,
-                            PageSize: tableState.rowsPerPage
-                        });
-                        this.props.getMarginWalletLedger({
-                            FromDate: this.state.FromDate,
-                            ToDate: this.state.ToDate,
-                            WalletId: this.state.walletid,
-                            Page: tableState.page,
-                            PageSize: tableState.rowsPerPage
-                        });
-                        break;
-                    case "changePage":
-                        this.setState({
-                            Page: tableState.page,
-                            PageSize: tableState.rowsPerPage
-                        });
-                        this.props.getMarginWalletLedger({
-                            FromDate: this.state.FromDate,
-                            ToDate: this.state.ToDate,
-                            WalletId: this.state.walletid,
-                            Page: tableState.page,
-                            PageSize: tableState.rowsPerPage
-                        });
-                        break;
+                if (action === "changeRowsPerPage" || action === "changePage") {
+                    this.setState({
+                        Page: tableState.page,
+                        PageSize: tableState.rowsPerPage
+                    });
+                    this.props.getMarginWalletLedger({
+                        FromDate: this.state.FromDate,
+                        ToDate: this.state.ToDate,
+                        WalletId: this.state.walletid,
+                        Page: tableState.page,
+                        PageSize: tableState.rowsPerPage
+                    });
                 }
             }
         };
@@ -201,7 +186,7 @@ class ListMarginWalletLedger extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                            <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
+                                <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
                                 {this.state.showReset && <Button className="ml-15 border-0 btn-danger rounded-0" onClick={(e) => this.clearFilter()}>{intl.formatMessage({ id: "button.clear" })}</Button>}
                             </div>
                         </FormGroup>

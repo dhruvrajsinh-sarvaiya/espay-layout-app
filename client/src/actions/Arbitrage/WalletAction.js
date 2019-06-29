@@ -88,26 +88,26 @@ export const addLeveragePreconfirmationFailure = (error) => ({
 export const confirmArbitrageLeverage = (request) => ({
     type: ADD_ARBITRAGE_LEVERAGE,
     request: request
-})
+});
 export const confirmArbitrageLeverageSuccess = (response) => ({
     type: ADD_ARBITRAGE_LEVERAG_SUCCESS,
     payload: response
-})
+});
 export const confirmArbitrageLeverageFailure = (error) => ({
     type: ADD_ARBITRAGE_LEVERAGE_FAILURE,
     payload: error
-})
+});
 
 /* add balance */
 export const addAtbitrageBalance = (request) => ({
     type: ARBITRAGE_ADD_WALLET_BALANCE,
     request: request
-})
+});
 export const addAtbitrageBalanceSuccess = (response) => ({
     type: ARBITRAGE_ADD_WALLET_BALANCE_SUCCESS,
     payload: response
-})
+});
 export const addAtbitrageBalanceFailure = (error) => ({
     type: ARBITRAGE_ADD_WALLET_BALANCE_FAILURE,
     payload: error
-})
+});

@@ -57,7 +57,7 @@ function SamplePrevArrow(props) {
 }
 
 // class for Api plan Component
-class ViewActiveApiPlan extends Component {
+class ViewApiPlanDetails extends Component {
 
     // define constrctor and set default state
     constructor(props) {
@@ -518,4 +518,4 @@ class ViewActiveApiPlan extends Component {
     }
 }
 
-export default ViewActiveApiPlan;
+export default ViewApiPlanDetails;

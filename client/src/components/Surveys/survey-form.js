@@ -69,7 +69,7 @@ class SurveyPage extends Component {
 
   	componentWillReceiveProps(nextProps) {
 		//to get userlist data. on 1st call will get result data from here then 2nd time from popup open method
-		if(typeof nextProps.surveydata != 'undefined' && typeof nextProps.surveydata.json != 'undefined' && this.state.isgetsurveydata==0)
+		if(typeof nextProps.surveydata !== 'undefined' && typeof nextProps.surveydata.json !== 'undefined' && this.state.isgetsurveydata==0)
     	{
       		this.setState({
 				surveydata: nextProps.surveydata,
@@ -87,13 +87,13 @@ class SurveyPage extends Component {
 			this.props.getSurveyResultsById(checkdata);
 		}
 
-		if(typeof nextProps.data != 'undefined' && nextProps.data.responseCode === 0) {
+		if(typeof nextProps.data !== 'undefined' && nextProps.data.responseCode === 0) {
       		this.setState({ err_msg : '', err_alert: false ,loading: nextProps.loading });
 			  this.closeViewDetailsDialog();
 		}
 		
-    	if(typeof nextProps.data != 'undefined' && (nextProps.data.responseCode === 9 || nextProps.data.responseCode === 1)) {
-      		if(typeof nextProps.data.errors.message !='undefined' && nextProps.data.errors.message!='')
+    	if(typeof nextProps.data !== 'undefined' && (nextProps.data.responseCode === 9 || nextProps.data.responseCode === 1)) {
+      		if(typeof nextProps.data.errors.message !=='undefined' && nextProps.data.errors.message!='')
       		{
           		this.setState({ err_alert: true, loading: nextProps.loading });
       		}
@@ -101,7 +101,7 @@ class SurveyPage extends Component {
         		errors : nextProps.data.errors
       		});
 		}
-		if (typeof nextProps.surveyresultsdetail != 'undefined' && nextProps.surveyresultsdetail.responseCode === 0) {
+		if (typeof nextProps.surveyresultsdetail !== 'undefined' && nextProps.surveyresultsdetail.responseCode === 0) {
 			this.setState({
 				allresults: nextProps.surveyresultsdetail.data.results,
 				displaysurveyform: nextProps.surveyresultsdetail && nextProps.surveyresultsdetail.data && nextProps.surveyresultsdetail.data.isExist==1?0:1,

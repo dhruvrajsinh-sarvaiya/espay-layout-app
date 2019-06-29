@@ -3,12 +3,10 @@
     Date : 25-10-2018
     FIle Comment : Fund Balances page saga methods
 */
-import { all, call, fork, take, put, takeEvery } from 'redux-saga/effects';
-import api from 'Api';
-import { eventChannel } from 'redux-saga';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
 const socketApiUrl = AppConfig.socketAPIUrl;
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerGetAPI, redirectToLogin, loginErrCode, statusErrCodeList } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
 // import types for dispatch puropse
@@ -62,12 +60,10 @@ function* getWalletsBalanceSocket(payload) {
             if (responseFromSocket.BizResponseObj.ReturnCode == 0 && responseFromSocket.statusCode == 200) {
                 yield put(getWalletsBalanceSuccess(responseFromSocket.Wallets));
             } else if (responseFromSocket.BizResponseObj.ReturnCode == 1) {
-                // console.log(responseFromSocket.BizResponseObj.ReturnMsg);
                 yield put(getWalletsBalanceFailure(responseFromSocket.BizResponseObj.ReturnMsg));
             }
         }
     } catch (error) {
-        // console.log(error);
         yield put(getWalletsBalanceFailure(error));
     }
 }

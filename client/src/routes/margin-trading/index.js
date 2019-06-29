@@ -4,7 +4,7 @@
     File Comment : margin trading initial route
 */
 import React, { Fragment } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 
 // async components for marging trading page
 import {
@@ -20,7 +20,7 @@ import {
 const MaringTrading = ({ match }) => (
     <Fragment>
         <Switch>
-            {/* <Redirect exact from={`${match.url}/`} to={`${match.url}`} /> */}
+            
             <Route
                 path={`${match.url}/leverage-report`}
                 component={AsyncMarginLeverageReport}
@@ -44,7 +44,7 @@ const MaringTrading = ({ match }) => (
                 component={AsyncprofitlossComponent}
             />
             <Route path={`${match.url}/OpenPositionReport`} component={OpenPositionReport} />
-            {/* <Route path={`${match.url}/OpenPositionReport`} component={ 0 > 1 ? OpenPositionReport : AsyncprofitlossComponent} /> */}
+           
             <Route path={`${match.url}/`} component={AsyncMarginTradingComponent} />
         </Switch>
     </Fragment>

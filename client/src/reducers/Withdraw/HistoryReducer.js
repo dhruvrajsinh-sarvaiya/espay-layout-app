@@ -3,7 +3,6 @@
     Date : 13-09-2018
     File Comment : Withdraw History Reducer action manager
 */
-import { NotificationManager } from 'react-notifications';
 // import only required withdraw history actions
 import {
     GET_WITHDRAW_HISTORY,
@@ -23,7 +22,11 @@ const INITIAL_STATE = {
     withdrawhistoryLoading: false
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
         case GET_WITHDRAW_HISTORY:
             return { ...state, withdrawhistoryLoading: true, resendMailResponse: {} };

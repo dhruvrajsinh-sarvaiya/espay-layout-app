@@ -15,7 +15,7 @@ import {
 import IntlMessages from 'Util/IntlMessages';
 
 // class for Set API Custom Limits
-class SetAPICustomLimits extends Component {
+class CustomLimits extends Component {
 
     // construcrtor
     constructor(props) {
@@ -167,4 +167,4 @@ class SetAPICustomLimits extends Component {
     }
 }
 
-export default SetAPICustomLimits
+export default CustomLimits

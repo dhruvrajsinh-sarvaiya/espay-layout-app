@@ -3,9 +3,9 @@
  * Create Date:05/02/2019
  * Component For Risk Score Chart
  */
-import React , {Fragment}from 'react';
+import React, { Fragment } from 'react';
 
-import {Row,Col } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import ReactFC from 'react-fusioncharts';
 import FusionCharts from 'fusioncharts';
 import Column2D from 'fusioncharts/fusioncharts.charts';
@@ -36,42 +36,19 @@ const chartConfigs = {
             "theme": "fusion"
         },
         "categories": [{
-            "category": [{
-                "label": "Jan"
-            },
-            {
-                "label": "Feb"
-            },
-            {
-                "label": "Mar"
-            },
-            {
-                "label": "Apr"
-            },
-            {
-                "label": "May"
-            },
-            {
-                "label": "Jun"
-            },
-            {
-                "label": "Jul"
-            },
-            {
-                "label": "Aug"
-            },
-            {
-                "label": "Sep"
-            },
-            {
-                "label": "Oct"
-            },
-            {
-                "label": "Nov"
-            },
-            {
-                "label": "Dec"
-            }
+            "category": [
+                { "label": "Jan" },
+                { "label": "Feb" },
+                { "label": "Mar" },
+                { "label": "Apr" },
+                { "label": "May" },
+                { "label": "Jun" },
+                { "label": "Jul" },
+                { "label": "Aug" },
+                { "label": "Sep" },
+                { "label": "Oct" },
+                { "label": "Nov" },
+                { "label": "Dec" }
             ]
         }],
         "dataset": [{
@@ -80,83 +57,37 @@ const chartConfigs = {
             "anchorSides": "1",
             "anchorRadius": "10",
             "seriesname": "MAX Risk",
-            "data": [{
-                "value": "7"
-            },
-            {
-                "value": "5"
-            },
-            {
-                "value": "7"
-            },
-            {
-                "value": "9"
-            },
-            {
-                "value": "4"
-            },
-            {
-                "value": "8"
-            },
-            {
-                "value": "9"
-            },
-            {
-                "value": "5"
-            },
-            {
-                "value": "8"
-            },
-            {
-                "value": "6"
-            },
-            {
-                "value": "2"
-            },
-            {
-                "value": "4"
-            }
+            "data": [
+                { "value": "7" },
+                { "value": "5" },
+                { "value": "7" },
+                { "value": "9" },
+                { "value": "4" },
+                { "value": "8" },
+                { "value": "9" },
+                { "value": "5" },
+                { "value": "8" },
+                { "value": "6" },
+                { "value": "2" },
+                { "value": "4" }
             ]
         },
         {
             "showValues": "0",
             "seriesname": "AVG. Risk",
-            "data": [{
-                "value": "5"
-            },
-            {
-                "value": "3"
-            },
-            {
-                "value": "4"
-            },
-            {
-                "value": "7"
-            },
-            {
-                "value": "2"
-            },
-            {
-                "value": "6"
-            },
-            {
-                "value": "7"
-            },
-            {
-                "value": "3"
-            },
-            {
-                "value": "5"
-            },
-            {
-                "value": "1"
-            },
-            {
-                "value": "2"
-            },
-            {
-                "value": "4"
-            }
+            "data": [
+                { "value": "5" },
+                { "value": "3" },
+                { "value": "4" },
+                { "value": "7" },
+                { "value": "2" },
+                { "value": "6" },
+                { "value": "7" },
+                { "value": "3" },
+                { "value": "5" },
+                { "value": "1" },
+                { "value": "2" },
+                { "value": "4" }
             ]
         }
         ]
@@ -169,8 +100,7 @@ class RiskScore extends React.Component {
             <Fragment>
 
                 <div className="col-md-12 col-sm-12 col-lg-12">
-                    <ReactFC
-                        {...chartConfigs} />
+                    <ReactFC {...chartConfigs} />
                 </div>
 
                 <Col sm={12}>

@@ -5,11 +5,11 @@ Date  : 12/6/2019
 */
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import AppConfig from 'Constants/AppConfig';
 
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 // types for set actions and reducers
 import {
     ARBITRAGE_EXCHANGE_LIST
@@ -40,7 +40,7 @@ function* arbitrageGetExchangeListList({ payload }) {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+           var  staticRes = staticResponse(response.statusCode);
             yield put(arbitrageGetExchangeListFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(arbitrageGetExchangeListSuccess(response));

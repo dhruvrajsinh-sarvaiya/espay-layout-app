@@ -24,7 +24,7 @@ const AppConfig = {
         name: 'English',
         icon: 'en',
     },
-    enableUserTour: process.env.NODE_ENV === 'production' ? false : false,  // Enable / Disable User Tour
+    enableUserTour: false,  // Enable / Disable User Tour
     copyRightText: general != null && general.locale && general.locale[localStorage.getItem('locale')] && general.locale[localStorage.getItem('locale')].copyrights ? general.locale[localStorage.getItem("locale")].copyrights : 'Cooldex - 2019 All Rights Reserved.',      // Copy Right Text
     // light theme colors
     themeColors: {
@@ -105,14 +105,14 @@ const AppConfig = {
     marginTradingWalletId: 5,
     marginSafetyWalletId: 6,
     marginProfitWalletId: 7,
-    referral_link:"https://new-stack-front.azurewebsites.net?ref=",
+    referral_link: "https://new-stack-front.azurewebsites.net?ref=",
 
     // defualt pair & record configuration for signalr arbitrage dashboard
     defaultArbitragePair: 'ETH_BTC', // default pair
     defaultArbitrageChildCurrency: 'ETH', // default first currency
     defaultArbitrageBasedCurrency: 'BTC', // default second currency
     arbitrageBuySellRecordCount: 7, // for display records in buyer/seller grid in arbitrage dashboard
-    
+
 }
 
 export default AppConfig;

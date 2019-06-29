@@ -109,7 +109,7 @@ function* confirmAddLeverageRequest(payload) {
 function* addAtbitrageBalanceRequest(payload) {
     const request = payload.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const responseFromSocket = yield call(swaggerPostAPI, 'api/ArbitrageWallet/ArbitrageFundTransafer', request, headers);
+    const responseFromSocket = yield call(swaggerPostAPI, request.isWithdraw ? 'api/ArbitrageWallet/ArbitrageToTradingFundTransafer' : 'api/ArbitrageWallet/ArbitrageFundTransafer', request, headers);
     try {
         if (responseFromSocket.ReturnCode === 0)
             yield put(addAtbitrageBalanceSuccess(responseFromSocket));

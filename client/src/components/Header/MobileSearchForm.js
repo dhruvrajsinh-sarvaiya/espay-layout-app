@@ -34,4 +34,4 @@ export default class MobileSearchForm extends Component {
          </div>
       )
    }
-};
+}

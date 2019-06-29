@@ -316,7 +316,7 @@ class StakingHistory extends React.Component {
                                 "badge badge-success": (value === intl.formatMessage({ id: "wallet.stakingStatus.1" })),
                                 "badge badge-warning": (value === intl.formatMessage({ id: "wallet.stakingStatus.4" })),
                                 "badge badge-info": (value === intl.formatMessage({ id: "wallet.stakingStatus.5" })),
-                                "badge badge-danger": (value === intl.formatMessage({ id: "wallet.stakingStatus.9" })),
+                                "badge badge-secondary": (value === intl.formatMessage({ id: "wallet.stakingStatus.9" })),
                             })} >
                                 {value}
                             </span>
@@ -350,9 +350,9 @@ class StakingHistory extends React.Component {
                 }
             },
             customFooter: (count, page, rowsPerPage) => {
-                var page = page > 0 ? page + 1 : 1;
+                var page1 = page > 0 ? page + 1 : 1;
                 return (
-                    <CustomFooter count={count} page={page} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
+                    <CustomFooter count={count} page={page1} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
             },
         };
@@ -753,7 +753,7 @@ class StakingHistory extends React.Component {
                                                         "badge badge-success": (this.state.rowDetails.Status === 1),
                                                         "badge badge-warning": (this.state.rowDetails.Status === 4),
                                                         "badge badge-info": (this.state.rowDetails.Status === 5),
-                                                        "badge badge-danger": (this.state.rowDetails.Status === 9),
+                                                        "badge badge-secondary": (this.state.rowDetails.Status === 9),
                                                     })} >
                                                         <IntlMessages id={"wallet.stakingStatus." + this.state.rowDetails.Status} />
                                                     </span>

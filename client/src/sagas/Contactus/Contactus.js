@@ -24,29 +24,18 @@ import {
  * Send Contact Request To Server
  */
 const addNEWContact = async (contactdata) =>
-    await api.post('/api/private/v1/contactus/addContact', {contactdata})
+    await api.post('/api/private/v1/contactus/addContact', { contactdata })
         .then(response => response)
-        .catch(error => JSON.parse(JSON.stringify(error.response)));	
+        .catch(error => JSON.parse(JSON.stringify(error.response)));
 
-/* const addNEWContact = async (contactdata) =>
-    await api.post('/api/private/v1/contactus/addContact', contactdata)
-        .then(response => response)
-        .catch(error =>error); */		
 /**
  * Add Contact data to Server
  */
-function* addContactusServer({payload}) {
+function* addContactusServer({ payload }) {
     try {
-		
-		/* const formData = new FormData();
-		formData.append('attachedFile', payload.attachedFile);
-		formData.append('contactdata', JSON.stringify(payload)); 
-		const response = yield call(addNEWContact, formData);
-		*/
-	
         const response = yield call(addNEWContact, payload);
         //validate if data found in response 
-        if (typeof response.data != undefined && response.data.responseCode==0) {
+        if (typeof response.data != undefined && response.data.responseCode == 0) {
             yield put(addContactusSuccess(response.data));
         } else {
             yield put(addContactusFailure(response.data));

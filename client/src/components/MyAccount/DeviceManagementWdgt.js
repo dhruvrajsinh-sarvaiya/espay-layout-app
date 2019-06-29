@@ -19,7 +19,6 @@ import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard
 // jbs section loader
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 
-//import IconButton from '@material-ui/core/IconButton';
 import { Collapse } from "reactstrap";
 
 export default class DeviceManagementWdgt extends Component {
@@ -147,7 +146,6 @@ export default class DeviceManagementWdgt extends Component {
     const { loading, selectedUsers, collapse } = this.state;
     const tempObj = this.props.data.data;
     let users = tempObj;
-    const columns = ["Demo", "Locations", "Recent Activity", "IP Address", ""];
     return (
       <div className="user-management">
         <p className="text-right">
@@ -233,7 +231,7 @@ export default class DeviceManagementWdgt extends Component {
                     </Collapse>
                   </td>
                 </tr>
-              )}            
+              )}
             </table>
           </div>
           {loading && <JbsSectionLoader />}
@@ -276,7 +274,7 @@ export default class DeviceManagementWdgt extends Component {
                               <span
                                 className={`badge ${
                                   user.badgeClass
-                                } badge-pill`}
+                                  } badge-pill`}
                               >
                                 {user.iPAddress}
                               </span>

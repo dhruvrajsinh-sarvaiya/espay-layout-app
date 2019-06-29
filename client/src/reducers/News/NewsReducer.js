@@ -15,25 +15,29 @@ import {
 const INIT_STATE = {
     newslist: [],
     loading: false,
-    id:'',
-    newsdetail:{}
+    id: '',
+    newsdetail: {}
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
     switch (action.type) {
 
         // get News
         case GET_NEWS:
-            return { ...state,loading: true};
+            return { ...state, loading: true };
 
         // get News success
         case GET_NEWS_SUCCESS:
-            return { ...state,loading: false, newslist: action.payload };
+            return { ...state, loading: false, newslist: action.payload };
 
         // get News failure
         case GET_NEWS_FAILURE:
-            return {...state,loading: false};
-            
+            return { ...state, loading: false };
+
         default: return { ...state };
     }
 }

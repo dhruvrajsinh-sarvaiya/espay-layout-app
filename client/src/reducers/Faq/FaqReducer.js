@@ -5,8 +5,8 @@
     UpdatedDate : 19-09-2018
     Description : Faq data Reducer action manager
 */
-import update from 'react-addons-update';
-import { NotificationManager } from 'react-notifications';
+
+
 // action types
 import {
     GET_FAQ,
@@ -34,7 +34,10 @@ const INIT_STATE = {
     all_faqs_categories_list:[],//Added by dhara gajera 5/2/2019
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state , action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
    // console.log("actiontype",action.type);
     switch (action.type) {
 

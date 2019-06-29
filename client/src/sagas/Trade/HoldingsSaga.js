@@ -18,11 +18,10 @@ function* getHoldingList() {
 }
 
 // Function for set response to data and Call Function for Api Call
-function* getHoldingListData({payload}) {
+function* getHoldingListData({ payload }) {
     const { Pair } = payload;
-   // console.log(Pair)
     try {
-        const response = yield call(getHoldingListRequest,Pair)
+        const response = yield call(getHoldingListRequest, Pair)
 
         // set response if its available else set error message
         if (response && response != null && response != undefined) {
@@ -38,7 +37,6 @@ function* getHoldingListData({payload}) {
 // function for Call api and set response 
 const getHoldingListRequest = async (holdingListRequest) =>
     await api.get('Holdinglist.js')
-    //.then(console.log('API',holdingListRequest))   
         .then(response => response)
         .catch(error => error)
 

@@ -28,10 +28,8 @@ import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for SignIn Email
 function* signInEmailAPI({payload}) {
-    // const response = yield call(swaggerPostAPI,'api/Signin/LoginWithEmail',payload);
     const response = yield call(swaggerPostAPI,'api/Signin/LoginWithEmailV1',payload);
-    // console.log('Email Login Request',payload);
-    // console.log('Email Login Response',response);
+   
     try {
         if(response.ReturnCode === 0) {
             yield put(signInWithEmailSuccess(response));
@@ -46,8 +44,7 @@ function* signInEmailAPI({payload}) {
 //Function for Resend OTP to Email
 function* resendOTPAPI({payload}) {
     const response = yield call(swaggerPostAPI,'api/Signin/ReSendOtpWithEmail',payload);
-    // console.log('Email resend Request',payload);
-    // console.log('Email resend Response',response);
+    
     try {
         if(response.ReturnCode === 0) {
             yield put(signInEmailResendSuccess(response));
@@ -62,8 +59,7 @@ function* resendOTPAPI({payload}) {
 //Function for Verify OTP
 function* verifyOTPAPI({payload}) {
     const response = yield call(swaggerPostAPI,'api/Signin/EmailOtpVerification',payload);
-    // console.log('Email verify Request',payload);
-    // console.log('Email verify Response',response);
+    
     try {
         if(response.ReturnCode === 0) {
             yield put(signInEmailVerifySuccess(response));

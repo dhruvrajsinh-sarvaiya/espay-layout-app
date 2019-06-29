@@ -7,7 +7,7 @@ import React from 'react';
 import { JbsCardHeading } from './JbsCardHeading'
 
 const JbsCard = ({ children, customClasses, heading, headingCustomClasses, colClasses }) => (
-    <div className={colClasses && colClasses}>
+    <div className={colClasses}>
         <div className={`jbs-block ${customClasses ? customClasses : ''} borderRadius`}>
             {heading &&
                 <JbsCardHeading

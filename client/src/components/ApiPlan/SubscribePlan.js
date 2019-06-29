@@ -47,7 +47,7 @@ class SubScribePlan extends React.Component {
         if (this.props.wallets) {
             this.props.wallets.map((item, key) => {
                 if (item.CoinName == this.props.selectedData.Coin && item.IsDefaultWallet == 1) {
-                    balance = item.Balance,
+                    balance = item.Balance
                     coin = item.CoinName
                 }
             })

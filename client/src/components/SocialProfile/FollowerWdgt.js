@@ -6,7 +6,7 @@
 */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { Alert, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import IntlMessages from "Util/IntlMessages";
 // jbs collapsible card
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
@@ -34,19 +34,12 @@ class FollowerWdgt extends Component {
     }
 
     componentWillMount() {
-        /* if(typeof this.props.followerSetting !== 'undefined' && Object.keys(this.props.followerSetting).length > 0) {
-            this.setState({ followerSetting : this.props.followerSetting });
-        } */
         this.props.getSocialProfileSubscription();
     }
 
     componentWillReceiveProps(nextProps) {
         console.log('Follower Props:',nextProps);
         this.setState({ loading : nextProps.loading });
-
-        /* if(typeof nextProps.subscriptionData !== 'undefined' && nextProps.subscriptionData.SocialProfileList.length > 0) {
-            this.setState({ followerSetting : nextProps.subscriptionData.SocialProfileList[0] });
-        } */
     }
 
     onSubscribe(ProfileId) {

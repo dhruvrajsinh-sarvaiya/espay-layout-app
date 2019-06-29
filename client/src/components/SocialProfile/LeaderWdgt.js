@@ -7,7 +7,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import IntlMessages from "Util/IntlMessages";
-import { Alert, Button } from "reactstrap";
+import { Button } from "reactstrap";
 // jbs collapsible card
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 //Call Action function..
@@ -37,19 +37,12 @@ class LeaderWdgt extends Component {
     }
 
     componentWillMount() {
-        /* if(typeof this.props.leaderSetting !== 'undefined' && Object.keys(this.props.leaderSetting).length > 0) {
-            this.setState({ leaderSetting : this.props.leaderSetting });
-        } */
         this.props.getSocialProfileSubscription();
     }
 
     componentWillReceiveProps(nextProps) {
         console.log('Leader Props:',nextProps);
         this.setState({ loading : nextProps.loading });
-
-        /* if(typeof nextProps.subscriptionData !== 'undefined' && nextProps.subscriptionData.SocialProfileList.length > 0) {
-            this.setState({ leaderSetting : nextProps.subscriptionData.SocialProfileList[0] });
-        } */
     }
 
     onSubscribe(ProfileId) {

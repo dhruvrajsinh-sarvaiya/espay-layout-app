@@ -3,25 +3,12 @@
  */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import SwipeableViews from 'react-swipeable-views';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import { Input } from 'reactstrap';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import { Table } from 'reactstrap';
-import Button from '@material-ui/core/Button';
 import Switch from '@material-ui/core/Switch';
 import classNames from 'classnames';
-
 import { Scrollbars } from 'react-custom-scrollbars';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Badge } from 'reactstrap';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import AppConfig from 'Constants/AppConfig';
 // jbs section loader
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
@@ -245,7 +232,7 @@ class FundBalances extends Component {
                                     coin.Balance != 0 && <BalanceWidget
                                         coin={coin.WalletType}
                                         balance={coin.Balance}
-                                        // getImage={this.getImage(coin.WalletType)}
+                                        
                                         getDetails={(e) => this.props.getWalletsBalance(coin.WalletType)}
                                         wallets={this.props.wallets}
                                         loading={this.props.subLoading}
@@ -254,7 +241,7 @@ class FundBalances extends Component {
                                     <BalanceWidget
                                         coin={coin.WalletType}
                                         balance={coin.Balance}
-                                        // getImage={this.getImage(coin.WalletType)}
+                                        
                                         getDetails={(e) => this.props.getWalletsBalance(coin.WalletType)}
                                         wallets={this.props.wallets}
                                         loading={this.props.subLoading}

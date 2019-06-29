@@ -23,52 +23,31 @@ import { NotificationManager } from 'react-notifications';
 const columns = [
   {
     name: <IntlMessages id="sidebar.colHash" />,
-    options: {
-      filter: true,
-      sort: false,
-    }
+    options: { filter: true, sort: false, }
   },
   {
     name: <IntlMessages id="sidebar.colUserName" />,
-    options: {
-      filter: true,
-      sort: false,
-    }
+    options: { filter: true, sort: false, }
   },
   {
     name: <IntlMessages id="sidebar.colChannelType" />,
-    options: {
-      filter: false,
-      sort: false
-    }
+    options: { filter: false, sort: false }
   },
   {
     name: <IntlMessages id="sidebar.colPayType" />,
-    options: {
-      filter: false,
-      sort: false
-    }
+    options: { filter: false, sort: false }
   },
   {
     name: <IntlMessages id="table.Discription" />,
-    options: {
-      filter: true,
-      sort: false,
-    }
+    options: { filter: true, sort: false, }
   },
   {
     name: <IntlMessages id="sidebar.Receiver" />,
-    options: {
-      filter: true,
-      sort: false,
-    }
+    options: { filter: true, sort: false, }
   },
   {
     name: <IntlMessages id="sidebar.colCreatedDt" />,
-    options: {
-      filter: false,
-      sort: false,
-    }
+    options: { filter: false, sort: false, }
   }
 ];
 
@@ -85,7 +64,6 @@ class ReferralInvitationViaEmailSMS extends Component {
       channelId: "",
     },
     totalCount: 0,
-    isDisable: true,
     payTypeList: [],
     serviceData: [],
     showReset: false,
@@ -102,7 +80,7 @@ class ReferralInvitationViaEmailSMS extends Component {
     newObj.PayType = "";
     newObj.Service = "";
     newObj.channelId = this.state.getFilter.channelId;
-    this.setState({ showReset: false, getFilter: newObj, isDisable: true, errors: {} });
+    this.setState({ showReset: false, getFilter: newObj, errors: {} });
     this.props.getReferralInviteByChannel(newObj);
   }
   componentWillMount() {
@@ -143,8 +121,6 @@ class ReferralInvitationViaEmailSMS extends Component {
 
           NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
         } else {
-
-          // var newObj = Object.assign({}, this.state.getFilter);
           newObj.PageIndex = 1;
           newObj.Page_Size = 10;
           this.props.getReferralInviteByChannel(newObj);
@@ -201,14 +177,14 @@ class ReferralInvitationViaEmailSMS extends Component {
   handleChange = (event) => {
     var newObj = Object.assign({}, this.state.getFilter);
     newObj[event.target.name] = event.target.value;
-    this.setState({ getFilter: newObj, isDisable: false });
+    this.setState({ getFilter: newObj });
     if (event.target.name === "PayType") {
       this.props.getServiceList({ PayTypeId: event.target.value });
     }
   }
   render() {
 
-    const { Data, totalCount, payTypeList, serviceData, isDisable, errors } = this.state;
+    const { Data, totalCount, payTypeList, serviceData, errors } = this.state;
     const { loading } = this.props;
     const { PageIndex, Page_Size, FromDate, ToDate, PayType, Service } = this.state.getFilter;
     let today = new Date();
@@ -242,23 +218,19 @@ class ReferralInvitationViaEmailSMS extends Component {
         );
       },
       onTableChange: (action, tableState) => {
-        switch (action) {
-          case 'changeRowsPerPage' || "changePage":
-            this.setState({
-              GetData: {
-                ...this.state.Getdata,
-                PageIndex: tableState.page,
-                Page_Size: tableState.rowsPerPage
-              }
-            });
-            this.props.getReferralInviteByChannel({
+        if (action === 'changeRowsPerPage' || action === 'changePage') {
+          this.setState({
+            GetData: {
               ...this.state.Getdata,
               PageIndex: tableState.page,
               Page_Size: tableState.rowsPerPage
-            });
-            break;
-          default:
-            break;
+            }
+          });
+          this.props.getReferralInviteByChannel({
+            ...this.state.Getdata,
+            PageIndex: tableState.page,
+            Page_Size: tableState.rowsPerPage
+          });
         }
       }
     };
@@ -308,7 +280,7 @@ class ReferralInvitationViaEmailSMS extends Component {
                 <Row>
                   <Col md="4" xs="4" sm="4">
                     <FormGroup className="mt-30">
-                      <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
+                      <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : false)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
                     </FormGroup>
                   </Col>
                   <Col md="4" xs="4" sm="4">

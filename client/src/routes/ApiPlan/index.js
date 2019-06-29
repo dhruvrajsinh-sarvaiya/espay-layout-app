@@ -37,7 +37,6 @@ import { injectIntl } from 'react-intl';
 // class for Api plan Component
 class ApiPlanComponent extends Component {
 
-
     // make default state values on load
     constructor(props) {
         super(props);
@@ -49,7 +48,7 @@ class ApiPlanComponent extends Component {
             activePlanId: 0,
             SubscribeData: {},
             IsActivePlan: false,
-            wallets:[]
+            wallets: []
         }
     }
 
@@ -78,10 +77,9 @@ class ApiPlanComponent extends Component {
     componentWillReceiveProps(nextprops) {
 
         // set state for user plans
-        if (this.state.UserActivePlanList && typeof (nextprops.UserPlanList) !== undefined || typeof (nextprops.UserPlanList) !== null) {
+        if (this.state.UserActivePlanList && (nextprops.UserPlanList !== undefined || nextprops.UserPlanList != null)) {
             this.setState({
                 UserActivePlanList: 0,
-                //SubscribeID:nextprops.UserPlanList.PlanID,                
                 SubscribeData: nextprops.UserPlanList
             })
         }
@@ -108,7 +106,7 @@ class ApiPlanComponent extends Component {
                 getApiPlanList: 0,
                 apiPlanList: nextprops.apiPlanList,
             })
-        }else if(this.state.getApiPlanList && nextprops.apiPlanList == null){
+        } else if (this.state.getApiPlanList && nextprops.apiPlanList == null) {
             this.setState({
                 getApiPlanList: 0,
                 apiPlanList: [],
@@ -123,10 +121,10 @@ class ApiPlanComponent extends Component {
         }
 
         if (nextprops.wallets && nextprops.wallets !== null) {
-            
+
             this.setState({
                 wallets: nextprops.wallets
-            })          
+            })
         }
     }
 
@@ -176,7 +174,7 @@ class ApiPlanComponent extends Component {
 
 //export default ApiPlanComponent;
 // map states to props when changed in states from reducer
-const mapStateToProps = ({ apiPlan,currency }) => {
+const mapStateToProps = ({ apiPlan, currency }) => {
     const {
         apiPlanList,
         loading,
@@ -187,7 +185,7 @@ const mapStateToProps = ({ apiPlan,currency }) => {
         userPlanBit
     } = apiPlan;
 
-    const {wallets} = currency;
+    const { wallets } = currency;
     return {
         apiPlanList,
         loading,
@@ -201,5 +199,5 @@ const mapStateToProps = ({ apiPlan,currency }) => {
 }
 
 // export this component with action methods and props
-export default connect(mapStateToProps, { getApiPlanList, getUserActivePlan,getCurrencyList })
+export default connect(mapStateToProps, { getApiPlanList, getUserActivePlan, getCurrencyList })
     (injectIntl(ApiPlanComponent));

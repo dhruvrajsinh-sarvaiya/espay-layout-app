@@ -244,17 +244,14 @@ class LimitsControl extends Component {
     // numberic value only
     validateOnlyNumeric(value) {
         const regexNumeric = /^[0-9.]+$/;
-        if (
-            validator.matches(value,regexNumeric) &&
+
+        return (
+            validator.matches(value, regexNumeric) &&
             validator.isDecimal(value, {
                 force_decimal: false,
                 decimal_digits: "0,8"
             })
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+        ) ? true : false;
     }
     // on change trade block
     onTradeChange(e) {
@@ -701,7 +698,6 @@ class LimitsControl extends Component {
                                     <Button
                                         size="sm"
                                         className="border-0 rounded-0 mx-10 px-20 perverbtn"
-                                        // color="primary"
                                         onClick={e => this.onSubmitTrade(e)}
                                     >
                                         <IntlMessages id={"button.save"} />
@@ -897,7 +893,6 @@ class LimitsControl extends Component {
                                     <Button
                                         size="sm"
                                         className="border-0 rounded-0 mx-10 px-20 perverbtn"
-                                        // color="primary"
                                         onClick={e => this.onSubmitWithdraw(e)}
                                     >
                                         <IntlMessages id={"button.save"} />
@@ -1093,7 +1088,6 @@ class LimitsControl extends Component {
                                     <Button
                                         size="sm"
                                         className="border-0 rounded-0 mx-10 px-20 perverbtn"
-                                        // color="primary"
                                         onClick={e => this.onSubmitDeposit(e)}
                                     >
                                         <IntlMessages id={"button.save"} />

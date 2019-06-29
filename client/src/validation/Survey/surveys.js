@@ -3,20 +3,20 @@ import validator from 'validator';
 exports.validateAddSurveyResultInput = function(data) {
  
   let errors = {};
-  if (typeof data == 'undefined')
+  if (typeof data === 'undefined')
   {
     errors.message = 'common.api.invalidrequest';
   }
 
-  else if(typeof data.surveyId == 'undefined' || data.surveyId == "" || data.surveyId.length == 0 || validator.isEmpty(data.surveyId+'')) {
+  else if(typeof data.surveyId === 'undefined' || data.surveyId == "" || data.surveyId.length == 0 || validator.isEmpty(data.surveyId+'')) {
     errors.message = 'surveys.surveyform.error.surveyIdReq';
   } 
 
-  else if(typeof data.userId == 'undefined' || data.userId == "" || data.userId.length == 0 || validator.isEmpty(data.userId+'')) {
+  else if(typeof data.userId === 'undefined' || data.userId == "" || data.userId.length == 0 || validator.isEmpty(data.userId+'')) {
     errors.message = 'surveys.surveyform.error.userIdReq';
   }
 
-  else if(typeof data.answerjson == 'undefined' || data.answerjson == "" || typeof data.answerjson !== "object" || Object.keys(data.answerjson).length === 0) {
+  else if(typeof data.answerjson === 'undefined' || data.answerjson == "" || typeof data.answerjson !== "object" || Object.keys(data.answerjson).length === 0) {
     errors.message = 'surveys.surveyform.error.answerjsonReq';
   }
 

@@ -11,7 +11,7 @@ import {
 
 } from 'Actions/types';
 
-const INITIAL_STATE = {
+const INIT_STATE = {
     loading: false,
     profitLossList: [],
     DetailedData:[],
@@ -19,7 +19,10 @@ const INITIAL_STATE = {
 
 }
 
-export default (state = INITIAL_STATE, action) => {
+export default (state,action) => {
+	if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         case PROFIT_LOSS_LIST:
             return { ...state, loading: true, profitLossList: [],DetailedData:[], TotalCount: 0 }

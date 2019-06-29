@@ -148,22 +148,6 @@ function* getSocialProfileSubscriptionAPI() {
 	}
 }
 
-//Function for Get Social Profile Subscription API
-function* getSocialProfileSubscriptionAPI() {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetSocialProfile', {}, headers);
-    
-	try {
-		if (response.ReturnCode === 0) {
-			yield put(getSocialProfileSubscriptionSuccess(response));
-		} else {
-			yield put(getSocialProfileSubscriptionFailure(response));
-		}
-	} catch (error) {
-		yield put(getSocialProfileSubscriptionFailure(error));
-	}
-}
-
 //Function for Get Social Profile Subscribe API
 function* getSocialProfileSubscribeAPI({ payload }) {
     var headers = { 'Authorization': AppConfig.authorizationToken }

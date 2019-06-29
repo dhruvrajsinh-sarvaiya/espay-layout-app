@@ -5,7 +5,6 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { DropdownToggle, DropdownMenu, Dropdown } from 'reactstrap';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { Badge } from 'reactstrap';
 import $ from 'jquery';
 import Tooltip from '@material-ui/core/Tooltip';
 //Added by salim dt:02/04/2019
@@ -36,8 +35,7 @@ class LanguageProvider extends Component {
 	onChangeLanguage(lang) {
 		this.setState({ langDropdownOpen: false });
 		this.props.setLanguage(lang);
-		// this.props.setLanguage({ PreferedLanguage : lang.locale });
-		//if (lang.locale === 'ar' || lang.locale === 'he') {
+		
 		if (String(lang.rtlLayout) === "true") {
 			this.rtlLayoutHanlder(true);
 		} else {
@@ -81,8 +79,7 @@ class LanguageProvider extends Component {
 	render() {
 		const { languages } = this.props;
 		const { loading } = this.state;
-		// const { locale, languages,rtlLayout } = this.props;
-		// localStorage.setItem('locale', locale.locale);
+		
 		//Added by salim dt:02/04/2019
 		var defaultLang = localStorage.getItem('locale') !== undefined ? localStorage.getItem('locale') : AppConfig.locale.locale;
 		var locale = languageArray(defaultLang);
@@ -93,7 +90,6 @@ class LanguageProvider extends Component {
 		} else {
 			this.rtlLayoutHanlder(false);
 		}
-		//console.log("this.props",this.props);
 		return (
 			<Fragment>
 				{loading && <JbsSectionLoader />}
@@ -107,7 +103,6 @@ class LanguageProvider extends Component {
 						<div className="dropdown-content">
 							<div className="dropdown-top d-flex justify-content-between rounded-top bg-primary">
 								<span className="text-white font-weight-bold">Languages</span>
-								{/* <Badge color="warning">3 NEW</Badge> */}
 							</div>
 							<Scrollbars className="jbs-scroll" autoHeight autoHeightMin={100} autoHeightMax={280}>
 								<ul className="list-unstyled mb-0 dropdown-list">

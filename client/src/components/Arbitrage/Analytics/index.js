@@ -7,7 +7,6 @@ import React, { Fragment, Component } from 'react';
 import { connect } from "react-redux";
 import IntlMessages from 'Util/IntlMessages';
 import classNames from 'classnames';
-import { Input } from 'reactstrap';
 import AppConfig from 'Constants/AppConfig';
 // jbs section loader
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
@@ -19,9 +18,14 @@ import { JbsCard, JbsCardContent } from 'Components/JbsCard';
 import CountUp from 'react-countup';
 import {
     getAnalyticGraphRecord,
-    getArbitrageCurrencyList
+    getArbitrageCurrencyList,
+    getArbitrageWalletList
 } from 'Actions/Arbitrage';
-
+import {
+    FormGroup,
+    Label,
+} from "reactstrap";
+import Select from "react-select";
 
 // options
 const options = {
@@ -47,6 +51,7 @@ const options = {
             }
         }],
         yAxes: [{
+            display: false,
             gridLines: {
                 drawBorder: false,
                 zeroLineColor: ChartConfig.chartGridColor
@@ -73,28 +78,33 @@ class Analytics extends Component {
             hideZero: false,
             search: '',
             isSearch: false,
-            currency: ""
+            currency: "",
+            WalletObj: {}
         };
     }
     //onchange handle
-    onChangeHandler(value, key) {
-        this.setState({ [key]: value }, () => this.props.getAnalyticGraphRecord({ CurrencyName: value }));
+    onChangeHandler(e) {
+        this.setState({ currency: e.value, WalletObj: { label: e.label } }, () => this.props.getAnalyticGraphRecord({ CurrencyName: e.value }));
     }
     //will mount data binding...
     componentWillMount() {
-        this.props.getArbitrageCurrencyList();
+        this.props.getArbitrageWalletList({})
     }
     //will recieve props update states...
     componentWillReceiveProps(nextprops) {
         // load first currency on page load
-        if (nextprops.currencyList.length && this.state.currency === '') {
-            this.onChangeHandler(nextprops.currencyList[0].CoinName, 'currency');
+        if (nextprops.walletList.length && this.state.currency === '') {
+            var e = {
+                label: nextprops.walletList[0].WalletName,
+                value: nextprops.walletList[0].CoinName,
+            };
+            this.onChangeHandler(e);
         }
     }
     render() {
         const { analyticData, intl } = this.props;
         const ChargesTypesData = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            labels: analyticData.hasOwnProperty('DayMonth') ? analyticData.DayMonth : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
                 {
                     label: 'Amount',
@@ -142,16 +152,21 @@ class Analytics extends Component {
         }
         return (
             <div className="fnd_blnc_area">
-                {(this.props.loading || this.props.currencyLoading) && <JbsSectionLoader />}
+                {(this.props.loading || this.props.walletLoading) && <JbsSectionLoader />}
                 <div className="row d-flex justify-content-between">
                     <div className="w-20 d-flex pl-20 pb-10 justify-content-between srch_area">
-                        <div className="w-35 mb-0">
-                            <Input type="select" name="currency" id="currency" value={this.state.currency} onChange={(e) => this.onChangeHandler(e.target.value, 'currency')}>
-                                <option value="">{intl.formatMessage({ id: "wallet.selectCurrency" })}</option>
-                                {this.props.currencyList.length !== 0 && this.props.currencyList.map((curr, index) => (
-                                    <option key={index} value={curr.CoinName}>{curr.CoinName}</option>
-                                ))}
-                            </Input>
+                        <div className="col-sm-12 mb-0">
+                            <FormGroup className="mt-10 mb-0">
+                                <Label for="Select-1">{intl.formatMessage({ id: "wallet.Wallet" })}<span className="text-danger">*</span></Label>
+                                <Select
+                                    options={this.props.walletList.map((type) => ({
+                                        label: type.WalletName,
+                                        value: type.CoinName,
+                                    }))}
+                                    onChange={e => this.onChangeHandler(e)}
+                                    value={this.state.WalletObj}
+                                />
+                            </FormGroup>
                         </div>
                     </div>
                 </div>
@@ -161,12 +176,11 @@ class Analytics extends Component {
                         className={classNames({ 'fundbalancedivcard_darkmode': this.props.darkMode }, "col-sm-6 col-md-4 col-lg-4 w-xs-half-block")}
                     >
                         <JbsCard colClasses="col-sm-full">
-                            <JbsCardContent>
+                            <JbsCardContent customClasses="arbiTrage_wallet-cards">
                                 <div className="d-flex justify-content-between">
                                     <div className="align-items-end">
                                         <h1 className="accountcommoncard display-4 font-weight-light">
                                             <img
-                                                // src={getImage}
                                                 src={AppConfig.coinlistImageurl + '/' + this.state.currency + '.png'}
                                                 style={{ width: "55px" }}
                                                 alt={this.state.currency}
@@ -179,7 +193,7 @@ class Analytics extends Component {
                                     </div>
                                     <div className="text-right">
                                         <h2 className="text-uppercase py-10 fw-bold">{<IntlMessages id="arbitrage.Amount" />}</h2>
-                                        <span className="font-lg ml-10"><CountUp separator="," start={0} end={analyticData.hasOwnProperty('Amount') ? analyticData.Amount : 0.00} /></span>
+                                        <span className="font-lg ml-10">{analyticData.hasOwnProperty('Amount') ? parseFloat(analyticData.Amount).toFixed(8) : "0.00"}</span>
                                         <span className="font-lg ml-10">{this.state.currency}</span>
                                     </div>
                                 </div>
@@ -190,14 +204,14 @@ class Analytics extends Component {
                         className={classNames({ 'fundbalancedivcard_darkmode': this.props.darkMode }, "col-sm-6 col-md-4 col-lg-4 w-xs-half-block")}
                     >
                         <JbsCard colClasses="col-sm-full">
-                            <JbsCardContent>
+                            <JbsCardContent customClasses="arbiTrage_wallet-cards">
                                 <div className="d-flex justify-content-between">
                                     <div className="align-items-end">
                                         <h1 className="accountcommoncard display-4 font-weight-light"><i className={"fa fa-usd"}></i></h1>
                                     </div>
                                     <div className="text-right">
                                         <h2 className="text-uppercase py-10 fw-bold">{<IntlMessages id="arbitrage.totalValue" />}</h2>
-                                        <span className="font-lg ml-10"><CountUp separator="," start={0} end={analyticData.hasOwnProperty('USDTotalAmount') ? analyticData.USDTotalAmount : "0.00"} /></span>
+                                        <span className="font-lg ml-10">{analyticData.hasOwnProperty('USDTotalAmount') ? parseFloat(analyticData.USDTotalAmount).toFixed(8) : "0.00"}</span>
                                         <span className="font-lg ml-10">{"USD"}</span>
                                     </div>
                                 </div>
@@ -208,7 +222,7 @@ class Analytics extends Component {
                         className={classNames({ 'fundbalancedivcard_darkmode': this.props.darkMode }, "col-sm-6 col-md-4 col-lg-4 w-xs-half-block")}
                     >
                         <JbsCard colClasses="col-sm-full">
-                            <JbsCardContent>
+                            <JbsCardContent customClasses="arbiTrage_wallet-cards">
                                 <div className="d-flex justify-content-between">
                                     <div className="align-items-end">
                                         <h1 className="accountcommoncard display-4 font-weight-light"><i className={"fa fa-usd"}></i></h1>
@@ -218,14 +232,14 @@ class Analytics extends Component {
                                         {analyticData.hasOwnProperty('TotalChange') ?
                                             <span className={classNames({ 'text-success': (analyticData.TotalChange.IsProfit === 1) }, { 'text-danger': (analyticData.TotalChange.IsProfit === 2) }, "font-lg ml-10")}>
                                                 {analyticData.TotalChange.IsProfit === 1 ? "+" : ""}
-                                                 {analyticData.hasOwnProperty('TotalChange') ? parseFloat(analyticData.TotalChange.Percentage).toFixed(2) : "0.00"}{"%"}
+                                                {analyticData.hasOwnProperty('TotalChange') ? parseFloat(analyticData.TotalChange.Percentage).toFixed(2) : "0.00"}{"%"}
                                             </span> :
                                             <span className={classNames("font-lg ml-10")}>
                                                 <CountUp separator="," start={0} end={0.00} />{"%"}
                                             </span>}
                                         <span className="font-lg ml-10">
                                             {(analyticData.hasOwnProperty('TotalChange') && analyticData.TotalChange.IsProfit === 1) ? "+" : ""}
-                                         {analyticData.hasOwnProperty('TotalChange') ? parseFloat(analyticData.TotalChange.USDChange).toFixed(2) : "0.00"}
+                                            {analyticData.hasOwnProperty('TotalChange') ? parseFloat(analyticData.TotalChange.USDChange).toFixed(2) : "0.00"}
                                         </span>
                                         <span className="font-lg ml-10">{"USD"}</span>
                                     </div>
@@ -237,7 +251,7 @@ class Analytics extends Component {
                         className={classNames({ 'fundbalancedivcard_darkmode': this.props.darkMode }, "col-sm-6 col-md-4 col-lg-4 w-xs-half-block")}
                     >
                         <JbsCard colClasses="col-sm-full">
-                            <JbsCardContent>
+                            <JbsCardContent customClasses="arbiTrage_wallet-cards">
                                 <div className="d-flex justify-content-between">
                                     <div className="align-items-end">
                                         <h1 className="accountcommoncard display-4 font-weight-light"><i className={"fa fa-usd"}></i></h1>
@@ -266,7 +280,7 @@ class Analytics extends Component {
                         className={classNames({ 'fundbalancedivcard_darkmode': this.props.darkMode }, "col-sm-6 col-md-4 col-lg-4 w-xs-half-block")}
                     >
                         <JbsCard colClasses="col-sm-full">
-                            <JbsCardContent>
+                            <JbsCardContent customClasses="arbiTrage_wallet-cards">
                                 <div className="d-flex justify-content-between">
                                     <div className="align-items-end">
                                         <h1 className="accountcommoncard display-4 font-weight-light"><i className={"fa fa-usd"}></i></h1>
@@ -295,7 +309,7 @@ class Analytics extends Component {
                         className={classNames({ 'fundbalancedivcard_darkmode': this.props.darkMode }, "col-sm-6 col-md-4 col-lg-4 w-xs-half-block")}
                     >
                         <JbsCard colClasses="col-sm-full">
-                            <JbsCardContent>
+                            <JbsCardContent customClasses="arbiTrage_wallet-cards">
                                 <div className="d-flex justify-content-between">
                                     <div className="align-items-end">
                                         <h1 className="accountcommoncard display-4 font-weight-light"><i className={"fa fa-usd"}></i></h1>
@@ -311,7 +325,7 @@ class Analytics extends Component {
                                                 <CountUp separator="," start={0} end={0.00} />{"%"}
                                             </span>}
                                         <span className="font-lg ml-10">
-                                            {(analyticData.hasOwnProperty('TotalChange30D') && analyticData.TotalChange30D.IsProfit === 1) ? "+" : ""}                                          
+                                            {(analyticData.hasOwnProperty('TotalChange30D') && analyticData.TotalChange30D.IsProfit === 1) ? "+" : ""}
                                             {analyticData.hasOwnProperty('TotalChange30D') ? parseFloat(analyticData.TotalChange30D.USDChange).toFixed(2) : "0.00"}
                                         </span>
                                         <span className="font-lg ml-10">{"USD"}</span>
@@ -344,12 +358,13 @@ class Analytics extends Component {
 }
 
 const mapStateToProps = ({ ArbitrageWalletReducer, AnalyticReducer }) => {
-    const { currencyList } = ArbitrageWalletReducer;
-    const currencyLoading = ArbitrageWalletReducer.loading;
     const { loading, analyticData } = AnalyticReducer;
-    return { currencyList, loading, analyticData, currencyLoading };
+    const { walletList } = ArbitrageWalletReducer;
+    const walletLoading = ArbitrageWalletReducer.loading
+    return { walletList, loading, analyticData, walletLoading };
 }
 export default connect(mapStateToProps, {
     getArbitrageCurrencyList,
+    getArbitrageWalletList,
     getAnalyticGraphRecord
 })(Analytics);

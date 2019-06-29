@@ -5,7 +5,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 //import functions for get and post Api's
-import { swaggerPostAPI, swaggerGetAPI, swaggerDeleteAPI } from 'Helpers/helpers';
+import { swaggerPostAPI, swaggerDeleteAPI } from 'Helpers/helpers';
 
 //get constant data for Appconfig file 
 import AppConfig from 'Constants/AppConfig';
@@ -224,7 +224,6 @@ function* getIpWhiteListdataDetail({ payload }) {
     var headers = { 'Authorization': AppConfig.authorizationToken }
     const response = yield call(swaggerPostAPI, url, Data, headers);
 
-    //const response = yield call(swaggerPostAPI, 'api/APIConfiguration/GetWhitelistIP/' + Data.planKey + "/" + Data.KeyID, {}, headers);
 
 
     // set response if its available else set error message
@@ -251,7 +250,6 @@ function* removeIPAddressDetail({ payload }) {
   try {
 
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    //const response = yield call(swaggerDeleteAPI, 'api/APIConfiguration/IPWhitelist', Data, headers);
     const response = yield call(swaggerDeleteAPI, 'api/APIConfiguration/DeleteWhitelistIP/' + Data.IPId, {}, headers);
 
     // set response if its available else set error message

@@ -3,10 +3,9 @@
     Date : 1-03-2019
     File Comment : list margin wallets Ledger
 */
-import React, { Component ,Fragment} from 'react';
-import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
+import React, { Component, Fragment } from 'react';
 //added by Tejas 14/6/2019
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import MUIDataTable from "mui-datatables";
 import { connect } from 'react-redux';
@@ -21,7 +20,7 @@ import {
     Button
 } from "reactstrap";
 import {
-    getArbitrageLedgerList,getArbitrageWalletList
+    getArbitrageLedgerList, getArbitrageWalletList
 } from 'Actions/Arbitrage';
 import AppConfig from 'Constants/AppConfig';
 import { CustomFooter } from 'Components/MyAccount/Widgets';
@@ -43,8 +42,8 @@ class LedgerReport extends Component {
         this.state = initState;
         this.handlePageChange = this.handlePageChange.bind(this);
     }
-     //Pagination Change Method...
-     handlePageChange(pageNumber) {
+    //Pagination Change Method...
+    handlePageChange(pageNumber) {
         this.getListFromServer(pageNumber);
     }
     //Row Per Page Change Method...
@@ -85,7 +84,7 @@ class LedgerReport extends Component {
     //apply filter
     applyFilter = () => {
         if (this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") {
-            this.setState({ showReset: true },this.getListFromServer(1, this.state.PageSize));
+            this.setState({ showReset: true }, this.getListFromServer(1, this.state.PageSize));
         }
     };
 
@@ -103,7 +102,7 @@ class LedgerReport extends Component {
         }
     }
     render() {
-        const { intl, loading,walletLoading } = this.props;
+        const { intl, loading, walletLoading } = this.props;
         var columns = [
             {
                 name: intl.formatMessage({ id: "table.Id" }),
@@ -151,15 +150,16 @@ class LedgerReport extends Component {
             rowsPerPageOptions: [10, 25, 50, 100],
             rowsPerPage: this.state.PageSize,
             count: this.props.TotalCount,
-            serverSide :this.props.arbitrageList.length !== 0 ? true : false,
+            serverSide: this.props.arbitrageList.length !== 0 ? true : false,
+            fixedHeader: false,
             textLabels: {
                 body: {
                     noMatch: intl.formatMessage({ id: "wallet.emptyTable" }),
                     toolTip: intl.formatMessage({ id: "wallet.sort" }),
                 }
             },
-            customFooter: (count, page, rowsPerPage) => {
-                var page = page > 0 ? page + 1 : 1;
+            customFooter: (count, pageNo, rowsPerPage) => {
+                var page = pageNo > 0 ? pageNo + 1 : 1;
                 return (
                     <CustomFooter count={count} page={page} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );
@@ -168,7 +168,7 @@ class LedgerReport extends Component {
 
         return (
             <Fragment>
-                {(loading || walletLoading) && <JbsBarLoader />}
+                {(loading || walletLoading) && <JbsLoader />}
                 <JbsCollapsibleCard>
                     <div className="top-filter row">
                         <FormGroup className="col-md-2 col-sm-4">
@@ -192,7 +192,7 @@ class LedgerReport extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                            <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
+                                <Button color="primary" className={"border-0 rounded-0 perverbtn" + ((this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") ? "" : "disabled")} onClick={(e) => this.applyFilter(e)}>{intl.formatMessage({ id: "widgets.apply" })}</Button>
                                 {this.state.showReset && <Button className="ml-15 border-0 btn-danger rounded-0" onClick={(e) => this.clearFilter()}>{intl.formatMessage({ id: "button.clear" })}</Button>}
                             </div>
                         </FormGroup>
@@ -202,7 +202,7 @@ class LedgerReport extends Component {
                     <MUIDataTable
                         data={this.props.arbitrageList.map((wallet, key) => {
                             return [
-                                key+1 + (this.state.Page * this.state.PageSize),
+                                key + 1 + (this.state.Page * this.state.PageSize),
                                 wallet.Amount.toFixed(8),
                                 wallet.CrAmount.toFixed(8),
                                 wallet.DrAmount.toFixed(8),
@@ -217,17 +217,17 @@ class LedgerReport extends Component {
                     />
                 </div>
                 }
-           </Fragment>
+            </Fragment>
         )
     }
 }
 
 // map state to props
 const mapStateToProps = ({ ArbitrageLedgerReducer, ArbitrageWalletReducer }) => {
-    const { arbitrageList, loading ,TotalCount} = ArbitrageLedgerReducer;
+    const { arbitrageList, loading, TotalCount } = ArbitrageLedgerReducer;
     const { walletList } = ArbitrageWalletReducer;
     const walletLoading = ArbitrageWalletReducer.loading
-    return { arbitrageList, loading, walletList ,TotalCount,walletLoading};
+    return { arbitrageList, loading, walletList, TotalCount, walletLoading };
 
 };
 export default connect(mapStateToProps, {

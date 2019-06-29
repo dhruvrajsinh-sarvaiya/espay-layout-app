@@ -1,18 +1,13 @@
 /**
  * Data Table For Ledger
  */
-import React, { Component } from "react";
+import React from "react";
 import MUIDataTable from "mui-datatables";
-// import section loader
-import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 
-const ExDatatable = ({ title, data, columns, options , darkMode,loading }) => {
+const ExDatatable = ({ data, columns, options , darkMode }) => {
   return (
     <div className={darkMode ? 'DepositWithdrawHistory-darkmode tbl_overflow_auto':'DepositWithdrawHistory tbl_overflow_auto'}>
-    {/* { loading &&
-					<JbsSectionLoader />
-				} */}
-        <MUIDataTable
+      <MUIDataTable
           title=""
           data={data}
           columns={columns}

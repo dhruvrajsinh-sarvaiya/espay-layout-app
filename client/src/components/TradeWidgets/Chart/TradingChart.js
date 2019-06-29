@@ -27,133 +27,105 @@ import { getChartData } from "Actions/Trade";
 
 // import connect function for store
 import { connect } from "react-redux";
-import {chartData} from "./chartdata";
 
 // component For trading chart
 class TradingChart extends Component {
     state = {
-        chartData: [] , //chartData
-        socketData:[]
+        chartData: [], //chartData
+        socketData: []
     };
 
     // This will invoke After component render
-  componentWillMount() {
-    
-    this.isComponentActive = 1;
-    const pair = this.props.state.currencyPair;
-    
-    // code changed by devang parekh for handling margin trading process
-    if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-      
-      // Call Actions For Get chart data List
-      this.props.getChartData({ Pair: pair,Interval:'1m', marginTrading:1});
-      this.processForMarginTrading(); // call for intialize socket listners for margin trading
+    componentWillMount() {
 
-    } else {
+        this.isComponentActive = 1;
+        const pair = this.props.state.currencyPair;
 
-      // Call Actions For Get chart data List
-      this.props.getChartData({ Pair: pair,Interval:'1m' });
-      this.processForNormalTrading();// call for intialize socket listners for normal trading
+        // code changed by devang parekh for handling margin trading process
+        if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+
+            // Call Actions For Get chart data List
+            this.props.getChartData({ Pair: pair, Interval: '1m', marginTrading: 1 });
+            this.processForMarginTrading(); // call for intialize socket listners for margin trading
+
+        } else {
+
+            // Call Actions For Get chart data List
+            this.props.getChartData({ Pair: pair, Interval: '1m' });
+            this.processForNormalTrading();// call for intialize socket listners for normal trading
+
+        }
+        // code end (21-2-2019)
+    }
+
+    // code for handle signalr listners for normal trading
+    processForNormalTrading() {
+
+        this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
+
+            if (this.isComponentActive === 1 && receivedMessage !== null) {
+
+                var charData = this.state.chartData;
+
+                try {
+
+                    const receivedMessageData = JSON.parse(receivedMessage);
+
+                    if ((receivedMessageData.EventTime && this.state.socketData.length === 0) ||
+                        (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
+
+                        if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
+
+                            charData.push(receivedMessageData.Data)
+                            this.setState({ chartData: charData, socketData: receivedMessageData });
+
+                        }
+
+                    }
+
+                } catch (error) {
+
+                }
+
+            }
+
+        });
 
     }
 
-    // code end (21-2-2019)
+    // code for handle signalr listners for margin trading
+    processForMarginTrading() {
 
-  }
+        this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
 
-  // code for handle signalr listners for normal trading
-  processForNormalTrading() {
+            if (this.isComponentActive === 1 && receivedMessage !== null) {
 
-    this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
-      //console.log("Get Data from signalR RecieveChartData", receivedMessage);
+                var charData = this.state.chartData;
 
-      if (this.isComponentActive === 1 && receivedMessage !== null) {
+                try {
 
-        var charData = this.state.chartData;
+                    const receivedMessageData = JSON.parse(receivedMessage);
 
-        try{
+                    if ((receivedMessageData.EventTime && this.state.socketData.length === 0) ||
+                        (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
 
-          const receivedMessageData = JSON.parse(receivedMessage);
+                        if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
 
-          if ((receivedMessageData.EventTime && this.state.socketData.length === 0) || 
-            (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime) ) {
+                            charData.push(receivedMessageData.Data)
+                            this.setState({ chartData: charData, socketData: receivedMessageData });
 
-              if(this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0){
-                
-                // for static data array process if want to test
-                //var chartArray = [receivedMessageData.Data.DataDate,receivedMessageData.Data.Open,receivedMessageData.Data.High,receivedMessageData.Data.Low,receivedMessageData.Data.Close,receivedMessageData.Data.Volume];
-                //charData.push(chartArray);
-                
-                charData.push(receivedMessageData.Data)
-                /*receivedMessageData.Data.map((info,key) =>{
-                  data.push(info)
-                })*/
-                
-              /*this.state.chartData.map((value, key) => {
-                data.push(value)
-              })*/
-              this.setState({ chartData: charData, socketData: receivedMessageData });
+                        }
 
-              } 
+                    }
 
-          }
+                } catch (error) {
+                }
 
-        }catch(error){
+            }
 
-        }
+        });
 
-      }
-
-    });
-
-  }
-
-  // code for handle signalr listners for margin trading
-  processForMarginTrading() {
-
-    this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
-      //console.log("margin Get Data from signalR RecieveChartData", receivedMessage);
-
-      if (this.isComponentActive === 1 && receivedMessage !== null) {
-
-        var charData = this.state.chartData;
-
-        try{
-
-          const receivedMessageData = JSON.parse(receivedMessage);
-
-          if ((receivedMessageData.EventTime && this.state.socketData.length === 0) || 
-            (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime) ) {
-
-              if(this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1){
-                
-                // for static data array process if want to test
-                //var chartArray = [receivedMessageData.Data.DataDate,receivedMessageData.Data.Open,receivedMessageData.Data.High,receivedMessageData.Data.Low,receivedMessageData.Data.Close,receivedMessageData.Data.Volume];
-                //charData.push(chartArray);
-                
-                charData.push(receivedMessageData.Data)
-                /*receivedMessageData.Data.map((info,key) =>{
-                  data.push(info)
-                })*/
-                
-                /*this.state.chartData.map((value, key) => {
-                  data.push(value)
-                })*/
-                this.setState({ chartData: charData, socketData: receivedMessageData });
-
-              } 
-
-          }
-
-        }catch(error){
-          //console.log("charte ",error)
-        }
-
-      }
-
-    });
-    
-  }
+    }
 
     componentWillUnmount() {
         this.isComponentActive = 0;
@@ -175,60 +147,33 @@ class TradingChart extends Component {
 
         const info = [];
         const volume = [];
-        var dataLength = 0;
-        //console.log("this.state.chartData",this.state.chartData) 
-        //console.log("statechart data",this.state.chartData.length);
         const groupingUnits = [
             [
-              "week", // unit name
-              [1] // allowed multiples
+                "week", // unit name
+                [1] // allowed multiples
             ],
             ["month", [1, 2, 3, 4, 6]]
-          ];
+        ];
 
-          var i = 0;
 
-          var theme = false;
-          if(localStorage.getItem('Thememode') !== null && localStorage.getItem('Thememode') !== undefined) {
-            theme = localStorage.getItem('Thememode');
-          }
-          if (this.state.chartData.length !== 0) {
-            dataLength = this.state.chartData.length;
-            //dataLength = this.state.chartData.length; 
-            
-            this.state.chartData.map((value,key)=>{
-              info.push(
-                [
-                    value.DataDate,
-                    value.Open,
-                    value.High,
-                    value.Low,
-                    value.Close
-                ]
+        if (this.state.chartData.length !== 0) {
+
+            this.state.chartData.map((value, key) => {
+                info.push(
+                    [
+                        value.DataDate,
+                        value.Open,
+                        value.High,
+                        value.Low,
+                        value.Close
+                    ]
                 )
 
                 volume.push([
                     value.DataDate,
                     value.Volume
-                  ])
-                })
-                
-                 // for (i; i < dataLength; i += 1) {
-
-      //   info.push([
-      //     this.state.chartData[i][0], // the date
-      //     this.state.chartData[i][1], // open
-      //     this.state.chartData[i][2], // high
-      //     this.state.chartData[i][3], // low
-      //     this.state.chartData[i][4] // close
-      //   ]);
-
-      //   volume.push([
-      //     this.state.chartData[i][0], // the date
-      //     this.state.chartData[i][5] // the volume
-      //   ]);
-      // }
-
+                ])
+            })
         }
         const options = {
             colors: [
@@ -419,7 +364,7 @@ class TradingChart extends Component {
 
 const mapStateToProps = ({ settings, tradeChart }) => {
     const { darkMode } = settings;
-    const { chartData,loading } = tradeChart;
+    const { chartData, loading } = tradeChart;
     return { darkMode, chartData, loading };
 };
 

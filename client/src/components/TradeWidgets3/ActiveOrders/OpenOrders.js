@@ -191,7 +191,7 @@ class MyOrder extends React.Component {
                                                 <td className="text-center">
                                                     {value.SettledQty}
                                                 </td>
-                                                {/* <td className="text-center">{value.Status}</td> */}
+                                                
                                                 <td className="text-center">
                                                     {value.StatusCode === 1 && (
                                                         <span

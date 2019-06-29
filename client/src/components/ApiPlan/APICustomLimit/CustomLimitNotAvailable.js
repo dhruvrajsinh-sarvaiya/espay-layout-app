@@ -6,7 +6,7 @@ import React, { Component, Fragment } from 'react';
 import IntlMessages from 'Util/IntlMessages';
 
 // class for Set API Custom Limits
-class CustomLimitsNotAvailable extends Component {
+class CustomLimitNotAvailable extends Component {
 
 
     //renders the component
@@ -30,4 +30,4 @@ class CustomLimitsNotAvailable extends Component {
     }
 }
 
-export default CustomLimitsNotAvailable
+export default CustomLimitNotAvailable

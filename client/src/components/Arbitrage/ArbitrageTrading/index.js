@@ -32,7 +32,7 @@ import {
 import { NotificationManager } from "react-notifications";
 
 // import for display Loader
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import $ from 'jquery';
@@ -58,8 +58,8 @@ class ArbitrageTradingDashboard extends React.Component {
             placeOrderBit: 0,
             arbitrageTradeOrderBit: 0,
             hubConnection: this.props.location.state.hubConnection,
-            WalletSignalRData:[],
-            listExSmartArbitrageSignalRData:[]
+            WalletSignalRData: [],
+            listExSmartArbitrageSignalRData: []
         }
     }
 
@@ -79,7 +79,6 @@ class ArbitrageTradingDashboard extends React.Component {
         var self = this;
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
 
-            //console.log("'RecieveWalletBal", walletBalance);
             try {
 
                 walletBalance = JSON.parse(walletBalance);
@@ -119,37 +118,37 @@ class ArbitrageTradingDashboard extends React.Component {
         // code added by devang parekh (18-6-2019) for handle signalr response to handle arbitrage trading detail list with all
         self.state.hubConnection.on('RecieveExchangeListSmartArbitrage', (receivedMessage) => {
 
-            //console.log(" RecieveExchangeListSmartArbitrage",receivedMessage);
-			if (self.isComponentActive === 1 && receivedMessage !== null) {
+            if (self.isComponentActive === 1 && receivedMessage !== null) {
 
-				try {
-					const receivedMessageData = JSON.parse(receivedMessage);
+                try {
+                    const receivedMessageData = JSON.parse(receivedMessage);
 
-					if ((receivedMessageData.EventTime && this.state.listExSmartArbitrageSignalRData.length == 0) ||
-						(this.state.listExSmartArbitrageSignalRData.length !== 0 && receivedMessageData.EventTime >= this.state.listExSmartArbitrageSignalRData.EventTime)) {
+                    if ((receivedMessageData.EventTime && this.state.listExSmartArbitrageSignalRData.length == 0) ||
+                        (this.state.listExSmartArbitrageSignalRData.length !== 0 && receivedMessageData.EventTime >= this.state.listExSmartArbitrageSignalRData.EventTime)) {
 
                         if (this.state.currencyPair === receivedMessageData.Parameter) {
                             this.setState({ listExSmartArbitrage: receivedMessageData.Data, listExSmartArbitrageSignalRData: receivedMessageData });
                         }
-                            
+
                     }
-                    
-				} catch (error) {
+
+                } catch (error) {
 
                 }
-                
+
             }
-            
+
         });
         //end
-        
+
     }
 
     componentWillUnmount() {
 
         // on unmount set default pair for arbitrage trading (18-6-2019) devang parekh
         this.state.hubConnection.invoke("AddArbitragePairSubscription", AppConfig.defaultArbitragePair, this.state.currencyPair)
-        .catch((err) => console.error("AddArbitragePairSubscription", err));
+            .catch((err) => { }
+            );
         // end
         this.isComponentActive = 0;
 
@@ -159,7 +158,6 @@ class ArbitrageTradingDashboard extends React.Component {
     onChangePair(event) {
 
         var value = event.data;
-        var pairs = "";
 
         if (value) {
 
@@ -167,7 +165,6 @@ class ArbitrageTradingDashboard extends React.Component {
             const pair = value.PairName;
             const pairId = value.PairId;
             const firstCurrency = value.Abbrevation;
-            pairs = value.PairName;
             const tempSecondCurrency = value.PairName.split("_")[1];
 
             var firstCurrencyWalletId = 0;
@@ -182,28 +179,19 @@ class ArbitrageTradingDashboard extends React.Component {
                 if (secondCurrencyBal !== -1) {
                     secondCurrencyBalance = this.state.Wallet[secondCurrencyBal].Balance
                     secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID
-                } else {
-                    secondCurrencyBalance = 0
-                    secondCurrencyWalletId = 0
                 }
-
                 if (firstCurrencyBal !== -1) {
                     firstCurrencyBalance = this.state.Wallet[firstCurrencyBal].Balance
                     firstCurrencyWalletId = this.state.Wallet[firstCurrencyBal].AccWalletID
-                } else {
-                    firstCurrencyBalance = 0
-                    firstCurrencyWalletId = 0
                 }
-
-                //Added by salim dt:12/06/2019
-                //   this.props.listExchangeSmartArbitrage({ Pair: pair });
             }
 
             // added byd evnag parekh (18-6-2019) for change pair in signalr for getting real time update based on pair change
             this.state.hubConnection.invoke("AddArbitragePairSubscription", pair, oldPair)
-                .catch((err) => console.error("AddArbitragePairSubscription", err));
+                .catch((err) => { }
+                );
             // end
-            
+
             //Added by salim dt:12/06/2019
             this.props.listExchangeSmartArbitrage({ Pair: pair });
 
@@ -295,68 +283,109 @@ class ArbitrageTradingDashboard extends React.Component {
     TradeOrder = (event, record, firstBal) => {
         event.preventDefault();
 
-        var MultipleOrderList = [];
+        var MultipleOrderList = [], checked = 0;
 
         if (record && record.ProviderBuy) {
 
-            const data = {
-                currencyPairID: this.state.currencyPairID,
-                debitWalletID: this.state.secondCurrencyWalletId,
-                creditWalletID: this.state.firstCurrencyWalletId,
-                feePer: 0,
-                fee: 0,
-                trnMode: 11,
-                price: record.ProviderBuy.LTP,
-                amount: firstBal,
-                total: record.ProviderBuy.LTP * firstBal,
-                ordertype: 1,
-                orderSide: 4,
-                StopPrice: 0,
-                nonce: "55445454",
-                Pair: this.state.firstCurrency + '_' + this.state.secondCurrency,
-                marginOrder: this.props.marginTrading,
-                RouteID: 1,
-                LPType: record.ProviderBuy.LPType
+            if ((checked == 0) && (this.state.currencyPairID == '' || this.state.currencyPairID == undefined || this.state.currencyPairID == 0)) {
+
+                checked = 1
+                NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
+
+            } else if ((checked == 0) && (this.state.secondCurrencyWalletId == '' || this.state.secondCurrencyWalletId == undefined || this.state.secondCurrencyWalletId == 0)) {
+
+                checked = 1
+                NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
+
+            } else if ((checked == 0) && (this.state.firstCurrencyWalletId == '' || this.state.firstCurrencyWalletId == undefined || this.state.firstCurrencyWalletId == 0)) {
+
+                checked = 1
+                NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
+
+            } else if (checked == 0) {
+
+                const data = {
+                    currencyPairID: this.state.currencyPairID,
+                    debitWalletID: this.state.secondCurrencyWalletId,
+                    creditWalletID: this.state.firstCurrencyWalletId,
+                    feePer: 0,
+                    fee: 0,
+                    trnMode: 11,
+                    price: record.ProviderBuy.LTP,
+                    amount: firstBal,
+                    total: record.ProviderBuy.LTP * firstBal,
+                    ordertype: 1,
+                    orderSide: 4,
+                    StopPrice: 0,
+                    nonce: "55445454",
+                    Pair: this.state.firstCurrency + '_' + this.state.secondCurrency,
+                    marginOrder: this.props.marginTrading,
+                    RouteID: 1,
+                    LPType: record.ProviderBuy.LPType
+                }
+
+                MultipleOrderList.push(data)
+
             }
 
-            MultipleOrderList.push(data)
         }
 
         if (record && record.ProviderSELL) {
 
-            const data = {
-                currencyPairID: this.state.currencyPairID,
-                debitWalletID: this.state.firstCurrencyWalletId,
-                creditWalletID: this.state.secondCurrencyWalletId,
-                feePer: 0,
-                fee: 0,
-                trnMode: 11,
-                price: record.ProviderSELL.LTP,
-                amount: firstBal,
-                total: record.ProviderSELL.LTP * firstBal,
-                ordertype: 1,
-                orderSide: 5,
-                StopPrice: 0,
-                nonce: "55445454",
-                Pair: this.state.firstCurrency + '_' + this.state.secondCurrency,
-                marginOrder: this.props.marginTrading,
-                RouteID: 1,
-                LPType: record.ProviderSELL.LPType
+            if ((checked == 0) && (this.state.currencyPairID == '' || this.state.currencyPairID == undefined || this.state.currencyPairID == 0)) {
+
+                checked = 1
+                NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
+
+            } else if ((checked == 0) && (this.state.secondCurrencyWalletId == '' || this.state.secondCurrencyWalletId == undefined || this.state.secondCurrencyWalletId == 0)) {
+
+                checked = 1
+                NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
+
+            } else if ((checked == 0) && (this.state.firstCurrencyWalletId == '' || this.state.firstCurrencyWalletId == undefined || this.state.firstCurrencyWalletId == 0)) {
+
+                checked = 1
+                NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
+
+            } else if (checked == 0) {
+
+                const data = {
+                    currencyPairID: this.state.currencyPairID,
+                    debitWalletID: this.state.firstCurrencyWalletId,
+                    creditWalletID: this.state.secondCurrencyWalletId,
+                    feePer: 0,
+                    fee: 0,
+                    trnMode: 11,
+                    price: record.ProviderSELL.LTP,
+                    amount: firstBal,
+                    total: record.ProviderSELL.LTP * firstBal,
+                    ordertype: 1,
+                    orderSide: 5,
+                    StopPrice: 0,
+                    nonce: "55445454",
+                    Pair: this.state.firstCurrency + '_' + this.state.secondCurrency,
+                    marginOrder: this.props.marginTrading,
+                    RouteID: 1,
+                    LPType: record.ProviderSELL.LPType
+                }
+
+                MultipleOrderList.push(data)
+
+            }
+        }
+
+        if (MultipleOrderList.length) {
+            const payload = {
+                MultipleOrderList: MultipleOrderList,
+                Pair: this.state.firstCurrency + '_' + this.state.secondCurrency
             }
 
-            MultipleOrderList.push(data)
+            this.setState({
+                placeOrderBit: 1,
+            })
+
+            this.props.arbitrageTradeOrder(payload);
         }
-
-        const payload = {
-            MultipleOrderList: MultipleOrderList,
-            Pair: this.state.firstCurrency + '_' + this.state.secondCurrency
-        }
-
-        this.setState({
-            placeOrderBit: 1,
-        })
-
-        this.props.arbitrageTradeOrder(payload);
 
     }
 
@@ -381,7 +410,6 @@ class ArbitrageTradingDashboard extends React.Component {
             });
         });
 
-        //this.state.secondCurrencyBalance = 0
         //returns the compontn
         return (
             <JbsCollapsibleCard
@@ -390,7 +418,7 @@ class ArbitrageTradingDashboard extends React.Component {
                 customClasses="overflow-hidden"
             >
                 <div className="container arbitrage-trading mt-30 mb-30">
-                    {(this.props.pairListDataLoading || this.props.loading || this.props.loader) && <JbsBarLoader />}
+                    {(this.props.pairListDataLoading || this.props.loading || this.props.loader) && <JbsLoader />}
                     <div className="row">
                         <div className="col-md-2 mt-20">
                             <h2 className="ml-5">
@@ -400,7 +428,6 @@ class ArbitrageTradingDashboard extends React.Component {
                         </div>
                         <div className="col-md-3 mt-15">
                             <Select className="r_sel_20 mb-5"
-                                //value={this.props.currencyPair === null ? null : ({ label: this.state.currencyPair })}
                                 value={this.state.currencyPair === null ? null : ({ label: this.state.currencyPair.split("_")[0] + " / " + this.state.currencyPair.split("_")[1] })}
                                 options={pairListData.map((item) => ({
                                     value: item.PairId,
@@ -503,7 +530,6 @@ class ArbitrageTradingDashboard extends React.Component {
                         </div>
 
                         <div className="col-md-2 mt-20">
-                            {/* <IntlMessages id="wallet.AGAvailableBalance" /> */}
                             <span className="text-right">
                                 {this.state.firstCurrencyBalance.toFixed(8) + " " + this.state.firstCurrency}  <i className="zmdi zmdi-balance-wallet ml-10" /><br />
                                 {this.state.secondCurrencyBalance.toFixed(8) + " " + this.state.secondCurrency}  <i className="zmdi zmdi-balance-wallet ml-10" />
@@ -541,8 +567,11 @@ class ArbitrageTradingDashboard extends React.Component {
                                     ?
                                     listExSmartArbitrage.map((item, key) => {
                                         var secondBal = parseFloat(parseFloat(this.state.secondCurrencyBalance * this.state.selectedPer) / 100).toFixed(8)
-
                                         var firstBal = secondBal / item.ProviderBuy.LTP;
+                                        if (this.state.secondCurrencyBalance === 0) {
+                                            firstBal = this.state.firstCurrencyBalance;
+                                            secondBal = 0;
+                                        }
 
                                         return <tr key={key}>
                                             <td>{item.ProfitPer && item.ProfitPer.toFixed(2)} % {" "}
@@ -567,7 +596,6 @@ class ArbitrageTradingDashboard extends React.Component {
                                             {(firstBal != 0 && secondBal != 0 && firstBal <= this.state.firstCurrencyBalance && secondBal <= this.state.secondCurrencyBalance && this.state.firstCurrencyBalance !== 0 && this.state.secondCurrencyBalance !== 0) &&
                                                 <td>
                                                     <Button
-                                                        color="primary"
                                                         varient="raised"
                                                         className="border-0 rounded-0 perverbtn txt"
                                                         onClick={(event) => { this.TradeOrder(event, item, firstBal) }}
@@ -584,8 +612,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                                             {" "} {this.state.firstCurrency}
                                                         </span>
                                                         <span>
-                                                            {secondBal && secondBal}
-                                                            {" "} {this.state.secondCurrency}
+                                                            {secondBal && secondBal + ' ' + this.state.secondCurrency}
                                                         </span>
                                                     </div>
 
@@ -596,28 +623,22 @@ class ArbitrageTradingDashboard extends React.Component {
                                                 <td colSpan="2">
 
                                                     {
-                                                        (!firstBal || firstBal > this.state.firstCurrencyBalance) &&
-                                                        (!secondBal || secondBal > this.state.secondCurrencyBalance) &&
+                                                        ((!firstBal || firstBal > this.state.firstCurrencyBalance) &&
+                                                            (!secondBal || secondBal > this.state.secondCurrencyBalance)) ?
 
-                                                        <IntlMessages id={`sidebar.arbiTragePleaseAddBoth`}
-                                                            values={{
-                                                                Param1: item.Pair.split("_")[0],
-                                                                Param2: item.Pair.split("_")[1]
-                                                            }} />
-                                                    }
-                                                    {(!firstBal || firstBal > this.state.firstCurrencyBalance) &&
-                                                        // "Please Add " + item.Pair.split("_")[0] + " to " + (item.ProviderBuy && item.ProviderBuy.ProviderName) + " balance"
-                                                        //"Please Add " + item.Pair.split("_")[0] + " balance"                                                    
-                                                        <IntlMessages id={`sidebar.arbiTragePleaseAdd`} values={{ Param1: item.Pair.split("_")[0] }} />
-                                                    }
+                                                            <IntlMessages id={`sidebar.arbiTragePleaseAddBoth`}
+                                                                values={{
+                                                                    Param1: item.Pair.split("_")[0],
+                                                                    Param2: item.Pair.split("_")[1]
+                                                                }} />
+                                                            : (!firstBal || firstBal > this.state.firstCurrencyBalance) ?
 
-                                                    {(!secondBal || secondBal > this.state.secondCurrencyBalance) &&
-                                                        // "Please Add " + item.Pair.split("_")[1] + " to " + (item.ProviderBuy && item.ProviderBuy.ProviderName) + " balance"
-                                                        //"Please Add " + item.Pair.split("_")[1] + " balance"
-                                                        <IntlMessages id={`sidebar.arbiTragePleaseAdd`} values={{ Param1: item.Pair.split("_")[0] }} />
+                                                                <IntlMessages id={`sidebar.arbiTragePleaseAdd`} values={{ Param1: item.Pair.split("_")[0] }} />
+                                                                : (!secondBal || secondBal > this.state.secondCurrencyBalance) ?
+                                                                    <IntlMessages id={`sidebar.arbiTragePleaseAdd`} values={{ Param1: item.Pair.split("_")[1] }} />
+                                                                    : ''
                                                     }
 
-                                                    {/* Please Add {this.state.firstCurrency} to {item.ProviderBuy && item.ProviderBuy.ProviderName} balance */}
                                                 </td>
                                             }
 
@@ -637,13 +658,11 @@ class ArbitrageTradingDashboard extends React.Component {
 
 
 const mapStateToProps = state => ({
-    //pairList: state.tradePairList.pairList,
     wallet: state.ArbitrageWalletReducer.walletList,
     loading: state.ArbitrageWalletReducer.loading || state.ArbitrageTrading.loading ? true : false,
     pairList: state.arbitrageOrderBook.arbitragePairList,
     pairListDataLoading: state.arbitrageOrderBook.pairListDataLoading,
     listExSmtArbitrage: state.ArbitrageTrading.listExSmtArbitrage,
-
     loader: state.ArbitrageTrading.arbiTrageTradeOrderLoader,
     arbitrageTradeOrder: state.ArbitrageTrading.arbitrageTradeOrder,
     arbitrageTradeOrderError: state.ArbitrageTrading.arbitrageTradeOrderError,

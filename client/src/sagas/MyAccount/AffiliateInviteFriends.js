@@ -4,7 +4,7 @@
  * Affiliate Invite Friends saga
 */
 import { all, fork, call, put, takeEvery } from "redux-saga/effects";
-import { AFFILIATE_EMAIL_PROMO, AFFILIATE_SMS_PROMO, AFFILIATE_SOCIAL_SHARING_PROMO, GET_AFFILIATE_PROMOTION_LINK } from "Actions/types";
+import { AFFILIATE_EMAIL_PROMO, AFFILIATE_SMS_PROMO, GET_AFFILIATE_PROMOTION_LINK } from "Actions/types";
 import AppConfig from 'Constants/AppConfig';
 import { swaggerPostAPI, swaggerGetAPI } from 'Helpers/helpers';
 
@@ -14,8 +14,6 @@ import {
     AffiliateEmailPromoFailure,
     AffiliateSmsPromoSuccess,
     AffiliateSmsPromoFailure,
-    AffiliateSocialSharingSuccess,
-    AffiliateSocialSharingFailure,
     GetAffiliatePromotionLinkSuccess,
     GetAffiliatePromotionLinkFailure
 } from "Actions/MyAccount";
@@ -50,20 +48,7 @@ function* AffiliateSmsPromoApi({ payload }) {
     }
 }
 
-//for social sharing promotion
-/* function* AffiliateSocialSharingPromoApi({ payload }) {
-    //var headers = { 'Authorization': AppConfig.authorizationToken }
-    // const response = yield call(swaggerGetAPI, '/api/SignUpReport/GetUserSignUpCount/', {}, headers);
-    try {
-        if (payload) {
-            yield put(AffiliateSocialSharingSuccess(payload));
-        } else {
-            yield put(AffiliateSocialSharingFailure(payload));
-        }
-    } catch (error) {
-        yield put(AffiliateSocialSharingFailure(error));
-    }
-} */
+
 
 function* AffiliatePromoLinkApi({ payload }) {
     var headers = { 'Authorization': AppConfig.authorizationToken }
@@ -87,9 +72,7 @@ function* AffiliateSmsPromoApiData() {
     yield takeEvery(AFFILIATE_SMS_PROMO, AffiliateSmsPromoApi);
 }
 
-/* function* AffiliateSocialSharingPromoApiData() {
-    yield takeEvery(AFFILIATE_SOCIAL_SHARING_PROMO, AffiliateSocialSharingPromoApi);
-} */
+
 
 function* AffiliatePromoLinkApiData() {
     yield takeEvery(GET_AFFILIATE_PROMOTION_LINK, AffiliatePromoLinkApi);
@@ -98,7 +81,7 @@ function* AffiliatePromoLinkApiData() {
 export default function* rootSaga() {
     yield all([fork(AffiliateEmailPromoApiData),
     fork(AffiliateSmsPromoApiData),
-    // fork(AffiliateSocialSharingPromoApiData),
+    
     fork(AffiliatePromoLinkApiData)
     ]);
 }

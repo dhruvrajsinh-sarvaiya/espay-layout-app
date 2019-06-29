@@ -28,61 +28,56 @@ module.exports = function validatePersonalVerifyForm(data) {
     {
         errors.ValidIdentityCard = "my_account.err.fieldRequired";
     } 
-    /* else if(!validator.isAlphanumeric(data.ValidIdentityCard))
-    {
-        errors.ValidIdentityCard = "my_account.err.fieldAlphaNum";
-    } */
-
     //Check Empty Back...
-    if(typeof data.Back=='undefined' || data.Back=='')
+    if(typeof data.Back==='undefined' || data.Back=='')
     {
       errors.Back= 'my_account.err.fieldRequired';
     }
-    else if(typeof data.Back.name!='undefined' && parseInt(data.Back.name.split('.').length)>2)
+    else if(typeof data.Back.name!=='undefined' && parseInt(data.Back.name.split('.').length)>2)
     {
       errors.Back= 'my_account.err.doubleExtension';
     }
-    else if(typeof data.Back.type!='undefined' && data.Back.type != 'image/jpeg' && data.Back.type != 'image/jpg' && data.Back.type != 'image/png')
+    else if(typeof data.Back.type!=='undefined' && data.Back.type != 'image/jpeg' && data.Back.type != 'image/jpg' && data.Back.type != 'image/png')
     {
       errors.Back= 'my_account.err.validFormat';
     } 
-    else if(typeof data.Back.size!='undefined' && data.Back.size > 2097152)
+    else if(typeof data.Back.size!=='undefined' && data.Back.size > 2097152)
     {
       errors.Back= 'my_account.err.fileSize';
     }
 
     //Check Empty Front...
-    if(typeof data.Front=='undefined' || data.Front=='')
+    if(typeof data.Front==='undefined' || data.Front=='')
     {
       errors.Front= 'my_account.err.fieldRequired';
     }
-    else if(typeof data.Front.name!='undefined' && parseInt(data.Front.name.split('.').length)>2)
+    else if(typeof data.Front.name!=='undefined' && parseInt(data.Front.name.split('.').length)>2)
     {
       errors.Front= 'my_account.err.doubleExtension';
     }
-    else if(typeof data.Front.type!='undefined' && data.Front.type != 'image/jpeg' && data.Front.type != 'image/jpg' && data.Front.type != 'image/png')
+    else if(typeof data.Front.type!=='undefined' && data.Front.type != 'image/jpeg' && data.Front.type != 'image/jpg' && data.Front.type != 'image/png')
     {
       errors.Front= 'my_account.err.validFormat';
     } 
-    else if(typeof data.Front.size!='undefined' && data.Front.size > 2097152)
+    else if(typeof data.Front.size!=='undefined' && data.Front.size > 2097152)
     {
       errors.Front= 'my_account.err.fileSize';
     }
 
     //Check Empty Selfie...
-    if(typeof data.Selfie=='undefined' || data.Selfie=='')
+    if(typeof data.Selfie==='undefined' || data.Selfie=='')
     {
       errors.Selfie= 'my_account.err.fieldRequired';
     }
-    else if(typeof data.Selfie.name!='undefined' && parseInt(data.Selfie.name.split('.').length)>2)
+    else if(typeof data.Selfie.name!=='undefined' && parseInt(data.Selfie.name.split('.').length)>2)
     {
       errors.Selfie= 'my_account.err.doubleExtension';
     }
-    else if(typeof data.Selfie.type!='undefined' && data.Selfie.type != 'image/jpeg' && data.Selfie.type != 'image/jpg' && data.Selfie.type != 'image/png')
+    else if(typeof data.Selfie.type!=='undefined' && data.Selfie.type != 'image/jpeg' && data.Selfie.type != 'image/jpg' && data.Selfie.type != 'image/png')
     {
       errors.Selfie= 'my_account.err.validFormat';
     } 
-    else if(typeof data.Selfie.size!='undefined' && data.Selfie.size > 2097152)
+    else if(typeof data.Selfie.size!=='undefined' && data.Selfie.size > 2097152)
     {
       errors.Selfie= 'my_account.err.fileSize';
     }

@@ -4,7 +4,7 @@
 import React from 'react'
 
 // import for navigation bar Card
-import { Table, Input, Nav, NavItem, NavLink, Card, CardBody,Row,Col } from 'reactstrap';
+import { Table, Input, Nav, NavItem, NavLink, Card, Row, Col } from 'reactstrap';
 
 // import scroll bar
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -17,7 +17,7 @@ import IntlMessages from 'Util/IntlMessages';
 
 // import action
 import {
-    getPairList, 
+    getPairList,
     getVolumeData,
     getFavouritePairList,
     addToFavouritePairList,
@@ -53,16 +53,15 @@ class PairList extends React.Component {
             searchPair: [],
             displayPair: false,
             pairsInfo: 'change',
-            currencyPair: '',
             firstCurrency: this.props.firstCurrency,
             secondCurrency: this.props.secondCurrency,
             currencyPair: this.props.currencyPair,
-            oldVolumeData:[],
-            displayPairlist:0,
-            socketData:[],     
-            oldPairLists:[] ,
-            favouritesPairList:[],
-            favouriteListBit:1
+            oldVolumeData: [],
+            displayPairlist: 0,
+            socketData: [],
+            oldPairLists: [],
+            favouritesPairList: [],
+            favouriteListBit: 1
         }
     }
 
@@ -71,15 +70,15 @@ class PairList extends React.Component {
         this.setState({ pairsInfo: event.target.value });
     };
 
-    componentWillMount(){
-        
+    componentWillMount() {
+
         this.isComponentActive = 1;
 
         // code changed by devang parekh for handling margin trading process
-        if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-        
+        if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+
             // Call Actions For Get pair List
-            this.props.getFavouritePairList({marginTrading:1});
+            this.props.getFavouritePairList({ marginTrading: 1 });
             this.processForMarginTrading(); // call for intialize socket listners for margin trading
 
         } else {
@@ -91,162 +90,156 @@ class PairList extends React.Component {
         }
 
         // code end (21-2-2019)
-    
+
     }
 
-     // code for handle signalr listners for normal trading
-   processForNormalTrading() {
+    // code for handle signalr listners for normal trading
+    processForNormalTrading() {
 
-    this.props.hubConnection.on('RecievePairData', (pairListData) => {
+        this.props.hubConnection.on('RecievePairData', (pairListData) => {
 
-        //console.log("Get Data from signalR RecievePairData", pairListData);
-        if (this.isComponentActive === 1 && pairListData !== null) {
+            if (this.isComponentActive === 1 && pairListData !== null) {
 
-            var pairList = this.state.pairList    
-            var oldPairLists=[]          
+                var pairList = this.state.pairList
+                var oldPairLists = []
 
-            try {
+                try {
 
-                const pairListDataDetail = JSON.parse(pairListData);
-        
-                const newVolumeData = pairListDataDetail.Data;
-                
-                if ((pairListDataDetail.EventTime && this.state.socketData.length === 0) || 
-                    (this.state.socketData.length !== 0 && pairListDataDetail.EventTime >= this.state.socketData.EventTime) ) {  
-                               
-                    if(typeof pairListDataDetail.IsMargin !== 'undefined' && pairListDataDetail.IsMargin === 0) {
+                    const pairListDataDetail = JSON.parse(pairListData);
 
-                        pairList.map((value, key) => {
-                        
-                            if(value.Abbrevation === this.props.secondCurrency){
-                                oldPairLists = value.PairList
-                                value.PairList.map((newPairItem, indexValue) => {                                       
+                    const newVolumeData = pairListDataDetail.Data;
 
-                                    // if(newPairItem.PairId == newVolumeData.PairId){      
-                                        if(newPairItem.PairName == newVolumeData.PairName){    
-                                                                                    
-                                        newPairItem.CurrentRate = newVolumeData.CurrentRate
-                                        newPairItem.ChangePer = newVolumeData.ChangePer
-                                        newPairItem.Volume = newVolumeData.Volume24
-                                        newPairItem.UpDownBit = newVolumeData.UpDownBit
-                                        newPairItem.changeBit = newVolumeData.UpDownBit
-                                    }
-                                })
-                            }
-                            
-                        })       
+                    if ((pairListDataDetail.EventTime && this.state.socketData.length === 0) ||
+                        (this.state.socketData.length !== 0 && pairListDataDetail.EventTime >= this.state.socketData.EventTime)) {
 
-                        this.setState({ pairList: pairList,oldPairLists:oldPairLists, socketData: pairListDataDetail });
-                        
-                    }
-                    
-                }
+                        if (typeof pairListDataDetail.IsMargin !== 'undefined' && pairListDataDetail.IsMargin === 0) {
 
-            } catch(error) {
-            
-            }
-        }
+                            pairList.map((value, key) => {
 
-    });
+                                if (value.Abbrevation === this.props.secondCurrency) {
+                                    oldPairLists = value.PairList
+                                    value.PairList.map((newPairItem, indexValue) => {
 
-}
+                                        if (newPairItem.PairName == newVolumeData.PairName) {
 
- // code for handle signalr listners for margin trading
- processForMarginTrading() {
+                                            newPairItem.CurrentRate = newVolumeData.CurrentRate
+                                            newPairItem.ChangePer = newVolumeData.ChangePer
+                                            newPairItem.Volume = newVolumeData.Volume24
+                                            newPairItem.UpDownBit = newVolumeData.UpDownBit
+                                            newPairItem.changeBit = newVolumeData.UpDownBit
+                                        }
+                                    })
+                                }
 
-    this.props.hubConnection.on('RecievePairData', (pairListData) => {
+                            })
 
-        //console.log("margin Get Data from signalR RecievePairData", pairListData);
-        if (this.isComponentActive === 1 && pairListData !== null) {
+                            this.setState({ pairList: pairList, oldPairLists: oldPairLists, socketData: pairListDataDetail });
 
-            var pairList = this.state.pairList    
-            var oldPairLists=[]          
-
-            try {
-
-                const pairListDataDetail = JSON.parse(pairListData);
-        
-                const newVolumeData = pairListDataDetail.Data;
-                
-                if ((pairListDataDetail.EventTime && this.state.socketData.length === 0) || 
-                    (this.state.socketData.length !== 0 && pairListDataDetail.EventTime >= this.state.socketData.EventTime) ) {  
-                    
-                    if(typeof pairListDataDetail.IsMargin !== 'undefined' && pairListDataDetail.IsMargin === 1) {
-
-                        pairList.map((value, key) => {
-                            
-                            if(value.Abbrevation === this.props.secondCurrency){
-                                oldPairLists = value.PairList
-                                value.PairList.map((newPairItem, indexValue) => {                                       
-
-                                    // if(newPairItem.PairId == newVolumeData.PairId){      
-                                        if(newPairItem.PairName == newVolumeData.PairName){    
-                                                                                    
-                                        newPairItem.CurrentRate = newVolumeData.CurrentRate
-                                        newPairItem.ChangePer = newVolumeData.ChangePer
-                                        newPairItem.Volume = newVolumeData.Volume24
-                                        newPairItem.UpDownBit = newVolumeData.UpDownBit
-                                        newPairItem.changeBit = newVolumeData.UpDownBit
-                                    }
-                                })
-                            }
-                            
-                        })       
-
-                        this.setState({ pairList: pairList,oldPairLists:oldPairLists, socketData: pairListDataDetail });
+                        }
 
                     }
 
+                } catch (error) {
+
                 }
-
-            } catch(error) {
-                //console.log("pair data ",error)
             }
-        }
 
-    });
-    
-}
-    
+        });
+
+    }
+
+    // code for handle signalr listners for margin trading
+    processForMarginTrading() {
+
+        this.props.hubConnection.on('RecievePairData', (pairListData) => {
+
+            if (this.isComponentActive === 1 && pairListData !== null) {
+
+                var pairList = this.state.pairList
+                var oldPairLists = []
+
+                try {
+
+                    const pairListDataDetail = JSON.parse(pairListData);
+
+                    const newVolumeData = pairListDataDetail.Data;
+
+                    if ((pairListDataDetail.EventTime && this.state.socketData.length === 0) ||
+                        (this.state.socketData.length !== 0 && pairListDataDetail.EventTime >= this.state.socketData.EventTime)) {
+
+                        if (typeof pairListDataDetail.IsMargin !== 'undefined' && pairListDataDetail.IsMargin === 1) {
+
+                            pairList.map((value, key) => {
+
+                                if (value.Abbrevation === this.props.secondCurrency) {
+                                    oldPairLists = value.PairList
+                                    value.PairList.map((newPairItem, indexValue) => {
+
+                                        if (newPairItem.PairName == newVolumeData.PairName) {
+
+                                            newPairItem.CurrentRate = newVolumeData.CurrentRate
+                                            newPairItem.ChangePer = newVolumeData.ChangePer
+                                            newPairItem.Volume = newVolumeData.Volume24
+                                            newPairItem.UpDownBit = newVolumeData.UpDownBit
+                                            newPairItem.changeBit = newVolumeData.UpDownBit
+                                        }
+                                    })
+                                }
+
+                            })
+
+                            this.setState({ pairList: pairList, oldPairLists: oldPairLists, socketData: pairListDataDetail });
+
+                        }
+
+                    }
+
+                } catch (error) { }
+            }
+
+        });
+
+    }
+
     componentWillUnmount() {
         this.isComponentActive = 0;
     }
-    
+
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
 
-        if (nextprops.pairData.length !==0 && nextprops.pairData !== null) {
+        if (nextprops.pairData.length !== 0 && nextprops.pairData !== null) {
 
             // set pair list if gets from API only                     
             this.setState({
                 oldState: this.state.pairList,
-                pairList: nextprops.pairData,                
+                pairList: nextprops.pairData,
             });
         }
 
-        if(nextprops.firstCurrency !== this.state.firstCurrency){
-            this.setState({                
-                firstCurrency: nextprops.firstCurrency,               
+        if (nextprops.firstCurrency !== this.state.firstCurrency) {
+            this.setState({
+                firstCurrency: nextprops.firstCurrency,
             })
         }
 
         if (nextprops.secondCurrency !== this.state.secondCurrency) {
-            this.setState({                
+            this.setState({
                 secondCurrency: nextprops.secondCurrency,
-                volumeData:[],
-                oldVolumeData:[],
-                pairList:this.state.pairList
+                volumeData: [],
+                oldVolumeData: [],
+                pairList: this.state.pairList
             })
         }
 
-        if(nextprops.favouritePairList && this.state.favouriteListBit && Array.isArray(nextprops.favouritePairList) && nextprops.favouritePairList.length && this.state.favouritesPairList.length === 0) {
-            
+        if (nextprops.favouritePairList && this.state.favouriteListBit && Array.isArray(nextprops.favouritePairList) && nextprops.favouritePairList.length && this.state.favouritesPairList.length === 0) {
+
             var favoritePairDetail = [];
-            nextprops.favouritePairList.map((value, key) =>{
-                favoritePairDetail.push({pair:value.PairId});
+            nextprops.favouritePairList.map((value, key) => {
+                favoritePairDetail.push({ pair: value.PairId });
             });
 
-            this.setState({favouriteListBit:0,favouritesPairList:favoritePairDetail});
+            this.setState({ favouriteListBit: 0, favouritesPairList: favoritePairDetail });
         }
 
     }
@@ -256,44 +249,43 @@ class PairList extends React.Component {
 
         const searchText = event.target.value
         if (searchText != '') {
-            this.setState({ searchText: searchText,displayPair: true })                       
+            this.setState({ searchText: searchText, displayPair: true })
         } else {
-            this.setState({ searchText: '',displayPair: false })
+            this.setState({ searchText: '', displayPair: false })
         }
 
     }
 
     // Function for Add Data in Favoourite List By Tejas : Date : 21/9/2018
-    addToFavourite = (event,value) => {
+    addToFavourite = (event, value) => {
 
         event.stopPropagation();
         if (this.state.favouritesPairList) {
             var isAvailable = this.state.favouritesPairList.findIndex(fav => fav.pair === value.PairId);
-            //console.log("isAvailable",isAvailable);
             if (isAvailable !== -1) {
 
                 var PairData = this.state.favouritesPairList[isAvailable];
                 this.state.favouritesPairList.splice(isAvailable, 1);
-                this.setState({favouritesPairList:this.state.favouritesPairList});
-                 // code changed by devang parekh for handling margin trading process
-                 if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+                this.setState({ favouritesPairList: this.state.favouritesPairList });
+                // code changed by devang parekh for handling margin trading process
+                if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
                     PairData.marginTrading = 1;
-                    this.props.removeFromFavouritePairList(PairData);                
+                    this.props.removeFromFavouritePairList(PairData);
                 } else {
-                    this.props.removeFromFavouritePairList(PairData);                
+                    this.props.removeFromFavouritePairList(PairData);
                 }
                 //end
 
             } else {
 
                 this.state.favouritesPairList.push({ pair: value.PairId })
-                this.setState({favouritesPairList:this.state.favouritesPairList});
-                 // code changed by devang parekh for handling margin trading process
-                if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+                this.setState({ favouritesPairList: this.state.favouritesPairList });
+                // code changed by devang parekh for handling margin trading process
+                if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
                     value.marginTrading = 1;
-                    this.props.addToFavouritePairList(value); 
+                    this.props.addToFavouritePairList(value);
                 } else {
-                    this.props.addToFavouritePairList(value); 
+                    this.props.addToFavouritePairList(value);
                 }
                 //end
 
@@ -302,18 +294,18 @@ class PairList extends React.Component {
         } else {
 
             this.state.favouritesPairList.push({ pair: value.PairId })
-            this.setState({favouritesPairList:this.state.favouritesPairList});
+            this.setState({ favouritesPairList: this.state.favouritesPairList });
             // code changed by devang parekh for handling margin trading process
-            if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+            if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
                 value.marginTrading = 1;
-                this.props.addToFavouritePairList(value); 
+                this.props.addToFavouritePairList(value);
             } else {
-                this.props.addToFavouritePairList(value); 
+                this.props.addToFavouritePairList(value);
             }
             //end
 
         }
-        
+
     }
 
     // clear search data
@@ -322,121 +314,121 @@ class PairList extends React.Component {
     }
 
     // Render Component for Pair List 
-    render() {      
+    render() {
 
         var pairsRow = [];
         var favouriteList = []
-        var searchPair = []      
-        $(".sellOrderClass").removeClass('blink_me'); 
+        var searchPair = []
+        $(".sellOrderClass").removeClass('blink_me');
 
-        if(this.props.displayFavourite && this.state.pairList.length !==0){
+        if (this.props.displayFavourite && this.state.pairList.length !== 0) {
             pairsRow = [];
-            var oldPairLists = this.state.oldPairLists;
+            var oldPairListsGetVolumedata = this.state.oldPairLists;
             this.state.pairList.map((value, key) => {
-                
+
                 value.PairList.map((newPairItem, indexValue) => {
-                    var isAvailable = this.state.favouritesPairList.findIndex(fav => fav.pair === newPairItem.PairId);
-                            
-                    if(isAvailable !== -1){
-                        favouriteList.push(newPairItem)                      
+                    var isAvailablePairList = this.state.favouritesPairList.findIndex(fav => fav.pair === newPairItem.PairId);
+
+                    if (isAvailablePairList !== -1) {
+                        favouriteList.push(newPairItem)
                     }
                 })
             })
 
-            favouriteList.map((value,indexValue)=>{
-                var pair = value.PairName.split("_")[0] + "/"+ value.PairName.split("_")[1]
-                var findIndexValuePrice = oldPairLists.findIndex(oldPairItem => oldPairItem.CurrentRate === value.CurrentRate);
-                    var lastPrice = 0;
+            favouriteList.map((value, indexValue) => {
+                var pair = value.PairName.split("_")[0] + "/" + value.PairName.split("_")[1]
+                var findIndexValuePrice = oldPairListsGetVolumedata.findIndex(oldPairItem => oldPairItem.CurrentRate === value.CurrentRate);
+                var lastPrice = 0;
 
-                    var findIndexValuePer = oldPairLists.findIndex(oldPairItem => oldPairItem.ChangePer === value.ChangePer);
-                    var lastChange = 0;
+                var findIndexValuePer = oldPairListsGetVolumedata.findIndex(oldPairItem => oldPairItem.ChangePer === value.ChangePer);
+                var lastChange = 0;
 
-                    var findIndexValueVolume = oldPairLists.findIndex(oldPairItem => oldPairItem.Volume === value.Volume);
-                    var lastVolume = 0;
+                var findIndexValueVolume = oldPairListsGetVolumedata.findIndex(oldPairItem => oldPairItem.Volume === value.Volume);
+                var lastVolume = 0;
 
-                    if (findIndexValuePrice !== -1) {
-                        lastPrice = oldPairLists[findIndexValuePrice].CurrentRate;
-                    }
+                if (findIndexValuePrice !== -1) {
+                    lastPrice = oldPairListsGetVolumedata[findIndexValuePrice].CurrentRate;
+                }
 
-                    if (findIndexValuePer !== -1) {
-                        lastChange = oldPairLists[findIndexValuePer].ChangePer;
-                    }
+                if (findIndexValuePer !== -1) {
+                    lastChange = oldPairListsGetVolumedata[findIndexValuePer].ChangePer;
+                }
 
-                    if (findIndexValueVolume !== -1) {
-                        lastVolume = oldPairLists[findIndexValueVolume].Volume;
-                    }
+                if (findIndexValueVolume !== -1) {
+                    lastVolume = oldPairListsGetVolumedata[findIndexValueVolume].Volume;
+                }
 
-                        pairsRow.push(<PairListRow
-                        key={indexValue}
-                        index={indexValue}                        
-                        pair={ pair }
-                        newPrice={value.CurrentRate}
-                        oldPrice={lastPrice}
-                        newChange={value.ChangePer}
-                        oldChange={lastChange}
-                        newVolume={value.Volume}
-                        addToFavourite = {this.addToFavourite}                        
-                        oldVolume={lastVolume}
-                        openModal={this.openModal}
-                        isAvailable={isAvailable}
-                        indexValue={indexValue}
-                        changePairs={this.props.changePairs}
-                        value={value}
-                        pairsInfo={this.state.pairsInfo} 
-                        upDownBit={value.UpDownBit}
-                        changeBit={value.changeBit ? value.changeBit:0}                               
-                    />);
+                pairsRow.push(<PairListRow
+                    key={indexValue}
+                    index={indexValue}
+                    pair={pair}
+                    newPrice={value.CurrentRate}
+                    oldPrice={lastPrice}
+                    newChange={value.ChangePer}
+                    oldChange={lastChange}
+                    newVolume={value.Volume}
+                    addToFavourite={this.addToFavourite}
+                    oldVolume={lastVolume}
+                    openModal={this.openModal}
+                    isAvailable={isAvailable}
+                    indexValue={indexValue}
+                    changePairs={this.props.changePairs}
+                    value={value}
+                    pairsInfo={this.state.pairsInfo}
+                    upDownBit={value.UpDownBit}
+                    changeBit={value.changeBit ? value.changeBit : 0}
+                />);
+                return [];
             })
 
-        } else if(this.state.pairList.length !==0 && this.props.displayFavourite == false) {
-              
+        } else if (this.state.pairList.length !== 0 && this.props.displayFavourite == false) {
+
             // Display Pairlist When GetVolumedata  id not Available 
             var oldPairLists = this.state.oldPairLists
-            
-            var isAvailable = null; 
-            this.state.pairList.map((value, key) => {
-                
-                if(value.Abbrevation === this.props.secondCurrency){
 
-                    // oldPairLists = value.PairList;
+            var isAvailable = null;
+            this.state.pairList.map((value, key) => {
+
+                if (value.Abbrevation === this.props.secondCurrency) {
+
                     value.PairList.map((newPairItem, indexValue) => {
 
                         //  Display Record when Search Pair
-                        if(this.state.searchText !== ''){
+                        if (this.state.searchText !== '') {
                             if (newPairItem.Abbrevation.toLowerCase().indexOf(this.state.searchText) != -1
-                            ||newPairItem.Abbrevation.indexOf(this.state.searchText) != -1
+                                || newPairItem.Abbrevation.indexOf(this.state.searchText) != -1
                             ) {
                                 var findIndexValuePrice = oldPairLists.findIndex(oldPairItem => oldPairItem.CurrentRate === newPairItem.CurrentRate);
                                 var lastPrice = 0;
-            
+
                                 var findIndexValuePer = oldPairLists.findIndex(oldPairItem => oldPairItem.ChangePer === newPairItem.ChangePer);
                                 var lastChange = 0;
-            
+
                                 var findIndexValueVolume = oldPairLists.findIndex(oldPairItem => oldPairItem.Volume === newPairItem.Volume);
                                 var lastVolume = 0;
-            
+
                                 if (findIndexValuePrice !== -1) {
                                     lastPrice = oldPairLists[findIndexValuePrice].CurrentRate;
                                 }
-            
+
                                 if (findIndexValuePer !== -1) {
                                     lastChange = oldPairLists[findIndexValuePer].ChangePer;
                                 }
-            
+
                                 if (findIndexValueVolume !== -1) {
                                     lastVolume = oldPairLists[findIndexValueVolume].Volume;
                                 }
-            
+
                                 searchPair.push(<PairListRow
                                     key={indexValue}
-                                    index={indexValue}      
-                                    upDownBit={newPairItem.UpDownBit}                       
-                                    pair={ newPairItem.Abbrevation +"/"+ this.props.secondCurrency }
+                                    index={indexValue}
+                                    upDownBit={newPairItem.UpDownBit}
+                                    pair={newPairItem.Abbrevation + "/" + this.props.secondCurrency}
                                     newPrice={newPairItem.CurrentRate}
                                     oldPrice={lastPrice}
                                     newChange={newPairItem.ChangePer}
                                     oldChange={lastChange}
-                                    addToFavourite = {this.addToFavourite} 
+                                    addToFavourite={this.addToFavourite}
                                     isAvailable={isAvailable}
                                     newVolume={newPairItem.Volume}
                                     oldVolume={lastVolume}
@@ -444,236 +436,229 @@ class PairList extends React.Component {
                                     indexValue={indexValue}
                                     changePairs={this.props.changePairs}
                                     value={newPairItem}
-                                    pairsInfo={this.state.pairsInfo}                                
+                                    pairsInfo={this.state.pairsInfo}
                                 />);
                             }
-                        }else{
-                            if (this.state.favouritesPairList) {                               
+                        } else {
+                            if (this.state.favouritesPairList) {
                                 isAvailable = this.state.favouritesPairList.findIndex(fav => fav.pair === newPairItem.PairId);
                             } else {
                                 isAvailable = null;
-                            }                       
-                     // Actual Display Data  without search
-                     var findIndexValuePrice = oldPairLists.findIndex(oldPairItem => oldPairItem.CurrentRate === newPairItem.CurrentRate);
-                     var lastPrice = 0;
- 
-                     var findIndexValuePer = oldPairLists.findIndex(oldPairItem => oldPairItem.ChangePer === newPairItem.ChangePer);
-                     var lastChange = 0;
- 
-                     var findIndexValueVolume = oldPairLists.findIndex(oldPairItem => oldPairItem.Volume === newPairItem.Volume);
-                     var lastVolume = 0;
- 
-                     if (findIndexValuePrice !== -1) {
-                         lastPrice = oldPairLists[findIndexValuePrice].CurrentRate;
-                     }
- 
-                     if (findIndexValuePer !== -1) {
-                         lastChange = oldPairLists[findIndexValuePer].ChangePer;
-                     }
- 
-                     if (findIndexValueVolume !== -1) {
-                         lastVolume = oldPairLists[findIndexValueVolume].Volume;
-                     }
- 
-                         pairsRow.push(<PairListRow
-                         key={indexValue}
-                         index={indexValue}                        
-                         pair={ newPairItem.Abbrevation +"/"+ this.props.secondCurrency }
-                         newPrice={newPairItem.CurrentRate}
-                         oldPrice={lastPrice}
-                         newChange={newPairItem.ChangePer}
-                         oldChange={lastChange}
-                         newVolume={newPairItem.Volume}
-                         addToFavourite = {this.addToFavourite}                        
-                         oldVolume={lastVolume}
-                         openModal={this.openModal}
-                         indexValue={indexValue}
-                         isAvailable={isAvailable}
-                         changePairs={this.props.changePairs}
-                         value={newPairItem}
-                         pairsInfo={this.state.pairsInfo} 
-                         upDownBit={newPairItem.UpDownBit}
-                         changeBit={newPairItem.changeBit ? newPairItem.changeBit:0}                               
-                     />);
+                            }
+                            // Actual Display Data  without search
+                            var findIndexValuePriceWithoutSearch = oldPairLists.findIndex(oldPairItem => oldPairItem.CurrentRate === newPairItem.CurrentRate);
+                            var lastPriceWithoutSearch = 0;
+
+                            var findIndexValuePerWithoutSearch = oldPairLists.findIndex(oldPairItem => oldPairItem.ChangePer === newPairItem.ChangePer);
+                            var lastChangeWithoutSearch = 0;
+
+                            var findIndexValueVolumeWithoutSearch = oldPairLists.findIndex(oldPairItem => oldPairItem.Volume === newPairItem.Volume);
+                            var lastVolumeWithoutSearch = 0;
+
+                            if (findIndexValuePriceWithoutSearch !== -1) {
+                                lastPriceWithoutSearch = oldPairLists[findIndexValuePriceWithoutSearch].CurrentRate;
+                            }
+
+                            if (findIndexValuePerWithoutSearch !== -1) {
+                                lastChangeWithoutSearch = oldPairLists[findIndexValuePerWithoutSearch].ChangePer;
+                            }
+
+                            if (findIndexValueVolumeWithoutSearch !== -1) {
+                                lastVolumeWithoutSearch = oldPairLists[findIndexValueVolumeWithoutSearch].Volume;
+                            }
+
+                            pairsRow.push(<PairListRow
+                                key={indexValue}
+                                index={indexValue}
+                                pair={newPairItem.Abbrevation + "/" + this.props.secondCurrency}
+                                newPrice={newPairItem.CurrentRate}
+                                oldPrice={lastPriceWithoutSearch}
+                                newChange={newPairItem.ChangePer}
+                                oldChange={lastChangeWithoutSearch}
+                                newVolume={newPairItem.Volume}
+                                addToFavourite={this.addToFavourite}
+                                oldVolume={lastVolumeWithoutSearch}
+                                openModal={this.openModal}
+                                indexValue={indexValue}
+                                isAvailable={isAvailable}
+                                changePairs={this.props.changePairs}
+                                value={newPairItem}
+                                pairsInfo={this.state.pairsInfo}
+                                upDownBit={newPairItem.UpDownBit}
+                                changeBit={newPairItem.changeBit ? newPairItem.changeBit : 0}
+                            />);
                         }
 
-                       
+
                     })
                 }
             })
         }
-    //}
-        
-        if(pairsRow.length !==0){            
-            this.state.showLoader=false
+
+        if (pairsRow.length !== 0) {
+            this.state.showLoader = false
         }
 
         return (
             <div className="m-0 p-0">
-            <Card>
-                <div className="p-0 m-0">
-                    {/* <div className="pt-10 pl-10 pr-10 m-0"><Input type="text" value={this.state.searchText} name="search" id="search" placeholder="Search" onChange={this.onSearchList}></Input></div> */}
-                   <Row>
-                       <Col md={6}>
-                            <RadioGroup
-                                name="pairlist"
-                                value={this.state.pairsInfo}
-                                onChange={this.handleChange}
-                                className="flex-row flex-nowrap ml-10 p-0 pt-10 pairlistradio"
-                            >
-                                <FormControlLabel value="change" control={<Radio />} label={<IntlMessages id="trading.currencypair.label.change" />} />
-                                <FormControlLabel value="volume" control={<Radio />} label={<IntlMessages id="trading.currencypair.label.volume" />} />
-                            </RadioGroup>
-                        </Col>
-                        <Col md={6}>
-                        <div className="pt-10 pl-10 pr-10 m-0 pairlistsearch">
-                            <IntlMessages id="trading.currencypair.text.search">
-                                { (placeholder) =>
-                                <Input type="text" value={this.state.searchText} name="search" id="search" 
-                                placeholder={placeholder} onChange={this.onSearchList}></Input>
-                                }
-                            </IntlMessages>
-                            </div>
-                       </Col>
-                    </Row>
-                </div>
-
-                <div>
-                    <Nav tabs className={this.props.darkMode ? 'coinlistright-darkmode':'coinlistright'}>    
-                              <NavItem>
-                                    <NavLink value="" className={classnames({ active: this.props.displayFavourite }, "btn-xs m-2")}
-                                        onClick={() => { this.clearSearchPair(); this.props.displayFavouritePair() }}> <i className="ti-star ml-1"></i> <IntlMessages id="trading.currencypair.label.favorite" /> </NavLink>
-                             </NavItem>                 
-                        {this.state.pairList.map((value, key) =>
-                            <NavItem key={key}>
-                                <NavLink value={value.Abbrevation} className={classnames({ active: this.props.secondCurrency === value.Abbrevation && !this.props.displayFavourite }, "btn-xs m-2")}
-                                    onClick={() => { this.clearSearchPair();  this.props.changeSecondCurrency(value); }}> {value.Abbrevation} </NavLink>
-                            </NavItem>
-                        )}
-                    </Nav>
-                </div>
-                                
-                
-                    <div className="table-responsive-design">
-                        <div className={this.props.darkMode ? 'PairListtable-darkmode':'PairListtable'}>
-                        {this.state.displayPair ?
-                            <div>
-                                <Table className="table m-0 p-0">
-                                    <thead >
-                                        <tr className="bg-light">
-                                            <th>{<IntlMessages id="trading.currencypair.label.pair" />}</th>
-                                            <th>{<IntlMessages id="trading.currencypair.label.price" />}</th>
-                                            {this.state.pairsInfo === 'change' ?
-                                                <th className="numeric">{<IntlMessages id="trading.currencypair.label.change" />}</th> :
-                                                <th className="numeric">{<IntlMessages id="trading.currencypair.label.volume" />}</th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                </Table>
-                                    
-                                <Scrollbars className="jbs-scroll" autoHeight autoHeightMin={177} autoHeightMax={177} autoHide>
-                                    <Table className="table m-0 p-0">
-                                        <tbody >
-                                            {searchPair}
-                                        </tbody >
-                                    </Table>
-                                </Scrollbars>
-                            </div> :
-                            <div>
-                                <Table className="table m-0 p-0">
-                                    <thead >
-                                        <tr className="bg-light">
-                                            <th>{<IntlMessages id="trading.currencypair.label.pair" />}</th>
-                                            <th>{<IntlMessages id="trading.currencypair.label.price" />}</th>
-                                            {this.state.pairsInfo === 'change' ?
-                                                <th className="numeric">{<IntlMessages id="trading.currencypair.label.change" />}</th> :
-                                                <th className="numeric">{<IntlMessages id="trading.currencypair.label.volume" />}</th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                </Table>
-                                <Scrollbars className="jbs-scroll" autoHeight autoHeightMin={177} autoHeightMax={177} autoHide>
-                                {this.state.showLoader &&
-                 <JbsSectionLoader />
-                        }
-                                <Table className="table m-0 p-0">
-                                    <tbody >
-                                        {pairsRow}
-                                    </tbody >
-                                </Table>
-                                </Scrollbars>
-                            </div>
-                        }
-                      </div>      
+                <Card>
+                    <div className="p-0 m-0">
+                        <Row>
+                            <Col md={6}>
+                                <RadioGroup
+                                    name="pairlist"
+                                    value={this.state.pairsInfo}
+                                    onChange={this.handleChange}
+                                    className="flex-row flex-nowrap ml-10 p-0 pt-10 pairlistradio"
+                                >
+                                    <FormControlLabel value="change" control={<Radio />} label={<IntlMessages id="trading.currencypair.label.change" />} />
+                                    <FormControlLabel value="volume" control={<Radio />} label={<IntlMessages id="trading.currencypair.label.volume" />} />
+                                </RadioGroup>
+                            </Col>
+                            <Col md={6}>
+                                <div className="pt-10 pl-10 pr-10 m-0 pairlistsearch">
+                                    <IntlMessages id="trading.currencypair.text.search">
+                                        {(placeholder) =>
+                                            <Input type="text" value={this.state.searchText} name="search" id="search"
+                                                placeholder={placeholder} onChange={this.onSearchList}></Input>
+                                        }
+                                    </IntlMessages>
+                                </div>
+                            </Col>
+                        </Row>
                     </div>
-            </Card>
+
+                    <div>
+                        <Nav tabs className={this.props.darkMode ? 'coinlistright-darkmode' : 'coinlistright'}>
+                            <NavItem>
+                                <NavLink value="" className={classnames({ active: this.props.displayFavourite }, "btn-xs m-2")}
+                                    onClick={() => { this.clearSearchPair(); this.props.displayFavouritePair() }}> <i className="ti-star ml-1"></i> <IntlMessages id="trading.currencypair.label.favorite" /> </NavLink>
+                            </NavItem>
+                            {this.state.pairList.map((value, key) =>
+                                <NavItem key={key}>
+                                    <NavLink value={value.Abbrevation} className={classnames({ active: this.props.secondCurrency === value.Abbrevation && !this.props.displayFavourite }, "btn-xs m-2")}
+                                        onClick={() => { this.clearSearchPair(); this.props.changeSecondCurrency(value); }}> {value.Abbrevation} </NavLink>
+                                </NavItem>
+                            )}
+                        </Nav>
+                    </div>
+
+
+                    <div className="table-responsive-design">
+                        <div className={this.props.darkMode ? 'PairListtable-darkmode' : 'PairListtable'}>
+                            {this.state.displayPair ?
+                                <div>
+                                    <Table className="table m-0 p-0">
+                                        <thead >
+                                            <tr className="bg-light">
+                                                <th>{<IntlMessages id="trading.currencypair.label.pair" />}</th>
+                                                <th>{<IntlMessages id="trading.currencypair.label.price" />}</th>
+                                                {this.state.pairsInfo === 'change' ?
+                                                    <th className="numeric">{<IntlMessages id="trading.currencypair.label.change" />}</th> :
+                                                    <th className="numeric">{<IntlMessages id="trading.currencypair.label.volume" />}</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                    </Table>
+
+                                    <Scrollbars className="jbs-scroll" autoHeight autoHeightMin={177} autoHeightMax={177} autoHide>
+                                        <Table className="table m-0 p-0">
+                                            <tbody >
+                                                {searchPair}
+                                            </tbody >
+                                        </Table>
+                                    </Scrollbars>
+                                </div> :
+                                <div>
+                                    <Table className="table m-0 p-0">
+                                        <thead >
+                                            <tr className="bg-light">
+                                                <th>{<IntlMessages id="trading.currencypair.label.pair" />}</th>
+                                                <th>{<IntlMessages id="trading.currencypair.label.price" />}</th>
+                                                {this.state.pairsInfo === 'change' ?
+                                                    <th className="numeric">{<IntlMessages id="trading.currencypair.label.change" />}</th> :
+                                                    <th className="numeric">{<IntlMessages id="trading.currencypair.label.volume" />}</th>
+                                                }
+                                            </tr>
+                                        </thead>
+                                    </Table>
+                                    <Scrollbars className="jbs-scroll" autoHeight autoHeightMin={177} autoHeightMax={177} autoHide>
+                                        {this.state.showLoader &&
+                                            <JbsSectionLoader />
+                                        }
+                                        <Table className="table m-0 p-0">
+                                            <tbody >
+                                                {pairsRow}
+                                            </tbody >
+                                        </Table>
+                                    </Scrollbars>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </Card>
             </div>
         )
     }
 }
 
 // Set Props when actions are dispatch
-const mapStateToProps = state => ({    
+const mapStateToProps = state => ({
     volumeData: state.tradePairList.volumeData,
     favouritePairList: state.tradePairList.favouritePairList,
     favouritePairData: state.tradePairList.favouritePairData,
-    volumeData: state.tradePairList.volumeData,
-    darkMode:state.settings.darkMode,    
+    darkMode: state.settings.darkMode,
 
 });
 
 // connect action with store for dispatch
 export default connect(mapStateToProps, {
     getPairList,
-    getVolumeData,  
+    getVolumeData,
     getFavouritePairList,
     addToFavouritePairList,
-    removeFromFavouritePairList  
+    removeFromFavouritePairList
 })(PairList);
 
 
 class PairListRow extends React.Component {
 
     render() {
-        
-    var changeClass = "";
 
-    if (this.props.changeBit === 1 ) {      
-    changeClass = "blink_me";
-    }
+        var changeClass = "";
 
-    $(".sellOrderClass").removeClass('sellOrderClass');
+        if (this.props.changeBit === 1) {
+            changeClass = "blink_me";
+        }
 
-     return (
-        <tr style={{ cursor: 'pointer' }} className={(this.props.changeBit === 1)? changeClass + " sellOrderClass" : ''} onClick={() => { this.props.changePairs(this.props.value) }} key={this.props.index}>
+        $(".sellOrderClass").removeClass('sellOrderClass');
+
+        return (
+            <tr style={{ cursor: 'pointer' }} className={(this.props.changeBit === 1) ? changeClass + " sellOrderClass" : ''} onClick={() => { this.props.changePairs(this.props.value) }} key={this.props.index}>
                 <td>
-                <a href="javascript:;" onClick={(event) => { this.props.addToFavourite(event,this.props.value) }}>{(this.props.isAvailable === -1 || this.props.isAvailable === null) ?
-                   // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.fillstar" />}</i> :
-                    // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.star" />}</i>}</a>
-                    <i className="material-icons">star_border</i> :
-                    <i className="material-icons">star</i>}</a>
-                {this.props.pair}</td>
-                {/* <td> {this.props.pair}</td> */}
+                    <a href="javascript:;" onClick={(event) => { this.props.addToFavourite(event, this.props.value) }}>{(this.props.isAvailable === -1 || this.props.isAvailable === null) ?
+                        <i className="material-icons">star_border</i> :
+                        <i className="material-icons">star</i>}</a>
+                    {this.props.pair}</td>
                 <td className={
-                    classnames({blink_success:this.props.newPrice > this.props.oldPrice,blink_danger:this.props.newPrice < this.props.oldPrice})}>
+                    classnames({ blink_success: this.props.newPrice > this.props.oldPrice, blink_danger: this.props.newPrice < this.props.oldPrice })}>
                     {parseFloat(this.props.newPrice).toFixed(8)}
                 </td>
 
-{/* <td className={this.props.upDownBit ? 'text-success':'text-danger'}>                     */}
 
-                {this.props.pairsInfo === 'change' ? 
-                    
+                {this.props.pairsInfo === 'change' ?
+
                     <td className={this.props.newChange == 0 ? 'text-default' : this.props.newChange > 0 ? 'text-success' : 'text-danger'}>
-                    {parseFloat(this.props.newChange).toFixed(2)} %
-                    </td> 
-                 :
-                    <td >                                           
-                    {parseFloat(this.props.newVolume).toFixed(2)}
-                    </td> 
-                }                   
-                
+                        {parseFloat(this.props.newChange).toFixed(2)} %
+                    </td>
+                    :
+                    <td >
+                        {parseFloat(this.props.newVolume).toFixed(2)}
+                    </td>
+                }
+
             </tr>
 
         );
     }
-};
+}

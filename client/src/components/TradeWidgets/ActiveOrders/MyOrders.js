@@ -31,9 +31,8 @@ import $ from 'jquery';
 const orderTypes = [
     { "type": "LIMIT", "ID": "1" },
     { "type": "MARKET", "ID": "2" },
-    // { "type": "SPOT", "ID": "3" },
     { "type": "STOP_Limit", "ID": "4" },
-  ]
+]
 class MyOrder extends React.Component {
     constructor(props) {
         super(props);
@@ -66,60 +65,60 @@ class MyOrder extends React.Component {
     }
 
     // cancel All Modal and open new dialog
- openCancelAllModal = (e) => {
+    openCancelAllModal = (e) => {
 
-    if (e.target.value !== '') {
+        if (e.target.value !== '') {
 
-      if (e.target.value > 0) {
-        var isOrderType = false;
-        if (this.state.activeMyOpenOrder.length > 0) {
+            if (e.target.value > 0) {
+                var isOrderType = false;
+                if (this.state.activeMyOpenOrder.length > 0) {
 
-          this.state.activeMyOpenOrder.map((value, key1) => {
-            orderTypes.map((item, key) => {
-              if (item.ID == e.target.value) {
-                if (item.type == value.OrderType) {
-                  isOrderType = true
+                    this.state.activeMyOpenOrder.map((value, key1) => {
+                        orderTypes.map((item, key) => {
+                            if (item.ID == e.target.value) {
+                                if (item.type == value.OrderType) {
+                                    isOrderType = true
+                                }
+                            }
+                        })
+
+                    })
                 }
-              }
-            })
 
-          })
+                if (isOrderType == true) {
+                    this.setState({
+                        cancelAllModal: true,
+                        cancelOrderBit: e.target.value
+                    });
+                } else {
+                    NotificationManager.error(<IntlMessages id="openorder.ordernotavailable" />);
+                    this.setState({
+                        cancelAllModal: false,
+                        cancelOrderBit: ''
+                    });
+                }
+
+            }
+
+            if (e.target.value == 0) {
+
+                if (this.state.activeMyOpenOrder.length > 0) {
+                    this.setState({
+                        cancelAllModal: true,
+                        cancelOrderBit: e.target.value
+                    })
+                } else {
+                    NotificationManager.error(<IntlMessages id="openorder.noorder" />);
+                    this.setState({
+                        cancelAllModal: false,
+                        cancelOrderBit: ''
+                    })
+                }
+
+            }
         }
 
-        if (isOrderType == true) {
-          this.setState({
-            cancelAllModal: true,
-            cancelOrderBit: e.target.value
-          });
-        } else {
-          NotificationManager.error(<IntlMessages id="openorder.ordernotavailable" />);
-          this.setState({
-            cancelAllModal: false,
-            cancelOrderBit: ''
-          });
-        }
-
-      }
-
-      if (e.target.value == 0) {
-
-        if (this.state.activeMyOpenOrder.length > 0) {
-          this.setState({
-            cancelAllModal: true,
-            cancelOrderBit: e.target.value
-          })
-        } else {
-          NotificationManager.error(<IntlMessages id="openorder.noorder" />);
-          this.setState({
-            cancelAllModal: false,
-            cancelOrderBit: ''
-          })
-        }
-
-      }
     }
-
-  }
 
     // handle close add new Schedule dailog
     handleClose() {
@@ -130,7 +129,7 @@ class MyOrder extends React.Component {
             sectionReload: false,
             cancelAllModal: false,
             sectionReloadCancelAll: false,
-            cancelOrderBit:''
+            cancelOrderBit: ''
         });
     }
 
@@ -149,38 +148,34 @@ class MyOrder extends React.Component {
         }
 
         // call action for cancel order
-        //this.props.doCancelOrder({ Order: currrentOrder });
         this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0 });
     }
 
     handleChangeCancelOrder = (e) => {
 
         if (this.state.cancelOrderBit == 0) {
-          this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
-          // call action for cancel order
-          this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0 });
+            this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
+            // call action for cancel order
+            this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0 });
         }
-    
+
         if (this.state.cancelOrderBit > 0) {
-          this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
-          this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit });
-    
+            this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
+            this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit });
+
         }
-    
-    
-      } 
+
+
+    }
 
     // This will invoke Before component render
     componentWillMount() {
-         const pair = this.props.currencyPair;
         this.isComponentActive = 1;
         // Call When Get Data From Socket/SignalR
         this.props.hubConnection.on('RecieveActiveOrder', (openOrderDetail) => {
 
-            //console.log("call from SignalR RecieveOpenOrder",openOrderDetail);
             if (this.isComponentActive === 1 && openOrderDetail !== null) {
 
-                //var openorders = this.state.activeMyOpenOrder;
                 try {
 
                     const openOrderDetailData = JSON.parse(openOrderDetail);
@@ -192,30 +187,25 @@ class MyOrder extends React.Component {
                         if (parseFloat(newData.Price) >= 0) {
 
                             var openorders = $.extend(true, [], this.state.activeMyOpenOrder);
-                            //console.log("findIndexOrderId start ",(new Date()))
-                            var findIndexOrderId = openorders.findIndex(openorders => parseFloat(openorders.Id) === parseFloat(newData.Id));
-                            //console.log("findIndexOrderId end ",findIndexOrderId,(new Date()))
+                            var findIndexOrderId = openorders.findIndex(openorder => parseFloat(openorder.Id) === parseFloat(newData.Id));
                             if (findIndexOrderId === -1) {
 
                                 if (parseFloat(newData.Amount) > 0) {
                                     openorders.unshift(newData)
-                                    /* openorders.map((value,key) =>{
-                      opendata.push(value)
-                    }) */
-                                    //openorders.push(newData)
+
                                 }
 
                             } else {
 
                                 if (parseFloat(newData.Amount) > 0) {
                                     openorders[findIndexOrderId] = newData
-                                  } else {
+                                } else {
                                     openorders.splice(findIndexOrderId, 1)
-                                  }
-                             
+                                }
+
                             }
 
-                            
+
                             this.setState({
                                 activeMyOpenOrder: openorders,
                                 socketData: openOrderDetailData,
@@ -231,7 +221,7 @@ class MyOrder extends React.Component {
             }
 
         });
-        
+
         this.props.getOpenOrderList({});
 
     }
@@ -243,7 +233,6 @@ class MyOrder extends React.Component {
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
 
-        //console.log("this.state.activeOrderBit !== nextprops.activeOrderBit",this.state.activeOrderBitCount , nextprops.activeOrderBit)
         if (nextprops.activeMyOpenOrder.length !== 0 && this.state.activeOrderBitCount !== nextprops.activeOrderBit) {
 
             // set Active My Open Order list if gets from API only
@@ -264,7 +253,6 @@ class MyOrder extends React.Component {
         }
 
         if (nextprops.cancelOrder && (this.state.sectionReload || this.state.sectionReloadCancelAll)) {
-        //if (nextprops.cancelOrder && this.state.sectionReload) {
             if (
                 nextprops.cancelOrder.statusCode === 200 &&
                 nextprops.cancelOrder.ErrorCode === 4643
@@ -273,7 +261,7 @@ class MyOrder extends React.Component {
                     <IntlMessages
                         id={`openorder.cancelorder.message.${
                             nextprops.cancelOrder.ErrorCode
-                        }`}
+                            }`}
                     />
                 );
             }
@@ -285,15 +273,13 @@ class MyOrder extends React.Component {
                 sectionReloadCancelAll: false,
                 modalInfo: -1,
                 modal: false,
-                cancelAllModal: false        
-                //cancelOrderSuccess:true
+                cancelAllModal: false
             });
         }
 
     }
 
     render() {
-        //console.log("open orders",this.state.activeMyOpenOrder)
         const activeMyOpenData = [];
         if (this.state.activeMyOpenOrder) {
             this.state.activeMyOpenOrder.map((value) => {
@@ -344,10 +330,6 @@ class MyOrder extends React.Component {
                                         <IntlMessages id="trading.activeorders.label.amount" />
                                     }
                                 </th>
-                                {/* <th className="numeric">
-                                    {" "}
-                                    {<IntlMessages id="sidebar.settleAmount" />}
-                                </th> */}
                                 <th className="numeric text-center">
                                     {" "}
                                     {
@@ -357,7 +339,7 @@ class MyOrder extends React.Component {
                                 <th className="numeric">
                                     {" "}
                                     {<IntlMessages id="widgets.action" />}
-                                </th> 
+                                </th>
                             </tr>
                         </thead>
                     </Table>
@@ -383,9 +365,9 @@ class MyOrder extends React.Component {
                                                 <td className="text-center">
                                                     {value.PairName !== null
                                                         ? value.PairName.replace(
-                                                              "_",
-                                                              "/"
-                                                          )
+                                                            "_",
+                                                            "/"
+                                                        )
                                                         : ""}
                                                 </td>
                                                 <td
@@ -398,43 +380,43 @@ class MyOrder extends React.Component {
                                                     {value.Type === "BUY" ? (
                                                         <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
                                                     ) : (
-                                                        <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
-                                                    )}
+                                                            <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
+                                                        )}
                                                 </td>
                                                 <td className="text-center">
                                                     {value.OrderType ===
-                                                    "LIMIT" ? (
-                                                        <IntlMessages id="trading.placeorder.label.limit" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "LIMIT" ? (
+                                                            <IntlMessages id="trading.placeorder.label.limit" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     {value.OrderType ===
-                                                    "MARKET" ? (
-                                                        <IntlMessages id="trading.placeorder.label.market" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "MARKET" ? (
+                                                            <IntlMessages id="trading.placeorder.label.market" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     {value.OrderType ===
-                                                    "STOP_Limit" ? (
-                                                        <IntlMessages id="trading.placeorder.label.stoplimit" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "STOP_Limit" ? (
+                                                            <IntlMessages id="trading.placeorder.label.stoplimit" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     {value.OrderType ===
-                                                    "SPOT" ? (
-                                                        <IntlMessages id="trading.placeorder.label.spot" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "SPOT" ? (
+                                                            <IntlMessages id="trading.placeorder.label.spot" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                 </td>
                                                 <td className="text-center">
                                                     {value.Price === 0 ? (
                                                         <IntlMessages id="trading.placeorder.label.market" />
                                                     ) : (
-                                                        parseFloat(
-                                                            value.Price
-                                                        ).toFixed(8)
-                                                    )}
+                                                            parseFloat(
+                                                                value.Price
+                                                            ).toFixed(8)
+                                                        )}
                                                 </td>
                                                 <td className="text-center">
                                                     {parseFloat(
@@ -455,36 +437,36 @@ class MyOrder extends React.Component {
                                         );
                                     })
                                 ) : (
-                                    <tr>
-                                        <td>
-                                            <Row className="justify-content-center m-0">
-                                                <Col
-                                                    className="text-center m-0"
-                                                    sm={12}
-                                                >
-                                                    <span>
-                                                        <i
-                                                            className="zmdi zmdi-view-list-alt"
-                                                            style={{
-                                                                fontSize:
-                                                                    "80px",
-                                                            }}
-                                                        />
-                                                        <br />
-                                                    </span>
-                                                </Col>
+                                        <tr>
+                                            <td>
+                                                <Row className="justify-content-center m-0">
+                                                    <Col
+                                                        className="text-center m-0"
+                                                        sm={12}
+                                                    >
+                                                        <span>
+                                                            <i
+                                                                className="zmdi zmdi-view-list-alt"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "80px",
+                                                                }}
+                                                            />
+                                                            <br />
+                                                        </span>
+                                                    </Col>
 
-                                                <Col
-                                                    className="text-center text-danger m-0 fs-32"
-                                                    sm={12}
-                                                    style={{ fontSize: "18px" }}
-                                                >
-                                                    <IntlMessages id="trading.activeorders.label.nodata" />
-                                                </Col>
-                                            </Row>
-                                        </td>
-                                    </tr>
-                                )
+                                                    <Col
+                                                        className="text-center text-danger m-0 fs-32"
+                                                        sm={12}
+                                                        style={{ fontSize: "18px" }}
+                                                    >
+                                                        <IntlMessages id="trading.activeorders.label.nodata" />
+                                                    </Col>
+                                                </Row>
+                                            </td>
+                                        </tr>
+                                    )
                                 }
                             </tbody>
                         </Table>
@@ -501,26 +483,26 @@ class MyOrder extends React.Component {
 
                         <ModalFooter>
                             <Button
-                            variant="raised"
-                            color="primary"
-                            className="text-white"
-                            onClick={() => this.handleChangeCancelOrder()}
+                                variant="raised"
+                                color="primary"
+                                className="text-white"
+                                onClick={() => this.handleChangeCancelOrder()}
                             >
-                            <span>
-                                <IntlMessages id="trading.activeorders.cancelorder.button.cancelorder" />
-                            </span>
+                                <span>
+                                    <IntlMessages id="trading.activeorders.cancelorder.button.cancelorder" />
+                                </span>
                             </Button>
                             <Button
-                            variant="raised"
-                            onClick={() => this.handleClose()}
-                            className="btn-danger text-white"
+                                variant="raised"
+                                onClick={() => this.handleClose()}
+                                className="btn-danger text-white"
                             >
-                            <span>
-                                <IntlMessages id="sidebar.btnClose" />
-                            </span>
+                                <span>
+                                    <IntlMessages id="sidebar.btnClose" />
+                                </span>
                             </Button>
                         </ModalFooter>
-                        </Modal> 
+                    </Modal>
                     <Modal isOpen={this.state.modal} className="myorderview">
                         <h1 className="text-center mt-10">{<IntlMessages id="trading.activeorders.cancelorder.title" />}</h1>
 
@@ -569,27 +551,27 @@ class MyOrder extends React.Component {
                                                         <tr key={key}>
                                                             <td className="text-center">
                                                                 {value.PairName !==
-                                                                null
+                                                                    null
                                                                     ? value.PairName.replace(
-                                                                          "_",
-                                                                          "/"
-                                                                      )
+                                                                        "_",
+                                                                        "/"
+                                                                    )
                                                                     : ""}
                                                             </td>
                                                             <td
                                                                 className={
                                                                     value.Type ===
-                                                                    "BUY"
+                                                                        "BUY"
                                                                         ? "text-success text-center"
                                                                         : "text-danger text-center"
                                                                 }
                                                             >
                                                                 {value.Type ===
-                                                                "BUY" ? (
-                                                                    <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
-                                                                ) : (
-                                                                    <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
-                                                                )}
+                                                                    "BUY" ? (
+                                                                        <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
+                                                                    ) : (
+                                                                        <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
+                                                                    )}
                                                             </td>
                                                             <td className="text-center">
                                                                 {parseFloat(
@@ -615,17 +597,17 @@ class MyOrder extends React.Component {
                                                     )
                                             )
                                         ) : (
-                                            <tr>
-                                                <td colSpan="5">
-                                                    <Alert
-                                                        color="danger"
-                                                        className="text-center fs-32"
-                                                    >
-                                                        <IntlMessages id="trading.activeorders.label.nodata" />
-                                                    </Alert>
-                                                </td>
-                                            </tr>
-                                        )}
+                                                <tr>
+                                                    <td colSpan="5">
+                                                        <Alert
+                                                            color="danger"
+                                                            className="text-center fs-32"
+                                                        >
+                                                            <IntlMessages id="trading.activeorders.label.nodata" />
+                                                        </Alert>
+                                                    </td>
+                                                </tr>
+                                            )}
                                     </tbody>
                                 </Table>
                             </div>
@@ -656,7 +638,7 @@ class MyOrder extends React.Component {
                         </ModalFooter>
                     </Modal>
                 </div>
-                
+
             </Fragment>
         );
     }

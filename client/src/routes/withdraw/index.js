@@ -121,7 +121,8 @@ class withdraw extends Component {
                         refreshHistory={e => this.getHistoryData(e)}
                         loading={this.props.loading}
                         wallets={this.props.wallets}
-                        IsWhitelisting={this.props.IsWhitelisting}
+                       
+                        IsWhitelisting={1} // changed default ON deu to compulsary add benificiary
                         WithdrawalDailyLimit={this.props.WithdrawalDailyLimit}
                         addresses={this.props.addresses}
                         currencies={this.props.currencies}

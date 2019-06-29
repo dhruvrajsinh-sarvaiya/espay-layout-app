@@ -59,7 +59,6 @@ class StopAutoRenew extends Component {
         }
 
         if (this.state.stopAutoRenew === 1 && nextprops.stopAutoRenewData.ReturnCode === 0) {
-
             this.setState({
                 stopAutoRenew: 0
             })
@@ -81,7 +80,6 @@ class StopAutoRenew extends Component {
             AutoRenewID: this.state.getAutoRenewData.RenewID,
             SubscribeID: this.state.getAutoRenewData.SubscribeID
         }
-
         this.setState({
             stopAutoRenew: 1
         })
@@ -115,14 +113,12 @@ class StopAutoRenew extends Component {
                                 <Col md={6}>
                                     <p className="font=weight-bold">{this.state.getAutoRenewData.PlanName}</p>
                                 </Col>
-
                             </Row>
 
                             <Row className="m-0">
                                 <Col md={6}>
                                     <IntlMessages id="table.Status" />
                                 </Col>
-
                                 <Col md={6}>
                                     {this.state.getAutoRenewData.Status === 1 ?
                                         <p className="text-info font-weight-bold"><IntlMessages id="sidebar.active" /></p>
@@ -130,7 +126,6 @@ class StopAutoRenew extends Component {
                                         <p className="text-warning font-weight-bold"><IntlMessages id="sidebar.inActive" /></p>
                                     }
                                 </Col>
-
                             </Row>
                             <Row className="m-0">
                                 <Col md={6}>
@@ -141,7 +136,7 @@ class StopAutoRenew extends Component {
                                     <p> {this.state.getAutoRenewData.Validity} {" "} {
                                         this.state.getAutoRenewData.PlanValidityType === 1 ?
                                             <IntlMessages id="sidebar.ApiPlan.day" /> :
-                                            this.state.getAutoRenewData.PlanValidityType ===2 ?
+                                            this.state.getAutoRenewData.PlanValidityType === 2 ?
                                                 <IntlMessages id="components.month" /> :
                                                 this.state.getAutoRenewData.PlanValidityType === 3 ?
                                                     <IntlMessages id="components.year" /> : "-"
@@ -213,23 +208,19 @@ class StopAutoRenew extends Component {
                                         {<IntlMessages id="sidebar.ApiPlan.title.autorenewalexpire.days" />}
                                     </p>
                                 </Col>
-
                             </Row>
 
                             <Row className="m-0">
                                 <Col md={6}>
                                     <IntlMessages id="sidebar.ApiPlan.title.subscription.nextRenewal" />
                                 </Col>
-
                                 <Col md={6}>
                                     {this.state.getAutoRenewData.NextRenewDate ?
                                         this.state.getAutoRenewData.NextRenewDate.replace('T', ' ').split('.')[0]
                                         : ""}
                                 </Col>
-
                             </Row>
                         </Col>
-
                     </Col>
 
                     <Row className="m-0 mt-10">

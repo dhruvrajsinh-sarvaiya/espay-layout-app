@@ -369,7 +369,6 @@ export {
     AsyncMarginTradingWalletComponent,
     //Added by Kushal
     AsyncMaintainanceComponent,
-
     //Manish Vora
     AsyncTrading_DashboardComponent,
     AsyncCooldexTrading_DashboardComponent,
@@ -387,10 +386,8 @@ export {
     AsyncCoinListRequestComponent,//dhara 4/1/2019
     AsyncMarginTradingComponent, // added by devang parekh 19-2-2019
     AsyncMarginTradingWalletledgerComponent, // added by vishva shah
-	AsyncMarginLeverageReport, // added by parth andhariya
+    AsyncMarginLeverageReport, // added by parth andhariya
     AsyncMarginTradingHistoryComponent, // added by devang parekh (6-3-2019)
     AsyncprofitlossComponent,// added by vishva
     OpenPositionReport, // added by parth andhariya (22-04-2016) 
-    // AsyncArbitrageComponent,
-    // AsyncArbitrageWalletComponent, //added by vishva
 };

@@ -165,8 +165,8 @@ class ViewAPIKeyList extends Component {
         // set state for user plans
         if (
             this.state.getUserList &&
-            typeof (nextprops.UserPlanList) !== undefined &&
-            typeof (nextprops.UserPlanList) !== null &&
+            nextprops.UserPlanList != undefined &&
+            nextprops.UserPlanList != null &&
             nextprops.UserPlanList &&
             this.state.userBit !== nextprops.userPlanBit
         ) {

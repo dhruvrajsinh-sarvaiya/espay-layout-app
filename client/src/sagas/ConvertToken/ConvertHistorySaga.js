@@ -5,10 +5,7 @@
 */
 
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
-//import api from 'Api';
 import api from 'Api';
-
 import {
     GET_CTHISTORY
 } from 'Actions/types';

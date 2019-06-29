@@ -9,7 +9,6 @@ import {
     ACTIVITY_LIST_FAILURE
 } from 'Actions/types';
 
-
 /*
 * Initial State
 */
@@ -19,7 +18,10 @@ const INIT_STATE = {
 }
 
 //Check Action for Activity List...
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
 
     switch (action.type) {
         case ACTIVITY_LIST:

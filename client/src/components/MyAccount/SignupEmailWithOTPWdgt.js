@@ -141,7 +141,7 @@ class SignupEmailWithOTPWdgt extends Component {
         this.setState({ err_alert: false, errors: errors, btn_disabled: true });
 
         if (isValid) {
-            let otpObj = {
+            let reqObj = {
                 otp: this.state.otp,
                 email: this.state.email,
                 deviceId: this.state.deviceId,
@@ -152,8 +152,8 @@ class SignupEmailWithOTPWdgt extends Component {
 
             let self = this;
             getIPAddress().then(function (ipAddress) {
-                otpObj.ipAddress = ipAddress;
-                self.props.signUpEmailVerifyOTP(otpObj);
+                reqObj.ipAddress = ipAddress;
+                self.props.signUpEmailVerifyOTP(reqObj);
             });
         }
     }

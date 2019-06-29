@@ -22,21 +22,6 @@ function getSteps() {
 	];
 }
 
-/* const GoogleAuthStep = (step,props) => {
-  console.log('Teting',step,props);
-  switch (step) {
-    case 0:
-      return <DownloadAppWdgt {...props} />;
-    case 1:
-      return <ScanQrWdgt {...props} />;
-    case 2:
-      return <BackupKeyWdgt {...props} />;
-    case 3:
-      return <EnableGoogleAuthWdgt {...props} />;
-    default:
-      return <DownloadAppWdgt {...props} />
-  }
-} */
 function getStepContent(step, props) {
 	switch (step) {
 		case 0:
@@ -124,12 +109,11 @@ export default class GoogleAuthWdgt extends Component {
 		const { activeStep } = this.state;
 		return (
 			<div className="appstepbtn">
-				{/* <JbsCollapsibleCard customClasses="col-lg-9 mx-auto"> */}
 				<Stepper nonLinear activeStep={activeStep} className="step_tlt">
 					{steps.map((label, index) => {
 						return (
 							<Step key={label} className="step_in_tlt">
-								<StepButton /* onClick={this.handleStep(index)} */ completed={this.state.completed[index]}>{label}</StepButton>
+								<StepButton completed={this.state.completed[index]}>{label}</StepButton>
 							</Step>
 						);
 					})}
@@ -143,7 +127,6 @@ export default class GoogleAuthWdgt extends Component {
 					) : (
 							<div className="clearfix">
 								<Fragment>{getStepContent(activeStep, { ...this.props })}</Fragment>
-								{/* <p><GoogleAuthStep step={activeStep} {...this.props} /></p> */}
 								<div className="float-right mt-10">
 									<MatButton id="glg_btn_back" variant="raised" hidden={activeStep === 0} className=" btn-danger text-white ml-10 mb-10" onClick={this.handleBack}><IntlMessages id="sidebar.btnBack" /></MatButton>
 									<MatButton id="glg_btn_next" variant="raised" className="perverbtn text-white ml-10 mb-10" hidden={activeStep === 3} onClick={this.handleNext}><IntlMessages id="sidebar.btnNext" /></MatButton>
@@ -151,7 +134,6 @@ export default class GoogleAuthWdgt extends Component {
 							</div>
 						)}
 				</div>
-				{/* </JbsCollapsibleCard> */}
 			</div>
 		);
 	}

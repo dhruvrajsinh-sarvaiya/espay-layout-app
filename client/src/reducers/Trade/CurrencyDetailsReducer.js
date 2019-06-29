@@ -17,7 +17,7 @@ import {
     from 'Actions/types';
 
 // Set Initial State
-const INITIAL_STATE = {
+const INIT_STATE = {
     loading: false,
     wallets: [],
     currentPrice: [],
@@ -27,8 +27,10 @@ const INITIAL_STATE = {
     currencyLoader: false
 };
 
-export default (state = INITIAL_STATE, action) => {
-
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
         // get Currency list
         case GET_CURRENCY_LIST:

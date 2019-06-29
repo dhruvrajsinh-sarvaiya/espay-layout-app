@@ -15,11 +15,6 @@ import IntlMessages from "Util/IntlMessages";
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 
 import classnames from "classnames";
-// import Action 
-import {
-    getBuyerOrderList,
-    doBulkSellOrder,  
-  } from 'Actions/Trade';
 
 // function for connect store
 import { connect } from "react-redux";
@@ -32,15 +27,15 @@ class BuyOrderRow extends Component {
     // User For Open Dislog box For Bulk Order
     bulkOrderProcess(key) {
 
-        if(key < 999) 
+        if (key < 999)
             this.props.openModal(key);
-        }
+    }
 
     render() {
         var lastClass = "text-success",
             changeClass = "";
 
-        if (this.props.UpDownBit === 1 ) {
+        if (this.props.UpDownBit === 1) {
             changeClass = "blink_me";
         }
 
@@ -66,7 +61,6 @@ class BuyOrderRow extends Component {
                         : ""
                 }
             >
-                {/* <td className="text-success">{<IntlMessages id="trading.placeorder.label.buy" />} {this.props.indexValue + 1}</td> */}
                 <td>
                     {this.props.Price !== "-"
                         ? parseFloat(this.props.Price).toFixed(8)
@@ -80,8 +74,8 @@ class BuyOrderRow extends Component {
                 <td>
                     {this.props.Price !== "-"
                         ? parseFloat(
-                              this.props.Amount * this.props.Price
-                          ).toFixed(8)
+                            this.props.Amount * this.props.Price
+                        ).toFixed(8)
                         : "-"}
                 </td>
             </tr>
@@ -104,93 +98,76 @@ class BuyTrade extends Component {
             modalBuy: false,
             bulkOrderBit: 0,
             bulkOrderResponse: [],
-            socketData:[],
-            socketLastPriceData:[],
-            lastPrice:0,
-            UpDown:1,
-            isComponentActive:1,
-            socketBuyData:[],
-            buyOrderBit:0,
-            lastPriceRecord:{}
-          };  
+            socketData: [],
+            socketLastPriceData: [],
+            lastPrice: 0,
+            UpDown: 1,
+            isComponentActive: 1,
+            socketBuyData: [],
+            buyOrderBit: 0,
+            lastPriceRecord: {}
+        };
 
         this.isComponentActive = 1;
     }
 
     //Open Modal add new Schedule dailog
-    setOrders = (index) =>{
+    setOrders = (index) => {
 
         var amount = 0;
         var price = 0
 
-        if (this.props.buyerOrderList.length !==0 ) {
-      this.props.buyerOrderList.map((value, key) => {
+        if (this.props.buyerOrderList.length !== 0) {
+            this.props.buyerOrderList.map((value, key) => {
 
-          if (index >= key) {            
-            amount = amount + value.Amount;            
-          }
+                if (index >= key) {
+                    amount = amount + value.Amount;
+                }
 
-          if(index === key ){
-            price=value.Price
-          }
+                if (index === key) {
+                    price = value.Price
+                }
 
-        });
-      }
+            });
+        }
 
-        this.props.setData(price,amount)
+        this.props.setData(price, amount)
 
     }
 
-     componentDidMount(){
+    componentDidMount() {
 
-  }
+    }
 
     componentWillUnmount() {
         this.isComponentActive = 0;
     }
     // This will Invoke when component will recieve Props or when props changed
-    componentWillReceiveProps(nextprops) {    
-    
+    componentWillReceiveProps(nextprops) {
+
     }
 
     // Render Component for Buyer Order
     render() {
 
-        this.props.buyerOrderList.sort(function(a, b) {
+        this.props.buyerOrderList.sort(function (a, b) {
             return parseFloat(b.Price) - parseFloat(a.Price)
         })
 
-        //console.log("buy trade",this.state.buyerOrderList);
-        buyOrderDepth = Math.max.apply(Math, this.props.buyerOrderList.map(function(o) { return o.Amount; }))
+        buyOrderDepth = Math.max.apply(Math, this.props.buyerOrderList.map(function (o) { return o.Amount; }))
 
-        //console.log("this.props.buyerOrderList",this.props.buyerOrderList,this.props.buyerOrderList.length);
         $(".buyOrderClass").removeClass('blink_me');
-        var firstPrice = 0;
 
         const diffLimit = buySellRecordCount - this.props.buyerOrderList.length;
-        // console.log("this.props.buyerOrderList",this.props.buyerOrderList);
         var buyOrderList = [];
 
         this.props.buyerOrderList.map((newBuyOrder, indexValue) => {
 
-            if(this.props.displayTable === false) {
+            if (this.props.displayTable === false) {
 
-                if(indexValue < buySellRecordCount){
+                if (indexValue < buySellRecordCount) {
 
                     buyOrderList.push(<BuyOrderRow
-                            key={indexValue}
-                            Price={newBuyOrder.Price}
-                            Amount={newBuyOrder.Amount}
-                            openModal={this.setOrders}
-                            indexValue={indexValue}
-                            UpDownBit={newBuyOrder.UpDownBit}
-                        />);
-
-                }
-
-            } else {
-
-                buyOrderList.push(<BuyOrderRow
                         key={indexValue}
                         Price={newBuyOrder.Price}
                         Amount={newBuyOrder.Amount}
@@ -199,39 +176,42 @@ class BuyTrade extends Component {
                         UpDownBit={newBuyOrder.UpDownBit}
                     />);
 
+                }
+
+            } else {
+
+                buyOrderList.push(<BuyOrderRow
+                    key={indexValue}
+                    Price={newBuyOrder.Price}
+                    Amount={newBuyOrder.Amount}
+                    openModal={this.setOrders}
+                    indexValue={indexValue}
+                    UpDownBit={newBuyOrder.UpDownBit}
+                />);
+
             }
 
         });
 
-        if(this.props.displayTable === false && diffLimit <= buySellRecordCount) {
+        if (this.props.displayTable === false && diffLimit <= buySellRecordCount) {
 
-            for(var lastIndex = this.props.buyerOrderList.length;lastIndex < buySellRecordCount;lastIndex++) {
+            for (var lastIndex = this.props.buyerOrderList.length; lastIndex < buySellRecordCount; lastIndex++) {
                 buyOrderList.push(<BuyOrderRow
-                        key={lastIndex}
-                        Price={"-"}
-                        Amount={"-"}
-                        openModal={this.setOrders}
-                        indexValue={lastIndex}
-                        UpDownBit={0}
-                    />);
-      }
+                    key={lastIndex}
+                    Price={"-"}
+                    Amount={"-"}
+                    openModal={this.setOrders}
+                    indexValue={lastIndex}
+                    UpDownBit={0}
+                />);
+            }
 
-    }
-
-        /* if(this.props.buyerOrderList.length !==0 && (lastPrice === 0 || lastPrice === 'undefined')) {
-      var firstPrice = this.props.buyerOrderList[0].Price
-    } else {
-     var firstPrice = lastPrice
-    }
-
-    if(typeof firstPrice === 'undefined' || firstPrice === '' || firstPrice === null || firstPrice === '-') {
-      firstPrice = 0;
-    } */
+        }
 
         return (
             <Fragment>
-                {this.props.loading && 
-                <JbsSectionLoader />
+                {this.props.loading &&
+                    <JbsSectionLoader />
                 }
 
                 {this.props.displayTable === true && (
@@ -261,7 +241,7 @@ class BuyTrade extends Component {
                     </Table>
                 )
                 }
-                
+
                 {this.props.lastPrice !== 0 && (
                     <div className="updownmarket">
                         <div
@@ -275,8 +255,8 @@ class BuyTrade extends Component {
                             {this.props.UpDownBit === 1 ? (
                                 <i className="ti-arrow-up text-success" />
                             ) : (
-                                <i className="ti-arrow-down text-danger" />
-                            )}{" "}
+                                    <i className="ti-arrow-down text-danger" />
+                                )}{" "}
                             &nbsp;
                             {this.props.lastPrice !== 0 &&
                                 parseFloat(this.props.lastPrice).toFixed(8)}
@@ -285,10 +265,10 @@ class BuyTrade extends Component {
                                     network_cell
                                 </i>
                             ) : (
-                                <i className="material-icons text-danger float-right">
-                                    network_cell
+                                    <i className="material-icons text-danger float-right">
+                                        network_cell
                                 </i>
-                            )}
+                                )}
                         </div>
                     </div>
                 )}
@@ -320,7 +300,7 @@ class BuyTrade extends Component {
                     >
                         <Table className="table m-0 p-0">
                             <tbody>
-                            {buyOrderList}
+                                {buyOrderList}
                             </tbody>
                         </Table>
                     </Scrollbars>
@@ -335,14 +315,14 @@ class BuyTrade extends Component {
     }
 }
 
-const mapStateToProps = ({ buyerOrder,currentMarketCap,settings }) => {
+const mapStateToProps = ({ buyerOrder, currentMarketCap, settings }) => {
 
     return {
         loading: buyerOrder.loading,
         currentMarketCap: currentMarketCap.currentMarketCap,
-        darkMode:settings.darkMode
+        darkMode: settings.darkMode
     };
-    
+
 }
 
 // connect action with store for dispatch

@@ -4,10 +4,8 @@
     Description : Social Media Saga file 
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
 // api
 import api from 'Api';
-
 //import action types
 import {
     GET_SOCIAL_MEDIA_DETAIL,

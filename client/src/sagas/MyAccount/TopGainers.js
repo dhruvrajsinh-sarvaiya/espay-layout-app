@@ -1,7 +1,7 @@
 /**
  * Auth Sagas
  */
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, fork, put, takeEvery } from "redux-saga/effects";
 
 import { LIST_TOP_GAINERS } from "Actions/types";
 

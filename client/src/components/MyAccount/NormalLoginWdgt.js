@@ -24,7 +24,8 @@ import {
     getDeviceInfo,
     getIPAddress,
     getHostName,
-    getMode
+    getMode,
+    setCookie
 } from "Helpers/helpers";
 import Slide from '@material-ui/core/Slide';
 //Import Google 2FA Component
@@ -66,6 +67,8 @@ class NormalLoginWdgt extends Component {
         this.onSubmit = this.onSubmit.bind(this);
         this.socialLoginData = this.socialLoginData.bind(this);
         this.resetData = this.resetData.bind(this);
+        //Clear cookie for device authorized...
+        setCookie('SL_AuthTokenID','',0);
     }
 
     resetData() {
@@ -79,6 +82,8 @@ class NormalLoginWdgt extends Component {
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.loading, err_msg: '', err_alert: false, success_msg: '', success_alert: false });
         if (nextProps.redirect) {
+            //Clear cookie for device authorized...
+            setCookie('SL_AuthTokenID','',0);
             // added for withdraw approval screen
             if (localStorage.getItem('RefNo') !== null && localStorage.getItem('Bit') !== null) {
                 window.location.href = AppConfig.WithdrawRedirect;
@@ -91,9 +96,11 @@ class NormalLoginWdgt extends Component {
             this.setState({ err_alert: true, err_msg: errMsg });
         } else if (nextProps.data.ErrorCode === 4060) {
             localStorage.setItem('Thememode', nextProps.data.Thememode);
-            this.setState({ twoFA: true, TwoFAKey: nextProps.data.TwoFAToken });
+            this.setState({ twoFA: true, TwoFAKey: nextProps.data.TwoFAToken, AllowToken : nextProps.data.AllowToken });
         } else if (nextProps.data.ErrorCode === 4137) {
             localStorage.setItem('Thememode', nextProps.data.Thememode);
+            //Set cookie for device authorized...
+            setCookie('SL_AuthTokenID',nextProps.data.AllowAuthorizeToken,'');
             this.setState({ deviceModel: true, deviceMsg: <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} values={{ siteName: AppConfig.brandName }} /> });
         } else if (nextProps.data.ReturnCode === 0) {
             localStorage.setItem('Thememode', nextProps.data.Thememode);
@@ -150,10 +157,11 @@ class NormalLoginWdgt extends Component {
             username: this.state.data.username,
             password: this.state.data.password,
             appkey: '',
-            TwoFAKey: this.state.TwoFAKey
+            TwoFAKey: this.state.TwoFAKey,
+            AllowToken: this.state.AllowToken
         }
 
-        const { username, password } = this.state.data;
+        const { username } = this.state.data;
         const { deviceModel, deviceMsg, twoFA, err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
         return (
             <Fragment>

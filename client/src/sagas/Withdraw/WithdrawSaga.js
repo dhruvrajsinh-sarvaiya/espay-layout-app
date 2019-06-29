@@ -3,16 +3,12 @@
     Date : 18-09-2018
     FIle Comment : Withdraw action method's saga implementation
 */
-import { all, call, fork, take, put, takeEvery } from 'redux-saga/effects';
-import api from 'Api';
-import { eventChannel } from 'redux-saga';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
 import React from 'react';
 import IntlMessages from 'Util/IntlMessages';
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
-const statusErrCode = statusErrCodeList();
 // import types for dispatch puropse
 import {
     GET_WD_CURRENCY,
@@ -67,7 +63,6 @@ function* getCurrencySocket(payload) {
                 yield put(getCurrencySuccess({}));
         }
     } catch (error) {
-        console.log(error);
         yield put(getCurrencyFailure(error));
     }
 }
@@ -93,7 +88,6 @@ function* getWalletsSocket(payload) {
             }
         }
     } catch (error) {
-        console.log(error);
         yield put(getWalletsFailure(error));
     }
 }
@@ -103,9 +97,9 @@ function* getWallets() {
 
 /* DO WITHDRAW REQUEST */
 function* doWithdrawSocket(payload) {
-    var payload = payload.request;
+    var request = payload.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const responseFromSocket = yield call(swaggerPostAPI, 'api/Transaction/Withdrawal', payload, headers);
+    const responseFromSocket = yield call(swaggerPostAPI, 'api/Transaction/Withdrawal', request, headers);
     try {
         // if token exp
         if (lgnErrCode.includes(responseFromSocket.statusCode)) {
@@ -126,7 +120,6 @@ function* doWithdrawSocket(payload) {
             }
         }
     } catch (error) {
-        console.log(error);
         yield put(doWithdrawFailure(error));
     }
 }
@@ -157,7 +150,6 @@ function* getBalanceSocket(payload) {
             yield put(getBalanceFailure(responseFromSocket.ErrorCode));
         }
     } catch (error) {
-        console.log(error);
         yield put(getBalanceFailure(error));
     }
 }
@@ -167,9 +159,9 @@ function* getBalance() {
 
 /* GET WALLET FEE & LIMITS */
 function* getFeeAndLimitsSocket(payload) {
-    var payload = payload.request;
+    let request = payload.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    const responseFromSocket = yield call(swaggerGetAPI, 'api/Wallet/GetServiceLimitChargeValue/' + payload.TrnType + '/' + payload.CoinName, payload, headers);
+    const responseFromSocket = yield call(swaggerGetAPI, 'api/Wallet/GetServiceLimitChargeValue/' + request.TrnType + '/' + request.CoinName, request, headers);
     try {
         if (lgnErrCode.includes(responseFromSocket.statusCode)) {
             //unauthorized or invalid token
@@ -184,7 +176,6 @@ function* getFeeAndLimitsSocket(payload) {
                 yield put(getFeeAndLimitsFailure(responseFromSocket.ReturnMsg));
         }
     } catch (error) {
-        console.log(error);
         yield put(getFeeAndLimitsFailure(error));
     }
 }
@@ -208,7 +199,6 @@ function* getAddressByIdSocket(payload) {
                 yield put(getAddressByIdFailure(responseFromSocket.BizResponse.ReturnMsg));
         }
     } catch (error) {
-        console.log(error);
         yield put(getAddressByIdFailure(error));
     }
 }
@@ -231,7 +221,6 @@ function* verify2faRequest(payload) {
                 yield put(verify2faFailure(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(verify2faFailure(error));
     }
 }
@@ -254,7 +243,6 @@ function* confirmaWithdrawRequest(payload) {
                 yield put(confirmaWithdrawFailure(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(confirmaWithdrawFailure(error));
     }
 }
@@ -277,7 +265,6 @@ function* getWithdrawalPolicyRequest(payload) {
                 yield put(getWithdrawalPolicyFailure(responseFromSocket));
         }
     } catch (error) {
-        console.log(error);
         yield put(getWithdrawalPolicyFailure(error));
     }
 }

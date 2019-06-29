@@ -62,6 +62,14 @@
     <noscript>
         You need to enable JavaScript to run this app.
     </noscript>
+  <!-- Added by Saloni Rathod to disable react dev tool -->
+    <script>
+      // before React is loaded
+      if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') {
+          __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+
+      }
+  </script>
     <div id="root"></div>
 </body>
 

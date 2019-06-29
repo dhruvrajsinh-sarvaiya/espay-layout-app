@@ -23,7 +23,11 @@ const INIT_STATE = {
 }
 
 //Check Action for Forgot Confirmation...
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
+
     switch (action.type) {
         case FORGOT_CONFIRMATION:
             return { ...state, loading: true, data: '' };

@@ -6,17 +6,14 @@
     Description : Survey Saga Action from Fetch data from API 
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
 // api
 import api from 'Api';
-
 //import action types
 import {
     GET_SURVEY,
     ADD_SURVEYRESULT,
     GET_SURVEY_RESULTS_BY_ID
 } from 'Actions/types';
-
 //import function from action
 import {
     getSurveySuccess,

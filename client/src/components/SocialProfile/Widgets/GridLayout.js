@@ -4,7 +4,6 @@
     File Comment : Social Grid Layout
 */
 import React, { Fragment, Component } from 'react';
-import PropTypes from 'prop-types';
 import IntlMessages from "Util/IntlMessages";
 
 class GridLayout extends Component {

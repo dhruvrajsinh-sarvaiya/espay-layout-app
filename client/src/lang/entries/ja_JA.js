@@ -1,7 +1,7 @@
 import appLocaleData from 'react-intl/locale-data/ja';
 import saMessages from '../locales/ja_JA';
 
-const jaLang = {
+const ja_JA = {
     messages: {
         ...saMessages
     },
@@ -9,4 +9,4 @@ const jaLang = {
     data: appLocaleData
 };
 
-export default jaLang;
+export default ja_JA;

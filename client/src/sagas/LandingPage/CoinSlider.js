@@ -21,14 +21,13 @@ import {
 import { swaggerGetAPI } from 'Helpers/helpers';
 
 // get detail from swagger list
-function* getCoinSliderListAPI({payload}) { 
+function* getCoinSliderListAPI({ payload }) {
 
     try {
 
-        const response = yield call(swaggerGetAPI,'api/Transaction/GetMarketTicker',{});
-        //console.log('coinSlider Response',response,new Date());
+        const response = yield call(swaggerGetAPI, 'api/Transaction/GetMarketTicker', {});
 
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(getCoinSliderListSuccess(response.Response));
         } else {
             yield put(getCoinSliderListFailure(response));
@@ -37,7 +36,7 @@ function* getCoinSliderListAPI({payload}) {
     } catch (error) {
         yield put(getCoinSliderListFailure(error));
     }
-  
+
 }
 
 // intiate saga function 

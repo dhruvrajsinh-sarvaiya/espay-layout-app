@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 // constant 
 import AppConfig from 'Constants/AppConfig';
 //added by Tejas 14/6/2019
-import JbsBarLoader from "Components/JbsPageLoader/JbsBarLoader"
+import JbsLoader from "Components/JbsPageLoader/JbsLoader"
 import {Button} from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 // scrollbar 
@@ -28,8 +28,8 @@ const BalanceWidget = ({ coin, balance }) => (
             />
         </span>
         <span className="w-60">
-            <span className="font-weight-bold text-light">{parseFloat(balance).toFixed(8)}</span>
-            <span className="fs-14 text-light">{coin}</span>
+            <span >{parseFloat(balance).toFixed(8)}</span>
+            <span className="fs-14">{coin}</span>
         </span>
     </div>
 );
@@ -48,7 +48,7 @@ class FundBalances extends Component {
                     autoHide
                 >
                     <div className="row">
-                    {this.props.loading && <JbsBarLoader />}
+                    {this.props.loading && <JbsLoader />}
                         {this.props.Wallet && this.props.Wallet.map((coin, key) => {
                             return (
                                 <div

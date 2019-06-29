@@ -8,9 +8,9 @@ import $ from "jquery";
 import IntlMessages from "Util/IntlMessages";
 
 // component
-import OrdersStats from "./Orders";
+import OrdersStats from "./OrdersStats";
 import UsersStats from "./Users";
-import RatingsStats from "./Ratings";
+import RatingsStats from "./RatingsStats";
 
 class DashboardOverlay extends Component {
   componentDidMount() {

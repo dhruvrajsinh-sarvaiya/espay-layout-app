@@ -169,7 +169,7 @@ class SignupForm extends Component {
     }
 
     render() {
-        const { Username, Firstname, Lastname, Email, Password, confirmPassword, ReferCode, SchemeType } = this.state.data;
+        const { Username, Firstname, Lastname, Email, ReferCode, SchemeType } = this.state.data;
         const { schemeTypeList, tem_Mobile, confirm_link, err_alert, err_msg, success_msg, success_alert, loading, errors, CountryCode } = this.state;
 
         return (

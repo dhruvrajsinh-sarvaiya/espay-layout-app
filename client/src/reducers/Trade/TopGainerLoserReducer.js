@@ -25,7 +25,11 @@ const INITIAL_STATE = {
     errorGainers: []
 };
 
-export default (state = INITIAL_STATE, action) => {
+
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
     switch (action.type) {
         // get gainers Detail
         case GET_TOP_GAINERS_DATA:

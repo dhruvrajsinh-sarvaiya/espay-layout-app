@@ -21,9 +21,6 @@ import AppConfig from "Constants/AppConfig";
 // redux actions
 import { getPageContents } from "Actions";
 
-//For Meta Tag and SEO Configuration
-import Page from "Components/page";
-
 class TermsofService extends Component {
   state = {
     myContnet: []
@@ -40,11 +37,6 @@ class TermsofService extends Component {
     const { pageContents } = this.props;
     const html =pageContents != null && pageContents.locale && pageContents.locale[localStorage.getItem('locale')] && pageContents.locale[localStorage.getItem('locale')].content ? pageContents.locale[localStorage.getItem("locale")].content : "";
     return (
-      // <Page
-      //   id="termsofservices"
-      //   title="Terms Of Services"
-      //   description="This is Terms Of Services"
-      // >
         <div className={this.props.match.path =='/terms-of-service' ? 'h-100 position-absolute' :'about-wrapper'}>
           <PageTitleBar
             title={<IntlMessages id="sidebar.termsOfService" />}
@@ -56,7 +48,7 @@ class TermsofService extends Component {
             </div>
           </div>
         </div>
-      // </Page>
+     
     );
   }
 }

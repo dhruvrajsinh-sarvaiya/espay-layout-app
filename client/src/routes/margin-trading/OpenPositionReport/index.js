@@ -3,7 +3,7 @@
     Date : 22-04-2019
     File Comment : margin trading Open Position Report management
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { OpenPositionReport } from 'Components/MarginTrading';

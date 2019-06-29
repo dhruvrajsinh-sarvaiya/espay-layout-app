@@ -3,7 +3,6 @@
  */
 import {
     COLLAPSED_SIDEBAR,
-    //DARK_MODE,
     BOXED_LAYOUT,
     RTL_LAYOUT,
     TOGGLE_MENU,
@@ -24,7 +23,6 @@ import {
     GET_LANGUAGES,
     GET_LANGUAGES_SUCCESS,
     GET_LANGUAGES_FAILURE,
-
     MODE_CHANGE,
     MODE_CHANGE_SUCCESS,
     MODE_CHANGE_FAILURE
@@ -196,15 +194,15 @@ export const getLanguagesFailure = (error) => ({
 
 export const modeChange = (request) => ({
     type: MODE_CHANGE,
-    payload:request
+    payload: request
 })
 
 export const modeChangeSuccess = (res) => ({
     type: MODE_CHANGE_SUCCESS,
-    payload:res
+    payload: res
 })
 
 export const modeChangeFailure = (err) => ({
     type: MODE_CHANGE_FAILURE,
-    payload:err
+    payload: err
 })

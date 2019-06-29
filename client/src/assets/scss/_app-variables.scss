@@ -288,16 +288,6 @@ $detail-bannerbg:                 url('../../assets/img/knowmore.jpg');
   border-color: #009d8f;
 }
 
-/* Added by salim dt:24-11-2018 */
-/* .react-phone-number-input__country{ position: relative; }
-.react-phone-number-input__icon { width: 30px; }
-.react-phone-number-input__country select{ 
-  width: 58%;
-  position: absolute;
-  top: 16px;
-  left: 60px;
-  border: none;
-} */
 .react-phone-number-input__input,
 .react-phone-number-input__input--invalid,
 .react-phone-number-input__input--invalid:focus{border: none !important;}
@@ -383,13 +373,11 @@ $coolactivesell-gradient:       linear-gradient(rgba(250,82,82,.15),rgba(250,82,
 .list_layout_area .prn_name h4{font-size: 13px;}
 
 /* Performance Chart */
-// .performance_chart {padding: 0 100px; margin: 0 auto;}
-.performance_chart .highcharts-color-0 {fill: #75b210; /* width: 115px;*/}
+.performance_chart .highcharts-color-0 {fill: #75b210; }
 .performance_chart .highcharts-negative.highcharts-color-0 {fill: #e1191d;}
 .performance_chart .highcharts-legend {display: none;}
 .performance_chart .highcharts-yaxis .highcharts-axis-line {stroke-width: 1px;}
 .performance_chart .highcharts-axis.highcharts-color-0 .highcharts-axis-line {stroke: rgb(204, 214, 235);}
-// .highcharts-point[height="0"],.highcharts-point[height="1"] {height: 2px;}
 .highcharts-point[height="1"] {height: 2px;}
 .table.performance_tbl {font-size: 16px; background: #f8f8f8;border: 1px solid #ccc;}
 .performance_tbl thead th { background: #fff; font-weight: bold; text-transform: uppercase;}
@@ -499,8 +487,6 @@ $coolactivesell-gradient:       linear-gradient(rgba(250,82,82,.15),rgba(250,82,
 .l_binfo {display: inline-block;}
 .l_action .w_area,.l_action .t_type{float: left;}
 .tb_list {border-bottom: 1px solid #ccc;}
-// .tb_list .rwt__tablist {margin: 0 auto; width: 50%; text-align: center;}
-// .tb_list button {width: 100px; margin: 0 10px; border: none;}
 
 .t_item {width: 16.66%; float: left;}
 .t_item.ti_7 {width: 14.27%;}
@@ -550,7 +536,6 @@ $coolactivesell-gradient:       linear-gradient(rgba(250,82,82,.15),rgba(250,82,
   margin: 0 auto;
 }
 .login_screen .session-body,.register_screen .session-body{background: none !important;border-radius: 0 !important;}
-// .login_screen .cmp_logo {position: absolute;top: 70px;left: 100px;}
 .login_screen .cmp_logo {position: absolute;top: 35px;left: 90px;}
 .login_screen h2, .login_screen a, .login_screen .signinupbtn button span,
 .register_screen h2, .register_screen a, .register_screen button.cstm_tab span { color: #0014E4;}
@@ -570,7 +555,6 @@ $coolactivesell-gradient:       linear-gradient(rgba(250,82,82,.15),rgba(250,82,
   min-height: 630px;
 }
 .jbs-session-wrapper .session-inner-wrapper .register_screen .session-body p a { text-decoration: none; font-size: 15px; }
-// .inner_bg .inner_box { width: 55%; margin: 13% auto; border: 1px solid #464D69;}
 .inner_bg .inner_box { position: absolute; top: 50%; left: 50%; width: 40%; margin: 0; transform: translate( -50%,-50%);}
 .inner_bg .inner_box .jbs-session-wrapper .session-inner-wrapper .session-body { border-radius: 0;}
 .rmv_brd { border : none !important;}
@@ -583,6 +567,14 @@ $coolactivesell-gradient:       linear-gradient(rgba(250,82,82,.15),rgba(250,82,
 .orderlist-search.top-filter .btn_area, .transaction-search.top-filter .btn_area, .deposite-search.top-filter .btn_area, .withdrawl-search.top-filter .btn_area, .tokenStacking-search.top-filter .btn_area {
   margin-top: 21px;
 }
+
+.dark-mode .my-account-wrapper .react-phone-number-input input { color: #fff; }
+.dark-mode .my-account-wrapper .react-phone-number-input button{ background: transparent; }
+#showHideModal { opacity: 1; top: 50%; }
+#showHideModal .modal-header { background: #0014E4; color: #fff; }
+#showHideModal .modal-header .modal-title { font-size: 17px; font-weight: bold; }
+#showHideModal .modal-header .close { color: #fff; opacity: 1; font-size: 30px; line-height: 25px; }
+#showHideModal .modal-header .btn_cls { position: absolute; right: 15px; top: 10px; }
 
 
 //Added by Jayesh 09-01-2019

@@ -11,6 +11,7 @@ import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 import { getTopGainerList } from "Actions/SocialProfile";
+import { NotificationManager } from 'react-notifications';
 
 class TopGainerList extends Component {
 	constructor(props) {
@@ -38,7 +39,6 @@ class TopGainerList extends Component {
             NotificationManager.error(errMsg);
         } else if (nextProps.data.ReturnCode === 0) {
             if(nextProps.data.hasOwnProperty('Response') && nextProps.data.Response.length > 0) {
-                // NotificationManager.success(nextProps.data.ReturnMsg);
                 this.setState({ list : nextProps.data.Response });
             }
         }

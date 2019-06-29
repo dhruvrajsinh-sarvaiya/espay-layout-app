@@ -3,10 +3,6 @@
  **/
 import React, { Component, Fragment } from "react";
 import { Row, Col } from "reactstrap";
-//import CircularProgress from '@material-ui/core/CircularProgress';
-
-// chart
-// import StackedBarChart from "Components/Charts/StackedBarChart";
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
@@ -14,14 +10,7 @@ import IntlMessages from "Util/IntlMessages";
 // chart config
 import ChartConfig from "Constants/chart-config";
 
-// api
-//import api from 'Api';
 
-// redux action
-/*import {
-	getChartDataForTrading
-} from 'Actions';
-*/
 
 export default class TradingChartBasic extends Component {
   state = {
@@ -65,21 +54,17 @@ export default class TradingChartBasic extends Component {
       today: "17,020",
       lastMonth: "20.30%"
     };
-    if (response) {
-      this.setState({
-        chartLabels: response.chartLabels,
-        chartDatasets: response.chartDatasets,
-        onlineSources: response.onlineSources,
-        today: response.today,
-        lastMonth: response.lastMonth
-      });
-    }
+    this.setState({
+      chartLabels: response.chartLabels,
+      chartDatasets: response.chartDatasets,
+      onlineSources: response.onlineSources,
+      today: response.today,
+      lastMonth: response.lastMonth
+    });
   }
 
   render() {
     const {
-      chartLabels,
-      chartDatasets,
       onlineSources,
       today,
       lastMonth
@@ -117,7 +102,7 @@ export default class TradingChartBasic extends Component {
             </Col>
           </Row>
         </div>
-        {/* <StackedBarChart labels={chartLabels} datasets={chartDatasets} /> */}
+        
       </Fragment>
     );
   }

@@ -7,7 +7,7 @@ import { Table, Modal, ModalBody, ModalFooter, Button } from "reactstrap";
 // import For Display notification
 import { NotificationManager } from "react-notifications";
 
-import { Row, Col, Card, Input } from 'reactstrap';
+import { Row, Col, Card } from 'reactstrap';
 
 // intl messages
 import IntlMessages from "Util/IntlMessages";
@@ -30,11 +30,10 @@ import { connect } from "react-redux";
 const orderTypes = [
   { "type": "LIMIT", "ID": "1" },
   { "type": "MARKET", "ID": "2" },
-  // { "type": "SPOT", "ID": "3" },
   { "type": "STOP_Limit", "ID": "4" },
 ]
 class OpenOrder extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,9 +47,8 @@ class OpenOrder extends React.Component {
       socketData: [],
       cancelOrderSuccess: false,
       displayOtherPairs: this.props.hasOwnProperty('displayOtherPairs') ? this.props.displayOtherPairs : false,
-      listUpdated: 0,      
+      listUpdated: 0,
       cancelOrderBit: ''
-
     };
     this.openModal = this.openModal.bind(this);
     this.openCancelAllModal = this.openCancelAllModal.bind(this);
@@ -128,7 +126,7 @@ class OpenOrder extends React.Component {
       sectionReload: false,
       cancelAllModal: false,
       sectionReloadCancelAll: false,
-      cancelOrderBit:''
+      cancelOrderBit: ''
     });
   }
 
@@ -153,12 +151,12 @@ class OpenOrder extends React.Component {
 
     // call action for cancel order
     // handle margin trading cancellation process (added by devang parekh 23-2-2019)
-    if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-      this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0, IsMargin:1 });
+    if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+      this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0, IsMargin: 1 });
     } else {
       this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0 });
     }
-    
+
   }
 
   handleChangeCancelOrder = (e) => {
@@ -168,26 +166,26 @@ class OpenOrder extends React.Component {
       this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
       // call action for cancel order
       // handle margin trading cancellation process (added by devang parekh 23-2-2019)
-      if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-        this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0 , IsMargin:1 });
+      if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+        this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0, IsMargin: 1 });
       } else {
         this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0 });
       }
       //end
-      
+
     }
 
     if (this.state.cancelOrderBit > 0) {
 
       this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
       // handle margin trading cancellation process (added by devang parekh 23-2-2019)
-      if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-        this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit , IsMargin:1 });
+      if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+        this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit, IsMargin: 1 });
       } else {
         this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit });
       }
       //end
-      
+
     }
 
   }
@@ -195,8 +193,8 @@ class OpenOrder extends React.Component {
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
 
-    if(nextprops.hasOwnProperty('displayOtherPairs') && (nextprops.displayOtherPairs === false || nextprops.displayOtherPairs === true)) {
-      this.setState({displayOtherPairs:nextprops.displayOtherPairs})
+    if (nextprops.hasOwnProperty('displayOtherPairs') && (nextprops.displayOtherPairs === false || nextprops.displayOtherPairs === true)) {
+      this.setState({ displayOtherPairs: nextprops.displayOtherPairs })
     }
 
     if (nextprops.cancelOrder && (this.state.sectionReload || this.state.sectionReloadCancelAll)) {
@@ -213,7 +211,6 @@ class OpenOrder extends React.Component {
         modalInfo: -1,
         modal: false,
         cancelAllModal: false
-        //cancelOrderSuccess:true
       });
 
     }
@@ -227,13 +224,12 @@ class OpenOrder extends React.Component {
         showLoader: false
       });
 
-    } 
+    }
     // end
 
   }
 
   render() {
-    //console.log("open orders",this.state.activeMyOpenOrder)
     const activeMyOpenData = [];
     if (this.state.activeMyOpenOrder) {
 
@@ -253,75 +249,6 @@ class OpenOrder extends React.Component {
     return (
       <Fragment>
         <Card className="cooldexopenorder">
-          { /* isShowHeader === 1 &&<Row className="cooldexopentitle">
-            <Col md={8} xs={5} className="p-0">
-              <h3>{<IntlMessages id="trading.newTrading.openorder.text" />}</h3>
-            </Col>
-            <Col md={2} xs={5} className="p-0">
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={this.state.displayOtherPairs}
-                    onChange={this.handleChangeDisplayPair}
-                    icon={<CheckBoxOutlineBlankIcon />}
-                    checkedIcon={<CheckBoxIcon />}
-                  />
-                }
-                label={<IntlMessages id="trading.activeorders.hidepairs" />}
-              />
-            </Col>
-            <Col md={2} xs={2} className="p-0">
-              <Input
-                type="select"
-                name="CancelAll"
-                value={this.state.cancelOrderBit}
-                onChange={(e) => this.openCancelAllModal(e)}
-              >
-                <IntlMessages id="openorder.cancelall">
-                  {(select) =>
-                    <option value="">{select}</option>
-                  }
-                </IntlMessages>
-
-                <IntlMessages id="openorder.cancelalltrn">
-                  {(select) =>
-                    <option value="0">{select}</option>
-                  }
-                </IntlMessages>
-
-                <IntlMessages id="openorder.cancelalllimit">
-                  {(select) =>
-                    <option value="1">{select}</option>
-                  }
-                </IntlMessages>
-
-                <IntlMessages id="openorder.cancelallmarket">
-                  {(select) =>
-                    <option value="2">{select}</option>
-                  }
-                </IntlMessages>
-
-                {/* <IntlMessages id="openorder.cancelallspot">
-                  {(select) =>
-                    <option value="3">{select}</option>
-                  }
-                </IntlMessages> *}
-
-                {/* <IntlMessages id="openorder.cancelallstop">
-                          {(select) =>
-                            <option value="4">{select}</option>
-                          }
-                        </IntlMessages> *}
-
-                <IntlMessages id="openorder.cancelallstop-limit">
-                  {(select) =>
-                    <option value="4">{select}</option>
-                  }
-                </IntlMessages>
-              </Input>
-            </Col>
-          </Row> */
-          }
           <div className="table-responsive-design" >
             {this.props.loading && <JbsSectionLoader />}
             <Table className="m-0 p-0">
@@ -465,27 +392,19 @@ class OpenOrder extends React.Component {
                       <tr className="bg-primary text-white">
                         <th className="text-center">
                           {" "}
-                          {
-                            <IntlMessages id="trading.activeorders.label.pair" />
-                          }
+                          {<IntlMessages id="trading.activeorders.label.pair" />}
                         </th>
                         <th className="numeric text-center">
                           {" "}
-                          {
-                            <IntlMessages id="trading.activeorders.label.type" />
-                          }
+                          {<IntlMessages id="trading.activeorders.label.type" />}
                         </th>
                         <th className="numeric text-center">
                           {" "}
-                          {
-                            <IntlMessages id="trading.activeorders.label.price" />
-                          }
+                          {<IntlMessages id="trading.activeorders.label.price" />}
                         </th>
                         <th className="numeric text-center">
                           {" "}
-                          {
-                            <IntlMessages id="trading.activeorders.label.amount" />
-                          }
+                          {<IntlMessages id="trading.activeorders.label.amount" />}
                         </th>
                         <th className="numeric text-center">
                           {" "}

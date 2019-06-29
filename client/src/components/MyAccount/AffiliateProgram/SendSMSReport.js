@@ -58,12 +58,11 @@ class SendSMSReport extends Component {
             showReset: false,
             loading: false,
             totalCount: 0,
-            isDisable: true,
             errors: {},
             list: []
         }
     }
-    
+
     getSendSMSList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
@@ -88,9 +87,8 @@ class SendSMSReport extends Component {
         newObj.ToDate = new Date().toISOString().slice(0, 10);
         newObj.PageNo = 0;
         newObj.PageSize = AppConfig.totalRecordDisplayInList;
-        this.setState({ data: newObj, showReset: false, errors: '',isDisable: true  });
+        this.setState({ data: newObj, showReset: false, errors: '' });
         this.props.affiliateSmsSentReport(newObj);
-
     }
     //to apply filter
     applyFilter = () => {
@@ -102,36 +100,34 @@ class SendSMSReport extends Component {
         this.setState({ errors: errors })
         if (isValid) {
             const currentDate = new Date().toISOString().slice(0, 10)
-			if (FromDate !== "" && ToDate !== "") {
-				this.setState({ showReset: true });
-				if (FromDate > currentDate) {
-					NotificationManager.error(<IntlMessages id="trading.openorders.startcurrentdate" />);
-				} else if (ToDate < FromDate) {
+            if (FromDate !== "" && ToDate !== "") {
+                this.setState({ showReset: true });
+                if (FromDate > currentDate) {
+                    NotificationManager.error(<IntlMessages id="trading.openorders.startcurrentdate" />);
+                } else if (ToDate < FromDate) {
 
-					NotificationManager.error(<IntlMessages id="trading.openorders.datediff" />);
-				} else if (ToDate > currentDate) {
-            	NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
-				} else {
+                    NotificationManager.error(<IntlMessages id="trading.openorders.datediff" />);
+                } else if (ToDate > currentDate) {
+                    NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
+                } else {
                     this.getSendSMSList(newObj.PageNo, newObj.PageSize);
                     this.setState({ showReset: true });
-				}
-			}
-
-
+                }
+            }
         }
     }
 
     onChange = (event) => {
         var newObj = Object.assign({}, this.state.data);
         newObj[event.target.name] = event.target.value;
-        this.setState({ data: newObj, isDisable: false });
+        this.setState({ data: newObj });
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.loading });
         if (nextProps.smslist.ReturnCode === 1 || nextProps.smslist.ReturnCode === 9) {
-         this.setState({ list: [] });
-        } 
+            this.setState({ list: [] });
+        }
         if (nextProps.smslist.ReturnCode === 0) {
             this.setState({ list: nextProps.smslist.Response, totalCount: nextProps.smslist.TotalCount });
         }
@@ -147,7 +143,7 @@ class SendSMSReport extends Component {
 
     render() {
         const { FromDate, ToDate, PageNo, PageSize } = this.state.data;
-        const { showReset, loading, list, totalCount, errors,isDisable, } = this.state;
+        const { showReset, loading, list, totalCount, errors } = this.state;
         let today = new Date();
         today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
         const options = {
@@ -201,7 +197,7 @@ class SendSMSReport extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                                <Button  variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 text-white rounded-0 border-0 perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>
@@ -209,12 +205,11 @@ class SendSMSReport extends Component {
                 </JbsCollapsibleCard>
                 <div className="StackingHistory">
                     <MUIDataTable
-                        // title={<IntlMessages id="sidebar.sendSmsReport" />}
                         columns={columns}
                         options={options}
                         data={list.map((lst, key) => {
                             return [
-                                key + 1+(PageNo*PageSize),
+                                key + 1 + (PageNo * PageSize),
                                 lst.FirstName + " " + lst.LastName,
                                 lst.UserName,
                                 lst.UserEmail,

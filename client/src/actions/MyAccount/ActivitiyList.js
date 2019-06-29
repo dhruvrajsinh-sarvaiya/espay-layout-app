@@ -17,7 +17,7 @@ import {
 export const activityList = (data) => ({
     type: ACTIVITY_LIST,
     payload: data
-})
+});
 
 /**
  * Redux Action Activity List Success
@@ -33,4 +33,4 @@ export const activityListSuccess = (list) => ({
 export const activityListFailure = (error) => ({
     type: ACTIVITY_LIST_FAILURE,
     payload: error
-})
+});

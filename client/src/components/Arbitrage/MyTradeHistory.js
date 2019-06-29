@@ -10,23 +10,16 @@ import { connect } from "react-redux";
 import IntlMessages from "Util/IntlMessages";
 import { Scrollbars } from "react-custom-scrollbars";
 import { Tabs, Tab, TabList } from "react-web-tabs";
-
 import { injectIntl } from 'react-intl';
-
-// import loader for section
-import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 import { withRouter } from 'react-router-dom';
 
 class MyTradeHistory extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             exchangeName: 'all'
         };
-
     }
 
     tabClick(exchangeName) {
@@ -44,32 +37,30 @@ class MyTradeHistory extends Component {
             if (uniqueTags.indexOf(item.ExchangeName) === -1) {
                 uniqueTags.push(item.ExchangeName)
             }
+            return [];
         });
 
-        uniqueTags.map((item, i) => {
+        uniqueTags.map((i) => {
             k = 1;
-            this.props.MyTradeHistory.map((item) => {
-                if (uniqueTags[i] === item.ExchangeName) {
+            this.props.MyTradeHistory.map((item1) => {
+                if (uniqueTags[i] === item1.ExchangeName) {
                     countTags[i] = k++;
                 }
+                return [];
             });
+            return []
         });
         const intl = this.props.intl;
 
         return (
             <Fragment>
-                {/* this.props.loading && <JbsSectionLoader /> */}
-                {this.props.isShowTitle && <h2>
-                    {/* Trade History */}
-                    <IntlMessages id="trading.newTrading.markettrade.text"/>
-                    </h2>}
+                {this.props.isShowTitle && <h2> <IntlMessages id="trading.newTrading.markettrade.text" /> </h2>}
 
                 <div className="row">
                     <div className="col-md-10">
                         {<Tabs className="arbitrage_tabs_try">
                             <TabList className="tab_list_try clearfix">
                                 <Tab tabFor="all" onClick={() => this.tabClick("all")} className="d-flex">
-                                    {/* ALL  */}
                                     <IntlMessages id="sidebar.arbitrageAll" />
                                     &nbsp;
                                     ({this.props.MyTradeHistory.length})</Tab>
@@ -84,7 +75,7 @@ class MyTradeHistory extends Component {
 
                     <div className="col-md-2 text-right arbitrage-btnmore">
                         <a href="javascript:void(0)"
-                        onClick={() => {this.props.history.push('/app/arbitrage/transaction-history')}}
+                            onClick={() => { this.props.history.push('/app/arbitrage/transaction-history') }}
                         >
                             <IntlMessages id="sidebar.apiplan.button.viewmore" />
                         </a>
@@ -94,8 +85,6 @@ class MyTradeHistory extends Component {
                 <Scrollbars
                     className="jbs-scroll"
                     autoHeight
-                    // autoHeightMin={this.props.autoHeightMin}
-                    // autoHeightMax={this.props.autoHeightMax}
                     autoHeightMin={220}
                     autoHeightMax={220}
                     autoHide
@@ -111,39 +100,32 @@ class MyTradeHistory extends Component {
                                 <th><IntlMessages id={"widgets.price"} /></th>
                                 <th><IntlMessages id={"widgets.date"} /></th>
                                 <th><IntlMessages id={"sidebar.colStatus"} /></th>
-                                {/* <th><IntlMessages id={"trading.holdingorder.label.profitloss"} /></th> */}
                             </tr>
                         </thead>
                         <tbody>
-                            {/* tradeHistory-table data fetch from API  */}
                             {
-                                this.props.MyTradeHistory && this.props.MyTradeHistory.length > 0 ?
-
-                                    this.props.MyTradeHistory.map((list, index) => {
+                                this.props.MyTradeHistory && this.props.MyTradeHistory.length > 0
+                                    ? this.props.MyTradeHistory.map((list, index) => {
                                         { var status = list.IsCancel == 1 ? intl.formatMessage({ id: 'myorders.response.status.2' }) : intl.formatMessage({ id: `myorders.response.status.${list.Status}` }) }
                                         if (this.state.exchangeName === 'all' || this.state.exchangeName === list.ExchangeName) {
 
                                             return (
                                                 <tr key={index}>
                                                     <td>{list.PairName.split("_")[0] + " / " + list.PairName.split("_")[1]}</td>
-                                                    <td
-                                                        className={list.Type === "BUY" ? "text-success" : list.Type === "SELL" && "text-danger"}>
-                                                        {list.Type}</td>
+                                                    <td className={list.Type === "BUY" ? "text-success" : list.Type === "SELL" && "text-danger"}> {list.Type}</td>
                                                     <td>{list.OrderType}</td>
                                                     <td>{list.ExchangeName}</td>
                                                     <td>{list.Amount.toFixed(8)}</td>
                                                     <td>{list.Price.toFixed(8)}</td>
                                                     <td>{list.DateTime.replace('T', ' ').split('.')[0]}</td>
                                                     <td>{status}</td>
-                                                    {/* <td>{"      "}</td> */}
                                                 </tr>
                                             )
                                         }
+                                        return null;
                                     })
-                                    :
-                                    <tr><td colSpan="9"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>
+                                    : <tr><td colSpan="9"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>
                             }
-
                         </tbody>
                     </table>
                 </Scrollbars>
@@ -165,5 +147,3 @@ const mapStateToProps = ({ arbitrageReports }) => {
 
 export default connect(mapStateToProps, {
 })(withRouter(injectIntl(MyTradeHistory)));
-
-//export default connect(mapStateToProps, { })(withRouter(FundBalances));

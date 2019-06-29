@@ -3,10 +3,10 @@
  */
 import React, { Component } from 'react';
 
-export default class datawidget extends Component {
-    render() {
-        return (
-            <div className="page-container">
+export default class DailyMarket extends Component {
+	render() {
+		return (
+			<div className="page-container">
 				<div className="container">
 					<div className="row statistics-widget">
 						<div className="col">
@@ -112,6 +112,6 @@ export default class datawidget extends Component {
 					</div>
 				</div>
 			</div>
-        )
-    }
+		)
+	}
 }

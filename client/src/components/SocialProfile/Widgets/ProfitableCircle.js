@@ -4,7 +4,7 @@
     File Comment : Card Widget Type 1
 */
 import React, { Fragment } from 'react';
-import IntlMessages from "Util/IntlMessages";
+
 
 const ProfitableCircle = ({ profit }) => (
     <Fragment>

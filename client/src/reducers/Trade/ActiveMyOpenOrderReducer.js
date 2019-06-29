@@ -4,8 +4,7 @@ import {
     GET_ACTIVE_OPEN_MY_ORDER_LIST,
     GET_ACTIVE_OPEN_MY_ORDER_LIST_SUCCESS,
     GET_ACTIVE_OPEN_MY_ORDER_LIST_FAILURE
-}
-    from 'Actions/types';
+} from 'Actions/types';
 
 // Set Initial State
 const INITIAL_STATE = {
@@ -13,7 +12,11 @@ const INITIAL_STATE = {
     activeOpenMyOrder: []
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE
+    }
+
     switch (action.type) {
 
         // get  Active Open My Order list
@@ -22,12 +25,10 @@ export default (state = INITIAL_STATE, action) => {
 
         // set Data Of   Active Open My Order list
         case GET_ACTIVE_OPEN_MY_ORDER_LIST_SUCCESS:
-
             return { ...state, loading: false, activeOpenMyOrder: action.payload };
 
         // Display Error for  Active Open My Order list failure
         case GET_ACTIVE_OPEN_MY_ORDER_LIST_FAILURE:
-
             return { ...state, loading: false, activeOpenMyOrder: [] };
 
         default: return { ...state };

@@ -5,8 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import {
 	CHANGE_PASSWORD
@@ -19,10 +18,11 @@ import {
 } from 'Actions/MyAccount';
 
 import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
+
 import { swaggerPostAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
+const socketApiUrl = AppConfig.socketAPIUrl;
 
 //Function for Change Password
 function* changePasswordAPI({ payload }) {
@@ -33,7 +33,7 @@ function* changePasswordAPI({ payload }) {
 		if (lgnErrCode.includes(response.statusCode)) {
 			redirectToLogin();
 		} else if (statusErrCode.includes(response.statusCode)) {
-			staticRes = staticResponse(response.statusCode);
+			var staticRes = staticResponse(response.statusCode);
 			yield put(changePasswordFailure(staticRes));
 		} else if (response.statusCode === 200) {
 			yield put(changePasswordSuccess(response));

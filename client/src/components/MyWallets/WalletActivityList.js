@@ -3,14 +3,11 @@
     Date : 10-01-2019
     File Comment : wallet activity list component
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import IntlMessages from "Util/IntlMessages";
 import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
-import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
 import AppConfig from 'Constants/AppConfig';
-import { Link } from 'react-router-dom'
-import { Form, FormGroup, Label, Input } from 'reactstrap';
 import { NotificationManager } from 'react-notifications';
 import Button from '@material-ui/core/Button';
 //initial state
@@ -71,10 +68,6 @@ class WalletActivityList extends Component {
     render() {
         const { walletActivity } = this.state;
         return (
-            // <JbsCollapsibleCard
-            //     colClasses="col-sm-6 offset-3"
-            //     heading={<IntlMessages id="wallet.pendingRequests" />}
-            //     fullBlock>
             <React.Fragment>
                 <div className="table-responsive">
                     <table className="table table-hover mb-0">
@@ -103,7 +96,6 @@ class WalletActivityList extends Component {
                 </div>
                 {this.props.loading && <JbsSectionLoader />}
             </React.Fragment>
-            // </JbsCollapsibleCard>
         );
     }
 }

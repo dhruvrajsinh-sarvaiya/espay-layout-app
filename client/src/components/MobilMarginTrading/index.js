@@ -11,8 +11,4 @@ export * from './Ledger';
 export * from './LeverageReport';
 export * from './ProfitLossReport';
 export * from './OpenPositionReport';
-// Export necessary components
-/* export {
-  TradingComponents,
-  WalletComponents
-}; */
+

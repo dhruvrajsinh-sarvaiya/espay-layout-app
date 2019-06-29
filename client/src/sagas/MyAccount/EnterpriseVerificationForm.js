@@ -5,13 +5,13 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import { ENTERPRISE_VERIFICATION } from "Actions/types";
 //Action methods..
 import { enterpriseVerificationSuccess, enterpriseVerificationFailure } from "Actions/MyAccount";
 import AppConfig from 'Constants/AppConfig';
-import { swaggerPostAPI, swaggerGetAPI, convertObjToFormData } from 'Helpers/helpers';
+import { swaggerPostAPI, convertObjToFormData } from 'Helpers/helpers';
 
 //Function for Enterprise Verification API
 function* enterpriseVerificationAPI({ payload }) {

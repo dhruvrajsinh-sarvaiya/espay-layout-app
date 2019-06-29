@@ -1,7 +1,7 @@
 // sagas For Current Market Cap  Actions By Tejas Date : 14/9/2018
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 // types for set actions and reducers
 import { GET_MARKET_CAP_LIST } from 'Actions/types';
@@ -16,26 +16,25 @@ function* getMarketCapList() {
 }
 
 // Function for Open Oders
-function* getMarketCapListData({payload}) {
-   
+function* getMarketCapListData({ payload }) {
+
     try {
 
         // code changed by devang parekh for handling margintrading data (23-2-2019)
         var isMargin = '';
-        if(payload.hasOwnProperty('marginTrading') && payload.marginTrading === 1) {
+        if (payload.hasOwnProperty('marginTrading') && payload.marginTrading === 1) {
             isMargin = '?IsMargin=1';
         }
         // end
 
-        const response = yield call(swaggerGetAPI,'api/Transaction/GetMarketCap/'+payload.Pair+isMargin,{});
-        //console.log('market data Response',response,new Date());
+        const response = yield call(swaggerGetAPI, 'api/Transaction/GetMarketCap/' + payload.Pair + isMargin, {});
 
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(getMarketCapListSuccess(response));
         } else {
             yield put(getMarketCapListFailure(response));
         }
-        
+
     } catch (error) {
         yield put(getMarketCapListFailure(error));
     }

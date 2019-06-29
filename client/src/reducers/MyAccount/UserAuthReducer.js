@@ -14,20 +14,24 @@ import {
 const INIT_STATE = {
   user: [],
   loading: false,
-  error : ''
+  error: ''
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+  if (typeof state === 'undefined') {
+    return INIT_STATE
+  }
+
   switch (action.type) {
     //For Signup User with Email
     case SIGNUP_USERS:
-      return { ...state, loading: true, error : '', user : '' };
+      return { ...state, loading: true, error: '', user: '' };
 
     case SIGNUP_USERS_SUCCESS:
-      return { ...state, loading: false, user: action.payload};
+      return { ...state, loading: false, user: action.payload };
 
     case SIGNUP_USERS_FAILURE:
-      return { ...state, loading: false, error : action.payload };
+      return { ...state, loading: false, error: action.payload };
 
     default:
       return { ...state };

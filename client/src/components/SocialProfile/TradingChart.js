@@ -6,11 +6,9 @@
 
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-import { Form, FormGroup, Input, Alert, Button } from "reactstrap";
-import LinearProgress from '@material-ui/core/LinearProgress';
-// intl messages
-import IntlMessages from "Util/IntlMessages";
+
+import { Form} from "reactstrap";
+
 import { 
     AveProfitLossLayout,
     ProfitableCircle,

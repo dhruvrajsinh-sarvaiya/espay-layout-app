@@ -35,7 +35,7 @@ class API extends Component {
 	}
 
 	render() {
-		const { apis,apiloading } = this.props;
+		const { apis } = this.props;
 		return (
 			<Page id="apidoc" title="API Documentation" description="This is API Doc">
 				<div className="about-wrapper">

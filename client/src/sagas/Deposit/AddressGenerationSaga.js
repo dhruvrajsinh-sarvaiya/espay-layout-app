@@ -6,7 +6,6 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
 import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
 import React from 'react';
 import IntlMessages from 'Util/IntlMessages';
 import { NotificationManager } from 'react-notifications';
@@ -34,6 +33,7 @@ import {
     updateP2shAddressSuccess,
     updateP2shAddressFailure
 } from 'Actions/Deposit';
+const lgnErrCode = loginErrCode();
 
 /* GET CURRENCY LIST */
 function* getCurrencySocket(payload) {
@@ -131,8 +131,8 @@ function* getDefaultAddress() {
     yield takeEvery(GET_DEFAULT_ADD, getDefaultAddressSocket)
 }
 /* GENERATE ADDRESS */
-function* generateNewAddressSocket(payload) {
-    var payload = payload.request;
+function* generateNewAddressSocket(payloadValue) {
+    var payload = payloadValue.request;
     var headers = { 'Authorization': AppConfig.authorizationToken }
     const responseFromSocket = yield call(swaggerPostAPI, 'api/WalletOperations/CreateWalletAddress/' + payload.Coin + '/' + payload.AccWalletID, payload, headers);
     try {

@@ -7,12 +7,11 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Form, FormGroup, Label, Input, Col, Button, Card, CardBody, Alert } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, Button, Card, CardBody } from "reactstrap";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";
 import { enableGoogleAuth, getProfileByID } from 'Actions/MyAccount';
-
 const validateGoogleAuth = require("../../validation/MyAccount/google_auth");
 
 class EnableGoogleAuthWdgt extends Component {
@@ -21,14 +20,12 @@ class EnableGoogleAuthWdgt extends Component {
 		this.state = {
 			data: {
 				Code: '',
-				//SharedKey: '',
-				//AuthenticatorUri: ''
 			},
-			isEnable : false,
+			isEnable: false,
 			loading: false,
 			errors: {}
 		};
-		
+
 		this.onChange = this.onChange.bind(this);
 		this.onSendGoogleAuth = this.onSendGoogleAuth.bind(this);
 	}
@@ -41,14 +38,14 @@ class EnableGoogleAuthWdgt extends Component {
 			NotificationManager.error(errMsg);
 		} else if (nextProps.data.ReturnCode === 0) {
 			// if success then update global state with updated user details
-			if(this.state.isEnable) {
+			if (this.state.isEnable) {
 				NotificationManager.success(nextProps.data.ReturnMsg);
 				this.props.getProfileByID();
-				this.setState({					
+				this.setState({
 					data: {
 						Code: ''
-					}, 
-					isEnable : false
+					},
+					isEnable: false
 				});
 
 				setTimeout(() => {
@@ -61,7 +58,6 @@ class EnableGoogleAuthWdgt extends Component {
 		if (Object.keys(nextProps.profileData).length > 0 && nextProps.profileData.ReturnCode === 0) {
 			// to store user details in global state - added by Nishant 
 			this.props.location.state = { ...this.props.location.state, userData: nextProps.profileData.UserData };
-			//console.log('user details updated');
 		}
 	}
 
@@ -81,12 +77,12 @@ class EnableGoogleAuthWdgt extends Component {
 
 		if (isValid) {
 			this.props.enableGoogleAuth(this.state.data);
-			this.setState({ isEnable : true });
+			this.setState({ isEnable: true });
 		}
 	}
 
 	render() {
-		const { Code, SharedKey, AuthenticatorUri } = this.state.data;
+		const { Code } = this.state.data;
 		const { loading, errors } = this.state;
 		return (
 			<div className="border border-dark">
@@ -102,27 +98,12 @@ class EnableGoogleAuthWdgt extends Component {
 							<Card className="marginbox border border-dark">
 								<CardBody className="d-flex row">
 									<div className="col-md-12">
-										{/* <FormGroup className="has-wrapper text-right" row>
-											<Label for="Digitkey" className="control-label" sm={4}>16 Digit Key:</Label>
-											<Col sm={8}>
-												<Input type="Digitkey" name="Digitkey" value={Digitkey} id="Digitkey" placeholder="Enter 16 Digit Key" onChange={this.onChange} />
-												{errors.Digitkey && <span className="text-danger text-left"><IntlMessages id={errors.Digitkey} /></span>}
-											</Col>
-										</FormGroup>
-										<FormGroup className="has-wrapper text-right" row>
-											<Label for="LoginPassword" className="control-label" sm={4}>Login Password:</Label>
-											<Col sm={8}>
-												<Input type="LoginPassword" name="LoginPassword" value={LoginPassword} id="LoginPassword" placeholder="Enter Login Password" onChange={this.onChange} />
-												{errors.LoginPassword && <span className="text-danger text-left"><IntlMessages id={errors.LoginPassword} /></span>}
-											</Col>
-										</FormGroup> */}
 										<FormGroup className="has-wrapper" row>
 											<Label for="Code" className="control-label" sm={5}><IntlMessages id="my_account.enableGoogleAuth.googleAuthCode" /></Label>
 											<Col sm={7}>
 												<IntlMessages id="myaccount.enterGoogleAuthCode">
-													{(placeholder) => <Input type="Code" tabIndex="1" name="Code" value={Code} id="Code" autoComplete="off" maxLength="6" placeholder={placeholder} onChange={this.onChange} /> }
+													{(placeholder) => <Input type="Code" tabIndex="1" name="Code" value={Code} id="Code" autoComplete="off" maxLength="6" placeholder={placeholder} onChange={this.onChange} />}
 												</IntlMessages>
-												{/* <Input type="Code" name="Code" value={Code} id="Code" maxLength="6" onChange={this.onChange} /> */}
 												{errors.Code && <span className="text-danger text-left"><IntlMessages id={errors.Code} /></span>}
 											</Col>
 										</FormGroup>
@@ -130,9 +111,6 @@ class EnableGoogleAuthWdgt extends Component {
 											<Col sm={5} />
 											<Col sm={2}>
 												<Button disabled={loading} tabIndex="2" type="submit" className="perverbtn" variant="raised" onClick={this.onSendGoogleAuth}><IntlMessages id="sidebar.btnEnable" /></Button>
-												{/* <MatButton disabled={loading} variant="raised" className="btn-primary text-white mr-5" onClick={this.onSendGoogleAuth}>
-													<IntlMessages id="sidebar.btnEnable" />
-												</MatButton> */}
 											</Col>
 										</FormGroup>
 									</div>

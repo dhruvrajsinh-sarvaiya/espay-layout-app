@@ -4,9 +4,6 @@
     File Comment : Card Widget Type 1
 */
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import IntlMessages from "Util/IntlMessages";
-
 const AveProfitLossLayout = ({ profit, loss, isShowProfit, isShowLoss }) => (
     <Fragment>
         {isShowProfit && <span className="d-block fs-12 text-muted"><span className="text-success">{profit}%</span>  Avg. Profit</span>}

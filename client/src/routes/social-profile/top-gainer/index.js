@@ -1,14 +1,13 @@
 /**
  * Ecommerce Dashboard
  */
-import React, { Component, Fragment } from 'react';
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 // page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import Divider from '@material-ui/core/Divider';
-import { JbsCard, JbsCardContent, JbsCardHeading } from 'Components/JbsCard';
+import { JbsCard, JbsCardContent } from 'Components/JbsCard';
 
 import {
 	TopGainerGrid,
@@ -19,7 +18,7 @@ export default class TopGainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            type : 0 //0:list,1:grid
+            type : 0 
         }
     }
 

@@ -40,8 +40,8 @@ class BuyOrderRow extends Component {
         const highDepth =
             this.props.Price !== "-"
                 ? parseFloat((this.props.Amount * 100) / buyOrderDepth).toFixed(
-                      2
-                  )
+                    2
+                )
                 : 0;
 
         return (
@@ -64,7 +64,6 @@ class BuyOrderRow extends Component {
                         : ""
                 }
             >
-                {/* <td className="text-success">{<IntlMessages id="trading.placeorder.label.buy" />} {this.props.indexValue + 1}</td> */}
                 <td>
                     {this.props.Price !== "-"
                         ? parseFloat(this.props.Price).toFixed(8)
@@ -78,8 +77,8 @@ class BuyOrderRow extends Component {
                 <td>
                     {this.props.Price !== "-"
                         ? parseFloat(
-                              this.props.Amount * this.props.Price
-                          ).toFixed(8)
+                            this.props.Amount * this.props.Price
+                        ).toFixed(8)
                         : "-"}
                 </td>
             </tr>
@@ -137,53 +136,39 @@ class BuyTrade extends Component {
         this.props.setData(price, amount);
     };
 
-    componentDidMount() {}
+    componentDidMount() { }
 
     componentWillUnmount() {
         this.isComponentActive = 0;
     }
     // This will Invoke when component will recieve Props or when props changed
-    componentWillReceiveProps(nextprops) {}
+    componentWillReceiveProps(nextprops) { }
 
     // Render Component for Buyer Order
     render() {
-        this.props.buyerOrderList.sort(function(a, b) {
+        this.props.buyerOrderList.sort(function (a, b) {
             return parseFloat(b.Price) - parseFloat(a.Price);
         });
 
-        //console.log("buy trade",this.state.buyerOrderList);
         buyOrderDepth = Math.max.apply(
             Math,
-            this.props.buyerOrderList.map(function(o) {
+            this.props.buyerOrderList.map(function (o) {
                 return o.Amount;
             })
         );
-        
+
         $(".buyOrderClass").removeClass("blink_me");
 
-        const diffLimit = buySellRecordCount - this.props.buyerOrderList.length;        
+        const diffLimit = buySellRecordCount - this.props.buyerOrderList.length;
         var buyOrderList = [];
 
         this.props.buyerOrderList.map((newBuyOrder, indexValue) => {
 
-            if(this.props.displayTable === false) {
+            if (this.props.displayTable === false) {
 
-                if(indexValue < buySellRecordCount){
+                if (indexValue < buySellRecordCount) {
 
                     buyOrderList.push(<BuyOrderRow
-                            key={indexValue}
-                            Price={newBuyOrder.Price}
-                            Amount={newBuyOrder.Amount}
-                            openModal={this.setOrders}
-                            indexValue={indexValue}
-                            UpDownBit={newBuyOrder.UpDownBit}
-                        />);
-
-                }
-
-            } else {
-
-                buyOrderList.push(<BuyOrderRow
                         key={indexValue}
                         Price={newBuyOrder.Price}
                         Amount={newBuyOrder.Amount}
@@ -191,6 +176,19 @@ class BuyTrade extends Component {
                         indexValue={indexValue}
                         UpDownBit={newBuyOrder.UpDownBit}
                     />);
+
+                }
+
+            } else {
+
+                buyOrderList.push(<BuyOrderRow
+                    key={indexValue}
+                    Price={newBuyOrder.Price}
+                    Amount={newBuyOrder.Amount}
+                    openModal={this.setOrders}
+                    indexValue={indexValue}
+                    UpDownBit={newBuyOrder.UpDownBit}
+                />);
 
             }
 
@@ -217,7 +215,7 @@ class BuyTrade extends Component {
                 );
 
             }
-            
+
         }
 
         return (
@@ -228,7 +226,6 @@ class BuyTrade extends Component {
                     <Table className="m-0 p-0">
                         <thead>
                             <tr className="text-dark">
-                                {/* <th></th> */}
                                 <th>
                                     {
                                         <IntlMessages id="trading.orders.label.price" />
@@ -266,8 +263,8 @@ class BuyTrade extends Component {
                             {this.props.UpDownBit === 1 ? (
                                 <i className="ti-arrow-up text-success" />
                             ) : (
-                                <i className="ti-arrow-down text-danger" />
-                            )}{" "}
+                                    <i className="ti-arrow-down text-danger" />
+                                )}{" "}
                             &nbsp;
                             {this.props.lastPrice !== 0 &&
                                 parseFloat(this.props.lastPrice).toFixed(8)}
@@ -276,10 +273,10 @@ class BuyTrade extends Component {
                                     network_cell
                                 </i>
                             ) : (
-                                <i className="material-icons text-danger float-right">
-                                    network_cell
+                                    <i className="material-icons text-danger float-right">
+                                        network_cell
                                 </i>
-                            )}
+                                )}
                         </div>
                     </div>
                 )}

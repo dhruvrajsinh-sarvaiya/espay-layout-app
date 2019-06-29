@@ -21,7 +21,10 @@ const INIT_STATE = {
     listLoading: false,
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
     switch (action.type) {
         //List Affiliate Scheme Type Mapping
         case LIST_AFFILIATE_SCHEME_TYPE_MAPPING:

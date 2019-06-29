@@ -14,13 +14,10 @@ import { normalLoginSuccess, normalLoginFailure } from 'Actions/MyAccount';
 import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for Normal Register
-function* normalLoginAPI({payload}) {
-    // const response = yield call(swaggerPostAPI,'api/Signin/StandardLogin',payload);
-    const response = yield call(swaggerPostAPI,'api/Signin/StandardLoginV1',payload);
-    // console.log('Login Request',payload);
-    // console.log('Login Response',response);
+function* normalLoginAPI({ payload }) {
+    const response = yield call(swaggerPostAPI, 'api/Signin/StandardLoginV1', payload);
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(normalLoginSuccess(response));
         } else {
             yield put(normalLoginFailure(response));

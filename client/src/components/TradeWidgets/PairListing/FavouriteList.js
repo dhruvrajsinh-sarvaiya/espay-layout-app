@@ -100,7 +100,7 @@ class FavouriteList extends React.Component {
   }
 
   // function for search data from list
-  onSearchList = (event, value) => {
+  onSearchList = (event) => {
     const searchText = event.target.value;
     this.setState({ searchText: searchText });
     var favourites = JSON.parse(localStorage.getItem("favourite"));
@@ -145,9 +145,9 @@ class FavouriteList extends React.Component {
         localStorage.setItem("favourite", JSON.stringify(favourites));
       }
     } else {
-      var favourites = [];
-      favourites.push({ pair: value.pair });
-      localStorage.setItem("favourite", JSON.stringify(favourites));
+      var favourite = [];
+      favourite.push({ pair: value.pair });
+      localStorage.setItem("favourite", JSON.stringify(favourite));
     }
   }
 
@@ -158,27 +158,8 @@ class FavouriteList extends React.Component {
 
   // Render Component for Pair List
   render() {
-    const pairs = [];
     const oldPairs = [];
     const info = this.props.state;
-
-    // iterate object and stores into array
-    if (this.state.pairList && this.state.oldState) {
-      this.state.pairList.map((value, key) => {
-        this.state.oldState.map(data => {
-          if (
-            value.symbol === info.secondCurrency &&
-            data.symbol === info.secondCurrency
-          ) {
-            if (value.currency) {
-              value.currency.map(currency => {
-                pairs.push(currency);
-              });
-            }
-          }
-        });
-      });
-    }
 
     //iterate old state data
     if (this.state.oldState) {
@@ -240,10 +221,10 @@ class FavouriteList extends React.Component {
                     {<IntlMessages id="trading.currencypair.icon.fillstar" />}
                   </i>
                 ) : (
-                  <i className="material-icons">
-                    {<IntlMessages id="trading.currencypair.icon.star" />}
-                  </i>
-                )}
+                    <i className="material-icons">
+                      {<IntlMessages id="trading.currencypair.icon.star" />}
+                    </i>
+                  )}
               </a>
               {value.pair}
             </td>
@@ -255,15 +236,16 @@ class FavouriteList extends React.Component {
                 {value.change}%
               </td>
             ) : (
-              <td className={isChangedvolume === -1 ? "" : "blink_me"}>
-                {value.volume}%
+                <td className={isChangedvolume === -1 ? "" : "blink_me"}>
+                  {value.volume}%
               </td>
-            )}
+              )}
           </tr>
         );
       });
-    } else {
-      var rows = (
+    }
+    else {
+      rows = (
         <tr>
           <td colSpan="2">
             {<IntlMessages id="trading.orders.label.nodata" />}
@@ -289,8 +271,8 @@ class FavouriteList extends React.Component {
                 {value.change}%
               </td>
             ) : (
-              <td>{value.volume}%</td>
-            )}
+                <td>{value.volume}%</td>
+              )}
           </tr>
         );
       });
@@ -429,52 +411,52 @@ class FavouriteList extends React.Component {
                       {<IntlMessages id="trading.currencypair.label.change" />}
                     </th>
                   ) : (
-                    <th className="numeric">
-                      {<IntlMessages id="trading.currencypair.label.volume" />}
-                    </th>
-                  )}
+                      <th className="numeric">
+                        {<IntlMessages id="trading.currencypair.label.volume" />}
+                      </th>
+                    )}
                 </tr>
               </thead>
 
               <tbody>{searchPair}</tbody>
             </Table>
           ) : (
-            <Scrollbars
-              className="jbs-scroll"
-              autoHeight
-              autoHeightMin={383}
-              autoHeightMax={383}
-              autoHide
-            >
-              <Table className="table m-0 p-15">
-                <thead>
-                  <tr className="bg-light">
-                    <th>
-                      {<IntlMessages id="trading.currencypair.label.pair" />}
-                    </th>
-                    <th>
-                      {<IntlMessages id="trading.currencypair.label.price" />}
-                    </th>
-                    {this.state.pairsInfo === "change" ? (
-                      <th className="numeric">
-                        {
-                          <IntlMessages id="trading.currencypair.label.change" />
-                        }
+              <Scrollbars
+                className="jbs-scroll"
+                autoHeight
+                autoHeightMin={383}
+                autoHeightMax={383}
+                autoHide
+              >
+                <Table className="table m-0 p-15">
+                  <thead>
+                    <tr className="bg-light">
+                      <th>
+                        {<IntlMessages id="trading.currencypair.label.pair" />}
                       </th>
-                    ) : (
-                      <th className="numeric">
-                        {
-                          <IntlMessages id="trading.currencypair.label.volume" />
-                        }
+                      <th>
+                        {<IntlMessages id="trading.currencypair.label.price" />}
                       </th>
-                    )}
-                  </tr>
-                </thead>
+                      {this.state.pairsInfo === "change" ? (
+                        <th className="numeric">
+                          {
+                            <IntlMessages id="trading.currencypair.label.change" />
+                          }
+                        </th>
+                      ) : (
+                          <th className="numeric">
+                            {
+                              <IntlMessages id="trading.currencypair.label.volume" />
+                            }
+                          </th>
+                        )}
+                    </tr>
+                  </thead>
 
-                <tbody>{rows}</tbody>
-              </Table>
-            </Scrollbars>
-          )}
+                  <tbody>{rows}</tbody>
+                </Table>
+              </Scrollbars>
+            )}
         </div>
       </Card>
     );

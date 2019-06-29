@@ -29,7 +29,6 @@ import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for SignIn Email
 function* signInMobileAPI({payload}) {
-    // const response = yield call(swaggerPostAPI,'api/Signin/LoginWithMobile',payload);
     const response = yield call(swaggerPostAPI,'api/Signin/LoginWithMobileV1',payload);
     try {
         if(response.ReturnCode === 0) {

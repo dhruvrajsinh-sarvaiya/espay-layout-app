@@ -3,7 +3,7 @@
     Date : 05-03-2019
     File Comment : Leverge Report route
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
 import { LeverageReport } from 'Components/MarginTrading';

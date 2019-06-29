@@ -15,7 +15,10 @@ const INIT_STATE = {
     loading: true
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         case IP_HISTORY_LIST:

@@ -5,16 +5,13 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-import { Link, withRouter } from "react-router-dom";
-
 import Button from "@material-ui/core/Button";
 import { Form, FormGroup, Input, Alert } from "reactstrap";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import $ from "jquery";
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-import PhoneInput, { formatPhoneNumber, isValidPhoneNumber } from 'react-phone-number-input';
+import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import {
     getDeviceInfo,
@@ -93,22 +90,24 @@ class Signup extends Component {
     }
 
     clearData() {
-        let clearData = Object.assign({}, this.state.data);
-        clearData = {
-            username: '',
-            firstname: '',
-            lastname: '',
-            email: '',
-            password: '',
-            confirmpassword: '',
-            mobile: '',
-            referalid: '',
-            deviceId: '',
-            mode: '',
-            ipAddress: '',
-            hostName: ''
+        this.setState({
+            data: {
+                username: '',
+                firstname: '',
+                lastname: '',
+                email: '',
+                password: '',
+                confirmpassword: '',
+                mobile: '',
+                referalid: '',
+                deviceId: '',
+                mode: '',
+                ipAddress: '',
+                hostName: ''
+            }
         }
-        this.setState({ data: clearData });
+
+        )
     }
 
     resendConfirmEmail(data) {
@@ -147,7 +146,7 @@ class Signup extends Component {
     }
 
     render() {
-        const { username, full_name, mobile, email, password, confirmpassword, referalid } = this.state.data;
+        const { username, full_name, email} = this.state.data;
         const { tem_mobile, confirm_link, err_alert, err_msg, success_msg, success_alert, loading, errors, CountryCode } = this.state;
         return (
             <Fragment>

@@ -24,8 +24,10 @@ const INIT_STATE = {
 	data: [],
 	loading: false
 };
-
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
 	switch (action.type) {
 		//For Enable Google Auth
 		case ENABLE_GOOGLE_AUTH:

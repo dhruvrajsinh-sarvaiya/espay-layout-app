@@ -64,7 +64,6 @@ class ClickOnReferralLinkReport extends Component {
             Service: "",
             ChannelType: ""
         },
-        isDisable: true,
         serviceData: [],
         channelList: [],
         showReset: false,
@@ -109,7 +108,7 @@ class ClickOnReferralLinkReport extends Component {
         newObj.Page_Size = AppConfig.totalRecordDisplayInList;
         newObj.Service = "";
         newObj.ChannelType = "";
-        this.setState({ showReset: false, getFilter: newObj, isDisable: true,errors:{} });
+        this.setState({ showReset: false, getFilter: newObj, errors:{} });
         this.props.clickReferralLinkReport(newObj);
     }
 
@@ -136,7 +135,7 @@ class ClickOnReferralLinkReport extends Component {
     getFilterData = () => {
           //Added by Saloni For Required Fields
         var  { errors } = this.state;
-        errors = {};
+      
         const { FromDate, ToDate } = this.state.getFilter;
         if (FromDate === '' || ToDate === '') {
             if (FromDate === '') {
@@ -206,11 +205,11 @@ class ClickOnReferralLinkReport extends Component {
     handleChange = (event) => {
         var newObj = Object.assign({}, this.state.getFilter);
         newObj[event.target.name] = event.target.value;
-        this.setState({ getFilter: newObj, isDisable: false });
+        this.setState({ getFilter: newObj });
     }
 
     render() {
-        const { Data, totalCount, serviceData, channelList, isDisable ,errors} = this.state;
+        const { Data, totalCount, serviceData, channelList, errors} = this.state;
         const { loading } = this.props;
         const { PageIndex, Page_Size, FromDate, ToDate, ChannelType, Service } = this.state.getFilter;
         let today = new Date();
@@ -244,24 +243,20 @@ class ClickOnReferralLinkReport extends Component {
                 );
             },
             onTableChange: (action, tableState) => {
-                switch (action) {
-                    case 'changeRowsPerPage' || "changePage":
-                        this.setState({
-                            GetData: {
-                                ...this.state.Getdata,
-                                PageIndex: tableState.page,
-                                Page_Size: tableState.rowsPerPage
-                            }
-                        });
-                        this.props.clickReferralLinkReport({
+                if (action === 'changeRowsPerPage' || action === 'changePage') {
+					this.setState({
+                        GetData: {
                             ...this.state.Getdata,
                             PageIndex: tableState.page,
                             Page_Size: tableState.rowsPerPage
-                        });
-                        break;
-                    default:
-                        break;
-                }
+                        }
+                    });
+                    this.props.clickReferralLinkReport({
+                        ...this.state.Getdata,
+                        PageIndex: tableState.page,
+                        Page_Size: tableState.rowsPerPage
+                    });
+				}
             }
         };
         return (
@@ -310,7 +305,7 @@ class ClickOnReferralLinkReport extends Component {
                             <Row>
                                 <Col md="4" xs="4" sm="4">
                                     <FormGroup className="mt-30">
-                                        <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : isDisable)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
+                                        <Button className="perverbtn rounded-0 border-0" disabled={((FromDate === "" || ToDate === "") ? true : false)} onClick={this.getFilterData}><IntlMessages id="widgets.apply" /></Button>
                                     </FormGroup>
                                 </Col>
                                 <Col md="4" xs="4" sm="4">

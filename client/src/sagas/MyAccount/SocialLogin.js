@@ -5,26 +5,25 @@
  */
 
 //Sagas Effects..
-import { all, call, take, fork, put, takeEvery } from 'redux-saga/effects';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 //Action Types..
 import { SOCIAL_LOGIN } from 'Actions/types';
 //Action methods..
 import { socialLoginSuccess, socialLoginFailure } from 'Actions/MyAccount';
-import AppConfig from 'Constants/AppConfig';
 import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for socialLogin
-function* socialLoginAPI({payload}) {
+function* socialLoginAPI({ payload }) {
     var swapperUrl = '';
-    if(payload.ProviderName === 'Facebook') {
+    if (payload.ProviderName === 'Facebook') {
         swapperUrl = 'api/Signin/ExternalLoginForFacebook';
-    } else if(payload.ProviderName === 'Google') {
+    } else if (payload.ProviderName === 'Google') {
         swapperUrl = 'api/Signin/ExternalLoginForGoogle';
     }
 
-    const response = yield call(swaggerPostAPI,swapperUrl,payload);
+    const response = yield call(swaggerPostAPI, swapperUrl, payload);
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(socialLoginSuccess(response));
         } else {
             yield put(socialLoginFailure(response));

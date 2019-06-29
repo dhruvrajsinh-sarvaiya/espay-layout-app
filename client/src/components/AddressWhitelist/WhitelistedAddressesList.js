@@ -38,12 +38,8 @@ class WhitelistedAddressesList extends Component {
 
     componentWillReceiveProps(nextProps) {
         // on get address list
-        if (nextProps.addresses && nextProps.addresses.length) {
-            this.setState({
-                addressList: nextProps.addresses,
-                filterList: nextProps.addresses
-            });
-        } else if (nextProps.addresses && nextProps.addresses.length === 0) {
+        if ((nextProps.addresses && nextProps.addresses.length) ||
+            (nextProps.addresses && nextProps.addresses.length === 0)) {
             this.setState({
                 addressList: nextProps.addresses,
                 filterList: nextProps.addresses

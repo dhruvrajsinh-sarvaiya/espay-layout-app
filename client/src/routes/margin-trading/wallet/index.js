@@ -3,10 +3,10 @@
     Date : 19-02-2019
     File Comment : margin trading wallet management
 */
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { injectIntl } from 'react-intl';
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-// import ListMarginWallets from 'Components/MarginTrading/Wallet/ListMarginWallets';
+
 import {ListMarginWallets} from 'Components/MarginTrading';
 
 class MarginTradingWallets extends Component {

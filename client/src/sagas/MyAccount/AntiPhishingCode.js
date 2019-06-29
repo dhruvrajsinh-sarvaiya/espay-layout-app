@@ -1,7 +1,7 @@
 /**
  * Edit Profile saga file is used to call api and response send to call function and handle actions functions (code added by Parth Jani 17-9-2018)
  */
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, fork, put, takeEvery } from "redux-saga/effects";
 
 import { ANTI_PHISHING_CODE } from "Actions/types";
 

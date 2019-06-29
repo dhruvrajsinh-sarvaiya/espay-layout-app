@@ -5,7 +5,7 @@
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
 
 //import functions for get and post Api's
-import { swaggerPostAPI, swaggerGetAPI, } from 'Helpers/helpers';
+import { swaggerPostAPI } from 'Helpers/helpers';
 
 //get constant data for Appconfig file 
 import AppConfig from 'Constants/AppConfig';

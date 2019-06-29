@@ -12,7 +12,7 @@ import { GET_TRADE_SUMMARY_DATA,GET_PAIR_LIST_DATA } from "Actions/types";
 
 import { listTradeSummarySuccess, listTradeSummaryFailure,getTradePairsSuccess,getTradePairsFailure } from "Actions/TradingReport";
 
-import { swaggerPostAPI, swaggerGetAPI, } from 'Helpers/helpers';
+import { swaggerPostAPI } from 'Helpers/helpers';
 
 import AppConfig from 'Constants/AppConfig';
 /**
@@ -54,7 +54,6 @@ function* getTradePairsDetail({ payload }) {
 
   try {
 	  var headers = { 'Authorization': AppConfig.authorizationToken }
-    //const response = yield call(getTradePairsRequest);
     const response = yield call(swaggerPostAPI, 'api/TransactionConfiguration/ListPair', {},headers);
 
     // set response if its available else set error message

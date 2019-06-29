@@ -21,7 +21,10 @@ import {
     loading: false
   };
   
-  export default (state = INIT_STATE, action) => {
+  export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
       //For Get Language List
       case GET_LANGUAGE_LIST:

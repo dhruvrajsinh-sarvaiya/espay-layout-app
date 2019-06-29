@@ -23,7 +23,7 @@ import AppConfig from 'Constants/AppConfig';
 const socketApiUrl = AppConfig.socketAPIUrl;
 
 //WebSocket Call...
-const watchMessages = (socket,request) => eventChannel((emit) => {
+const watchMessages = (socket, request) => eventChannel((emit) => {
     socket.onopen = () => {
         socket.send(JSON.stringify(request)) // Send data to server
     };
@@ -37,30 +37,28 @@ const watchMessages = (socket,request) => eventChannel((emit) => {
 });
 
 //Function for Signup With Blockchain
-function* signUpWithBlockchainAPI({payload}) {
+function* signUpWithBlockchainAPI({ payload }) {
     const socket = new WebSocket(socketApiUrl);
 
     let request = {
-        m : 0,
-        i : 0,
-        n : 'BlockChainSignUp',
-        t : 1,
-        r : 3,
-        o : payload
+        m: 0,
+        i: 0,
+        n: 'BlockChainSignUp',
+        t: 1,
+        r: 3,
+        o: payload
     }
 
-    const socketChannel = yield call(watchMessages, socket, request);    
-    while (true) {
-        try {
-            const response = yield take(socketChannel);
-            if(response.statusCode === 200) {
-                yield put(signUpWithBlockchainSuccess(response));
-            } else {
-                yield put(signUpWithBlockchainFailure(response));
-            }
-        } catch (error) {
-            yield put(signUpWithBlockchainFailure(error));
+    const socketChannel = yield call(watchMessages, socket, request);
+    try {
+        const response = yield take(socketChannel);
+        if (response.statusCode === 200) {
+            yield put(signUpWithBlockchainSuccess(response));
+        } else {
+            yield put(signUpWithBlockchainFailure(response));
         }
+    } catch (error) {
+        yield put(signUpWithBlockchainFailure(error));
     }
 }
 

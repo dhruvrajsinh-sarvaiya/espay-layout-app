@@ -5,20 +5,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Badge } from 'reactstrap';
 import { NotificationManager } from 'react-notifications';
 
 // components
-import SupportPage from '../Support/Support';
-
-// redux action
-// import { logoutUserFromFirebase } from 'Actions';
+import SupportPage from '../Support/SupportPage';
 
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
-
-//Added by salim
-//import { getProfileByID } from "Actions/MyAccount";
 
 import { redirectToLogin } from 'Helpers/helpers';
 
@@ -26,32 +19,15 @@ class User extends Component {
 
 	state = {
 		anchorEl: null,
-		name : ''
-	};
-
-	state = {
+		name: '',
 		userDropdownMenu: false,
 		isSupportModal: false
-	}
-
-	/* componentWillMount() {
-		this.props.getProfileByID();
-	} */
-
-	/* componentWillReceiveProps(nextProps) {
-		if(Object.keys(nextProps.profileData).length > 0 && nextProps.profileData.ReturnCode === 0) {
-			const fullname = nextProps.profileData.UserData.FirstName+' '+nextProps.profileData.UserData.LastName;
-			const name = fullname !== '' ? fullname : nextProps.profileData.UserData.Username;
-			this.setState({ name : fullname });
-
-		}
-	} */
+	};
 
 	/**
 	 * Logout User
 	 */
 	logoutUser() {
-		// this.props.logoutUserFromFirebase();
 		localStorage.removeItem("Thememode")
 		redirectToLogin();
 	}
@@ -85,7 +61,6 @@ class User extends Component {
 	}
 
 	render() {
-		const { name } = this.state;
 		return (
 			<UncontrolledDropdown nav className="list-inline-item jbs-dropdown-hed userprofile">
 				<DropdownToggle nav className="p-0">
@@ -97,9 +72,6 @@ class User extends Component {
 				</DropdownToggle>
 				<DropdownMenu>
 					<ul className="list-unstyled mb-0">
-						{/* <li className="p-15 border-bottom user-profile-top cooldexlanguage rounded-top">
-							<p className="text-white mb-0 fs-14">{this.props.name}</p>
-						</li> */}
 						<li>
 							<Link to={{
 								pathname: '/app/my-account/my-profile-info',
@@ -115,29 +87,6 @@ class User extends Component {
 								<IntlMessages id="sidebar.membershipLevel" />
 							</Link>
 						</li>
-						{/* <li>
-							<Link to='/app/my-account/change-password'>
-								<i className="zmdi zmdi-lock text-primary mr-3"></i>
-								<IntlMessages id="sidebar.changePass" />
-							</Link>
-						</li>
-						<li>
-									<Link to={{
-										pathname: '/app/users/user-profile-1',
-										state: { activeTab: 2 }
-									}}>
-										<i className="zmdi zmdi-comment-text-alt text-success mr-3"></i>
-										<IntlMessages id="widgets.messages" />
-										<Badge color="danger" className="pull-right">3</Badge>
-									</Link>
-								</li>
-						<li>
-							<Link to="/app/my-account/complain">
-								<i className="zmdi zmdi-edit text-warning mr-3"></i>
-								<IntlMessages id="sidebar.feedback" />
-								<Badge color="info" className="pull-right">1</Badge>
-							</Link>
-						</li> */}
 						<li className="border-top">
 							<a href="javascript:void(0)" onClick={() => this.logoutUser()}>
 								<i className="zmdi zmdi-power text-danger mr-3"></i>
@@ -156,15 +105,12 @@ class User extends Component {
 	}
 }
 
-const mapStateToProps = ({ settings, editProfileRdcer }) => {	
+const mapStateToProps = ({ settings, editProfileRdcer }) => {
 	const response = {
-		settings : settings,
-		profileData : editProfileRdcer.data
+		settings: settings,
+		profileData: editProfileRdcer.data
 	}
 	return response;
 }
 
-export default connect(mapStateToProps, {
-	//logoutUserFromFirebase,
-	//getProfileByID
-})(User);
+export default connect(mapStateToProps, {})(User);

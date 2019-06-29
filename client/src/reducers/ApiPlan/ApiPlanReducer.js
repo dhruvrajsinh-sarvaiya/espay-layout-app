@@ -52,7 +52,10 @@ const INITIAL_STATE = {
     manualRenewError: []
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
     switch (action.type) {
         // get Get Api Plan List
         case GET_API_PLAN_DATA:
@@ -97,7 +100,7 @@ export default (state = INITIAL_STATE, action) => {
         // Display Error for Sub scribe Ai plan  failure
         case SUBSCRIBE_API_PLAN_FAILURE:
 
-            return { ...state, subScribeLoading: false, subscribeData: [], error: 0, error: action.payload };
+            return { ...state, subScribeLoading: false, subscribeData: [], error: action.payload };
 
         // get User Active Plan
         case GET_USER_ACTIVE_PLAN:

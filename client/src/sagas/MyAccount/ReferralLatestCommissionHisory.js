@@ -5,7 +5,7 @@
  */
 
 //Sagas Effects..
-import { all, call, fork, put, takeEvery } from "redux-saga/effects";
+import { all, fork, put, takeEvery } from "redux-saga/effects";
 
 //Action Types..
 import { REFERRAL_LATEST_COMMISSION_HISTORY_LIST } from "Actions/types";
@@ -36,7 +36,6 @@ const errMsg = "Data not found";
 //Function for Referral Latest Commission History
 function* referralLatestCommissionHistoryAPI({ payload }) {
   try {
-    //const response = yield call(getReferralLatestCommissionHistoryAPIRequest,payload);
     if (data.length > 0) {
       yield put(referralLatestCommissionHistorySuccess(data));
     } else {

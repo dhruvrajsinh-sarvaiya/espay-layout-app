@@ -5,11 +5,9 @@ Date  : 5/6/2019
 */
 
 // effects for redux-saga
-import { all, call, fork, put, takeEvery, take } from 'redux-saga/effects';
-
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
-
-import { swaggerPostAPI, swaggerGetAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
+import { swaggerPostAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 // types for set actions and reducers
 import {
     ARBITRAGE_PLACE_ORDER,
@@ -20,7 +18,6 @@ import {
 import {
     arbitragePlaceOrderSuccess,
     arbitragePlaceOrderFailure,
-
     arbitragePlaceBulkOrderSuccess,
     arbitragePlaceBulkOrderFailure,
 } from 'Actions/Arbitrage';
@@ -40,16 +37,13 @@ function* arbitragePlaceBulkOrder() {
 
 // Function for Buyer Book
 function* arbitragePlaceBulkOrderList({ payload }) {
-    //console.log("payload", payload)
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    //const response = yield call(swaggerGetAPI, 'api/Transaction/GetBuyerBook/' + payload.Pair + isMargin, {});
     const response = yield call(swaggerPostAPI, 'api/Transaction/CreateTransactionOrderArbitrageBulk/' + payload.Pair, payload, headers);
-    //console.log("placeBulkOrder", response)
     try {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            var staticRes = staticResponse(response.statusCode);
             yield put(arbitragePlaceBulkOrderFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(arbitragePlaceBulkOrderSuccess(response));
@@ -64,16 +58,13 @@ function* arbitragePlaceBulkOrderList({ payload }) {
 
 // Function for Buyer Book
 function* arbitragePlaceOrderList({ payload }) {
-    //console.log("payload", payload)
     var headers = { 'Authorization': AppConfig.authorizationToken }
-    //const response = yield call(swaggerGetAPI, 'api/Transaction/GetBuyerBook/' + payload.Pair + isMargin, {});
     const response = yield call(swaggerPostAPI, 'api/Transaction/CreateTransactionOrderArbitrage/' + payload.Pair, payload, headers);
-    //console.log("placeOrder", response)
     try {
         if (lgnErrCode.includes(response.statusCode)) {
             redirectToLogin();
         } else if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            var staticRes = staticResponse(response.statusCode);
             yield put(arbitragePlaceOrderFailure(staticRes));
         } else if (response.statusCode === 200) {
             yield put(arbitragePlaceOrderSuccess(response));

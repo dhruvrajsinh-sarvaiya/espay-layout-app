@@ -1,28 +1,18 @@
 // Component for display Seller Order Data By:Tejas Date : 13/9/2018
 
 import React, { Fragment, Component } from "react";
-
 import $ from "jquery";
-
 // import scrollbar
 import { Scrollbars } from "react-custom-scrollbars";
-
 import classnames from "classnames";
-
 // components for modal/ dialog box
-import { 
-    Table 
-} from "reactstrap";
-
+import { Table } from "reactstrap";
 // Import For Loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // function for connect store
 import { connect } from "react-redux";
-
 import AppConfig from "Constants/AppConfig";
 var sellorDepth = AppConfig.totalOrders;
 const buySellRecordCount = 7; //AppConfig.buySellRecordCount;
@@ -63,7 +53,6 @@ class SellOrderRow extends Component {
                         : ""
                 }
             >
-                {/* <td className="text-danger">{<IntlMessages id="trading.placeorder.label.sell" />} {this.props.indexValue+1}</td> */}
                 <td>
                     {this.props.Price !== "-"
                         ? parseFloat(this.props.Price).toFixed(8)
@@ -77,8 +66,8 @@ class SellOrderRow extends Component {
                 <td>
                     {this.props.Price !== "-"
                         ? parseFloat(
-                              this.props.Amount * this.props.Price
-                          ).toFixed(8)
+                            this.props.Amount * this.props.Price
+                        ).toFixed(8)
                         : "-"}
                 </td>
             </tr>
@@ -122,7 +111,6 @@ class SellTrade extends Component {
             );
 
             sellOrderDetail.map((value, key) => {
-                //console.log("key",key,"index",index,value)
                 if (this.props.displayTable === false) {
                     if (indexValue <= key) {
                         amount = amount + value.Amount;
@@ -142,40 +130,36 @@ class SellTrade extends Component {
         this.props.setData(price, amount);
     };
 
-    componentWillMount() {}
-    // This will Invoke when component will recieve Props or when props changed
-    componentWillReceiveProps(nextprops) {}
-
     componentWillUnmount() {
         this.isComponentActive = 0;
     }
 
     // Render Component for Seller Order
-    render() {      
+    render() {
         if (this.props.displayTable === false) {
-            this.props.sellerOrderList.sort(function(a, b) {
+            this.props.sellerOrderList.sort(function (a, b) {
                 return parseFloat(b.Price) - parseFloat(a.Price);
             });
         } else {
-            this.props.sellerOrderList.sort(function(a, b) {
+            this.props.sellerOrderList.sort(function (a, b) {
                 return parseFloat(a.Price) - parseFloat(b.Price);
             });
         }
 
         sellorDepth = Math.max.apply(
             Math,
-            this.props.sellerOrderList.map(function(o) {
+            this.props.sellerOrderList.map(function (o) {
                 return o.Amount;
             })
         );
 
         var sellOrderListRow = [];
 
-        $(".sellOrderClass").removeClass("blink_me");        
+        $(".sellOrderClass").removeClass("blink_me");
 
         const diffLimit =
             buySellRecordCount - this.props.sellerOrderList.length;
-        var countSell = this.props.sellerOrderList.length - 1;      
+        var countSell = this.props.sellerOrderList.length - 1;
         var lastIndex = 0;
         if (this.props.displayTable === false && diffLimit > 0) {
             countSell = buySellRecordCount - 1;
@@ -189,7 +173,7 @@ class SellTrade extends Component {
                         indexValue={countSell--}
                         placeOrder={this.setOrders}
                         UpDownBit={0}
-                        length = {this.props.sellerOrderList.length}
+                        length={this.props.sellerOrderList.length}
                     />
                 );
 
@@ -203,7 +187,6 @@ class SellTrade extends Component {
 
             if (this.props.displayTable === false) {
 
-                //if(lastIndex < buySellRecordCount){
                 if (
                     this.props.sellerOrderList.length - buySellRecordCount <=
                     indexValue
@@ -216,7 +199,7 @@ class SellTrade extends Component {
                             indexValue={countSell--}
                             placeOrder={this.setOrders}
                             UpDownBit={newSellOrder.UpDownBit}
-                            length = {this.props.sellerOrderList.length}
+                            length={this.props.sellerOrderList.length}
                         />
                     );
 
@@ -234,13 +217,13 @@ class SellTrade extends Component {
                         indexValue={countSell--}
                         placeOrder={this.setOrders}
                         UpDownBit={newSellOrder.UpDownBit}
-                        length = {this.props.sellerOrderList.length}
+                        length={this.props.sellerOrderList.length}
                     />
                 );
 
             }
-            
-        });        
+
+        });
 
         return (
             <Fragment>
@@ -249,25 +232,24 @@ class SellTrade extends Component {
                     <Table className="m-0 p-0">
                         <thead>
                             <tr className="text-dark">
-                                {/* <th></th> */}
                                 <th>
                                     {
                                         <IntlMessages id="trading.orders.label.price" />
                                     }{" "}
                                     ({this.props.secondCurrency})
-                                </th>
+                            </th>
                                 <th className="numeric">
                                     {
                                         <IntlMessages id="trading.orders.label.amount" />
                                     }{" "}
                                     ({this.props.firstCurrency})
-                                </th>
+                            </th>
                                 <th className="numeric">
                                     {
                                         <IntlMessages id="trading.orders.label.total" />
                                     }{" "}
                                     ({this.props.secondCurrency})
-                                </th>
+                            </th>
                             </tr>
                         </thead>
                     </Table>
@@ -291,32 +273,31 @@ class SellTrade extends Component {
                     <Table className="table m-0 p-0">
                         <thead>
                             <tr className="text-dark">
-                                {/* <th></th> */}
                                 <th>
                                     {
                                         <IntlMessages id="trading.orders.label.price" />
                                     }{" "}
                                     ({this.props.secondCurrency})
-                                </th>
+                            </th>
                                 <th className="numeric">
                                     {
                                         <IntlMessages id="trading.orders.label.amount" />
                                     }{" "}
                                     ({this.props.firstCurrency})
-                                </th>
+                            </th>
                                 <th className="numeric">
                                     {
                                         <IntlMessages id="trading.orders.label.total" />
                                     }{" "}
                                     ({this.props.secondCurrency})
-                                </th>
+                            </th>
                             </tr>
                         </thead>
 
                         <tbody>{sellOrderListRow}</tbody>
                     </Table>
                 )}
-               
+
                 {this.props.displayTable && this.props.lastPrice !== 0 && (
                     <div
                         className={classnames(
@@ -329,21 +310,21 @@ class SellTrade extends Component {
                         {this.props.UpDownBit === 1 ? (
                             <i className="ti-arrow-up text-success" />
                         ) : (
-                            <i className="ti-arrow-down text-danger" />
-                        )}{" "}
+                                <i className="ti-arrow-down text-danger" />
+                            )}{" "}
                         &nbsp;
-                        {this.props.lastPrice !== 0
+                    {this.props.lastPrice !== 0
                             ? parseFloat(this.props.lastPrice).toFixed(8)
                             : parseFloat(0).toFixed(8)}
                         {this.props.UpDownBit === 1 ? (
                             <i className="material-icons text-success float-right">
                                 network_cell
-                            </i>
+                        </i>
                         ) : (
-                            <i className="material-icons text-danger float-right">
-                                network_cell
-                            </i>
-                        )}
+                                <i className="material-icons text-danger float-right">
+                                    network_cell
+                        </i>
+                            )}
                     </div>
                 )}
 
@@ -361,15 +342,9 @@ class SellTrade extends Component {
 
 // Set Props when actions are dispatch
 const mapStateToProps = (state) => ({
-    //sellerOrder: state.sellerOrder.sellerOrder,
     loading: state.sellerOrder.loading,
     darkMode: state.settings.darkMode,
-    //currentMarketCap: state.currentMarketCap.currentMarketCap
 });
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {}
-)(SellTrade);
-
+export default connect(mapStateToProps, {})(SellTrade);

@@ -65,7 +65,6 @@ class SocialSharingFeedWdgt extends Component {
                                 <Button href={this.state.Facebook} className="btn-facebook text-white row-md-4 col-sm-12 mb-3 mt-2" > <IntlMessages id="sidebar.shareOnFacebook" /> </Button> : <Button disabled className="btn-facebook text-white row-md-4 col-sm-12 mb-3 mt-2" > <IntlMessages id="sidebar.shareOnFacebook" /> </Button>}
                             {this.state.Twitter !== '' ?
                                 <Button href={this.state.Twitter} className="btn-twitter text-white row-md-4 col-sm-12 mb-1 mt-1"><IntlMessages id="sidebar.shareOnTwitter" /></Button> : <Button disabled className="btn-twitter text-white row-md-4 col-sm-12 mb-1 mt-1"><IntlMessages id="sidebar.shareOnTwitter" /></Button>}
-                            {/* <Button href={this.state.GooglePlus} className="btn-google text-white row-md-4 col-sm-12 mb-4"><IntlMessages id="sidebar.shareOnGooglePlus" /></Button> */}
                         </div>
                     </FormGroup>
                 </Form>

@@ -7,11 +7,10 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
-import { Form, Input, Label, Alert, Button } from "reactstrap";
+import { Form, Input, Label, Button } from "reactstrap";
 import FormGroup from "@material-ui/core/FormGroup";
 // import Nouislider from 'react-nouislider';
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
-import LinearProgress from '@material-ui/core/LinearProgress';
 import { NotificationManager } from "react-notifications";
 //Import addFollower Config Action...
 import { editFollowerConfig, getLeaderFollowById } from "Actions/SocialProfile";
@@ -54,17 +53,12 @@ class FollowerProfileConfigWdgt extends Component {
             newObj.LeaderId = leaderConfig.LeaderId;
             this.setState({ data : newObj });
         } else {
-            this.setState({ showForm : false, err_msg: <IntlMessages id="apiErrCode.0" />, err_alert: false });
-            /* setTimeout(() => {
-                this.props.history.push('/app/social-profile/leader-list');
-            },5000); */
-            // this.props.history.push('/app/social-profile/leader-list');
+            this.setState({ showForm : false, err_msg: <IntlMessages id="apiErrCode.0" />, err_alert: false });            
             this.props.history.push({ pathname: '/app/social-profile/leader-list', state : { profileId : 'follower' } });
         }
     }
     
     componentWillReceiveProps(nextProps) {
-        // console.log('NextProps :',nextProps);
         this.setState({ loading : nextProps.loading });       
 
         if (nextProps.data.ReturnCode === 1 || nextProps.data.ReturnCode === 9) {
@@ -77,7 +71,6 @@ class FollowerProfileConfigWdgt extends Component {
             } else if(this.state.getData && nextProps.data.hasOwnProperty('FollowerFrontConfiguration')) {
                 var followerDetails = nextProps.data.FollowerFrontConfiguration;
                 var newObj = Object.assign({},this.state.data);
-                // newObj.Trade_Type = followerDetails.Can_Copy_Trade ? '1' : '2';
                 if(followerDetails.Can_Copy_Trade === 1) {
                     newObj.Trade_Type = '1';
                 } else if(followerDetails.Can_Mirror_Trade === 1) {
@@ -138,7 +131,6 @@ class FollowerProfileConfigWdgt extends Component {
         return (
             <div className="jbs-page-content">
                 <div className="jbs-page-content col-md-12 mx-auto">
-                    {/* {loading && <div><LinearProgress color="secondary" /></div>} */}
                     {loading && <JbsSectionLoader />}
                     {
                         showForm &&
@@ -167,9 +159,6 @@ class FollowerProfileConfigWdgt extends Component {
                                                     <Input type="text" className="w-40" name="Trade_Percentage" value={Trade_Percentage} placeholder={placeholder} id="Trade_Percentage" onChange={this.onChange} />
                                                 }
                                             </IntlMessages>
-                                            {/* <p class="range-field">
-                                                <input type="range" name="Trade_Percentage" value={Trade_Percentage} connect="true" step="5" min="0" max="99" id="Trade_Percentage" onChange={this.onChange} />
-                                            </p> */}
                                             {errors.Trade_Percentage && (<span className="text-danger text-left"><IntlMessages id={errors.Trade_Percentage} /></span>)}
                                         </Fragment>
                                     }

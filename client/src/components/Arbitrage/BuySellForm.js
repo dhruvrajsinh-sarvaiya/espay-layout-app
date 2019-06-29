@@ -120,7 +120,7 @@ class BuySellForm extends Component {
           amount = amount + parseFloat(order.quantity);
           //return null
         })
-        
+
         averageRate = (averageTotal / nextprops.bulkBuyOrder.length)
         this.setState({
           rate: parseFloat(averageRate).toFixed(8),
@@ -139,7 +139,7 @@ class BuySellForm extends Component {
           total = total + parseFloat(order.total);
           amount = amount + parseFloat(order.quantity);
           lpType = order.LpType
-         // return null
+          // return null
         })
 
         averageRate = (averageTotal / nextprops.bulkBuyOrder.length)
@@ -179,28 +179,28 @@ class BuySellForm extends Component {
     // set bulksell order data when set multiple daat    
     if (nextprops.isBulkSellOrder && nextprops.bulkSellOrder && nextprops.bulkSellOrder.length) {
 
-      var averageRate = 0, averageTotal = 0, total = 0, amount = 0, lpType = 0
-      
+      var averageRateBulkSell = 0, averageTotalBulkSell = 0, totalBulkSell = 0, amountBulkSell = 0, lpTypeBulkSell = 0
+
       if (nextprops.bulkSellOrder.bulkPercentage === true) {
         nextprops.bulkSellOrder.map((order, item) => {
 
-          averageTotal = averageTotal + order.rate;
-          total = total + parseFloat(order.total);
-          amount = amount + parseFloat(order.quantity);
+          averageTotalBulkSell = averageTotalBulkSell + order.rate;
+          totalBulkSell = totalBulkSell + parseFloat(order.total);
+          amountBulkSell = amountBulkSell + parseFloat(order.quantity);
           //return null
         })
 
-      
 
-        averageRate = (averageTotal / nextprops.bulkSellOrder.length)
+
+        averageRateBulkSell = (averageTotalBulkSell / nextprops.bulkSellOrder.length)
 
         this.setState({
-          rate: parseFloat(averageRate).toFixed(8),
+          rate: parseFloat(averageRateBulkSell).toFixed(8),
           formType: nextprops.bulkSellOrder.formType,
           isBulkOrder: true,//nextprops.isBulkSellOrder,
           bulkOrderData: nextprops.bulkSellOrder,
-          total: parseFloat(amount * averageRate).toFixed(8),
-          quantity: parseFloat(amount).toFixed(8),
+          total: parseFloat(amountBulkSell * averageRateBulkSell).toFixed(8),
+          quantity: parseFloat(amountBulkSell).toFixed(8),
           lpType: nextprops.bulkSellOrder.LpType
         })
 
@@ -208,22 +208,22 @@ class BuySellForm extends Component {
 
         nextprops.bulkSellOrder.map((order, item) => {
 
-          averageTotal = averageTotal + order.rate;
-          total = total + parseFloat(order.total);
-          amount = amount + parseFloat(order.quantity);
-          lpType = order.LpType
+          averageTotalBulkSell = averageTotalBulkSell + order.rate;
+          totalBulkSell = totalBulkSell + parseFloat(order.total);
+          amountBulkSell = amountBulkSell + parseFloat(order.quantity);
+          lpTypeBulkSell = order.LpType
           //return null
         })
 
-        averageRate = (averageTotal / nextprops.bulkSellOrder.length)
+        averageRateBulkSell = (averageTotalBulkSell / nextprops.bulkSellOrder.length)
         this.setState({
-          rate: parseFloat(averageRate).toFixed(8),
+          rate: parseFloat(averageRateBulkSell).toFixed(8),
           formType: nextprops.bulkSellOrder.formType,
           isBulkOrder: true,//nextprops.isBulkSellOrder,
           bulkOrderData: nextprops.bulkSellOrder,
-          total: parseFloat(amount * averageRate).toFixed(8),
-          quantity: parseFloat(amount).toFixed(8),
-          lpType: lpType
+          total: parseFloat(amountBulkSell * averageRateBulkSell).toFixed(8),
+          quantity: parseFloat(amountBulkSell).toFixed(8),
+          lpType: lpTypeBulkSell
         })
       }
 
@@ -448,64 +448,64 @@ class BuySellForm extends Component {
 
     if (this.state.isBulkOrder === true && this.state.bulkOrderData && this.state.bulkOrderData.length) {
 
-      var Total = 0,Amount=0
+      var Total = 0, Amount = 0
 
       this.state.bulkOrderData.map((order, index) => {
 
         Total = Total + parseFloat(parseFloat(parseFloat(this.state.rate) * parseFloat(order.quantity)).toFixed(8));
         Amount = Amount + parseFloat(order.quantity);
-       // return null
+        // return null
       })
 
-        var MultipleOrderList = [],checked=0;
+      var MultipleOrderList = [], checked = 0;
 
-        this.state.bulkOrderData.map((order, index) => {
+      this.state.bulkOrderData.map((order, index) => {
 
-          if ((checked === 0) && (order.rate === '' || typeof order.rate === undefined || order.rate === 0 || parseFloat(order.rate) === 0.0)) {
+        if ((checked === 0) && (order.rate === '' || typeof order.rate === 'undefined' || order.rate === 0 || parseFloat(order.rate) === 0.0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });            
-            NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
 
-          } else if ( (checked === 0) && (order.quantity === '' || typeof order.quantity === undefined || order.quantity === 0 || parseFloat(order.quantity) === 0.0)) {
+        } else if ((checked === 0) && (order.quantity === '' || typeof order.quantity === 'undefined' || order.quantity === 0 || parseFloat(order.quantity) === 0.0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });            
-            NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
 
-            return true;
-          } else if ( (checked === 0) && (order.total === '' || typeof order.total === undefined || order.total === 0 || parseFloat(order.total) === 0.0)) {
+          return true;
+        } else if ((checked === 0) && (order.total === '' || typeof order.total === 'undefined' || order.total === 0 || parseFloat(order.total) === 0.0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(<IntlMessages id="error.trading.transaction.4609" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="error.trading.transaction.4609" />);
 
-          } else if ( (checked === 0) && (order.LpType === "" || typeof order.LpType === undefined || order.LpType === 0)) {
+        } else if ((checked === 0) && (order.LpType === "" || typeof order.LpType === 'undefined' || order.LpType === 0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(<IntlMessages id="sidebar.arbitrageLpType" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="sidebar.arbitrageLpType" />);
 
-          } else if ((checked === 0) && (info.currencyPairID === '' || typeof info.currencyPairID === undefined || info.currencyPairID === 0)) {
+        } else if ((checked === 0) && (info.currencyPairID === '' || typeof info.currencyPairID === 'undefined' || info.currencyPairID === 0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
 
-          } else if ((checked === 0) && (this.props.secondCurrencyWalletId === '' || typeof this.props.secondCurrencyWalletId === undefined || this.props.secondCurrencyWalletId === 0)) {
+        } else if ((checked === 0) && (this.props.secondCurrencyWalletId === '' || typeof this.props.secondCurrencyWalletId === 'undefined' || this.props.secondCurrencyWalletId === 0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
 
-          } else if ((checked === 0) && (this.props.firstCurrencyWalletId === '' || typeof this.props.firstCurrencyWalletId === undefined || this.props.firstCurrencyWalletId === 0)) {
+        } else if ((checked === 0) && (this.props.firstCurrencyWalletId === '' || typeof this.props.firstCurrencyWalletId === 'undefined' || this.props.firstCurrencyWalletId === 0)) {
 
-            checked = 1
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
+          checked = 1
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
 
-          } else {
-            if(checked === 0 ){
+        } else {
+          if (checked === 0) {
             const data = {
               currencyPairID: info.currencyPairID,
               debitWalletID: this.state.formType === 1 ?
@@ -538,88 +538,88 @@ class BuySellForm extends Component {
             MultipleOrderList.push(data)
           }
         }
-          //return null
-        })
+        //return null
+      })
 
-        if(this.state.formType === 1){
+      if (this.state.formType === 1) {
 
-          if(Total <= this.props.secondCurrencyBalance){
-            if (MultipleOrderList && MultipleOrderList.length) {
+        if (Total <= this.props.secondCurrencyBalance) {
+          if ( MultipleOrderList.length) {
 
-              const payload = {
-                MultipleOrderList: MultipleOrderList,
-                Pair: this.props.firstCurrency + '_' + this.props.secondCurrency
-              }
-    
-              this.setState({
-                placeOrderBit: 1,
-              })
-    
-              this.props.arbitragePlaceBulkOrder(payload);
+            const payload = {
+              MultipleOrderList: MultipleOrderList,
+              Pair: this.props.firstCurrency + '_' + this.props.secondCurrency
             }
-          } else{
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(
-              <IntlMessages id="trading.placeorder.error.minBalance" />
-            );
+
+            this.setState({
+              placeOrderBit: 1,
+            })
+
+            this.props.arbitragePlaceBulkOrder(payload);
           }
-        } else if(this.state.formType === 2){
+        } else {
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(
+            <IntlMessages id="trading.placeorder.error.minBalance" />
+          );
+        }
+      } else if (this.state.formType === 2) {
 
-          if(Amount <= this.props.firstCurrencyBalance){
-            if (MultipleOrderList && MultipleOrderList.length) {
+        if (Amount <= this.props.firstCurrencyBalance) {
+          if (MultipleOrderList.length) {
 
-              const payload = {
-                MultipleOrderList: MultipleOrderList,
-                Pair: this.props.firstCurrency + '_' + this.props.secondCurrency
-              }
-    
-              this.setState({
-                placeOrderBit: 1,
-              })
-    
-              this.props.arbitragePlaceBulkOrder(payload);
+            const payload = {
+              MultipleOrderList: MultipleOrderList,
+              Pair: this.props.firstCurrency + '_' + this.props.secondCurrency
             }
-          } else{
-            this.setState({ placeOrderBit: 0 });
-            NotificationManager.error(
-              <IntlMessages id="trading.placeorder.error.minBalance" />
-            );
+
+            this.setState({
+              placeOrderBit: 1,
+            })
+
+            this.props.arbitragePlaceBulkOrder(payload);
           }
-        }      
-            
+        } else {
+          this.setState({ placeOrderBit: 0 });
+          NotificationManager.error(
+            <IntlMessages id="trading.placeorder.error.minBalance" />
+          );
+        }
+      }
+
 
     } else {
-      if (this.state.rate === '' || typeof this.state.rate === undefined || this.state.rate === 0 || parseFloat(this.state.rate) === 0.0 ) {
+      if (this.state.rate === '' || typeof this.state.rate === 'undefined' || this.state.rate === 0 || parseFloat(this.state.rate) === 0.0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
 
-      } else if (this.state.quantity === '' || typeof this.state.quantity === undefined || this.state.quantity === 0 || parseFloat(this.state.quantity) === 0.0 ) {
+      } else if (this.state.quantity === '' || typeof this.state.quantity === 'undefined' || this.state.quantity === 0 || parseFloat(this.state.quantity) === 0.0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="error.trading.transaction.4608" />);
 
-      } else if (this.state.total === '' || typeof this.state.total === undefined || this.state.total === 0 || parseFloat(this.state.total) === 0.0 ) {
+      } else if (this.state.total === '' || typeof this.state.total === 'undefined' || this.state.total === 0 || parseFloat(this.state.total) === 0.0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="error.trading.transaction.4609" />);
 
-      } else if (this.state.lpType === '' || typeof this.state.lpType === undefined || this.state.lpType === 0) {
+      } else if (this.state.lpType === '' || typeof this.state.lpType === 'undefined' || this.state.lpType === 0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="sidebar.arbitrageLpType" />);
 
-      } else if (info.currencyPairID === '' || typeof info.currencyPairID === undefined || info.currencyPairID === 0) {
+      } else if (info.currencyPairID === '' || typeof info.currencyPairID === 'undefined' || info.currencyPairID === 0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
 
-      } else if (this.props.secondCurrencyWalletId === '' || typeof this.props.secondCurrencyWalletId === undefined || this.props.secondCurrencyWalletId === 0) {
+      } else if (this.props.secondCurrencyWalletId === '' || typeof this.props.secondCurrencyWalletId === 'undefined' || this.props.secondCurrencyWalletId === 0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
 
-      } else if (this.props.firstCurrencyWalletId === '' || typeof this.props.firstCurrencyWalletId === undefined || this.props.firstCurrencyWalletId === 0) {
+      } else if (this.props.firstCurrencyWalletId === '' || typeof this.props.firstCurrencyWalletId === 'undefined' || this.props.firstCurrencyWalletId === 0) {
 
         this.setState({ placeOrderBit: 0 });
         NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
@@ -696,32 +696,32 @@ class BuySellForm extends Component {
               placeOrderBit: 1,
             })
 
-            if(this.state.formType === 1){
+            if (this.state.formType === 1) {
 
-                if (this.state.total <= this.props.secondCurrencyBalance) {
+              if (this.state.total <= this.props.secondCurrencyBalance) {
 
-                  this.props.arbitragePlaceOrder(data);
-                } else {
-    
-                  this.setState({ placeOrderBit: 0 });
-                  NotificationManager.error(
-                    <IntlMessages id="trading.placeorder.error.minBalance" />
-                  );
-                }
-            }else if(this.state.formType === 2){
+                this.props.arbitragePlaceOrder(data);
+              } else {
 
-                if (this.state.quantity <= this.props.firstCurrencyBalance) {
+                this.setState({ placeOrderBit: 0 });
+                NotificationManager.error(
+                  <IntlMessages id="trading.placeorder.error.minBalance" />
+                );
+              }
+            } else if (this.state.formType === 2) {
 
-                  this.props.arbitragePlaceOrder(data);
-                } else {
-    
-                  this.setState({ placeOrderBit: 0 });
-                  NotificationManager.error(
-                    <IntlMessages id="trading.placeorder.error.minBalance" />
-                  );
-                }
+              if (this.state.quantity <= this.props.firstCurrencyBalance) {
+
+                this.props.arbitragePlaceOrder(data);
+              } else {
+
+                this.setState({ placeOrderBit: 0 });
+                NotificationManager.error(
+                  <IntlMessages id="trading.placeorder.error.minBalance" />
+                );
+              }
             }
-            
+
 
           } else {
 
@@ -866,8 +866,8 @@ class BuySellForm extends Component {
           </FormGroup>
         </Form>
 
-        <div className="text-center mt-5">                 
-                  <IntlMessages id={`sidebar.arbitrageAverage`} values={{ Param1: this.state.rate }} />
+        <div className="text-center mt-5">
+          <IntlMessages id={`sidebar.arbitrageAverage`} values={{ Param1: this.state.rate }} />
         </div>
       </div>
     );

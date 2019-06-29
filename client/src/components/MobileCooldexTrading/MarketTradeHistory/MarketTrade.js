@@ -43,9 +43,6 @@ class MarketTradeRow extends React.Component {
       lastClass = "text-success";
     } else if (this.props.Type === "Sell") {
       lastClass = "text-danger";
-    } else {
-      lastClass = "";
-      changeClass = "";
     }
 
     return (
@@ -76,14 +73,12 @@ class MarketTradeHistory extends React.Component {
   // This will invoke After component render
   componentWillMount() {
     // Call Actions For Get Market Trade History
-    //  const pair = this.props.firstCurrency + '_' + this.props.secondCurrency;
     const pair = this.props.currencyPair
 
     this.props.getMarketTradeHistory({ Pair: pair });
   }
 
   componentWillUnmount() {
-    //const pair = this.props.firstCurrency + '_' + this.props.secondCurrency;
     const pair = this.props.currencyPair
 
     this.props.closeMarketHistorySocketConnection({ Pair: pair });
@@ -116,7 +111,7 @@ class MarketTradeHistory extends React.Component {
           Amount={newBuyOrder.Amount}
           tradetime={newBuyOrder.tradetime.split(" ")[1]}
           indexValue={findIndexValue}
-          Type={newBuyOrder.Type}    
+          Type={newBuyOrder.Type}
           index={key}
         />
       );
@@ -192,7 +187,7 @@ class MarketTradeHistory extends React.Component {
 // Set Props when actions are dispatch
 const mapStateToProps = state => ({
   marketTradeHistory: state.marketTradeHistory.marketHistory,
-  loading:state.MarketTradeHistory.loading
+  loading: state.MarketTradeHistory.loading
 });
 
 // connect action with store for dispatch

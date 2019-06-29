@@ -10,7 +10,7 @@ module.exports = function mobilenovalidate(data) {
     if (data.hasOwnProperty('MobileNumberList')) {
         if (!validator.isEmpty(data.MobileNumberList)) {
             var number = data.MobileNumberList.replace(/\s/g, '').split(",");
-            var valid = true;
+          
     //         for (var i = 0,j=0; i < number.length; i++) {
     //             if (number[i] !== "" && ! /^(\d{10},)*\d{10}$/.test(number[i])) {
     //                 mobiledata[j] = number[i];
@@ -26,8 +26,9 @@ module.exports = function mobilenovalidate(data) {
                
             }
         }
-        else
+        else{
         errors.MobileNumberList = "my_account.err.fieldRequired";
+        }
     }
     else if ((validator.isEmpty(data))) {
         errors.MobileNumberList = "my_account.err.fieldRequired";

@@ -5,7 +5,7 @@
  */
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Form, FormGroup, Row, Col, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Row, Label, Input } from 'reactstrap';
 import { FaTwitter, FaFacebook, FaPinterest, FaLinkedin, FaTelegram, FaWhatsapp, FaFacebookMessenger } from "react-icons/fa";
 import { ShareButtonRoundSquare, ShareBlockStandard } from "react-custom-share";
 import { NotificationManager } from "react-notifications";
@@ -191,7 +191,7 @@ class SocialShare extends Component {
                 {
                     network: "Linkedin",
                     icon: FaLinkedin,
-                    // link: "https://www.linkedin.com/sharing/share-offsite/?url=" + linkedinLink
+                   
                 }
             ],
             text: referralText

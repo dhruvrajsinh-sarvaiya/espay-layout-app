@@ -17,8 +17,10 @@ const INIT_STATE = {
     facebookMediaDetail:{},
     twitterMediaDetail:{}
 };
-
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE
+    }
     switch (action.type) {
 
         // get Social Media
