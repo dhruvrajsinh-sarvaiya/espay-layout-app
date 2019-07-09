@@ -14,7 +14,13 @@ const INITIAL_STATE = {
     IpIsFetching: false,
 }
 
-const IpHistoryReducer = (state = INITIAL_STATE, action) => {
+const IpHistoryReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {

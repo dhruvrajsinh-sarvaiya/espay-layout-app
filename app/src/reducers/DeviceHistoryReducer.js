@@ -50,7 +50,13 @@ const INITIAL_STATE = {
     errorEnableDevice: false,
 }
 
-export default function DeviceHistoryReducer(state = INITIAL_STATE, action) {
+export default function DeviceHistoryReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -164,7 +170,7 @@ export default function DeviceHistoryReducer(state = INITIAL_STATE, action) {
                 DisableDeviceWhitelistdata: action.payload,
                 errorDisableDevice: true,
             }
-        
+
         // If no actions were found from reducer than return default [existing] state value
         default:
             return state;

@@ -10,7 +10,7 @@ import { ListEmptyComponent, contentContainerStyle } from '../../native_theme/co
 import ListLoader from '../../native_theme/components/ListLoader';
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import CommonToast from '../../native_theme/components/CommonToast';
-import { getLeaderList, unFollowLeader, clearLeader, getGroupList, addNewWatchList, addToWatchList, removeFromWatchList } from '../../actions/SocialProfile/SocialProfileActions';
+import { getLeaderList as getLeaderListApi, unFollowLeader, clearLeader, getGroupList, addNewWatchList, addToWatchList as addToWatchListApi, removeFromWatchList as removeFromWatchListApi } from '../../actions/SocialProfile/SocialProfileActions';
 import PaginationWidget from '../Widget/PaginationWidget';
 import { AppConfig } from '../../controllers/AppConfig';
 import R from '../../native_theme/R';
@@ -106,7 +106,7 @@ class LeaderList extends Component {
 			//To Bind Request 
 			this.Request = {
 				...this.Request,
-				PageIndex: (needUpdate && !fromRefreshControl) ? 1 : this.state.selectedPage,
+				PageIndex: !fromRefreshControl ? 1 : this.state.selectedPage,
 			}
 
 			//Call Get leader list from API
@@ -679,7 +679,7 @@ class LeaderList extends Component {
 							/* render all item in list */
 							renderItem={({ item, index }) =>
 								<FlatListItem
-									onGroupItemClick={(subitem, index) => this.onGroupItemClick(item, subitem, index)}
+									onGroupItemClick={(subitem, itemIndex) => this.onGroupItemClick(item, subitem, itemIndex)}
 									groupName={this.state.GroupName}
 									item={item}
 									index={index}
@@ -741,8 +741,8 @@ class FlatListItem extends Component {
 	render() {
 		let { item, onEdit, index, size, unFollowSingle, groupName } = this.props
 		let actions = [];
-		this.props.groupName.map((item, index) => {
-			actions.push(() => this.props.onGroupItemClick(item, index))
+		this.props.groupName.map((groupItem, itemIndex) => {
+			actions.push(() => this.props.onGroupItemClick(groupItem, itemIndex))
 		})
 
 		return (
@@ -819,7 +819,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		//get leader list
-		getLeaderList: (Request) => dispatch(getLeaderList(Request)),
+		getLeaderList: (Request) => dispatch(getLeaderListApi(Request)),
 		//unfollow leader
 		unFollowLeader: (Request) => dispatch(unFollowLeader(Request)),
 		//clear 
@@ -829,9 +829,9 @@ function mapDispatchToProps(dispatch) {
 		// Add New Group Item (WatchList Item)
 		addNewWatchList: (payload) => dispatch(addNewWatchList(payload)),
 		// Item add to Watchlist
-		addToWatchList: (payload) => dispatch(addToWatchList(payload)),
+		addToWatchList: (payload) => dispatch(addToWatchListApi(payload)),
 		// Removing item from watchlist
-		removeFromWatchList: (payload) => dispatch(removeFromWatchList(payload)),
+		removeFromWatchList: (payload) => dispatch(removeFromWatchListApi(payload)),
 	}
 }
 

@@ -56,7 +56,7 @@ class OrderManagementScreen extends Component {
         //request to pass in API call
         this.request = {}
 
-        let from = 0;
+        let from;
         if (props.navigation.state.params !== undefined && props.navigation.state.params.from !== undefined) {
             from = props.navigation.state.params.from;
         } else if (props.from !== undefined) {
@@ -614,9 +614,8 @@ class OrderHistoryItem extends Component {
             this.props.size !== nextProps.size
         ) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {

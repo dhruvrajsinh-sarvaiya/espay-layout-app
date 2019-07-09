@@ -4,7 +4,7 @@ import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
 import { changeTheme, parseFloatVal, } from '../../controllers/CommonUtils';
 import ImageButton from '../../native_theme/components/ImageTextButton';
 import Separator from '../../native_theme/components/Separator';
-import { OrderHistoryBit } from './OrderHistory/OrderHistory';
+import { OrderHistoryBit } from './OrderHistory';
 import R from '../../native_theme/R';
 import ImageViewWidget from '../Widget/ImageViewWidget';
 import Button from '../../native_theme/components/Button';
@@ -146,7 +146,7 @@ class BuySellTradeSuccessScreen extends Component {
                         <Button
                             title={R.strings.history}
                             onPress={() => {
-                                this.props.navigation.navigate(this.state.isMargin ? 'MarginTradingHistory' : 'OrderHistory', { PairName: this.state.pairName, from: OrderHistoryBit.BuySellTradeSuccess })
+                                this.props.navigation.navigate('OrderHistory', { PairName: this.state.pairName, from: OrderHistoryBit.BuySellTradeSuccess })
                             }}
                             isRound={true}
                             isAlert={true}

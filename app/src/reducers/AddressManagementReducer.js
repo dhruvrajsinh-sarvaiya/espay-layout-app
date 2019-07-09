@@ -95,7 +95,13 @@ const INTIAL_STATE = {
     VerifyGoogleAuthIsFetching: false,
 }
 
-const AddressManagementReducer = (state = INTIAL_STATE, action) => {
+const AddressManagementReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -113,18 +119,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 AddToWhitelistFetchData: true,
                 BalanceFetchData: true,
             };
-        // Set Verify 2FA success data
+        // Set Verify 2FA success and failure data
         case VERIFY_2FA_SUCCESS:
-            return {
-                ...state, VerifyGoogleAuthIsFetching: false,
-                VerifyGoogleAuthData: action.payload,
-                VerifyGoogleAuthFetchData: false,
-                getGlobalPerfFetchData: true,
-                setGlobalPerfFetchData: true,
-                AddToWhitelistFetchData: true,
-                BalanceFetchData: true,
-            };
-        // Set Verify 2FA failure data
         case VERIFY_2FA_FAILURE:
             return {
                 ...state, VerifyGoogleAuthIsFetching: false,
@@ -183,19 +179,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 AddToWhitelistFetchData: true,
                 VerifyGoogleAuthFetchData: true,
             };
-        // Set Preference success data
+        // Set Preference success and failure data
         case GET_PREFERENCE_SUCCESS:
-            return {
-                ...state,
-                formLoading: false,
-                getGlobalPerfFetchData: false,
-                getGlobalPrefdata: action.payload,
-                BalanceFetchData: true,
-                setGlobalPerfFetchData: true,
-                AddToWhitelistFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Preference failure data
         case GET_PREFERENCE_FAILURE:
             return {
                 ...state,
@@ -220,19 +205,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 AddToWhitelistFetchData: true,
                 VerifyGoogleAuthFetchData: true,
             };
-        // Set Preference success data
+        // Set Preference success and failure data
         case SET_PREFERENCE_SUCCESS:
-            return {
-                ...state,
-                formLoading: false,
-                setGlobalPerfFetchData: false,
-                setGlobalPrefdata: action.payload,
-                BalanceFetchData: true,
-                getGlobalPerfFetchData: true,
-                AddToWhitelistFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Preference failure data
         case SET_PREFERENCE_FAILURE:
             return {
                 ...state,
@@ -257,19 +231,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 setGlobalPerfFetchData: true,
                 VerifyGoogleAuthFetchData: true,
             };
-        // Set Submit Withdrawal Address success data
+        // Set Submit Withdrawal Address success and failure data
         case SUBMIT_WITHDRAWALADDRESSES_SUCCESS:
-            return {
-                ...state,
-                formLoading: false,
-                AddToWhitelistFetchData: false,
-                AddToWhitelistdata: action.payload,
-                BalanceFetchData: true,
-                getGlobalPerfFetchData: true,
-                setGlobalPerfFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Submit Withdrawal Address failure data
         case SUBMIT_WITHDRAWALADDRESSES_FAIL:
             return {
                 ...state,
@@ -294,19 +257,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 DeleteWithdrawalAddressFetchData: true,
                 VerifyGoogleAuthFetchData: true,
             };
-        // Set Fetch Withdrawal Address success data
+        // Set Fetch Withdrawal Address success and failure data
         case FETCH_WITHDRAWALADDRESS_SUCCESS:
-            return {
-                ...state,
-                WithdrawalAddressIsFetching: false,
-                WithdrawalAddresssFetchData: false,
-                WithdrawalAddressHistorydata: action.payload,
-                AddAddresssFetchData: true,
-                RemoveAddresssFetchData: true,
-                DeleteWithdrawalAddressFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Fetch Withdrawal Address failure data
         case FETCH_WITHDRAWALADDRESS_FAIL:
             return {
                 ...state,
@@ -331,19 +283,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 DeleteWithdrawalAddressFetchData: true,
                 VerifyGoogleAuthFetchData: true,
             };
-        // Set Add To Whitelist success data
+        // Set Add To Whitelist success and failure data
         case ADDTO_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                listLoading: false,
-                AddAddresssFetchData: false,
-                AddAddressHistorydata: action.payload,
-                WithdrawalAddresssFetchData: true,
-                RemoveAddresssFetchData: true,
-                DeleteWithdrawalAddressFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Add To Whitelist failure data
         case ADDTO_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -368,19 +309,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 DeleteWithdrawalAddressFetchData: true,
                 VerifyGoogleAuthFetchData: true,
             };
-        // Set Remove Whitelist success data
+        // Set Remove Whitelist success and failure data
         case REMOVE_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                listLoading: false,
-                RemoveAddresssFetchData: false,
-                RemoveAddressHistorydata: action.payload,
-                WithdrawalAddresssFetchData: true,
-                AddAddresssFetchData: true,
-                DeleteWithdrawalAddressFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Remove Whitelist failure data
         case REMOVE_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -406,19 +336,8 @@ const AddressManagementReducer = (state = INTIAL_STATE, action) => {
                 VerifyGoogleAuthFetchData: true,
 
             };
-        // Set Delete Address success data
+        // Set Delete Address success and failure data
         case DELETE_ADDRESSES_SUCCESS:
-            return {
-                ...state,
-                listLoading: false,
-                DeleteWithdrawalAddressFetchData: false,
-                DeleteWWithdrawalAddressHistorydata: action.payload,
-                WithdrawalAddresssFetchData: true,
-                AddAddresssFetchData: true,
-                RemoveAddresssFetchData: true,
-                VerifyGoogleAuthFetchData: true,
-            };
-        // Set Delete Address failure data
         case DELETE_ADDRESSES_FAILURE:
             return {
                 ...state,

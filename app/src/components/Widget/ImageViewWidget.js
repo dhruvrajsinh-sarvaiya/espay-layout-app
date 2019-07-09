@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native';
 import R from '../../native_theme/R';
-import { ServiceUtilConstant } from '../../controllers/Constants';
 import { mergeStyle, getBaseUrl } from '../../controllers/CommonUtils';
 
 class ImageViewWidget extends Component {
@@ -88,13 +87,6 @@ class ImageViewWidget extends Component {
 
         // let image = this.state.isAvailable ? this.state.url : this.state.failureImage
         if (this.state.isAvailable && !this.state.url.includes('file://')) {
-
-            let style = {
-                backgroundColor: backgroundColor,
-                width: width,
-                height: height,
-                marginRight: R.dimens.widgetMargin
-            }
 
             return (
                 <Image

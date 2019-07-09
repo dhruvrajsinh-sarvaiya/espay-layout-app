@@ -40,11 +40,6 @@ class AddNewWalletUser extends Component {
         }
     }
 
-    componentDidUpdate = async () => {
-        //Add this method to change theme based on stored theme name.
-        changeTheme();
-    }
-
     //this Method is used to focus on next feild
     focusNextField(id) {
         this.inputs[id].focus();
@@ -55,6 +50,9 @@ class AddNewWalletUser extends Component {
     };
 
     componentDidUpdate = (prevProps, prevState) => {
+
+        //Add this method to change theme based on stored theme name.
+        changeTheme();
 
         //Get All Updated Feild of Particular actions
         const { AddWalletUserFetchData, AddWalletUserData } = this.props;

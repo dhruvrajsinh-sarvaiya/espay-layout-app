@@ -84,7 +84,11 @@ class RecentOrder extends Component {
 			if (await isInternet()) {
 
 				// Call Recent Order api
-				this.props.fetchRecentOrder({ PairName: this.props.PairName });
+				if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+					this.props.fetchRecentOrder({ PairName: this.props.PairName, IsMargin: 1 });
+				} else {
+					this.props.fetchRecentOrder({ PairName: this.props.PairName });
+				}
 			}
 		}
 
@@ -102,7 +106,7 @@ class RecentOrder extends Component {
 						let recentOrders = this.state.recentOrderResponse;
 						let recentData = [];
 
-						var findIndexOrderId = recentOrders.findIndex(recentOrders => parseFloatVal(recentOrders.TrnNo) === parseFloatVal(newData.TrnNo));
+						var findIndexOrderId = recentOrders.findIndex(recentOrderItem => parseFloatVal(recentOrderItem.TrnNo) === parseFloatVal(newData.TrnNo));
 
 						if (parseFloatVal(newData.Qty) > 0) {
 
@@ -149,8 +153,12 @@ class RecentOrder extends Component {
 		//Check NetWork is Available or not
 		if (await isInternet()) {
 
-			//Call RecentOrder API
-			this.props.fetchRecentOrder({ PairName: this.state.PairName })
+			//Call RecentOrder API based on IsMargin
+			if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+				this.props.fetchRecentOrder({ PairName: this.state.PairName, IsMargin: 1 })
+			} else {
+				this.props.fetchRecentOrder({ PairName: this.state.PairName })
+			}
 			//----------
 		} else {
 			this.setState({ refreshing: false });
@@ -359,9 +367,8 @@ class RecentOrderWidgetItem extends Component {
 		//Check If Old Props and New Props are Equal then Return False
 		if (this.props.item !== nextProps.item) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	render() {
@@ -403,9 +410,8 @@ class RecentOrderItem extends Component {
 		//Check If Old Props and New Props are Equal then Return False
 		if (this.props.item !== nextProps.item) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	render() {

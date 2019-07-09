@@ -5,6 +5,9 @@ import CustomToolbar from '../../../native_theme/components/CustomToolbar';
 import { changeTheme, parseArray, getCurrentDate, addPages, convertDateTime } from '../../../controllers/CommonUtils';
 import { isInternet, validateResponseNew, } from '../../../validations/CommonValidation'
 import { connect } from 'react-redux';
+import { Fonts } from '../../../controllers/Constants';
+import AnimatableItem from '../../../native_theme/components/AnimatableItem';
+import SafeView from '../../../native_theme/components/SafeView';
 import ListLoader from '../../../native_theme/components/ListLoader';
 import CommonToast from '../../../native_theme/components/CommonToast';
 import Drawer from 'react-native-drawer-menu';
@@ -20,13 +23,14 @@ import { DateValidation } from '../../../validations/DateValidation';
 import CardView from '../../../native_theme/components/CardView';
 import ImageTextButton from '../../../native_theme/components/ImageTextButton';
 import TextViewHML from '../../../native_theme/components/TextViewHML';
-import { Fonts } from '../../../controllers/Constants';
-import AnimatableItem from '../../../native_theme/components/AnimatableItem';
-import SafeView from '../../../native_theme/components/SafeView';
 
 class ReferralConvertScreen extends Component {
     constructor(props) {
         super(props);
+
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
 
         //Define All initial State
         this.state = {
@@ -35,12 +39,15 @@ class ReferralConvertScreen extends Component {
             row: [],
             PageSize: AppConfig.pageSize,
             selectedPage: 1,
-            FromDate: getCurrentDate(),//for get Current Date
-            ToDate: getCurrentDate(),//for get Current Date
+
             // for service slab
             serviceSlab: [],
             selectedServiceSlab: R.strings.Please_Select,
             ReferralServiceId: 0,
+
+            FromDate: getCurrentDate(),//for get Current Date
+            ToDate: getCurrentDate(),//for get Current Date
+
             // for refreshing
             refreshing: false,
             isFirstTime: true,
@@ -51,28 +58,12 @@ class ReferralConvertScreen extends Component {
         addRouteToBackPress(props);
 
         // Bind Method
-        this.onRefresh = this.onRefresh.bind(this);
+        this.onBackPress = this.onBackPress.bind(this);
+        this.props.navigation.setParams({ onBackPress: this.onBackPress });
         this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
-        this.onBackPress = this.onBackPress.bind(this);
-        this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
+        this.onRefresh = this.onRefresh.bind(this);
     }
 
     componentDidMount = async () => {
@@ -183,6 +174,18 @@ class ReferralConvertScreen extends Component {
         }
     }
 
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
+        }
+    }
+
     // Pagination Method Called When User Change Page  
     onPageChange = async (pageNo) => {
 
@@ -258,23 +261,31 @@ class ReferralConvertScreen extends Component {
                     if (state.referralServiceData == null || (state.referralServiceData != null && referralServiceData !== state.referralServiceData)) {
                         if (validateResponseNew({ response: referralServiceData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralServiceData.ReferralServiceDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ServiceSlab;
+                            let serviceDataForRefConvert = parseArray(referralServiceData.ReferralServiceDropDownList);
+                            serviceDataForRefConvert.map((item, index) => {
+                                serviceDataForRefConvert[index].Id = item.Id;
+                                serviceDataForRefConvert[index].value = item.ServiceSlab;
                             })
                             let currencyItem = [
-                                { value: R.strings.Please_Select },
-                                ...res
+                                { value: R.strings.Please_Select }, ...serviceDataForRefConvert
                             ];
-                            return { ...state, serviceSlab: currencyItem, referralServiceData };
+                            return {
+                                ...state, serviceSlab: currencyItem,
+                                referralServiceData
+                            };
                         }
                         else {
-                            return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0 };
+                            return {
+                                ...state, serviceSlab: [{ value: R.strings.Please_Select }],
+                                selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0
+                            };
                         }
                     }
                 } catch (e) {
-                    return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0 };
+                    return {
+                        ...state, serviceSlab: [{ value: R.strings.Please_Select }],
+                        selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0
+                    };
                 }
             }
         }
@@ -284,9 +295,12 @@ class ReferralConvertScreen extends Component {
     // Drawer Navigation
     navigationDrawer() {
         return (
-            <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+            <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
+
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast
+                    ref={cmp => this.toast = cmp}
+                    styles={{ width: R.dimens.FilterDrawarWidth }} />
 
                 {/* filterwidget for display fromdate, todate and serviceslab data */}
                 <FilterWidget
@@ -294,7 +308,7 @@ class ReferralConvertScreen extends Component {
                     FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
-                    comboPickerStyle={{ marginTop: 0, }}
+                    comboPickerStyle={{ marginTop: 0 }}
                     pickers={[
                         {
                             title: R.strings.ServiceSlab,
@@ -321,25 +335,25 @@ class ReferralConvertScreen extends Component {
 
         let list = this.state.data;
         //apply filter on User name, currencyName 
-        let finalItems = list.filter(item =>
-            item.UserName.toLowerCase().includes(this.state.search.toLowerCase()) ||
-            item.CurrencyName.toLowerCase().includes(this.state.search.toLowerCase()) ||
-            item.ReferralPayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
+        let finalItems = list.filter(refConvertItem =>
+            refConvertItem.UserName.toLowerCase().includes(this.state.search.toLowerCase()) ||
+            refConvertItem.CurrencyName.toLowerCase().includes(this.state.search.toLowerCase()) ||
+            refConvertItem.ReferralPayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
         );
 
         return (
             //Drawer for apply filter on referralConverts data
             <Drawer
                 ref={cmpDrawer => this.drawer = cmpDrawer}
-                drawerWidth={R.dimens.FilterDrawarWidth}
-                drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
+                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerPosition={Drawer.positions.Right}
+                drawerContent={this.navigationDrawer()}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -369,19 +383,20 @@ class ReferralConvertScreen extends Component {
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
                                                 /* render all item in list */
-                                                renderItem={({ item, index }) => <FlatListItem
-                                                    item={item}
-                                                    index={index}
-                                                    size={this.state.data.length}
-                                                />}
+                                                renderItem={({ item, index }) =>
+                                                    <ReferralConvertList
+                                                        refConvertItem={item}
+                                                        index={index}
+                                                        size={this.state.data.length}
+                                                    />}
                                                 keyExtractor={(item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
                                                     <RefreshControl
+                                                        onRefresh={this.onRefresh}
                                                         colors={[R.colors.accent]}
                                                         progressBackgroundColor={R.colors.background}
                                                         refreshing={this.state.refreshing}
-                                                        onRefresh={this.onRefresh}
                                                     />}
                                             />
                                         </View>
@@ -393,7 +408,10 @@ class ReferralConvertScreen extends Component {
                         <View>
                             {/* show pagination if response contains more data  */}
                             {finalItems.length > 0 &&
-                                <PaginationWidget row={this.state.row} selectedPage={this.state.selectedPage} onPageChange={(item) => { this.onPageChange(item) }} />
+                                <PaginationWidget
+                                    row={this.state.row}
+                                    selectedPage={this.state.selectedPage}
+                                    onPageChange={(item) => { this.onPageChange(item) }} />
                             }
                         </View>
 
@@ -405,24 +423,23 @@ class ReferralConvertScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
-
+class ReferralConvertList extends Component {
     constructor(props) {
         super(props);
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.refConvertItem === nextProps.refConvertItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
+        let refConvertItem = this.props.refConvertItem;
         let { index, size, } = this.props;
-        let paytype = item.ReferralPayTypeName ? item.ReferralPayTypeName : '-';
+        let paytype = refConvertItem.ReferralPayTypeName ? refConvertItem.ReferralPayTypeName : '-';
 
         // for paytype and replace percentage text with % sign
         if (paytype === "Percentage on maker/taker charges") paytype = paytype.replace("Percentage", "%")
@@ -433,20 +450,20 @@ class FlatListItem extends Component {
                     flex: 1,
                     flexDirection: 'column',
                     marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
+                    marginRight: R.dimens.widget_left_right_margin,
+                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                 }}>
                     <CardView style={{
                         elevation: R.dimens.listCardElevation,
                         flex: 1,
                         borderRadius: 0,
                         flexDirection: 'column',
-                        borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
+                        borderBottomLeftRadius: R.dimens.margin,
                     }}>
 
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                             {/* for show image  */}
                             <ImageTextButton
                                 icon={R.images.IC_GRADIANT_GIFT}
@@ -455,7 +472,7 @@ class FlatListItem extends Component {
                             />
                             {/* for show Message */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
-                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.ReferralPayRewards ? item.ReferralPayRewards : '-'} {item.CurrencyName ? item.CurrencyName : '-'} {R.strings.earnedBy} {item.UserName ? item.UserName : '-'}</Text>
+                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{refConvertItem.ReferralPayRewards ? refConvertItem.ReferralPayRewards : '-'} {refConvertItem.CurrencyName ? refConvertItem.CurrencyName : '-'} {R.strings.earnedBy} {refConvertItem.UserName ? refConvertItem.UserName : '-'}</Text>
                                 <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.PayType + ' :'}<TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}> {paytype}</TextViewHML></TextViewHML>
                             </View>
                         </View>
@@ -467,7 +484,7 @@ class FlatListItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.CreatedDate ? convertDateTime(item.CreatedDate) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{refConvertItem.CreatedDate ? convertDateTime(refConvertItem.CreatedDate) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View>

@@ -2,22 +2,22 @@
 import React, { Component } from 'react';
 import { View, FlatList, Easing, RefreshControl, Text } from 'react-native';
 import CommonStatusBar from '../../../native_theme/components/CommonStatusBar';
-import CustomToolbar from '../../../native_theme/components/CustomToolbar';
-import { changeTheme, parseArray, getCurrentDate, addPages, convertDateTime } from '../../../controllers/CommonUtils';
-import { isInternet, validateResponseNew, } from '../../../validations/CommonValidation'
 import { connect } from 'react-redux';
 import ListLoader from '../../../native_theme/components/ListLoader';
 import CommonToast from '../../../native_theme/components/CommonToast';
+import { AppConfig } from '../../../controllers/AppConfig';
+import { DateValidation } from '../../../validations/DateValidation';
 import Drawer from 'react-native-drawer-menu';
 import { ListEmptyComponent } from '../../../native_theme/components/FlatListWidgets';
 import { isCurrentScreen, addRouteToBackPress } from '../../../components/Navigation';
 import FilterWidget from '../../../components/Widget/FilterWidget';
-import R from '../../../native_theme/R';
 import { getReferralPaytype, getReferralService } from '../../../actions/PairListAction';
+import CustomToolbar from '../../../native_theme/components/CustomToolbar';
+import R from '../../../native_theme/R';
+import { changeTheme, parseArray, getCurrentDate, addPages, convertDateTime } from '../../../controllers/CommonUtils';
+import { isInternet, validateResponseNew, } from '../../../validations/CommonValidation'
 import { getReferralEmailList, clearAllData } from '../../../actions/account/ReferralSytem/ReferralSystemCountAction';
 import PaginationWidget from '../../../components/Widget/PaginationWidget';
-import { AppConfig } from '../../../controllers/AppConfig';
-import { DateValidation } from '../../../validations/DateValidation';
 import ImageTextButton from '../../../native_theme/components/ImageTextButton';
 import CardView from '../../../native_theme/components/CardView';
 import StatusChip from '../../Widget/StatusChip';
@@ -32,6 +32,10 @@ class ReferralEmailDataScreen extends Component {
 
         //Get Data From Previous Screen
         const { params } = this.props.navigation.state;
+
+        // create reference
+        this.toast = React.createRef();
+        this.drawer = React.createRef();
 
         //Define All initial State
         this.state = {
@@ -61,28 +65,12 @@ class ReferralEmailDataScreen extends Component {
         addRouteToBackPress(props);
 
         // Bind Method
-        this.onRefresh = this.onRefresh.bind(this);
-        this.onResetPress = this.onResetPress.bind(this);
-        this.onCompletePress = this.onCompletePress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
+        this.onCompletePress = this.onCompletePress.bind(this);
+        this.onResetPress = this.onResetPress.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
     }
 
     componentDidMount = async () => {
@@ -110,6 +98,18 @@ class ReferralEmailDataScreen extends Component {
             }
             // call Referral Email/SMS api 
             this.props.getReferralEmailList(requestEmailData);
+        }
+    }
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
         }
     }
 
@@ -283,14 +283,14 @@ class ReferralEmailDataScreen extends Component {
                     if (state.referralServiceData == null || (state.referralServiceData != null && referralServiceData !== state.referralServiceData)) {
                         if (validateResponseNew({ response: referralServiceData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralServiceData.ReferralServiceDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ServiceSlab;
+                            let serviceDataForEmailSms = parseArray(referralServiceData.ReferralServiceDropDownList);
+                            serviceDataForEmailSms.map((item, index) => {
+                                serviceDataForEmailSms[index].Id = item.Id;
+                                serviceDataForEmailSms[index].value = item.ServiceSlab;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...serviceDataForEmailSms
                             ];
                             return { ...state, serviceSlab: currencyItem, referralServiceData };
                         }
@@ -310,14 +310,14 @@ class ReferralEmailDataScreen extends Component {
                     if (state.referralPaytypeData == null || (state.referralPaytypeData != null && referralPaytypeData !== state.referralPaytypeData)) {
                         if (validateResponseNew({ response: referralPaytypeData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralPaytypeData.ReferralPayTypeDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.PayTypeName;
+                            let payTypeDataForEmailSms = parseArray(referralPaytypeData.ReferralPayTypeDropDownList);
+                            payTypeDataForEmailSms.map((item, index) => {
+                                payTypeDataForEmailSms[index].Id = item.Id;
+                                payTypeDataForEmailSms[index].value = item.PayTypeName;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...payTypeDataForEmailSms
                             ];
                             return { ...state, payType: currencyItem, referralPaytypeData };
                         }
@@ -336,17 +336,19 @@ class ReferralEmailDataScreen extends Component {
     // Drawer Navigation
     navigationDrawer() {
         return (
-            <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+
+            <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
+
                 {/* for display Toast */}
                 <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
 
                 {/* filterwidget for display fromdate, todate,Paytype and serviceslab data */}
                 <FilterWidget
+                    comboPickerStyle={{ marginTop: 0 }}
                     FromDatePickerCall={(date) => this.setState({ FromDate: date })}
                     FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
-                    comboPickerStyle={{ marginTop: 0, }}
                     pickers={[
                         {
                             title: R.strings.PayType,
@@ -382,14 +384,14 @@ class ReferralEmailDataScreen extends Component {
         //if serviceTypeId = 1 then Email else SMS
         let finalItems = list;
         if (this.state.serviceTypeId == 1) {
-            finalItems = list.filter(item =>
-                item.ReferralReceiverAddress.toLowerCase().includes(this.state.search.toLowerCase()) ||
-                item.PayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
+            finalItems = list.filter(emailSmsDataItem =>
+                emailSmsDataItem.ReferralReceiverAddress.toLowerCase().includes(this.state.search.toLowerCase()) ||
+                emailSmsDataItem.PayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
             );
         } else {
-            finalItems = list.filter(item =>
-                item.ReferralReceiverAddress.includes(this.state.search) ||
-                item.PayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
+            finalItems = list.filter(emailSmsDataItem =>
+                emailSmsDataItem.ReferralReceiverAddress.includes(this.state.search) ||
+                emailSmsDataItem.PayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
             );
         }
 
@@ -397,15 +399,19 @@ class ReferralEmailDataScreen extends Component {
             //Drawer for apply filter on referral Email/SMS data
             <Drawer
                 ref={cmpDrawer => this.drawer = cmpDrawer}
+                easingFunc={Easing.ease}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
-                type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
-                easingFunc={Easing.ease}>
+                type={Drawer.types.Overlay}
+            >
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{
+                    flex: 1,
+                    backgroundColor: R.colors.background
+                }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -434,11 +440,12 @@ class ReferralEmailDataScreen extends Component {
                                             <FlatList
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
-                                                renderItem={({ item, index }) => <FlatListItem
-                                                    item={item}
-                                                    index={index}
-                                                    size={this.state.data.length}
-                                                />}
+                                                renderItem={({ item, index }) =>
+                                                    <EmailSMSList
+                                                        emailSmsDataItem={item}
+                                                        emailSmsDataIndex={index}
+                                                        emailSmsDataSize={this.state.data.length}
+                                                    />}
                                                 keyExtractor={(item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
@@ -468,7 +475,7 @@ class ReferralEmailDataScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class EmailSMSList extends Component {
 
     constructor(props) {
         super(props);
@@ -476,17 +483,17 @@ class FlatListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.emailSmsDataItem === nextProps.emailSmsDataItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
-        let color = item.Status == 1 ? R.colors.successGreen : R.colors.failRed;
-        let paytype = item.PayTypeName ? item.PayTypeName : '-';
+        let emailSmsDataItem = this.props.emailSmsDataItem;
+        let { emailSmsDataIndex, emailSmsDataSize, } = this.props;
+        let color = emailSmsDataItem.Status == 1 ? R.colors.successGreen : R.colors.failRed;
+        let paytype = emailSmsDataItem.PayTypeName ? emailSmsDataItem.PayTypeName : '-';
 
         // for paytype and replace percentage text with % sign
         if (paytype === "Percentage on maker/taker charges") paytype = paytype.replace("Percentage", "%")
@@ -496,8 +503,8 @@ class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (emailSmsDataIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (emailSmsDataIndex == emailSmsDataSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -513,15 +520,15 @@ class FlatListItem extends Component {
                         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
                             {/* for show Image */}
                             <ImageTextButton
-                                icon={item.ChannelTypeName === 'Email' ? R.images.IC_EMAIL_FILLED : R.images.IC_COMPLAINT}
+                                icon={emailSmsDataItem.ChannelTypeName === 'Email' ? R.images.IC_EMAIL_FILLED : R.images.IC_COMPLAINT}
                                 style={{ justifyContent: 'center', alignSelf: 'center', width: R.dimens.ButtonHeight, height: R.dimens.ButtonHeight, margin: 0, backgroundColor: R.colors.accent, borderRadius: R.dimens.ButtonHeight }}
                                 iconStyle={{ width: R.dimens.drawerMenuIconWidthHeight, height: R.dimens.drawerMenuIconWidthHeight, tintColor: R.colors.white }}
                             />
                             {/* for Display Message */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
-                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {item.ReferralReceiverAddress ? item.ReferralReceiverAddress : ''} {R.strings.via} {item.ChannelTypeName ? item.ChannelTypeName : '-'}</Text>
+                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {emailSmsDataItem.ReferralReceiverAddress ? emailSmsDataItem.ReferralReceiverAddress : ''} {R.strings.via} {emailSmsDataItem.ChannelTypeName ? emailSmsDataItem.ChannelTypeName : '-'}</Text>
                                 <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.PayType + ' :'}<TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}> {paytype}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {item.Description ? item.Description : '-'}</TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {emailSmsDataItem.Description ? emailSmsDataItem.Description : '-'}</TextViewHML>
                             </View>
                         </View>
 
@@ -530,14 +537,14 @@ class FlatListItem extends Component {
                             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                                 <StatusChip
                                     color={color}
-                                    value={item.Status == 1 ? 'Success' : 'Failed'}></StatusChip>
+                                    value={emailSmsDataItem.Status == 1 ? 'Success' : 'Failed'}></StatusChip>
                             </View>
                             <ImageTextButton
                                 style={{ margin: 0, paddingRight: R.dimens.LineHeight, }}
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.CreatedDate ? convertDateTime(item.CreatedDate) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{emailSmsDataItem.CreatedDate ? convertDateTime(emailSmsDataItem.CreatedDate) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View>

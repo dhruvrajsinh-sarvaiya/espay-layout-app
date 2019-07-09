@@ -73,15 +73,15 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
-    entryFile: "index.js",
-    bundleAssetName: "index.android.bundle",
-    bundleInDebug: false,
-    bundleInRelease: true,
-    root: "../../",
-    jsBundleDirDebug: "$buildDir/intermediates/assets/debug",
-    jsBundleDirRelease: "$buildDir/intermediates/assets/release",
-    resourcesDirDebug: "$buildDir/intermediates/res/merged/debug",
-    resourcesDirRelease: "$buildDir/intermediates/res/merged/release",
+        entryFile          : "index.js",
+        bundleAssetName    : "index.android.bundle",
+        bundleInDebug      : false,
+        bundleInRelease    : true,
+        root               : "../../",
+        jsBundleDirDebug   : "$buildDir/intermediates/assets/debug",
+        jsBundleDirRelease : "$buildDir/intermediates/assets/release",
+        resourcesDirDebug  : "$buildDir/intermediates/res/merged/debug",
+        resourcesDirRelease: "$buildDir/intermediates/res/merged/release",
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -103,7 +103,11 @@ def enableProguardInReleaseBuilds = true
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId "com.newstackapp"
@@ -111,11 +115,10 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+        missingDimensionStrategy 'react-native-camera', 'general'
         multiDexEnabled = true
     }
+
     signingConfigs {
         release {
             if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
@@ -131,9 +134,10 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
+
     buildTypes {
         release {
             debuggable false
@@ -142,27 +146,27 @@ android {
             pseudoLocalesEnabled false
             shrinkResources enableProguardInReleaseBuilds
             zipAlignEnabled enableProguardInReleaseBuilds
-            useProguard enableProguardInReleaseBuilds
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            useProguard enableProguardInReleaseBuilds
+            setProguardFiles([getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"])
         }
     }
-	
-	packagingOptions {
+
+    packagingOptions {
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'LICENSE.txt'
     }
-	
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -173,48 +177,46 @@ android {
 }
 
 dependencies {
-    compile (project(':react-native-camera')) {
+    implementation project(':react-native-orientation')
+    implementation project(':react-native-fcm')
+    // Automatically selecting the latest available version
+    implementation 'com.google.firebase:firebase-core'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation project(':@react-native-community_netinfo')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':rn-fetch-blob')
+    implementation project(':react-native-webview-bridge')
+    implementation (project(':react-native-push-notification'), {
         exclude group: "com.google.android.gms"
-    }
-    compile 'com.android.support:exifinterface:27.+'
-    compile project(':react-native-image-picker')
-    compile project(':react-native-exit-app')
-    compile ('com.google.android.gms:play-services-vision:12.0.1') {
-        force = true
-    }
-    
-    compile (project(':rncamerakit')){
+        exclude group: "com.google.firebase"
+    })
+    implementation project(':react-native-styled-dialogs')
+    implementation project(':react-native-image-picker')
+    implementation project(':react-native-sensitive-info')
+    implementation project(':react-native-share')
+    implementation project(':react-native-text-gradient')
+    implementation project(':react-native-localization')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-exit-app')
+    implementation(project(":react-native-device-info"),  {
         exclude group: "com.google.android.gms"
-    }
-    // For Google Sign in
-    compile(project(':react-native-google-signin')){
-        exclude group: "com.google.android.gms"
-    }
-    compile project(':rn-fetch-blob')
-    compile project(':react-native-localization')
-    compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:23.0.1"
-    compile "com.facebook.react:react-native:+"  // From node_modules
-    compile 'com.google.android.gms:play-services-auth:12.0.1' // For Google Sign in
-    compile(project(':react-native-device-info')) {
-        exclude group: 'com.google.android.gms' 
-    }
+    })
+    implementation project(':react-native-camera-kit')
+    implementation project(':react-native-camera')
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.android.support:multidex:1.0.1'
 
-    compile 'com.facebook.android:facebook-android-sdk:4.34.0'
-    compile project(':react-native-fbsdk')
-    compile project(':react-native-styled-dialogs')
-    compile project(':react-native-sensitive-info')
-    compile project(':react-native-fcm')
-    compile project(':react-native-push-notification')
-    compile "com.google.firebase:firebase-messaging:12.0.1"
-
-	compile project(path: ':react-native-share')
-	compile project(':react-native-linear-gradient')
-    compile project(':react-native-text-gradient')
-    compile project(':react-native-webview-bridge')
-    compile project(':react-native-orientation')
-    compile 'com.android.support:multidex:1.0.1'
 }
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.android.gms:play-services-gcm:16.1.0'
+        force 'com.google.android.gms:play-services-base:16.1.0'
+        force 'com.google.firebase:firebase-core:16.0.9'
+        force 'com.google.firebase:firebase-messaging:18.0.0'
+    }}
 
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use

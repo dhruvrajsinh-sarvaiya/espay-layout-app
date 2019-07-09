@@ -94,7 +94,7 @@ class AccountSubMenu extends Component {
                 { title: R.strings.Whitelist_Address_History, screenname: 'AddressWhitelistHistoryResult', icon: R.images.IC_DEPOSIT_HISTORY, category: Category.Report },
                 { title: R.strings.Ip_History, screenname: 'IpHistoryResult', icon: R.images.IC_DEPOSIT_HISTORY, category: Category.Report },
                 { title: R.strings.UserLedger, screenname: 'UserLedger', icon: R.images.IC_USER_LEDGER, category: Category.Report },
-                { title: R.strings.TradingSummary, screenname: getData(ServiceUtilConstant.KEY_IsMargin) ? 'MarginTradingSummaryScreen' : 'TradingSummary', icon: R.images.IC_CHART, category: Category.Report },
+                { title: R.strings.TradingSummary, screenname: 'TradingSummary', icon: R.images.IC_CHART, category: Category.Report },
                 { title: R.strings.PendingRequests, screenname: 'AcceptRejectWalletRequest', icon: R.images.IC_WITHDRAW_HISTORY, category: Category.Report },
                 { title: R.strings.LeaderBoard, screenname: 'LeaderBoardList', icon: R.images.IC_USER_LEDGER, category: Category.Report },
                 { title: R.strings.openOrder, screenname: getData(ServiceUtilConstant.KEY_IsMargin) ? 'MarginOpenOrder' : 'OpenOrder', icon: R.images.IC_CHART, category: Category.Report },
@@ -124,7 +124,7 @@ class AccountSubMenu extends Component {
                 { title: R.strings.marginWalletLedger, screenname: 'MarginWalletLedgerScreen', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
                 { title: R.strings.MarginWallets, screenname: 'MarginWalletList', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
                 { title: R.strings.LeverageReport, screenname: 'LeverageReport', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
-                { title: R.strings.marginTradingHistory, screenname: 'MarginTradingHistory', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
+                { title: R.strings.marginTradingHistory, screenname: 'OrderHistory', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
                 { title: R.strings.marginProfitLossReport, screenname: 'MarginProfitLossReportScreen', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
                 { title: R.strings.openPositionReport, screenname: 'OpenPositionReportScreen', icon: R.images.IC_ARROW_RIGHT_BOLD, category: Category.Margin },
 
@@ -162,6 +162,11 @@ class AccountSubMenu extends Component {
                     ...options,
                     shouldDisplay: true
                 }
+            }
+            if (screenname === 'OrderHistory') {
+                options = Object.assign({}, options, {
+                    isMargin: true
+                })
             }
             navigate(screenname, options);
         } else {

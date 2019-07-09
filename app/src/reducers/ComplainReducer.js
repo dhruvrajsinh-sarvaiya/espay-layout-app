@@ -75,7 +75,12 @@ const initialState = {
     ComplaintByIdLoading: false,
 }
 
-export default (state = initialState, action) => {
+export default (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
 
     switch (action.type) {
         // To reset initial state on logout
@@ -212,32 +217,32 @@ export default (state = initialState, action) => {
 
         // Handle complain type method data
         case GET_COMPLAIN_TYPE:
-            return { 
-                ...state, 
-                ComplaintTypeLoading: true, 
-                ComplaintTypeData: null, 
+            return {
+                ...state,
+                ComplaintTypeLoading: true,
+                ComplaintTypeData: null,
             };
         // Set complain type success data
         case GET_COMPLAIN_TYPE_SUCCESS:
-            return { 
-                ...state, 
-                ComplaintTypeLoading: false, 
-                ComplaintTypeData: action.data 
+            return {
+                ...state,
+                ComplaintTypeLoading: false,
+                ComplaintTypeData: action.data
             };
         // Set complain type failure data
         case GET_COMPLAIN_TYPE_FAILURE:
-            return { 
-                ...state, 
-                ComplaintTypeLoading: false, 
-                ComplaintTypeData: null, 
-                ComplaintTypeError: true 
+            return {
+                ...state,
+                ComplaintTypeLoading: false,
+                ComplaintTypeData: null,
+                ComplaintTypeError: true
             };
 
         // Clear complain data
         case CLEAR_COMPLAIN_DATA: {
             return initialState;
         }
-        
+
         // If no actions were found from reducer than return default [existing] state value
         default:
             return { ...state, loading: false };

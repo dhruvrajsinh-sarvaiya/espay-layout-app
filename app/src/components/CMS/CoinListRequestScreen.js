@@ -266,13 +266,13 @@ class CoinListRequestScreen extends Component {
                                 let isShowToast = true
 
                                 //for getting fields from keys array
-                                this.state.keyArray.map((item, index) => {
+                                this.state.keyArray.map((item) => {
 
                                     //check for validation failed items
                                     if (addCoinData.errors[item]) {
 
                                         //for getting name of the field from main response
-                                        this.state.response.map((responseItem, index) => {
+                                        this.state.response.map((responseItem) => {
 
                                             //check validation failed item is available in main response
                                             if (item === responseItem.key && isShowToast) {
@@ -452,18 +452,18 @@ class CoinListRequestScreen extends Component {
                                                         key={item.tabData.key}
                                                         data={item.tabData}
                                                         extraData={this.state}
-                                                        renderItem={({ item, index }) => {
-                                                            if (item.status) {
-                                                                if (item.isEditText) {
+                                                        renderItem={({ itemType, index }) => {
+                                                            if (itemType.status) {
+                                                                if (itemType.isEditText) {
                                                                     return <EditText
-                                                                        reference={input => { this.inputs[item.name] = input; }}
-                                                                        value={item.value}
-                                                                        header={item.name}
-                                                                        placeholder={item.name}
+                                                                        reference={input => { this.inputs[itemType.name] = input; }}
+                                                                        value={itemType.value}
+                                                                        header={itemType.name}
+                                                                        placeholder={itemType.name}
                                                                         multiline={false}
-                                                                        keyboardType={(item.key === 'premined_coin_amount' || item.key === 'phone' || item.key === 'postalCode' || item.key === 'total_supply' || item.key === 'circulating_supply') ? 'numeric' : 'default'}
+                                                                        keyboardType={(itemType.key === 'premined_coin_amount' || itemType.key === 'phone' || itemType.key === 'postalCode' || itemType.key === 'total_supply' || itemType.key === 'circulating_supply') ? 'numeric' : 'default'}
                                                                         returnKeyType={"done"}
-                                                                        isRequired={item.Isrequired == 1}
+                                                                        isRequired={itemType.Isrequired == 1}
                                                                         onChangeText={(text) => {
                                                                             let array = this.state.tabsRes;
                                                                             array[tabIndex].tabData[index].value = text;
@@ -473,17 +473,17 @@ class CoinListRequestScreen extends Component {
                                                                     //onSubmitEditing={() => { !this.state.response.lastIndexOf(item) ? this.focusNextField(this.state.response[index + 1].key) : null }}
                                                                     />
                                                                 }
-                                                                else if (item.isSpinner) {
+                                                                else if (itemType.isSpinner) {
                                                                     return (
                                                                         <View>
                                                                             <TextViewMR style={{ marginLeft: R.dimens.LineHeight, fontSize: R.dimens.smallText, color: R.colors.textPrimary, marginTop: R.dimens.widget_top_bottom_margin, }}>
-                                                                                {item.name}
-                                                                                {item.Isrequired == 1 && <TextViewMR style={{ color: R.colors.failRed }}> *</TextViewMR>}
+                                                                                {itemType.name}
+                                                                                {itemType.Isrequired == 1 && <TextViewMR style={{ color: R.colors.failRed }}> *</TextViewMR>}
                                                                             </TextViewMR>
                                                                             <Picker
                                                                                 ref='spCoinType'
                                                                                 data={this.state.SpinnerCoinTypeData}
-                                                                                value={item.value ? item.value : R.strings.select + ' ' + item.name}
+                                                                                value={itemType.value ? itemType.value : R.strings.select + ' ' + itemType.name}
                                                                                 onPickerSelect={(text) => {
                                                                                     let array = this.state.tabsRes;
                                                                                     array[tabIndex].tabData[index].value = text;
@@ -495,17 +495,17 @@ class CoinListRequestScreen extends Component {
                                                                         </View>
                                                                     )
                                                                 }
-                                                                else if (item.isDatePicker) {
+                                                                else if (itemType.isDatePicker) {
                                                                     return (
                                                                         <DatePickerWidget
-                                                                            fromTitle={item.name}
-                                                                            isRequired={item.Isrequired == 1}
+                                                                            fromTitle={itemType.name}
+                                                                            isRequired={itemType.Isrequired == 1}
                                                                             FromDatePickerCall={(date) => {
                                                                                 let array = this.state.tabsRes;
                                                                                 array[tabIndex].tabData[index].value = date;
                                                                                 this.setState({ tabsRes: array })
                                                                             }}
-                                                                            FromDate={isEmpty(item.value) ? R.strings.select_date : item.value}
+                                                                            FromDate={isEmpty(itemType.value) ? R.strings.select_date : itemType.value}
                                                                         //ToDatePickerCall={(date) => this.setState({ stToDate: date, isFilter: false })}
                                                                         //ToDate={this.state.stToDate}
                                                                         />
@@ -514,7 +514,7 @@ class CoinListRequestScreen extends Component {
                                                             }
                                                         }
                                                         }//}
-                                                        keyExtractor={(item, index) => index.toString()}
+                                                        keyExtractor={(_item, index) => index.toString()}
                                                     />
                                                 </View>
                                             })

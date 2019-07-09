@@ -110,7 +110,7 @@ class PortfolioListDetail extends Component {
                             {this.rowItem(R.strings.Total, validateValue(this.state.item.Total))}
                             {this.rowItem(R.strings.isCencel, this.state.item.IsCancel === 0 ? R.strings.no : R.strings.yes_text)}
                             {this.rowItem(R.strings.Date, convertDate(this.state.item.DateTime))}
-                            {this.rowItem(R.strings.status, this.state.item.StatusText ? this.state.item.StatusText : '-', color = this.state.item.Status === 1 ? R.colors.successGreen : R.colors.failRed, marginBottom = true)}
+                            {this.rowItem(R.strings.status, this.state.item.StatusText ? this.state.item.StatusText : '-', this.state.item.Status === 1 ? R.colors.successGreen : R.colors.failRed, true)}
                         </CardView>
                     </ScrollView>
                 </SafeView>
@@ -118,7 +118,12 @@ class PortfolioListDetail extends Component {
         );
     }
 
-    rowItem = (title, value, color, marginBottom = false) => {
+    rowItem = (title, value, color, marginBottom) => {
+
+        if (typeof marginBottom === 'undefined') {
+            marginBottom = false;
+        }
+
         return <View style={{
             flexDirection: 'row',
             justifyContent: 'space-between',

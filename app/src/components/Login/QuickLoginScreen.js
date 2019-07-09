@@ -33,7 +33,7 @@ class QuickLoginScreen extends Component {
 
         //Defeine initial state
         this.state = {
-            emailMobile: '',
+            emailOrMobile: '',
         }
     }
 
@@ -55,7 +55,7 @@ class QuickLoginScreen extends Component {
                 try {
                     if (validateResponseNew({ response: SignInEmailData, })) {
                         // on success responce redirect to otp screen 
-                        this.props.navigation.navigate('SignInEmailWithOtp', { Email: this.state.emailMobile, appkey: SignInEmailData.Appkey })
+                        this.props.navigation.navigate('SignInEmailWithOtp', { Email: this.state.emailOrMobile, appkey: SignInEmailData.Appkey })
                     }
                 } catch (error) {
                     //Handle Catch and Notify User to Exception.
@@ -69,7 +69,7 @@ class QuickLoginScreen extends Component {
                 try {
                     if (validateResponseNew({ response: SignInMobileData })) {
                         // on success responce redirect to otp screen 
-                        this.props.navigation.navigate('SignInMobileWithOtp', { MobileNo: this.state.emailMobile, appkey: SignInMobileData.Appkey })
+                        this.props.navigation.navigate('SignInMobileWithOtp', { MobileNo: this.state.emailOrMobile, appkey: SignInMobileData.Appkey })
                     }
                 } catch (error) {
                     //Handle Catch and Notify User to Exception.
@@ -85,22 +85,22 @@ class QuickLoginScreen extends Component {
             setData({ [ServiceUtilConstant.KEY_DialogCount]: 0 });
 
             // for check email is empty or not
-            if (isEmpty(this.state.emailMobile)) {
+            if (isEmpty(this.state.emailOrMobile)) {
                 this.toast.Show(R.strings.enterEmailorMobile);
                 return;
             }
-            let isMobile = validateNumeric(this.state.emailMobile);
-            let isEmail = !CheckEmailValidation(this.state.emailMobile);
+            let isMobile = validateNumeric(this.state.emailOrMobile);
+            let isEmail = !CheckEmailValidation(this.state.emailOrMobile);
 
             // If user input content matched with mobile number than check mobile validation
             if (isMobile == true && isEmail == false) {
-                if (!validateMobileNumber(this.state.emailMobile) || (this.state.emailMobile.length != 10)) {
+                if (!validateMobileNumber(this.state.emailOrMobile) || (this.state.emailOrMobile.length != 10)) {
                     this.toast.Show(R.strings.phoneNumberValidation);
                     return;
                 }
             } else {
                 // If user input content matched with email than check email validation
-                if (CheckEmailValidation(this.state.emailMobile)) {
+                if (CheckEmailValidation(this.state.emailOrMobile)) {
                     this.toast.Show(R.strings.Enter_Valid_Email);
                     return;
                 }
@@ -124,7 +124,7 @@ class QuickLoginScreen extends Component {
 
                         if (isMobile) {
                             request = Object.assign({}, request, {
-                                Mobile: this.state.emailMobile,
+                                Mobile: this.state.emailOrMobile,
                             });
                             //call api for send otp to given Mobile No
                             this.props.signInWithMobile(request)
@@ -132,7 +132,7 @@ class QuickLoginScreen extends Component {
 
                         if (isEmail) {
                             request = Object.assign({}, request, {
-                                Email: (this.state.emailMobile).toLowerCase(),
+                                Email: (this.state.emailOrMobile).toLowerCase(),
                             })
                             //call api for send otp to given email address
                             this.props.signInWithEmail(request)
@@ -179,18 +179,18 @@ class QuickLoginScreen extends Component {
 
                         {/* for Email Id/ Mobile No. */}
                         <EditText
-                            ref={input => { this.mainInputTexts['etEmailMobile'] = input; }}
+                            ref={input => { this.mainInputTexts['etEmailMobileLogin'] = input; }}
                             style={{ marginTop: 0 }}
                             placeholder={R.strings.emailMobile}
                             multiline={false}
                             maxLength={50}
                             keyboardType={'default'}
                             returnKeyType={"done"}
-                            value={this.state.emailMobile}
-                            onChangeText={(emailMobile) => this.setState({ emailMobile })}
+                            value={this.state.emailOrMobile}
+                            onChangeText={(emailOrMobile) => this.setState({ emailOrMobile })}
                             isRound={true}
                             focusable={true}
-                            onFocus={() => changeFocus(this.mainInputTexts, 'etEmailMobile')}
+                            onFocus={() => changeFocus(this.mainInputTexts, 'etEmailMobileLogin')}
                         />
 
                         {/* To send otp */}

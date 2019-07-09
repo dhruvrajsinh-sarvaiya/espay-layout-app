@@ -5,7 +5,13 @@ const mainStackAction = RootNavigator.router.getActionForPathAndParams('MainStac
 const initialNavState = RootNavigator.router.getStateForAction(mainStackAction);
 
 //Nav reducer is used only for navigation for whole application
-export default function nav(state = initialNavState, action) {
+export default function navigationReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialNavState;
+    }
+
     let nextState = RootNavigator.router.getStateForAction(action, state);
 
     // Simply return the original `state` if `nextState` is null or undefined.

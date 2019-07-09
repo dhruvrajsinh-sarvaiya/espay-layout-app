@@ -152,7 +152,7 @@ class ApiKeyIpWhitelist extends Component {
             if (removeIPAddressData) {
                 try {
                     if (validateResponseNew({ response: removeIPAddressData })) {
-                        showAlert(R.strings.Info + '!', removeIPAddressData.ReturnMsg, 0, onPress = () => {
+                        showAlert(R.strings.Info + '!', removeIPAddressData.ReturnMsg, 0, () => {
 
                             //clear data
                             this.props.clearApikeyData();
@@ -450,7 +450,6 @@ class FlatListItem extends Component {
                                                 paddingLeft: 0,
                                                 paddingRight: 0,
                                                 tintColor: R.colors.textPrimary,
-                                                width: R.dimens.dashboardMenuIcon,
                                                 height: R.dimens.dashboardMenuIcon,
                                             }} />
                                     </TouchableWithoutFeedback>

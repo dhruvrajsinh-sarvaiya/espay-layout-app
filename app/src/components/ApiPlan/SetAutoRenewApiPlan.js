@@ -173,7 +173,7 @@ class SetAutoRenewApiPlan extends Component {
 								multiline={false}
 								keyboardType={'numeric'}
 								returnKeyType={"done"}
-								onChangeText={(item) => this.validateDigit(item)}
+								onChangeText={(text) => this.validateDigit(text)}
 								value={this.state.Days}
 								validate={true}
 								onlyDigit={true} />

@@ -102,11 +102,11 @@ class AffiliateDashboard extends Component {
                 try {
                     if (validateResponseNew({ response: lineChartData, isList: true })) {
                         //Get array from response
-                        var res = parseArray(lineChartData.Response);
+                        var resLineChartData = parseArray(lineChartData.Response);
                         //Set State For Api response 
                         return {
-                            ...state, lSignup: res[0].SignUp, lDeposit: res[0].Deposition,
-                            lBuyTrade: res[0].BuyTrading, lSellTrade: res[0].SellTrading,
+                            ...state, lSignup: resLineChartData[0].SignUp, lDeposit: resLineChartData[0].Deposition,
+                            lBuyTrade: resLineChartData[0].BuyTrading, lSellTrade: resLineChartData[0].SellTrading,
                         };
                     }
                     else {
@@ -122,11 +122,11 @@ class AffiliateDashboard extends Component {
                 try {
                     if (validateResponseNew({ response: pieChartData, isList: true })) {
                         //Get array from response
-                        var res = parseArray(pieChartData.Data);
+                        var resPieChartData = parseArray(pieChartData.Data);
                         //Set State For Api response 
                         return {
-                            ...state, pAffiliatelink: res[0].AffiliateLink, pFacebook: res[0].Facebook, pTwitter: res[0].Twitter,
-                            pEmail: res[0].Email, pSms: res[0].SMS
+                            ...state, pAffiliatelink: resPieChartData[0].AffiliateLink, pFacebook: resPieChartData[0].Facebook, pTwitter: resPieChartData[0].Twitter,
+                            pEmail: resPieChartData[0].Email, pSms: resPieChartData[0].SMS
                         };
                     }
                     else {
@@ -149,20 +149,20 @@ class AffiliateDashboard extends Component {
                     if (validateResponseNew({ response: affiliateData, isList: true })) {
 
                         //Get array from response
-                        var res = parseArray(affiliateData.Response);
+                        var resAffiliateData = parseArray(affiliateData.Response);
                         var data = state.data;
-                        data[2].title = res[0].EmailSentCount.toString()
-                        data[3].title = res[0].SMSSentCount.toString()
-                        data[4].title = res[0].FacebookLinkCount.toString()
-                        data[5].title = res[0].TwitterLinkCount.toString()
-                        data[6].title = res[0].UserCount.toString()
-                        data[7].title = res[0].ReferralLinkCount.toString()
+                        data[2].title = resAffiliateData[0].EmailSentCount.toString()
+                        data[3].title = resAffiliateData[0].SMSSentCount.toString()
+                        data[4].title = resAffiliateData[0].FacebookLinkCount.toString()
+                        data[5].title = resAffiliateData[0].TwitterLinkCount.toString()
+                        data[6].title = resAffiliateData[0].UserCount.toString()
+                        data[7].title = resAffiliateData[0].ReferralLinkCount.toString()
 
                         //Set State For Api response 
                         return {
-                            ...state, data: data, SendMail: res[0].EmailSentCount, SendSMS: res[0].SMSSentCount,
-                            FacebookShare: res[0].FacebookLinkCount, TwitterShare: res[0].TwitterLinkCount, TotalSignup: res[0].UserCount,
-                            AffiliateLink: res[0].ReferralLinkCount, CommissionReport: res[0].CommissionCount,
+                            ...state, data: data, SendMail: resAffiliateData[0].EmailSentCount, SendSMS: resAffiliateData[0].SMSSentCount,
+                            FacebookShare: resAffiliateData[0].FacebookLinkCount, TwitterShare: resAffiliateData[0].TwitterLinkCount, TotalSignup: resAffiliateData[0].UserCount,
+                            AffiliateLink: resAffiliateData[0].ReferralLinkCount, CommissionReport: resAffiliateData[0].CommissionCount,
                         };
                     }
                     else {
@@ -536,14 +536,12 @@ class ShowCard extends Component {
 
     // for set color according to value
     valueget = (value) => {
-        if (value === R.strings.VerifyNumbers)
-            return R.colors.successGreen
-        if (value === R.strings.UnverifiedNumbers)
-            return R.colors.failRed
-        if (value === R.strings.AddNumbers)
-            return R.colors.accent
-        else
-            return R.colors.accent
+
+        if (value === R.strings.VerifyNumbers) { return R.colors.successGreen }
+        if (value === R.strings.UnverifiedNumbers) { return R.colors.failRed }
+        if (value === R.strings.AddNumbers) { return R.colors.accent }
+
+        return R.colors.accent
     }
 
     render() {
@@ -571,10 +569,10 @@ class ShowCard extends Component {
                         style={{
                             flex: 1,
                             marginLeft: isLeft ? R.dimens.widget_left_right_margin : R.dimens.widgetMargin,
-                            marginRight: isRight ? R.dimens.widget_left_right_margin : R.dimens.widgetMargin,
-                            marginTop: (index == 0 || index == 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                            marginBottom: (index == size - 1 || (isSizeEven && index == size - 2)) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                             padding: 0,
+                            marginRight: isRight ? R.dimens.widget_left_right_margin : R.dimens.widgetMargin,
+                            marginBottom: (index == size - 1 || (isSizeEven && index == size - 2)) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                            marginTop: (index == 0 || index == 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                             ...cardStyle
                         }}
                         onPress={this.props.onPress}>
@@ -587,9 +585,7 @@ class ShowCard extends Component {
 
                                             if (needScale) {
                                                 if (largerHeight != height) {
-                                                    if (largerHeight == 0) {
-                                                        largerHeight = height;
-                                                    } else if (height > largerHeight) {
+                                                    if (largerHeight >= 0) {
                                                         largerHeight = height;
                                                     }
                                                 }
@@ -625,9 +621,7 @@ class ShowCard extends Component {
 
                                         if (needScale) {
                                             if (largerHeight != height) {
-                                                if (largerHeight == 0) {
-                                                    largerHeight = height;
-                                                } else if (height > largerHeight) {
+                                                if (largerHeight >= 0) {
                                                     largerHeight = height;
                                                 }
                                             }
@@ -669,16 +663,16 @@ class ShowCard extends Component {
                         {type === 1 ?
 
                             <ImageButton
-                                icon={icon}
                                 style={{ marginLeft: 0, padding: R.dimens.widgetMargin, backgroundColor: imageBack != '' ? imageBack : this.valueget(value), borderRadius: R.dimens.paginationButtonRadious }}
+                                icon={icon}
                                 iconStyle={[{ width: R.dimens.dashboardMenuIcon, height: R.dimens.dashboardMenuIcon, tintColor: R.colors.white }, this.props.imageStyle]}
                                 onPress={this.props.onPress}
                             />
                             :
                             <ImageButton
+                                style={[!this.props.circle && { padding: R.dimens.widgetMargin, marginLeft: 0, borderRadius: R.dimens.paginationButtonRadious, backgroundColor: R.colors.white }]}
                                 icon={icon}
-                                style={[!this.props.circle && { marginLeft: 0, padding: R.dimens.widgetMargin, borderRadius: R.dimens.paginationButtonRadious, backgroundColor: R.colors.white }]}
-                                iconStyle={[{ width: R.dimens.dashboardMenuIcon, height: R.dimens.dashboardMenuIcon, tintColor: R.colors.accent }, this.props.imageButtonStyle]}
+                                iconStyle={[{ width: R.dimens.dashboardMenuIcon, height: R.dimens.dashboardMenuIcon, tintColor: R.colors.accent, }, this.props.imageButtonStyle]}
                                 onPress={this.props.onPress}
                             />
                         }

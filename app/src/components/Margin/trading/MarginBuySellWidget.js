@@ -62,8 +62,6 @@ class MarginBuySellWidget extends Component {
             sellPriceOriginal: '0',
             buyMinPrice: '0',
             buyMaxPrice: '0',
-            sellMinPrice: '0',
-            sellMaxPrice: '0',
             socketBuyData: []
         };
     }
@@ -132,18 +130,21 @@ class MarginBuySellWidget extends Component {
 
             //if buy sell trade widget is open than set data from BuyerSeller Book
             if (isCurrentScreen(this.props)) {
+                try {
+                    let { Price, Amount, module } = item;
 
-                let { Price, Amount, module } = item;
-
-                //If receiving module is same as sender module than set data
-                if (this.state.module == module) {
-                    let lastPrice = module == 4 ? 'buyPrice' : 'sellPrice';
-                    data = {
-                        [lastPrice]: Price.toFixed(8),
-                        amount: Amount.toFixed(8),
-                        total: parseFloatVal(Price * Amount).toFixed(8)
-                    };
-                    this.setState(data);
+                    //If receiving module is same as sender module than set data
+                    if (this.state.module == module) {
+                        let lastPrice = module == 4 ? 'buyPrice' : 'sellPrice';
+                        this.setState({
+                            [lastPrice]: parseFloatVal(Price).toFixed(8),
+                            amount: parseFloatVal(Amount).toFixed(8),
+                            total: parseFloatVal(Price * Amount).toFixed(8)
+                        });
+                    }
+                } catch (error) {
+                    //parsing error
+                    console.warn('in: ' + error.message)
                 }
             }
         })
@@ -227,8 +228,6 @@ class MarginBuySellWidget extends Component {
                                 pairRates,
                                 buyMinPrice: pairRates.response.BuyMinPrice.toFixed(8),
                                 buyMaxPrice: pairRates.response.BuyMaxPrice.toFixed(8),
-                                sellMinPrice: pairRates.response.SellMinPrice.toFixed(8),
-                                sellMaxPrice: pairRates.response.SellMaxPrice.toFixed(8),
                             })
                         } else {
                             return Object.assign({}, state, {
@@ -326,7 +325,7 @@ class MarginBuySellWidget extends Component {
 
                     //grandtotal with fees logic 
                     //total = (amt*price) + (((amt*price) * fees) / 100);
-                    total = total + ((total * parseFloatVal(this.state.fees) / 100));
+                    total = total + (total * parseFloatVal(this.state.fees) / 100);
                 }
 
                 //calculate equivalent value
@@ -352,7 +351,7 @@ class MarginBuySellWidget extends Component {
 
                     //grandtotal with fees logic 
                     //total = (amt*price) + (((amt*price) * fees) / 100);
-                    total = total + ((total * parseFloatVal(this.state.fees) / 100));
+                    total = total + (total * parseFloatVal(this.state.fees) / 100);
                 }
 
                 //if value is satisfied with 0 or greather than 0 condition than store amount and total
@@ -399,7 +398,7 @@ class MarginBuySellWidget extends Component {
 
                             //grandtotal with fees logic 
                             //total = (amt*price) + (((amt*price) * fees) / 100);
-                            total = total + ((total * parseFloatVal(this.state.fees) / 100));
+                            total = total + (total * parseFloatVal(this.state.fees) / 100);
                         }
 
                         //calculate equivalent value
@@ -425,7 +424,7 @@ class MarginBuySellWidget extends Component {
 
                             //grandtotal with fees logic 
                             //total = (amt*price) + (((amt*price) * fees) / 100);
-                            total = total + ((total * parseFloatVal(this.state.fees) / 100));
+                            total = total + (total * parseFloatVal(this.state.fees) / 100);
                         }
 
                         //if value is satisfied with 0 or greather than 0 condition than store amount and total value
@@ -533,7 +532,7 @@ class MarginBuySellWidget extends Component {
                 if (this.state.feesApply) {
 
                     //total = (amt*prc) + ((amt*price * fees)/100)
-                    total = total + ((total * parseFloatVal(this.state.fees) / 100));
+                    total = total + (total * parseFloatVal(this.state.fees) / 100);
                 }
 
                 //store current selected percentage, amount and total.
@@ -553,23 +552,6 @@ class MarginBuySellWidget extends Component {
         /* buyPrice = isEmpty(buyPrice) ? '0' : buyPrice;
        sellPrice = isEmpty(sellPrice) ? '0' : sellPrice; */
         let lastPrice = this.state.module == 4 ? buyPrice : sellPrice;
-
-        let minPairRates = 0;
-        let maxPairRates = 0;
-
-        // if module is 3 means Buy Order Type
-        if (this.state.module == 4) {
-            minPairRates = this.state.buyMinPrice;
-            maxPairRates = this.props.buyMaxPrice;
-        } else {
-            minPairRates = this.state.sellMinPrice;
-            maxPairRates = this.state.sellMaxPrice;
-        }
-
-        // Don't Delete These Code it will be use in future if condition needed with minPrice and maxPrice
-        //If pair rates have response and have buy/sell min-max price then store in variable otherwise use 0.
-        let minPrice = parseFloatVal(minPairRates);
-        let maxPrice = parseFloatVal(maxPairRates);
 
         let amount = parseFloatVal(this.state.amount);
         let balance = parseFloatVal(this.state.module == 4 ? this.state.secondBalance : this.state.firstBalance);
@@ -707,7 +689,7 @@ class MarginBuySellWidget extends Component {
 
         let pairName = this.state.result ? this.state.result.PairName : AppConfig.initialPair;
         let buySellFirstCurrency = pairName.split('_')[0];
-        let buySellSecondCurrency = pairName.split('_')[1];;
+        let buySellSecondCurrency = pairName.split('_')[1];
 
         //If Order type is market order then return original market price in last price otherwise return displayed price in text box
         let buyPrice = (this.state.type == Constants.OrderTypes.MARKET_ORDER) ? this.state.buyPriceOriginal : this.state.buyPrice;
@@ -818,7 +800,6 @@ class MarginBuySellWidget extends Component {
                                                 justifyContent: 'center',
                                                 alignItems: 'center',
                                                 borderWidth: R.dimens.pickerBorderWidth,
-                                                borderColor: R.colors.tradeInput,
                                                 borderColor: this.state.selectedPer == item ? R.colors.accent : R.colors.tradeInput,
                                             }}
                                             textStyle={{

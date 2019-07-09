@@ -41,7 +41,13 @@ const INTIAL_STATE = {
     ListWalletIsFetching: false,
 }
 
-const LimitControlReducer = (state = INTIAL_STATE, action) => {
+const LimitControlReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {

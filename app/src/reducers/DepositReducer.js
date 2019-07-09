@@ -81,7 +81,12 @@ const INTIAL_STATE = {
     FeeLimitIsFetching: false,
 }
 
-const DepositCoinReducers = (state = INTIAL_STATE, action) => {
+const DepositReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -109,20 +114,8 @@ const DepositCoinReducers = (state = INTIAL_STATE, action) => {
                 WalletBalanceFetchData: true,
                 DefaultAddressFetchData: true,
             }
-        // Set Fee And Limit success data
+        // Set Fee And Limit success and failure data
         case GET_FEEANDLIMIT_SUCCESS:
-            return {
-                ...state,
-                FeeLimitIsFetching: false,
-                FeeLimitData: action.payload,
-                FeeLimitFetchData: false,
-                BalanceFetchData: true,
-                GenerateNewAddressFetchData: true,
-                WalletListFetchData: true,
-                WalletBalanceFetchData: true,
-                DefaultAddressFetchData: true,
-            }
-        // Set Fee And Limit failure data
         case GET_FEEANDLIMIT_FAILURE:
             return {
                 ...state,
@@ -283,7 +276,7 @@ const DepositCoinReducers = (state = INTIAL_STATE, action) => {
     }
 }
 
-export default DepositCoinReducers;
+export default DepositReducer;
 
 
 

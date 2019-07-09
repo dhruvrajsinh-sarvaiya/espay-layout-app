@@ -17,7 +17,12 @@ const INTIAL_STATE = {
     pairRatesError: false,
 }
 
-export default function pairRatesReducer(state = INTIAL_STATE, action) {
+export default function pairRatesReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
 

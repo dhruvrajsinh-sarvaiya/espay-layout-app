@@ -111,8 +111,7 @@ const Colors = new ThemeManager({
         listValue: '#1E2027',
         listSeprator: '#ffffff',
         textHeaderBackground: '#121D27',
-        cardBackground: 'rgba(34, 34, 89, 0.4)', //#222259 //NEW
-        //cardBackground: 'rgba(32, 32, 79,0.45)', //#20204F //OLD
+        cardBackground: '#10103D',
         pickerBackground: '#111143',
         lightAccent: '#493802',
         lightListValue: '#bcbcbc',

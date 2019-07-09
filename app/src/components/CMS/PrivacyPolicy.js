@@ -19,7 +19,7 @@ class PrivacyPolicy extends Component {
 
     //Define All State initial state
     this.state = {
-      response: null,
+      privacyRes: null,
     }
   }
 
@@ -43,22 +43,22 @@ class PrivacyPolicy extends Component {
 
     //check for current screen
     if (isCurrentScreen(props)) {
-      var { data } = props;
+      var { privacyData } = props;
 
       //check page content is available
-      if (data.pageContents != null) {
-        let response = data.pageContents;
+      if (privacyData.pageContents != null) {
+        let privacyResponse = privacyData.pageContents;
         try {
 
           // get response language wise
           return {
             ...state,
-            response: response.locale[R.strings.getLanguage()].content
+            privacyRes: privacyResponse.locale[R.strings.getLanguage()].content
           };
         } catch (error) {
           return {
             ...state,
-            response: null
+            privacyRes: null
           }
         }
       }
@@ -74,9 +74,9 @@ class PrivacyPolicy extends Component {
   render() {
 
     //loading bit for handling progress dialog
-    let { loading } = this.props.data
+    let { loading } = this.props.privacyData
     return (
-      <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+      <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
         {/* To set status bar as per our theme */}
         <CommonStatusBar />
@@ -87,17 +87,17 @@ class PrivacyPolicy extends Component {
         <View style={{
           flex: 1,
           justifyContent: 'center',
-          marginTop: R.dimens.widget_top_bottom_margin,
           marginBottom: R.dimens.widget_top_bottom_margin,
+          marginTop: R.dimens.widget_top_bottom_margin,
+          marginRight: R.dimens.padding_left_right_margin,
           marginLeft: R.dimens.padding_left_right_margin,
-          marginRight: R.dimens.padding_left_right_margin
         }}>
           {/* display webview with data if not loading */}
           {loading
             ?
             <ListLoader />
             :
-            this.state.response != null && <HtmlViewer applyMargin={true} data={this.state.response} />
+            this.state.privacyRes != null && <HtmlViewer applyMargin={true} data={this.state.privacyRes} />
           }
         </View>
       </SafeView>
@@ -108,7 +108,7 @@ class PrivacyPolicy extends Component {
 function mapStateToProps(state) {
   return {
     //data get from the reducer
-    data: state.PageContentAppReducer
+    privacyData: state.PageContentAppReducer
   }
 }
 function mapDispatchToProps(dispatch) {

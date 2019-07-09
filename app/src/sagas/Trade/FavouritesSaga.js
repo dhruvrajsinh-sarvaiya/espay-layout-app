@@ -4,9 +4,9 @@ import { userAccessToken, tradePairAssetResponse, marginTradePairAssetResponse }
 import { GET_FAVOURITES, ADD_FAVOURITE, REMOVE_FAVOURITE } from '../../actions/ActionTypes';
 import { getFavouritesSuccess, getFavouritesFailure, addFavouriteSuccess, addFavouriteFailure, removeFavouriteFailure, removeFavouriteSuccess, getMarginFavouritesSuccess } from '../../actions/Trade/FavouriteActions';
 import { onMarketSuccess, onMarginMarketSuccess } from '../../actions/Trade/TradeActions';
-import { getColorCode } from '../../validations/CommonValidation';
 import { swaggerPostAPI, swaggerGetAPI } from '../../api/helper';
 import { parseFloatVal, } from '../../controllers/CommonUtils';
+import { mergeMarketFavoriteResponse } from './TradeSaga';
 
 export default function* favouriteSaga() {
 
@@ -37,7 +37,7 @@ function* getFavourites({ payload }) {
         if (response.ReturnCode == 0 || response.ReturnCode == 1) {
 
             // if favorite response is not null than update its records
-            if (response.response !== null){
+            if (response.response !== null) {
                 let localRes = response.response;
 
                 response.response.map((favItem, index) => {
@@ -58,39 +58,8 @@ function* getFavourites({ payload }) {
             //to check if records are exist
             if (pairResponse && pairResponse.ReturnCode == 0) {
 
-                let updatedList = pairResponse.response;
-
-                //Loop thorugh Market list
-                pairResponse.response.map((baseItem, baseIndex) => {
-
-                    //Loop through each pairs
-                    baseItem.PairList.map((pairItem, pairIndex) => {
-
-                        let index = -1;
-                        //Find index of favourite item
-                        if (response.response) {
-                            index = response.response.findIndex(el => el.PairId == pairItem.PairId);
-                        }
-
-                        //Get condition based color with old and new values
-                        let currentRateColor = getColorCode(updatedList[baseIndex].PairList[pairIndex].CurrentRate);
-                        let changePerColor = getColorCode(updatedList[baseIndex].PairList[pairIndex].ChangePer);
-
-                        //Apply true false based on index found or not
-                        updatedList[baseIndex].PairList[pairIndex].isFavorite = index > -1;
-                        updatedList[baseIndex].PairList[pairIndex].currentRateColor = currentRateColor;
-                        updatedList[baseIndex].PairList[pairIndex].changePerColor = changePerColor;
-
-                        updatedList[baseIndex].PairList[pairIndex].CurrentRate = parseFloatVal(pairItem.CurrentRate).toFixed(8);
-                        updatedList[baseIndex].PairList[pairIndex].Low24Hr = parseFloatVal(pairItem.Low24Hr).toFixed(8);
-                        updatedList[baseIndex].PairList[pairIndex].High24Hr = parseFloatVal(pairItem.High24Hr).toFixed(8);
-                        updatedList[baseIndex].PairList[pairIndex].LowWeek = parseFloatVal(pairItem.LowWeek).toFixed(8);
-                        updatedList[baseIndex].PairList[pairIndex].Low52Week = parseFloatVal(pairItem.Low52Week).toFixed(8);
-                    })
-                })
-
                 //Update new state for updated list
-                pairResponse.response = updatedList;
+                pairResponse.response = mergeMarketFavoriteResponse(pairResponse, response);
 
                 if (payload.IsMargin !== undefined && payload.IsMargin != 0) {
                     yield put(onMarginMarketSuccess(pairResponse))

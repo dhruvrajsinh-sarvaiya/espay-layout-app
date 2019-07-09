@@ -100,7 +100,7 @@ class ContactUs extends Component {
                 let description = this.state.description;
 
                 //form request for contact us
-                request = {
+                let request = {
                     email: email,
                     subject: subject,
                     description: description,

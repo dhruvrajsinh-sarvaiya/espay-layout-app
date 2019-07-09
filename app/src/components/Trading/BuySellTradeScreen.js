@@ -15,8 +15,8 @@ import { AppConfig } from '../../controllers/AppConfig';
 import R from '../../native_theme/R';
 import { TitleItem } from '../../native_theme/components/IndicatorViewPager';
 import ImageButton from '../../native_theme/components/ImageTextButton';
-import BuySellWidget from '../Widget/BuySellWidget';
-import BuyerSellerBookWidget from '../Widget/BuyerSellerBookWidget';
+import BuySellWidget from './BuySellWidget';
+import BuyerSellerBookWidget from './BuyerSellerBookWidget';
 import OptionsMenu from "react-native-options-menu";
 import { ServiceUtilConstant, Constants, Events } from '../../controllers/Constants';
 import OpenOrder from './OpenOrder';
@@ -336,7 +336,7 @@ class BuySellTradeScreen extends Component {
                 screenName = 'CoinSelectScreen';
                 option = { isAction: ServiceUtilConstant.From_Deposit };
                 break;
-            };
+            }
             case 1: screenName = 'EditFavorite'; break;
             case 2: screenName = 'FeesScreen'; break;
         }

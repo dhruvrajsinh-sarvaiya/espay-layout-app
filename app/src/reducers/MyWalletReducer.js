@@ -70,7 +70,13 @@ const INITIAL_STATE = {
     AcceptRejectWalletData: '',
 };
 
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {

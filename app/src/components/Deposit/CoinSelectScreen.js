@@ -119,10 +119,10 @@ class CoinSelectScreen extends Component {
                         }
                         //Check Coin Select Screen Open From Withdraw Menu
                         else if (state.isAction == ServiceUtilConstant.From_Withdraw) {
-                            for (var i = 0; i < Balancedata.Response.length; i++) {
+                            for (var j = 0; j < Balancedata.Response.length; j++) {
                                 //Check IsWithdraw Bit 1 From response then Store All Coin in state 
-                                if (Balancedata.Response[i].IsWithdraw == 1) {
-                                    resData.push({ SMSCode: Balancedata.Response[i].SMSCode, ServiceId: Balancedata.Response[i].ServiceId, Name: Balancedata.Response[i].Name });
+                                if (Balancedata.Response[j].IsWithdraw == 1) {
+                                    resData.push({ SMSCode: Balancedata.Response[j].SMSCode, ServiceId: Balancedata.Response[j].ServiceId, Name: Balancedata.Response[j].Name });
                                 }
                             }
                             return Object.assign({}, state, {

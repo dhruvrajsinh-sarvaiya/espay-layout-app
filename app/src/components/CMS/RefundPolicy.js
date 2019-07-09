@@ -21,7 +21,7 @@ class RefundPolicy extends Component {
 
     //Define All State initial state
     this.state = {
-      response: null,
+      refundRes: null,
     }
   }
 
@@ -31,42 +31,43 @@ class RefundPolicy extends Component {
 
     // for check internet connection
     if (await isInternet()) {
-      
+
       // call api for geting url
       this.props.getPageContents(Method.refundPolicy);
     }
   }
 
-  shouldComponentUpdate = (nextProps, _nextState) => {
-    return isCurrentScreen(nextProps);
-  };
 
   static getDerivedStateFromProps(props, state) {
 
     //check fo current screen
     if (isCurrentScreen(props)) {
-      var { data } = props;
+      var { refundData } = props;
 
       //check page content data is available
-      if (data.pageContents != null) {
-        let response = data.pageContents;
+      if (refundData.pageContents != null) {
+        let refundResponse = refundData.pageContents;
         try {
 
           //get response in language wise
           return {
             ...state,
-            response: response.locale[R.strings.getLanguage()].content
+            refundRes: refundResponse.locale[R.strings.getLanguage()].content
           };
         } catch (error) {
           return {
             ...state,
-            response: null
+            refundRes: null
           }
         }
       }
     }
     return null;
   }
+
+  shouldComponentUpdate = (nextProps, _nextState) => {
+    return isCurrentScreen(nextProps);
+  };
 
   componentWillUnmount() {
     // call action for clear Reducer value
@@ -75,7 +76,7 @@ class RefundPolicy extends Component {
 
   render() {
     //loading bit for handling progress dialog
-    let { loading } = this.props.data
+    let { loading } = this.props.refundData
 
     return (
       <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
@@ -99,7 +100,7 @@ class RefundPolicy extends Component {
             ?
             <ListLoader />
             :
-            this.state.response != null && <HtmlViewer applyMargin={true} data={this.state.response} />
+            this.state.refundRes != null && <HtmlViewer applyMargin={true} data={this.state.refundRes} />
           }
         </View>
       </SafeView>
@@ -110,7 +111,7 @@ class RefundPolicy extends Component {
 function mapStateToProps(state) {
   return {
     //data get from the reducer and set to mainurl
-    data: state.PageContentAppReducer
+    refundData: state.PageContentAppReducer
   }
 }
 function mapDispatchToProps(dispatch) {

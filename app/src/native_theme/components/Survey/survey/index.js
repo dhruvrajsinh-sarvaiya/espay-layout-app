@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
 import WebViewBridge from 'react-native-webview-bridge';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -43,7 +43,7 @@ export default class Survey extends Component {
           prepareForBridge({ action: 'LOAD', survey: surveyObj, surveydata: surveyResponseObj })
         );
       }
-    } catch (error) {}
+    } catch (error) { }
   }
 
   onBridgeMessage(msg) {
@@ -71,17 +71,19 @@ export default class Survey extends Component {
 
   render() {
     return (
-      <WebViewBridge ref={cmp => this.webviewbridge = cmp}
-        style={{ flex: 1, height: 500, justifyContent: 'center' }}
-        allowFileAccessFromFileURLs={true}
-        source={{ uri: Platform.OS === 'android' ? 'file:///android_asset/Survey/survey.html' : './survey/survey.html' }}
-        scalesPageToFit={false}
-        originWhitelist={['*']}
-        scrollEnabled
-        javaScriptEnabled
-        onLoad={this.onLoad}
-        onBridgeMessage={this.onBridgeMessage}
-      />
+      <View style={{ flex: 1, overflow: 'hidden' }}>
+        <WebViewBridge ref={cmp => this.webviewbridge = cmp}
+          style={{ flex: 1, height: 500, justifyContent: 'center' }}
+          allowFileAccessFromFileURLs={true}
+          source={{ uri: Platform.OS === 'android' ? 'file:///android_asset/Survey/survey.html' : './survey/survey.html' }}
+          scalesPageToFit={false}
+          originWhitelist={["http://.*", "https://.*"]}
+          scrollEnabled
+          javaScriptEnabled
+          onLoad={this.onLoad}
+          onBridgeMessage={this.onBridgeMessage}
+        />
+      </View>
     );
   }
 }

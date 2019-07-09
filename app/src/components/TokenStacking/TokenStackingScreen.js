@@ -135,6 +135,8 @@ class TokenStackingScreen extends Component {
         }
     };
 
+    static oldProps = {};
+
     static getDerivedStateFromProps(props, state) {
 
         //To Skip Render First Time for available reducer data if exists
@@ -143,6 +145,13 @@ class TokenStackingScreen extends Component {
                 ...state,
                 isFirstTime: false,
             };
+        }
+
+        // To Skip Render if old and new props are equal
+        if (TokenStackingScreen.oldProps !== props) {
+            TokenStackingScreen.oldProps = props;
+        } else {
+            return null;
         }
 
         // Check for current Screen

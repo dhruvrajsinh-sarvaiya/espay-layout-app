@@ -4,13 +4,13 @@ import {
     ACTION_LOGOUT,
 
     // Get Activity Log List
-    GET_ACTIVITY_LOG_LIST, 
-    GET_ACTIVITY_LOG_LIST_SUCCESS, 
+    GET_ACTIVITY_LOG_LIST,
+    GET_ACTIVITY_LOG_LIST_SUCCESS,
     GET_ACTIVITY_LOG_LIST_FAILURE,
 
     // Get Module Type
-    GET_MODULE_TYPE, 
-    GET_MODULE_TYPE_SUCCESS, 
+    GET_MODULE_TYPE,
+    GET_MODULE_TYPE_SUCCESS,
     GET_MODULE_TYPE_FAILURE,
 } from "../actions/ActionTypes";
 
@@ -28,7 +28,13 @@ const INITIAL_STATE = {
     ModuleTypeError: false,
 }
 
-export default function ActivityLogReducer(state = INITIAL_STATE, action) {
+export default function ActivityLogReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -74,7 +80,7 @@ export default function ActivityLogReducer(state = INITIAL_STATE, action) {
                 ModuleTypeLoading: false,
                 ModuleTypeError: true
             })
-            
+
         // If no actions were found from reducer than return default [existing] state value
         default:
             return state;

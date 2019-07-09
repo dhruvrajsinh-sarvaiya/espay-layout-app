@@ -212,7 +212,13 @@ const initialState = {
     historicalPerformError: false,
 }
 
-export default function SocialProfileReducer(state = initialState, action) {
+export default function SocialProfileReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout
@@ -405,6 +411,9 @@ export default function SocialProfileReducer(state = initialState, action) {
                 LeaderConfigError: true
             })
 
+    }
+
+    switch (action.type) {
         // Handle group list method data
         case GET_GROUP_LIST:
             return Object.assign({}, state, {
@@ -597,6 +606,9 @@ export default function SocialProfileReducer(state = initialState, action) {
                 topLeaderError: true
             })
 
+    }
+
+    switch (action.type) {
         // Habdle Historical Performance Chart method data
         case GET_HISTORICAL_PERFORM_CHART:
             return Object.assign({}, state, {

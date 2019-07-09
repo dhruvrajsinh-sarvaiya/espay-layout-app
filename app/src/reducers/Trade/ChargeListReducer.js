@@ -18,7 +18,12 @@ const INTIAL_STATE = {
     chargesError: false,
 }
 
-export default function chargeListReducer(state = INTIAL_STATE, action) {
+export default function chargeListReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout

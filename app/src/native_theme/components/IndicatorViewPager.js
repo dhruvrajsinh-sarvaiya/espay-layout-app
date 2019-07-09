@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from 'react';
-import { View, TouchableWithoutFeedback, Dimensions, Platform } from 'react-native';
+import { View, TouchableWithoutFeedback, Dimensions } from 'react-native';
 import { IndicatorViewPager as IndicatorViewPagerReal, PagerTitleIndicator } from 'rn-viewpager';
 import R from '../R';
 import Separator from './Separator';
@@ -16,7 +16,7 @@ class IndicatorViewPager extends Component {
         // create reference
         this.viewPager = React.createRef();
 
-        let reduceWidth = 0, width = Dimensions.get('window').width;
+        let reduceWidth, width = Dimensions.get('window').width;
 
         //If anyhow any kind of margins are given from user than change total screenwidth based on that margin
         if (props.style !== undefined) {
@@ -68,7 +68,7 @@ class IndicatorViewPager extends Component {
     onDimensionChange = (data) => {
         let props = this.props;
 
-        let reduceWidth = 0, width = data.width;
+        let reduceWidth, width = data.width;
 
         //If anyhow any kind of margins are given from user than change total screenwidth based on that margin
         if (props.style !== undefined) {
@@ -187,9 +187,8 @@ export class TitleItem extends Component {
             this.props.isSelected !== nextProps.isSelected ||
             this.props.isGradient !== nextProps.isGradient) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {

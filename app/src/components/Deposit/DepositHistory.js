@@ -420,7 +420,7 @@ class DepositHistory extends Component {
                                                 />
                                             } />
                                     </View>
-                                    : !DepositIsFetching && <ListEmptyComponent module={R.strings.Deposit} onPress={() => this.props.navigation.navigate('CoinSelectScreen', { isAction: ServiceUtilConstant.From_Deposit })} />
+                                    : !DepositIsFetching && <ListEmptyComponent module={R.strings.deposit} onPress={() => this.props.navigation.navigate('CoinSelectScreen', { isAction: ServiceUtilConstant.From_Deposit })} />
                                 }
                             </View>
                         }

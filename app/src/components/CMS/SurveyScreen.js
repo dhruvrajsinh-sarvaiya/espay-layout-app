@@ -241,7 +241,7 @@ class SurveyScreen extends Component {
 							{/* for display survey data */}
 							<Survey
 								surveyJSON={this.state.jsonData}
-								title="My Custom Survey Title"
+								title=""
 								navigation={this.props.navigation}
 								surveyResponseDateString={''}
 								onSurveyComplete={(data) => this.submitData(data)}
@@ -261,10 +261,10 @@ class SurveyScreen extends Component {
 														data={this.state.resultData}
 														showsVerticalScrollIndicator={false}
 														renderItem={({ item, index }) =>
-															<FlatlistItem
+															<SurveyList
 																item={item}
-																index={index}
-																size={this.state.resultData.length}
+																surveyListIndex={index}
+																surveyListSize={this.state.resultData.length}
 															/>}
 														keyExtractor={(item, index) => index.toString()}
 														contentContainerStyle={[
@@ -286,7 +286,7 @@ class SurveyScreen extends Component {
 }
 
 // This class is used for display records in list
-class FlatlistItem extends Component {
+class SurveyList extends Component {
 	constructor(props) {
 		super(props);
 	}
@@ -301,21 +301,20 @@ class FlatlistItem extends Component {
 	render() {
 
 		//get required field from props
-		let { index, size, item } = this.props;
+		let { surveyListIndex, surveyListSize, item } = this.props;
 		return (
 			<AnimatableItem>
 
 				<View style={{
 					flex: 1,
-					marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-					marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+					marginTop: (surveyListIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+					marginBottom: (surveyListIndex == surveyListSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
 					marginLeft: R.dimens.widget_left_right_margin,
 					marginRight: R.dimens.widget_left_right_margin
 				}}>
 					<CardView style={{
+						flex: 1, borderRadius: 0,
 						elevation: R.dimens.listCardElevation,
-						flex: 1,
-						borderRadius: 0,
 						borderBottomLeftRadius: R.dimens.margin,
 						borderTopRightRadius: R.dimens.margin,
 					}}>

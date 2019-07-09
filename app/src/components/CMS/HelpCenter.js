@@ -125,7 +125,7 @@ class HelpCenter extends Component {
 
         //for final items from search input (validate on module_name)
         //default searchInput is empty so it will display all records.
-        let finalItems = list.filter(item => (item.locale[R.strings.getLanguage()] ? item.locale[R.strings.getLanguage()].module_name.toLowerCase().includes(this.state.search.toLowerCase()) : item.locale.en.module_name.toLowerCase().includes(this.state.search.toLowerCase())));;
+        let finalItems = list.filter(item => (item.locale[R.strings.getLanguage()] ? item.locale[R.strings.getLanguage()].module_name.toLowerCase().includes(this.state.search.toLowerCase()) : item.locale.en.module_name.toLowerCase().includes(this.state.search.toLowerCase())));
 
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }} >

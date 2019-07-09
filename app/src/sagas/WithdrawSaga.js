@@ -94,7 +94,7 @@ function* ResendWithdrawalConfirmationEmail(payload) {
 	}
 }
 
-function* WithdrawCoinSagas() {
+function* WithdrawSaga() {
 
 	// To register Withdraw Request Module method
 	yield takeLatest(FetchWithdrawRequest, CallWithdrawRequest)
@@ -109,4 +109,4 @@ function* WithdrawCoinSagas() {
 	yield takeLatest(RESEND_WITHDRAWAL_EMAIL, ResendWithdrawalConfirmationEmail)
 }
 
-export default WithdrawCoinSagas
+export default WithdrawSaga

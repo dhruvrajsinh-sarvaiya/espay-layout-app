@@ -11,16 +11,16 @@ import CustomToolbar from '../../native_theme/components/CustomToolbar';
 import { fetchMarketCap } from '../../actions/Trade/MarketCapActions';
 import { sendEvent, changeTheme, addListener, convertDate, parseFloatVal } from '../../controllers/CommonUtils';
 import { isInternet, validateResponseNew } from '../../validations/CommonValidation'
-import { addFavourite, removeFavourite, getFavourites } from '../../actions/Trade/FavouriteActions';
+import { addFavourite as addFavouriteApi, removeFavourite as removeFavouriteApi, getFavourites } from '../../actions/Trade/FavouriteActions';
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import { Method, Events } from '../../controllers/Constants';
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
-import TradeChartWidget from '../Widget/TradeChartWidget';
+import TradeChartWidget from './TradeChartWidget';
 import R from '../../native_theme/R';
 import MarketDepthChart from './MarketDepthChart';
-import BuyerSellerBookWidget from '../Widget/BuyerSellerBookWidget';
+import BuyerSellerBookWidget from './BuyerSellerBookWidget';
 import { TitleItem } from '../../native_theme/components/IndicatorViewPager';
-import GlobalMarketTradeWidget from '../Widget/GlobalMarketTradeWidget';
+import GlobalMarketTradeWidget from './GlobalMarketTradeWidget';
 import CommonToast from '../../native_theme/components/CommonToast';
 import TextViewHML from '../../native_theme/components/TextViewHML';
 import TextViewMR from '../../native_theme/components/TextViewMR';
@@ -464,7 +464,7 @@ class MarketPairDetailNew extends Component {
 											{/* for show Coin name and introduction */}
 											<TextViewMR style={{ fontSize: R.dimens.mediumText, color: R.colors.textPrimary }}>{this.state.coin.Name}</TextViewMR>
 											<TextViewHML style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary, marginTop: R.dimens.widget_top_bottom_margin }}>{this.state.coin.Introduction}</TextViewHML>
-											
+
 											{/* for show issue Date */}
 											<View style={{ flexDirection: 'row', marginTop: R.dimens.widget_top_bottom_margin }}>
 												<TextViewHML style={{ flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textPrimary }}>{R.strings.issue_date}</TextViewHML>
@@ -543,7 +543,7 @@ const mapStateToProps = (state) => {
 		marketData: state.tradeData,
 		result: state.marketCapReducer,
 		favourites: state.favouriteReducer,
-		coinList: state.CoinReducer,
+		coinList: state.FetchCoinReducer,
 	}
 }
 
@@ -556,10 +556,10 @@ const mapDispatchToProps = (dispatch) => ({
 	getFavourites: (payload) => dispatch(getFavourites(payload)),
 
 	// Perform Add Favorite Action
-	addFavourite: (payload) => dispatch(addFavourite(payload)),
+	addFavourite: (payload) => dispatch(addFavouriteApi(payload)),
 
 	// Perform Remove Favorite Action
-	removeFavourite: (payload) => dispatch(removeFavourite(payload)),
+	removeFavourite: (payload) => dispatch(removeFavouriteApi(payload)),
 
 	// Perform Market Depth Action
 	clearMarketDepthData: () => dispatch(clearMarketDepthData()),

@@ -242,12 +242,12 @@ class AcceptRejectWalletRequest extends Component {
                                     data={finalItems}
                                     /* render all item in list */
                                     renderItem={({ item, index }) => {
-                                        return <FlatListItem
-                                            index={index}
+                                        return <AcceptRejectWalletList
+                                            acceptRejectWalletIndex={index}
                                             item={item}
                                             onAccept={() => { this.onAccept(item.RequestId); }}
                                             onReject={() => { this.onReject(item.RequestId); }}
-                                            size={this.state.response.length} />
+                                            acceptRejectWalletSize={this.state.response.length} />
                                     }}
                                     /* assign index as key valye to Accept Reject Wallet History list item */
                                     keyExtractor={(_item, index) => index.toString()}
@@ -274,7 +274,7 @@ class AcceptRejectWalletRequest extends Component {
 }
 
 // This Class is used for display record in list
-export class FlatListItem extends Component {
+export class AcceptRejectWalletList extends Component {
     constructor(props) {
         super(props);
     }
@@ -288,7 +288,7 @@ export class FlatListItem extends Component {
     }
 
     render() {
-        let { index, size, onAccept, onReject, item } = this.props;
+        let { acceptRejectWalletIndex, acceptRejectWalletSize, onAccept, onReject, item } = this.props;
         let color = R.colors.accent;
         if (item.OwnerApprovalStatus == 1) {
             color = R.colors.successGreen;
@@ -302,18 +302,18 @@ export class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (acceptRejectWalletIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (acceptRejectWalletIndex == acceptRejectWalletSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
+                        elevation: R.dimens.listCardElevation,
                         borderRadius: 0,
                         flexDirection: 'column',
-                        borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
+                        borderBottomLeftRadius: R.dimens.margin
                     }}>
                         <View style={{ flexDirection: 'row' }}>
                             {/* coin image  */}

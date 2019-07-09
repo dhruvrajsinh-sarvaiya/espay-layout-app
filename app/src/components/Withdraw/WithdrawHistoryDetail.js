@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
     ScrollView,
     TouchableOpacity,
     Linking,
@@ -13,17 +12,15 @@ import { validateValue, validateResponseNew, isInternet } from '../../validation
 import R from '../../native_theme/R';
 import CardView from '../../native_theme/components/CardView';
 import LinearGradient from 'react-native-linear-gradient';
-import ImageViewWidget from '../Widget/ImageViewWidget';
 import Button from '../../native_theme/components/Button';
 import { connect } from 'react-redux';
 import { ResendWithdrawalEmail } from '../../actions/Wallet/WithdrawAction'
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import { isCurrentScreen } from '../Navigation';
-import TextViewMR from '../../native_theme/components/TextViewMR';
 import TextViewHML from '../../native_theme/components/TextViewHML';
-import { Fonts } from '../../controllers/Constants';
 import SafeView from '../../native_theme/components/SafeView';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import CommonDetailHeader from '../Widget/CommonDetailHeader';
+import CommonDetailHeaderSub from '../Widget/CommonDetailHeaderSub';
 
 class WithdrawHistoryDetail extends Component {
 
@@ -105,10 +102,12 @@ class WithdrawHistoryDetail extends Component {
         //----------
 
         return (
-            <LinearGradient style={{ flex: 1, }}
-                locations={[0, 1]}
+            <LinearGradient
                 start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
-                colors={[R.colors.detailBgLight, R.colors.detailBgDark]}>
+                colors={[R.colors.detailBgLight, R.colors.detailBgDark]}
+                style={{ flex: 1, }}
+                locations={[0, 1]}
+            >
 
                 <SafeView isDetail={true} style={{ flex: 1 }}>
 
@@ -117,32 +116,23 @@ class WithdrawHistoryDetail extends Component {
 
                     {/* To Set ToolBar as per out theme */}
                     <CustomToolbar
-                        backIconStyle={{ tintColor: 'white' }}
-                        toolbarColor={'transparent'}
                         textStyle={{ color: 'white' }}
                         title={R.strings.TransactionDetail}
-                        isBack={true} nav={this.props.navigation} />
+                        backIconStyle={{ tintColor: 'white' }}
+                        isBack={true} nav={this.props.navigation}
+                        toolbarColor={'transparent'}
+                    />
 
                     {/* Progress Dialog */}
                     <ProgressDialog isShow={ResendEmailIsFetching} isDisable={true} />
 
                     <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: R.dimens.margin_top_bottom }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'}>
                         {/* Amount and CoinName is Merged With Toolbar using below design */}
-                        <View style={{ marginLeft: (R.dimens.margin_top_bottom * 2), marginRight: R.dimens.margin_top_bottom, marginTop: R.dimens.margin }}>
-                            <TextViewMR style={
-                                {
-                                    fontSize: R.dimens.smallestText,
-                                    color: R.colors.white,
-                                    textAlign: 'left',
-                                }}>{R.strings.TransactionAmount.toUpperCase()}</TextViewMR>
-                            <Text style={
-                                {
-                                    fontSize: R.dimens.largeText,
-                                    fontFamily: Fonts.MontserratSemiBold,
-                                    color: R.colors.white,
-                                    textAlign: 'left',
-                                }}>{((parseFloatVal((this.state.item.Amount)).toFixed(8)) !== 'NaN' ? parseFloatVal((this.state.item.Amount)).toFixed(8) : '-')} {this.state.item.CoinName ? this.state.item.CoinName : '-'}</Text>
-                        </View>
+                        <CommonDetailHeader
+                            title={R.strings.TransactionAmount.toUpperCase()}
+                            value={((parseFloatVal((this.state.item.Amount)).toFixed(8)) !== 'NaN' ? parseFloatVal((this.state.item.Amount)).toFixed(8) : '-')}
+                            subValue={(this.state.item.CoinName ? this.state.item.CoinName : '-')}>
+                        </CommonDetailHeader>
 
                         {/* Card for rest details to display item */}
                         <CardView style={{
@@ -153,38 +143,24 @@ class WithdrawHistoryDetail extends Component {
                         }} cardRadius={R.dimens.detailCardRadius}>
 
                             {/* Holding Currency with Icon and Balance */}
-                            <View style={{
-                                flexDirection: 'row',
-                                margin: R.dimens.widget_top_bottom_margin,
-                            }}>
-                                <View style={{ width: wp('20%') }}>
-                                    <View style={{
-                                        width: R.dimens.signup_screen_logo_height,
-                                        height: R.dimens.signup_screen_logo_height,
-                                        backgroundColor: 'transparent',
-                                        borderRadius: R.dimens.paginationButtonRadious,
-                                    }}>
-                                        <ImageViewWidget url={this.state.item.CoinName ? this.state.item.CoinName : ''} width={R.dimens.signup_screen_logo_height} height={R.dimens.signup_screen_logo_height} />
-                                    </View>
-                                </View>
-                                <View style={{ width: wp('80%'), justifyContent: 'center' }}>
-                                    <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold, }}>{this.state.item.CoinName ? (this.state.item.CoinName.toUpperCase()) : '-'}</Text>
-                                </View>
-                            </View>
+                            <CommonDetailHeaderSub
+                                coin={this.state.item.CoinName ? this.state.item.CoinName : ''}
+                                coinName={this.state.item.CoinName ? (this.state.item.CoinName.toUpperCase()) : '-'}>
+                            </CommonDetailHeaderSub>
 
                             {/* Withdraw History Result Details in list */}
                             <View style={{
-                                flexDirection: 'column',
+                                paddingLeft: R.dimens.padding_left_right_margin,
+                                paddingRight: R.dimens.padding_left_right_margin,
                                 justifyContent: 'space-between',
                                 marginTop: R.dimens.widgetMargin,
                                 marginBottom: 0,
-                                paddingLeft: R.dimens.padding_left_right_margin,
-                                paddingRight: R.dimens.padding_left_right_margin,
-
+                                flexDirection: 'column'
                             }}>
-                                <TextViewHML style={[this.styles().contentItem, { color: R.colors.textSecondary }]}>{R.strings.TrnId}</TextViewHML>
+                                <TextViewHML
+                                    style={[this.styles().contentItem, { color: R.colors.textSecondary }]}>{R.strings.TrnId}</TextViewHML>
                                 {
-                                    (this.state.item.TrnId && this.state.item.ExplorerLink && (this.state.item.IsInternalTrn == 2)) ?
+                                    (this.state.item.ExplorerLink && this.state.item.TrnId && (this.state.item.IsInternalTrn == 2)) ?
                                         <TouchableOpacity onPress={() => this.onTrnLinkPress()}>
                                             <TextViewHML style={[this.styles().contentItem, { color: R.colors.accent }]}>{this.state.item.TrnId ? this.state.item.TrnId : '-'}</TextViewHML>
                                         </TouchableOpacity> :
@@ -192,13 +168,12 @@ class WithdrawHistoryDetail extends Component {
                                 }
                             </View>
                             <View style={{
-                                flexDirection: 'column',
                                 justifyContent: 'space-between',
+                                flexDirection: 'column',
                                 marginTop: R.dimens.widgetMargin,
-                                marginBottom: 0,
                                 paddingLeft: R.dimens.padding_left_right_margin,
                                 paddingRight: R.dimens.padding_left_right_margin,
-
+                                marginBottom: 0
                             }}>
                                 <TextViewHML style={[this.styles().contentItem, { color: R.colors.textSecondary }]}>{R.strings.Address}</TextViewHML>
                                 <TextViewHML style={[this.styles().contentItem, { color: R.colors.textPrimary }]}>{this.state.item.Address ? this.state.item.Address : '-'}</TextViewHML>
@@ -217,8 +192,8 @@ class WithdrawHistoryDetail extends Component {
                                 <TextViewHML style={[this.styles().contentItem, { color: R.colors.textPrimary }]}>{this.state.item.Information ? this.state.item.Information : '-'}</TextViewHML>
                             </View>
 
-                            {this.rowItem(R.strings.Trn_No, validateValue(this.state.item.TrnNo))}
-                            {this.rowItem(R.strings.Date, this.state.item.Date ? convertDate(this.state.item.Date) : '-')}
+                            {this.rowItem(R.strings.Trn_No, validateValue(this.state.item.TrnNo), false, false)}
+                            {this.rowItem(R.strings.Date, this.state.item.Date ? convertDate(this.state.item.Date) : '-', false, false)}
                             {this.rowItem(R.strings.Status, this.state.item.StatusStr ? this.state.item.StatusStr : '-', true, true, this.state.item.Status)}
                         </CardView>
                         {(this.state.item.IsVerified == 0 && this.state.item.Status == 4) ?
@@ -238,54 +213,48 @@ class WithdrawHistoryDetail extends Component {
     }
 
     // for display title and value horizontally
-    rowItem = (title, value, marginBottom = false, status = false, StatusCode) => {
+    rowItem = (title, value, marginBottom, status, StatusCode) => {
 
-        let color = R.colors.accent;
+        let color;
         if (status) {
             //To Display various Status Color in ListView
             if (StatusCode == 0) {
                 color = R.colors.textPrimary
-            }
-            if (StatusCode == 1) {
+            } else if (StatusCode == 1) {
                 color = R.colors.successGreen
-            }
-            if (StatusCode == 2) {
+            } else if (StatusCode == 2) {
                 color = R.colors.failRed
-            }
-            if (StatusCode == 3) {
+            } else if (StatusCode == 3) {
                 color = R.colors.failRed
-            }
-            if (StatusCode == 4) {
+            } else if (StatusCode == 4) {
                 color = R.colors.accent
-            }
-            if (StatusCode == 5) {
+            } else if (StatusCode == 5) {
                 color = R.colors.sellerPink
-            }
-            if (StatusCode == 6) {
+            } else if (StatusCode == 6) {
+                color = R.colors.accent
+            } else {
                 color = R.colors.accent
             }
         }
 
         return <View style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: R.dimens.widgetMargin,
             marginBottom: marginBottom ? R.dimens.widget_top_bottom_margin : 0,
+            flexDirection: 'row',
             paddingLeft: R.dimens.padding_left_right_margin,
             paddingRight: R.dimens.padding_left_right_margin,
-
+            marginTop: R.dimens.widgetMargin,
+            justifyContent: 'space-between'
         }}>
             <TextViewHML style={[this.styles().contentItem, { color: R.colors.textSecondary }]}>{title}</TextViewHML>
-            <TextViewHML style={[this.styles().contentItem, { color: status ? color : R.colors.textPrimary, fontWeight: 'normal', textAlign: 'right' }]}>{value}</TextViewHML>
+            <TextViewHML style={[this.styles().contentItem, { color: status ? color : R.colors.textPrimary, textAlign: 'right' }]}>{value}</TextViewHML>
         </View>
     }
 
     styles = () => {
         return {
             contentItem: {
-                flex: 1,
                 fontSize: R.dimens.smallText,
-                color: R.colors.textPrimary
+                flex: 1
             }
         }
     }
@@ -293,12 +262,13 @@ class WithdrawHistoryDetail extends Component {
 
 function mapStateToProps(state) {
     return {
-        //For Update isPortrait true or false
-        preference: state.preference.dimensions.isPortrait,
         //For Resend Withdraw Email
         ResendEmailFetchData: state.WithdrawReducer.ResendEmailFetchData,
         ResendEmailData: state.WithdrawReducer.ResendEmailData,
         ResendEmailIsFetching: state.WithdrawReducer.ResendEmailIsFetching,
+
+        //For Update isPortrait true or false
+        preference: state.preference.dimensions.isPortrait,
     }
 }
 

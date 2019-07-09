@@ -32,7 +32,6 @@ class AffiliateSignUpMain extends Component {
 
         //To Bind All Method
         this.focusNextField = this.focusNextField.bind(this);
-        this.RedirecLoginScreen - this.RedirecLoginScreen.bind(this);
         //----------
 
         //Define All State initial state
@@ -76,15 +75,6 @@ class AffiliateSignUpMain extends Component {
         return isCurrentScreen(nextProps);
     };
 
-    //Redirect User Normal Login Success Screen
-    RedirecLoginScreen() {
-        //To Redirect User Normal Login Success Screen
-        this.props.removeLoginData();
-        //This will reset to login page
-        sendEvent(Events.SessionLogout, true);
-        //----------
-    }
-
     //To Validate Mobile Number
     validateMobileNumber = (MobileNumber) => {
         if (validateMobileNumber(MobileNumber)) {
@@ -119,6 +109,11 @@ class AffiliateSignUpMain extends Component {
                 }
             }
         }
+    }
+
+    //this Method is used to focus on next feild
+    focusNextField(id) {
+        this.inputs[id].focus();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -166,10 +161,7 @@ class AffiliateSignUpMain extends Component {
         return null
     }
 
-    //this Method is used to focus on next feild
-    focusNextField(id) {
-        this.inputs[id].focus();
-    }
+
 
     //Check All Validation and if validation is proper then call API
     onSignUpButtonPress = async () => {
@@ -180,32 +172,32 @@ class AffiliateSignUpMain extends Component {
             return;
         }
         //Check Password is Empty or Not
-        if (isEmpty(this.state.Password)) {
+        else if (isEmpty(this.state.Password)) {
             this.toast.Show(R.strings.password_validate);
             return;
         }
         //To Check Password length is 10 or not
-        if (this.state.Password.length < 6) {
+        else if (this.state.Password.length < 6) {
             this.toast.Show(R.strings.password_length_validate);
             return;
         }
         //To Check Password Validation
-        if (!validatePassword(this.state.Password)) {
+        else if (!validatePassword(this.state.Password)) {
             this.toast.Show(R.strings.Strong_Password_Validation);
             return;
         }
         //Check Confirm Password is Empty or Not
-        if (isEmpty(this.state.ConfirmPassword)) {
+        else if (isEmpty(this.state.ConfirmPassword)) {
             this.toast.Show(R.strings.confirm_password_validate);
             return;
         }
         //Check Password and Confirm Password Same or Not
-        if (this.state.Password != this.state.ConfirmPassword) {
+        else if (this.state.Password != this.state.ConfirmPassword) {
             this.toast.Show(R.strings.password_match_validate);
             return;
         }
         //Check Scheme Type Select Or Not From DropDown
-        if (isEmpty(this.state.selectedSchemeType) || this.state.selectedSchemeType === R.strings.select_scheme_type) {
+        else if (isEmpty(this.state.selectedSchemeType) || this.state.selectedSchemeType === R.strings.select_scheme_type) {
             this.toast.Show(R.strings.select_scheme_type);
             return;
         }
@@ -214,7 +206,6 @@ class AffiliateSignUpMain extends Component {
             if (await isInternet()) {
 
                 try {
-
                     changeFocus(this.mainInputTexts);
 
                     //Bind Request For Affiliate SignUp
@@ -277,58 +268,58 @@ class AffiliateSignUpMain extends Component {
 
                             {/* To Set UserName in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etUsername'] = input; }}
+                                ref={input => { this.mainInputTexts['etUsrname'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etUsername'] = input; }}
+                                reference={input => { this.inputs['etUsrname'] = input; }}
+                                value={this.state.UserName}
+                                onChangeText={(UserName) => this.setState({ UserName })}
                                 placeholder={R.strings.Username}
                                 multiline={false}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(UserName) => this.setState({ UserName })}
-                                onSubmitEditing={() => { this.focusNextField('etPassword') }}
-                                value={this.state.UserName}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etUsername')}
+                                onSubmitEditing={() => { this.focusNextField('etPWD') }}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etUsrname')}
                             />
 
                             {/* To Set Password in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etPassword'] = input; }}
+                                ref={input => { this.mainInputTexts['etPWD'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etPassword'] = input; }}
+                                reference={input => { this.inputs['etPWD'] = input; }}
+                                value={this.state.Password}
+                                onChangeText={(Password) => this.setState({ Password })}
                                 placeholder={R.strings.Password}
                                 multiline={false}
                                 maxLength={30}
-                                keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(Password) => this.setState({ Password })}
-                                onSubmitEditing={() => { this.focusNextField('etConfirmPassword') }}
-                                value={this.state.Password}
+                                keyboardType='default'
+                                onSubmitEditing={() => { this.focusNextField('etConfirmPWD') }}
                                 secureTextEntry={!this.state.isVisiblePassword}
                                 rightImage={this.state.isVisiblePassword ? R.images.IC_EYE_FILLED : R.images.IC_EYE_FILLED_DISABLE}
                                 onPressRight={() => {
                                     this.setState({ isVisiblePassword: !this.state.isVisiblePassword })
                                 }}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etPassword')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etPWD')}
                             />
 
                             {/* To Set Confirm Password in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etConfirmPassword'] = input; }}
+                                ref={input => { this.mainInputTexts['etConfirmPWD'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etConfirmPassword'] = input; }}
+                                reference={input => { this.inputs['etConfirmPWD'] = input; }}
+                                value={this.state.ConfirmPassword}
+                                onChangeText={(ConfirmPassword) => this.setState({ ConfirmPassword })}
                                 placeholder={R.strings.Confirm_Password}
-                                multiline={false}
                                 maxLength={30}
+                                multiline={false}
                                 secureTextEntry={true}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onSubmitEditing={() => { this.focusNextField('etReferralID') }}
-                                onChangeText={(ConfirmPassword) => this.setState({ ConfirmPassword })}
-                                value={this.state.ConfirmPassword}
+                                onSubmitEditing={() => { this.focusNextField('etReferralId') }}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etConfirmPassword')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etConfirmPWD')}
                             />
 
                             {/* To Set Scheme type in Dropdown */}
@@ -346,17 +337,17 @@ class AffiliateSignUpMain extends Component {
 
                             {/* To Set ReferalId in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etReferralID'] = input; }}
+                                ref={input => { this.mainInputTexts['etReferralId'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etReferralID'] = input; }}
+                                value={this.state.ReferralID}
+                                onChangeText={(ReferralID) => this.setState({ ReferralID })}
+                                reference={input => { this.inputs['etReferralId'] = input; }}
                                 placeholder={referralid}
                                 multiline={false}
                                 keyboardType='default'
                                 returnKeyType={"done"}
-                                onChangeText={(ReferralID) => this.setState({ ReferralID })}
-                                value={this.state.ReferralID}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etReferralID')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etReferralId')}
                             />
 
                             {/* Button */}

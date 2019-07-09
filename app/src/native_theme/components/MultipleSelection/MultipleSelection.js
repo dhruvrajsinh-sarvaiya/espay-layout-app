@@ -87,12 +87,12 @@ class MultipleSelection extends Component {
                     </ScrollView>
 
                     <View style={{ padding: R.dimens.WidgetPadding, }}>
-                       
-                       {/* To Set Save Button */}
+
+                        {/* To Set Save Button */}
                         <Button title={R.strings.submit} onPress={() => {
                             let list = this.state.selectedList;
-                            let filteredList = list.filter(el => el.selected)
-                            this.props.navigation.state.params.updateList(filteredList);
+                            let updatedFilteredList = list.filter(el => el.selected)
+                            this.props.navigation.state.params.updateList(updatedFilteredList);
                             this.props.navigation.goBack();
                         }}></Button>
                     </View>

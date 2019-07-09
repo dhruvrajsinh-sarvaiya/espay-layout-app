@@ -4,7 +4,6 @@ import {
     ScrollView,
     TouchableOpacity,
     Linking,
-    Text
 } from 'react-native';
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
 import CustomToolbar from '../../native_theme/components/CustomToolbar';
@@ -13,14 +12,12 @@ import { validateValue } from '../../validations/CommonValidation';
 import R from '../../native_theme/R';
 import CardView from '../../native_theme/components/CardView';
 import LinearGradient from 'react-native-linear-gradient';
-import ImageViewWidget from '../Widget/ImageViewWidget';
 import { isCurrentScreen } from '../Navigation';
-import TextViewMR from '../../native_theme/components/TextViewMR';
 import TextViewHML from '../../native_theme/components/TextViewHML';
-import { Fonts } from '../../controllers/Constants';
 import SafeView from '../../native_theme/components/SafeView';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
+import CommonDetailHeader from '../Widget/CommonDetailHeader';
+import CommonDetailHeaderSub from '../Widget/CommonDetailHeaderSub';
 
 class DepositHistoryDetail extends Component {
 
@@ -77,45 +74,22 @@ class DepositHistoryDetail extends Component {
                         isBack={true} nav={this.props.navigation} />
 
                     <ScrollView contentContainerStyle={{ flexGrow: 1, paddingBottom: R.dimens.margin_top_bottom }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'}>
+
                         {/* Amount and CoinName is Merged With Toolbar using below design */}
-                        <View style={{ marginLeft: (R.dimens.margin_top_bottom * 2), marginRight: R.dimens.margin_top_bottom, marginTop: R.dimens.margin }}>
-                            <TextViewMR style={
-                                {
-                                    fontSize: R.dimens.smallestText,
-                                    color: R.colors.white,
-                                    textAlign: 'left',
-                                }}>{R.strings.TransactionAmount.toUpperCase()}</TextViewMR>
-                            <Text style={
-                                {
-                                    fontSize: R.dimens.largeText,
-                                    fontFamily: Fonts.MontserratSemiBold,
-                                    color: R.colors.white,
-                                    textAlign: 'left',
-                                }}>{((parseFloatVal((this.state.item.Amount)).toFixed(8)) !== 'NaN' ? parseFloatVal((this.state.item.Amount)).toFixed(8) : '-')} {this.state.item.CoinName ? this.state.item.CoinName : '-'}</Text>
-                        </View>
+                        <CommonDetailHeader
+                            title={R.strings.TransactionAmount.toUpperCase()}
+                            value={((parseFloatVal((this.state.item.Amount)).toFixed(8)) !== 'NaN' ? parseFloatVal((this.state.item.Amount)).toFixed(8) : '-')}
+                            subValue={(this.state.item.CoinName ? this.state.item.CoinName : '-')}>
+                        </CommonDetailHeader>
 
                         {/* Card for rest details to display item */}
                         <CardView style={{ margin: R.dimens.margin_top_bottom, padding: 0, backgroundColor: R.colors.cardBackground }} cardRadius={R.dimens.detailCardRadius}>
 
                             {/* Holding Currency with Icon and Balance */}
-                            <View style={{
-                                flexDirection: 'row',
-                                margin: R.dimens.widget_top_bottom_margin,
-                            }}>
-                                <View style={{ width: wp('20%') }}>
-                                    <View style={{
-                                        width: R.dimens.signup_screen_logo_height,
-                                        height: R.dimens.signup_screen_logo_height,
-                                        backgroundColor: 'transparent',
-                                        borderRadius: R.dimens.paginationButtonRadious,
-                                    }}>
-                                        <ImageViewWidget url={this.state.item.CoinName ? this.state.item.CoinName : ''} width={R.dimens.signup_screen_logo_height} height={R.dimens.signup_screen_logo_height} />
-                                    </View>
-                                </View>
-                                <View style={{ width: wp('80%'), justifyContent: 'center' }}>
-                                    <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold, }}>{this.state.item.CoinName ? (this.state.item.CoinName.toUpperCase()) : '-'}</Text>
-                                </View>
-                            </View>
+                            <CommonDetailHeaderSub
+                                coin={this.state.item.CoinName ? this.state.item.CoinName : ''}
+                                coinName={this.state.item.CoinName ? (this.state.item.CoinName.toUpperCase()) : '-'}>
+                            </CommonDetailHeaderSub>
 
                             {/* Deposit History Result Details in list */}
                             <View style={{
@@ -160,7 +134,15 @@ class DepositHistoryDetail extends Component {
     }
 
     //For Display Title and Value 
-    rowItem = (title, value, marginBottom = false, status = false, StatusCode) => {
+    rowItem = (title, value, marginBottom, status, StatusCode) => {
+
+        if (marginBottom === 'undefined') {
+            marginBottom = false;
+        }
+
+        if (status === 'undefined') {
+            status = false;
+        }
 
         let color = R.colors.accent;
         if (status) {

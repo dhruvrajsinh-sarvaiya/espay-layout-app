@@ -28,23 +28,27 @@ class SendSmsReport extends Component {
     constructor(props) {
         super(props);
 
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
+
         //Define All initial State
         this.state = {
             row: [],
             pageNo: 2,
             selectedPage: 1,
-            paginationBit: true,
-            data: [],//for store data from the responce
-            search: '',//for search value for data
-            refreshing: false,//for refresh data
-            FromDate: getCurrentDate(),//for display Current Date
             ToDate: getCurrentDate(),//for display Current Date
+            FromDate: getCurrentDate(),//for display Current Date
+            paginationBit: true,
+            search: '',//for search value for data
+            data: [],//for store data from the responce
+            refreshing: false,//for refresh data
             PageSize: AppConfig.pageSize,
-            userList: [],
-            selectedUser: R.strings.Please_Select,
-            UserId: 0,
             isFirstTime: true,
+            selectedUser: R.strings.Please_Select,
             isDrawerOpen: false, // First Time Drawer is Closed
+            userList: [],
+            UserId: 0,
         }
 
         //Add Current Screen to Manual Handling BackPress Events
@@ -54,26 +58,9 @@ class SendSmsReport extends Component {
         this.onRefresh = this.onRefresh.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
         this.onResetPress = this.onResetPress.bind(this);
-        this.onCompletePress = this.onCompletePress.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
-
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
+        this.onCompletePress = this.onCompletePress.bind(this);
     }
 
     componentDidMount = async () => {
@@ -113,10 +100,10 @@ class SendSmsReport extends Component {
 
             //Bind Request For getSMSReport data
             let requestSmsReport = {
-                FromDate: this.state.FromDate,
-                ToDate: this.state.ToDate,
                 UserId: this.state.UserId,
                 PageNo: this.state.selectedPage - 1,
+                ToDate: this.state.ToDate,
+                FromDate: this.state.FromDate,
                 PageSize: this.state.PageSize
             }
             //Call Api for get SMSSendReport
@@ -124,6 +111,17 @@ class SendSmsReport extends Component {
             //----------
         } else {
             this.setState({ refreshing: false });
+        }
+    }
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
         }
     }
 
@@ -146,7 +144,9 @@ class SendSmsReport extends Component {
                 this.props.GetSmsSendData(requestSmsReport)
             }
             else {
-                this.setState({ refreshing: false });
+                this.setState({
+                    refreshing: false,
+                });
             }
         }
     }
@@ -154,23 +154,23 @@ class SendSmsReport extends Component {
     // Drawer Navigation
     navigationDrawer() {
         return (
-            <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+            <SafeView style={{ backgroundColor: R.colors.background, flex: 1, }}>
 
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth, }} />
 
                 {/* filterwidget for display fromdate, todate,userlist data */}
                 <FilterWidget
+                    onResetPress={this.onResetPress}
+                    onCompletePress={this.onCompletePress}
                     FromDatePickerCall={(date) => this.setState({ FromDate: date })}
                     FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
-                    onResetPress={this.onResetPress}
-                    onCompletePress={this.onCompletePress}
                     firstPicker={{
+                        selectedValue: this.state.selectedUser,
                         title: R.strings.parentUser,
                         array: this.state.userList,
-                        selectedValue: this.state.selectedUser,
                         onPickerSelect: (index, object) => { this.setState({ selectedUser: index, UserId: object.Id }) }
                     }}
                 />
@@ -183,11 +183,11 @@ class SendSmsReport extends Component {
 
         // setstate data as initial value
         this.setState({
+            search: '',
             FromDate: getCurrentDate(),
             ToDate: getCurrentDate(),
-            selectedUser: R.strings.Please_Select,
             selectedPage: 1,
-            search: '',
+            selectedUser: R.strings.Please_Select,
         })
 
         //Check NetWork is Available or not
@@ -268,13 +268,13 @@ class SendSmsReport extends Component {
                 try {
                     if (validateResponseNew({ response: affiliateUserData, isList: true })) {
                         //Store Api Response Field and display in Screen.
-                        var newRes = parseArray(affiliateUserData.Response);
-                        newRes.map((item, index) => {
-                            newRes[index].value = newRes[index].UserName
-                            newRes[index].Id = newRes[index].Id
+                        var userDataForSmsReport = parseArray(affiliateUserData.Response);
+                        userDataForSmsReport.map((item, index) => {
+                            userDataForSmsReport[index].value = userDataForSmsReport[index].UserName
+                            userDataForSmsReport[index].Id = userDataForSmsReport[index].Id
                         })
                         //----
-                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...userDataForSmsReport]
 
                         return { ...state, userList: res };
                     }
@@ -318,25 +318,28 @@ class SendSmsReport extends Component {
 
         //for final items from search input (validate on Mobile , FirstName and LastName)
         //default searchInput is empty so it will display all records.
-        let finalItems = list.filter(item =>
-            (item.Mobile.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
+        let finalItems = list.filter(smsReportItem =>
+            (smsReportItem.Mobile.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (smsReportItem.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (smsReportItem.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
         );
 
         return (
             //apply filter for sendSMS report 
             <Drawer
                 ref={cmp => this.drawer = cmp}
-                drawerWidth={R.dimens.FilterDrawarWidth}
-                drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                drawerContent={this.navigationDrawer()}
                 type={Drawer.types.Overlay}
+                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerPosition={Drawer.positions.Right}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{
+                    flex: 1,
+                    backgroundColor: R.colors.background,
+                }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -366,24 +369,24 @@ class SendSmsReport extends Component {
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
                                                 renderItem={({ item, index }) =>
-                                                    <FlatlistItem
-                                                        item={item}
-                                                        index={index}
-                                                        size={this.state.data.length}
+                                                    <SMSReportList
+                                                        smsReportItem={item}
+                                                        smsReportIndex={index}
+                                                        smsReportSize={this.state.data.length}
                                                     />
                                                 }
-                                                keyExtractor={(item, index) => index.toString()}
                                                 contentContainerStyle={[
                                                     { flexGrow: 1 },
                                                     this.state.data.length ? null : { justifyContent: 'center' }
                                                 ]}
+                                                keyExtractor={(item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
                                                     <RefreshControl
                                                         colors={[R.colors.accent]}
                                                         progressBackgroundColor={R.colors.background}
-                                                        refreshing={this.state.refreshing}
                                                         onRefresh={this.onRefresh}
+                                                        refreshing={this.state.refreshing}
                                                     />}
                                             />
                                         </View>
@@ -395,7 +398,11 @@ class SendSmsReport extends Component {
                         {/* to show Pagination */}
                         <View>
                             {finalItems.length > 0 &&
-                                <PaginationWidget row={this.state.row} selectedPage={this.state.selectedPage} onPageChange={(item) => { this.onPageChange(item) }} />}
+                                <PaginationWidget
+                                    row={this.state.row}
+                                    selectedPage={this.state.selectedPage}
+                                    onPageChange={(item) => { this.onPageChange(item) }}
+                                />}
                         </View>
                     </View>
                 </SafeView>
@@ -405,7 +412,7 @@ class SendSmsReport extends Component {
 }
 
 // This Class is used for display record in list
-class FlatlistItem extends Component {
+class SMSReportList extends Component {
 
     constructor(props) {
         super(props);
@@ -414,23 +421,23 @@ class FlatlistItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.smsReportItem === nextProps.smsReportItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let smsReportItem = this.props.smsReportItem;
+        let { smsReportIndex, smsReportSize, } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (smsReportIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (smsReportIndex == smsReportSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -453,9 +460,9 @@ class FlatlistItem extends Component {
                             {/* for Display message with username and from and to mobile no */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
                                 <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.smsLinkInvite}</Text>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.FirstName ? item.FirstName + ' ' + item.LastName : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.UserEmail ? item.UserEmail : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.Mobile ? item.Mobile : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{smsReportItem.FirstName ? smsReportItem.FirstName + ' ' + smsReportItem.LastName : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{smsReportItem.UserEmail ? smsReportItem.UserEmail : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{smsReportItem.Mobile ? smsReportItem.Mobile : '-'}</TextViewHML></TextViewHML>
                             </View>
                         </View>
 
@@ -466,7 +473,7 @@ class FlatlistItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.SentTime ? convertDateTime(item.SentTime) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{smsReportItem.SentTime ? convertDateTime(smsReportItem.SentTime) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View >

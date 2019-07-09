@@ -194,7 +194,7 @@ class FAQsScreen extends React.PureComponent {
 
         let finalItems = this.state.response
         if (finalItems.length > 0) {
-            
+
             //for final items from search input (validate on Amount and status)
             //default searchInput is empty so it will display all records.
             finalItems = this.state.response.filter(item => (item.question.toLowerCase().includes(this.state.searchInput.toLowerCase())));
@@ -243,31 +243,31 @@ class FAQsScreen extends React.PureComponent {
         return {
             container: {
                 flex: 1,
-                backgroundColor: R.colors.background,
+                backgroundColor: R.colors.background
             },
             headerText: {
                 textAlign: 'left',
-                fontSize: R.dimens.smallText,
                 color: R.colors.textPrimary,
+                fontSize: R.dimens.smallText,
             },
             content: {
                 marginTop: R.dimens.widgetMargin,
                 marginRight: R.dimens.widgetMargin,
-                marginBottom: R.dimens.widgetMargin,
                 paddingLeft: R.dimens.WidgetPadding,
+                marginBottom: R.dimens.widgetMargin,
                 paddingRight: R.dimens.WidgetPadding,
             },
             simpleItem: {
                 flex: 1,
-                marginLeft: R.dimens.margin,
                 marginRight: R.dimens.margin,
+                marginLeft: R.dimens.margin,
             },
             cardViewStyle: {
                 flex: 1,
                 ...getCardStyle(R.dimens.CardViewElivation),
                 margin: R.dimens.widgetMargin,
-                padding: R.dimens.widgetMargin,
                 backgroundColor: R.colors.cardBackground,
+                padding: R.dimens.widgetMargin,
                 borderRadius: R.dimens.cardBorderRadius,
             }
         }

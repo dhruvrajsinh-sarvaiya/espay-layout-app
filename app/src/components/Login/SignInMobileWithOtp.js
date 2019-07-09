@@ -9,7 +9,7 @@ import { isCurrentScreen } from '../Navigation';
 import { ServiceUtilConstant, timerScreen } from '../../controllers/Constants';
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import OTPScreenWidget from '../Widget/OTPScreenWidget';
-import { generateToken, clearGenerateTokenData } from '../../actions/Login/AuthorizeToken';
+import { generateToken as generateTokenApi, clearGenerateTokenData } from '../../actions/Login/AuthorizeToken';
 import { removeLoginData } from '../../actions/SignUpProcess/signUpAction';
 import { setData } from '../../App';
 import { AppConfig } from '../../controllers/AppConfig';
@@ -192,7 +192,7 @@ class SignInMobileWithOtp extends Component {
 				if (generateToken) {
 
 					// Token is not null
-					if (generateToken.access_token && generateToken.refresh_token && generateToken.id_token) {
+					if (generateToken.access_token && generateToken.id_token && generateToken.refresh_token) {
 						this.props.removeLoginData();
 						this.props.navigation.navigate(AppConfig.initialHomeRoute);
 					} else {
@@ -200,14 +200,13 @@ class SignInMobileWithOtp extends Component {
 							//to clear token data
 							this.props.clearGenerateTokenData();
 							this.props.removeLoginData();
-							this.setState({ VerifyMobileOtpdata: null, ResendMobileOtpdata: null, generateToken: null })
+							this.setState({ generateToken: null, VerifyMobileOtpdata: null, ResendMobileOtpdata: null })
 							this.forceUpdate();
 						});
 					}
 				}
 			}
 		} catch (e) {
-			//console.warn('catch: ' + e.message)
 		}
 	}
 
@@ -215,7 +214,7 @@ class SignInMobileWithOtp extends Component {
 
 		//To Skip Render First Time for available reducer data if exists
 		if (state.isFirstTime) {
-			return Object.assign({}, state, { isFirstTime: false });
+			return Object.assign({}, state, { isFirstTime: false, });
 		}
 
 		if (isCurrentScreen(props)) {
@@ -259,7 +258,7 @@ class SignInMobileWithOtp extends Component {
 					return Object.assign({}, state, {
 						VerifyMobileOtpdata: null,
 						isGoogleAuth: false,
-						askTwoFA: false,
+						askTwoFA: false
 					})
 				}
 			}
@@ -268,7 +267,7 @@ class SignInMobileWithOtp extends Component {
 			if (generateToken) {
 				try {
 					//if local generateToken state is null or its not null and also different then new response then and only then validate response.
-					if (state.generateToken == null || (state.generateToken != null && generateToken !== state.generateToken)) {
+					if (state.generateToken == null || (generateToken !== state.generateToken && state.generateToken != null)) {
 
 						if (validateResponseNew({ response: generateToken })) {
 
@@ -277,10 +276,10 @@ class SignInMobileWithOtp extends Component {
 								//store tokenId & MobileNo into preference
 								setData({
 									[ServiceUtilConstant.KEY_GoogleAuth]: state.isGoogleAuth,
-									[ServiceUtilConstant.ACCESS_TOKEN]: 'Bearer ' + generateToken.access_token,
 									[ServiceUtilConstant.REFRESH_TOKEN]: generateToken.refresh_token,
+									[ServiceUtilConstant.ACCESS_TOKEN]: 'Bearer ' + generateToken.access_token,
+									[ServiceUtilConstant.MOBILENO]: state.MobileNo,
 									[ServiceUtilConstant.ID_TOKEN]: generateToken.id_token,
-									[ServiceUtilConstant.MOBILENO]: state.MobileNo
 								});
 
 								return Object.assign({}, state, {
@@ -353,7 +352,7 @@ function mapStateToProps(state) {
 	return {
 		//for login and token
 		login: state.loginReducer,
-		token: state.tokenReducer,
+		token: state.AuthorizeTokenReducer,
 	}
 }
 
@@ -365,7 +364,7 @@ function mapDispatchToProps(dispatch) {
 		//Perform SignIn Mobile Verify Otp Action
 		signInMobileVerifyOTP: (mobileNoOtpVerifyRequest) => dispatch(signInMobileVerifyOTP(mobileNoOtpVerifyRequest)),
 		// Perform generate Token Action
-		generateToken: (payload) => dispatch(generateToken(payload)),
+		generateToken: (payload) => dispatch(generateTokenApi(payload)),
 		//Perform clear all type of login data Action
 		removeLoginData: () => dispatch(removeLoginData()),
 		// Perform to clear token data Action

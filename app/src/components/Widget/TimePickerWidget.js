@@ -67,8 +67,6 @@ class TimePickerWidget extends Component {
                     clearTextOnFocus: true,
                 });
                 //check user select new Time or not
-                if (action == TimePickerAndroid.dismissedAction) {
-                }
                 if (action == TimePickerAndroid.timeSetAction) {
                     var newTime = hour + ":" + minute
                     //To convert selected time into 12 Hours Format using Moment Library

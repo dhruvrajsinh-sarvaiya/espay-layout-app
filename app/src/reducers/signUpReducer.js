@@ -94,7 +94,13 @@ const initialState = {
 	ResendConfirmEmailData: '',
 }
 
-export default function SignUpReducer(state = initialState, action) {
+export default function signUpReducer(state, action) {
+
+	//If state is undefine then return with initial state
+	if (typeof state === 'undefined') {
+		return initialState;
+	}
+
 	switch (action.type) {
 
 		// To reset initial state on logout
@@ -190,13 +196,6 @@ export default function SignUpReducer(state = initialState, action) {
 			};
 		// Set normal signup success data
 		case NORMAL_REGISTER_SUCCESS:
-			return {
-				...state,
-				NormalSignUpIsFetching: false,
-				NormalSignUpData: action.payload,
-				NormalSignUpFetchData: false
-			};
-		// Set normal signup failure data
 		case NORMAL_REGISTER_FAILURE:
 			return {
 				...state,
@@ -214,15 +213,8 @@ export default function SignUpReducer(state = initialState, action) {
 				SignUpMobileData: null
 			};
 
-		// Set signup with mobile success data
+		// Set signup with mobile success failure data
 		case SIGNUP_WITH_MOBILE_SUCCESS:
-			return {
-				...state,
-				SignUpMobileFetchData: false,
-				SignUpMobileIsFetching: false,
-				SignUpMobileData: action.payload
-			};
-		// Set signup with mobile failure data
 		case SIGNUP_WITH_MOBILE_FAILURE:
 			//var error = action.payload.returnCode === 1 ? action.payload.returnMsg : error;
 			return {
@@ -245,16 +237,8 @@ export default function SignUpReducer(state = initialState, action) {
 				// stop displaying dialog repeatdly when user getting invalid response from Verify Mobile OTP after clcik on resend otp button
 				VerifyMobileOtpdata: '',
 			};
-		// Set signup mobile with resend success data
+		// Set signup mobile with resend success and failure data
 		case SIGNUP_MOBILE_RESEND_OTP_SUCCESS:
-			return {
-				...state,
-				ResendMobileOtpFetchData: false,
-				ResendMobileOtpisFetching: false,
-				ResendMobileOtpdata: action.payload,
-				VerifyMobileOtpFetchData: true
-			};
-		// Set signup mobile with resend failure data
 		case SIGNUP_MOBILE_RESEND_OTP_FAILURE:
 			//var error = action.payload.returnCode === 1 ? action.payload.returnMsg : error;
 			return {
@@ -275,16 +259,8 @@ export default function SignUpReducer(state = initialState, action) {
 				VerifyMobileOtpdata: '',
 				ResendMobileOtpFetchData: true
 			};
-		// Set signup mobile with otp success data
+		// Set signup mobile with otp success and failure data
 		case SIGNUP_MOBILE_VERIFY_OTP_SUCCESS:
-			return {
-				...state,
-				VerifyMobileOtpFetchData: false,
-				VerifyMobileOtpisFetching: false,
-				VerifyMobileOtpdata: action.payload,
-				ResendMobileOtpFetchData: true
-			};
-		// Set signup mobile with otp failure data
 		case SIGNUP_MOBILE_VERIFY_OTP_FAILURE:
 			return {
 				...state,
@@ -301,14 +277,8 @@ export default function SignUpReducer(state = initialState, action) {
 				ResendConfirmEmailisFetchData: true,
 				ResendConfirmEmailData: ''
 			};
-		// Set signup resend confirm mail success data
+		// Set signup resend confirm mail success and failure data
 		case SIGNUP_RESEND_CONFIRM_EMAIL_SUCCESS:
-			return {
-				...state,
-				ResendConfirmEmailisFetchData: false,
-				ResendConfirmEmailData: action.payload
-			};
-		// Set signup resend confirm mail failure data
 		case SIGNUP_RESEND_CONFIRM_EMAIL_FAILURE:
 			return {
 				...state,

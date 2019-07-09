@@ -29,19 +29,21 @@ class ManualRenewPlan extends Component {
 		let walletList = params.WalletList != undefined ? params.WalletList : []
 
 		// Get Plan Detail from ApiPlanList 
-		apiPlanList.map((item) => {
-			if (item.SubscribeID == activePlan.SubscribeID)
-				selectedPlan = item
-		})
+		for (var apiPlanKey in apiPlanList) {
+			let apiPlanitem = apiPlanList[apiPlanKey];
+			if (apiPlanitem.SubscribeID == activePlan.SubscribeID)
+				selectedPlan = apiPlanitem
+		}
 
 		// Get Current Balance 
 		let currentBal = 0
 		if (walletList.length > 0) {
-			walletList.map((item) => {
-				if (item.CoinName === selectedPlan.Coin && item.IsDefaultWallet == 1) {
-					currentBal = item.Balance
+			for (var walletKey in walletList) {
+				let apiPlanitem = walletList[walletKey];
+				if (apiPlanitem.CoinName === selectedPlan.Coin && apiPlanitem.IsDefaultWallet == 1) {
+					currentBal = apiPlanitem.Balance
 				}
-			})
+			}
 		}
 
 		//Define initial state

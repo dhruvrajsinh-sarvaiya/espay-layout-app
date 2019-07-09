@@ -26,7 +26,13 @@ const initialState = {
     WalletTypedata: '',
 }
 
-const LeverageReportReducer = (state = initialState, action) => {
+const LeverageReportReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
         // Handle Fetch Balance method data
         case FETCH_BALANCE:

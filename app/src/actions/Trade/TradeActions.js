@@ -30,7 +30,7 @@ export function onMarketSuccess(data) { return action(FETCH_MARKET_LIST_SUCCESS,
 export function onMarketFailure() { return action(FETCH_MARKET_LIST_FAILURE) }
 
 // Clear Market List
-export function clearMarketList() { return action(CLEAR_MARKET_LIST) };
+export function clearMarketList() { return action(CLEAR_MARKET_LIST) }
 
 //to refresh market list
 export function refreshMarkets(payload) { return action(REFRESH_MARKET_LIST, { payload }); }

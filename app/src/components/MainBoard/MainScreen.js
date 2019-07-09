@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Easing, YellowBox, Platform, Dimensions } from 'react-native';
+import { View, YellowBox, Platform, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { IndicatorViewPager, PagerTabIndicator } from 'rn-viewpager'
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
@@ -9,7 +9,6 @@ import MarketListScreen from '../Trading/MarketListScreen';
 import { isCurrentScreen } from '../Navigation';
 import { Fonts, Events, ServiceUtilConstant } from '../../controllers/Constants';
 import BuySellTradeScreen from '../Trading/BuySellTradeScreen';
-import Drawer from 'react-native-drawer-menu';
 import R from '../../native_theme/R';
 import NavigationDrawer from './NavigationDrawer';
 import DiscoverScreen from '../Discover/DiscoverScreen';
@@ -24,21 +23,39 @@ import DeviceInfo from 'react-native-device-info';
 YellowBox.ignoreWarnings(['Setting a timer']);
 
 class MainScreen extends Component {
+
+    static navigationOptions = ({ navigation: { state } }) => {
+
+        let isPortrait = state.params && state.params.isPortrait;
+
+        return {
+            drawerLockMode: isPortrait ? 'unlocked' : 'locked-closed'
+        }
+    }
+
     constructor(props) {
         super(props);
 
         // Reference of Views
-        this.drawer = React.createRef();
         this.bottomMenuPager = React.createRef();
 
         // Bind method
         this.onPageScroll = this.onPageScroll.bind(this);
+
+        this.setDrawer(Dimensions.get('window'));
 
         this.state = {
             position: 0, //Initial Bottom Menu's position to display first page
             isTablet: DeviceInfo.isTablet(),
             ...Dimensions.get('window'),
         }
+    }
+
+    // To enable and disable drawer based on orientation
+    setDrawer({ width, height }) {
+        // to close drawer in landscape mode
+        width > height && this.props.navigation.closeDrawer();
+        this.props.navigation.setParams({ isPortrait: width < height });
     }
 
     componentDidMount() {
@@ -57,9 +74,7 @@ class MainScreen extends Component {
 
         // add listener for update Dimensions
         this.dimensionListener = addListener(Events.Dimensions, (data) => {
-            if (data.width > data.height) {
-                this.drawer.closeDrawer();
-            }
+            this.setDrawer(data);
             this.setState(Object.assign({}, this.state, data))
         });
     };
@@ -121,85 +136,70 @@ class MainScreen extends Component {
         let isPortrait = (!this.state.isTablet || this.state.width < this.state.height);
 
         return (
-            // Navigation Drawer 
-            <Drawer
-                ref={component => this.drawer = component}
-                drawerWidth={isPortrait ? R.dimens.drawer_width : 0}
-                drawerPosition={Drawer.positions.Left}
-                drawerContent={isPortrait ? <NavigationDrawer
-                    navigation={this.props.navigation}
-                    drawer={this.drawer} /> : <View />}
-                type={Drawer.types.Overlay}
-                easingFunc={Easing.ease}
-                disabled={isPortrait ? false : true}>
+            <View style={{ flex: 1, flexDirection: 'row' }}>
 
-                <View style={{ flex: 1, flexDirection: 'row' }}>
+                {this.state.width > this.state.height && <NavigationDrawer
+                    width={this.state.width * 35 / 100}
+                    navigation={this.props.navigation} />}
 
-                    {this.state.width > this.state.height && <NavigationDrawer
-                        width={this.state.width * 35 / 100}
-                        navigation={this.props.navigation}
-                        drawer={this.drawer} />}
+                <SafeView style={[this.styles().container, { width: this.state.width * (isPortrait ? 100 : 65) / 100 }]}>
 
-                    <SafeView style={[this.styles().container, { width: this.state.width * (isPortrait ? 100 : 65) / 100 }]}>
+                    {/* To set status bar as per our theme */}
+                    <CommonStatusBar />
 
-                        {/* To set status bar as per our theme */}
-                        <CommonStatusBar />
+                    {/* signalR background code */}
+                    <SignalRWidget />
 
-                        {/* signalR background code */}
-                        <SignalRWidget />
+                    <IndicatorViewPager
+                        ref={cmp => this.bottomMenuPager = cmp}
+                        style={{ flex: 1 }}
+                        indicator={this.renderTabIndicator()}
+                        scrollEnabled={false}
+                        horizontalScroll={false}
+                        onPageScroll={this.onPageScroll}
+                        initialPage={0}>
 
-                        <IndicatorViewPager
-                            ref={cmp => this.bottomMenuPager = cmp}
-                            style={{ flex: 1 }}
-                            indicator={this.renderTabIndicator()}
-                            scrollEnabled={false}
-                            horizontalScroll={false}
-                            onPageScroll={this.onPageScroll}
-                            initialPage={0}>
+                        {/* Home */}
+                        <View key={'0'}>
+                            <TradingDashboard
+                                navigation={this.props.navigation}
+                                shouldDisplay={this.state.position == 0} />
+                        </View>
 
-                            {/* Home */}
-                            <View key={'0'}>
-                                <TradingDashboard
+                        {/* Market, added overflow style so nested viewpager items won't appear on main viewpager scroll */}
+                        <View key={'1'} style={{ overflow: 'hidden' }}>
+                            {getData(ServiceUtilConstant.KEY_IsMargin) ?
+                                <MarginMarketListScreen
                                     navigation={this.props.navigation}
-                                    shouldDisplay={this.state.position == 0}
-                                    drawer={this.drawer} />
-                            </View>
-
-                            {/* Market, added overflow style so nested viewpager items won't appear on main viewpager scroll */}
-                            <View key={'1'} style={{ overflow: 'hidden' }}>
-                                {getData(ServiceUtilConstant.KEY_IsMargin) ?
-                                    <MarginMarketListScreen
-                                        navigation={this.props.navigation}
-                                        shouldDisplay={this.state.position == 1} /> :
-                                    <MarketListScreen
-                                        navigation={this.props.navigation}
-                                        shouldDisplay={this.state.position == 1} />
-                                }
-                            </View>
-
-                            {/* Trading Buy/ Sell */}
-                            <View key={'2'}>
-                                {getData(ServiceUtilConstant.KEY_IsMargin) ?
-                                    <MarginBuySellTradeScreen
-                                        navigation={this.props.navigation}
-                                        shouldDisplay={this.state.position == 2} /> :
-                                    <BuySellTradeScreen
-                                        navigation={this.props.navigation}
-                                        shouldDisplay={this.state.position == 2} />
-                                }
-                            </View>
-
-                            {/* Discover */}
-                            <View key={'3'}>
-                                <DiscoverScreen
+                                    shouldDisplay={this.state.position == 1} /> :
+                                <MarketListScreen
                                     navigation={this.props.navigation}
-                                    shouldDisplay={this.state.position == 3} />
-                            </View>
+                                    shouldDisplay={this.state.position == 1} />
+                            }
+                        </View>
 
-                        </IndicatorViewPager>
-                    </SafeView>
-                </View>
-            </Drawer>
+                        {/* Trading Buy/ Sell */}
+                        <View key={'2'}>
+                            {getData(ServiceUtilConstant.KEY_IsMargin) ?
+                                <MarginBuySellTradeScreen
+                                    navigation={this.props.navigation}
+                                    shouldDisplay={this.state.position == 2} /> :
+                                <BuySellTradeScreen
+                                    navigation={this.props.navigation}
+                                    shouldDisplay={this.state.position == 2} />
+                            }
+                        </View>
+
+                        {/* Discover */}
+                        <View key={'3'}>
+                            <DiscoverScreen
+                                navigation={this.props.navigation}
+                                shouldDisplay={this.state.position == 3} />
+                        </View>
+
+                    </IndicatorViewPager>
+                </SafeView>
+            </View>
         );
     }
 

@@ -34,7 +34,12 @@ const INTIAL_STATE = {
     pairName: '',
 }
 
-export default function tradeReducer(state = INTIAL_STATE, action) {
+export default function tradeReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout
@@ -91,7 +96,7 @@ export default function tradeReducer(state = INTIAL_STATE, action) {
                 baseCurrency: action.payload
             })
         }
-        
+
         // If no actions were found from reducer than return default [existing] state value
         default: return state;
     }

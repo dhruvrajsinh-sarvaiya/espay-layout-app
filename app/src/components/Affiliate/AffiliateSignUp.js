@@ -152,70 +152,70 @@ class AffiliateSignUp extends Component {
 
                             {/* To Set First Name in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etFirstName'] = input; }}
+                                ref={input => { this.mainInputTexts['etFstName'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etFirstName'] = input; }}
+                                reference={input => { this.inputs['etFstName'] = input; }}
                                 placeholder={R.strings.firstName}
+                                onChangeText={(FirstName) => this.setState({ FirstName })}
                                 multiline={false}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(FirstName) => this.setState({ FirstName })}
-                                onSubmitEditing={() => { this.focusNextField('etLastName') }}
+                                onSubmitEditing={() => { this.focusNextField('etLstName') }}
                                 value={this.state.FirstName}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etFirstName')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etFstName')}
                             />
 
                             {/* To Set Last Name in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etLastName'] = input; }}
+                                ref={input => { this.mainInputTexts['etLstName'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etLastName'] = input; }}
+                                reference={input => { this.inputs['etLstName'] = input; }}
                                 placeholder={R.strings.lastName}
                                 multiline={false}
+                                onChangeText={(LastName) => this.setState({ LastName })}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(LastName) => this.setState({ LastName })}
-                                onSubmitEditing={() => { this.focusNextField('etEmailId') }}
+                                onSubmitEditing={() => { this.focusNextField('etMailId') }}
                                 value={this.state.LastName}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etLastName')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etLstName')}
                             />
 
                             {/* To Set Email Id in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etEmailId'] = input; }}
+                                ref={input => { this.mainInputTexts['etMailId'] = input; }}
                                 isRound={true}
-                                reference={input => { this.inputs['etEmailId'] = input; }}
+                                reference={input => { this.inputs['etMailId'] = input; }}
                                 placeholder={R.strings.EmailId}
                                 multiline={false}
                                 maxLength={50}
+                                onChangeText={(EmailId) => this.setState({ EmailId })}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(EmailId) => this.setState({ EmailId })}
                                 value={this.state.EmailId}
-                                onSubmitEditing={() => { this.focusNextField('etMobileNo') }}
+                                onSubmitEditing={() => { this.focusNextField('etMobileNum') }}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etEmailId')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etMailId')}
                             />
 
                             {/* To Set MobileNo in EditText */}
                             <EditText
-                                ref={input => { this.mainInputTexts['etMobileNo'] = input; }}
-                                reference={input => { this.inputs['etMobileNo'] = input; }}
+                                ref={input => { this.mainInputTexts['etMobileNum'] = input; }}
+                                reference={input => { this.inputs['etMobileNum'] = input; }}
                                 placeholder={R.strings.MobileNo}
                                 returnKeyType={"done"}
                                 multiline={false}
                                 keyboardType={'numeric'}
                                 value={this.state.MobileNumber}
                                 onChangeText={(MobileNumber) => this.validateMobileNumber(MobileNumber)}
-                                maxLength={10}
                                 isRound={true}
-                                countryPicker={true}
                                 onCountryChange={(value) => { this.setState({ cca2: value.cca2, callingCode: value.callingCode }) }}
+                                countryPicker={true}
+                                maxLength={10}
                                 contryPickerValue={this.state.cca2}
                                 focusable={true}
-                                onFocus={() => changeFocus(this.mainInputTexts, 'etMobileNo')}
+                                onFocus={() => changeFocus(this.mainInputTexts, 'etMobileNum')}
                             />
 
                             {/* Next Button */}

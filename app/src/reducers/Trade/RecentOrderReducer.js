@@ -20,7 +20,13 @@ const INTIAL_STATE = {
     errorRecentOrder: false,
 }
 
-export default function recentOrderReducer(state = INTIAL_STATE, action) {
+export default function recentOrderReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout

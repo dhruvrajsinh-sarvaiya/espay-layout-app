@@ -10,7 +10,7 @@ import { changeTheme, getDeviceID, showAlert, changeFocus } from '../../controll
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import { isCurrentScreen, navigateReset } from '../Navigation'
 import EditText from '../../native_theme/components/EditText'
-import { generateToken, clearGenerateTokenData } from '../../actions/Login/AuthorizeToken';
+import { generateToken as generateTokenApi, clearGenerateTokenData } from '../../actions/Login/AuthorizeToken';
 import { removeLoginData } from '../../actions/SignUpProcess/signUpAction';
 import { setData, getData } from '../../App';
 import CommonToast from '../../native_theme/components/CommonToast';
@@ -80,6 +80,7 @@ class LoginNormalScreen extends Component {
 
 	onLoginButtonPress = async () => {
 		this.resetDialogCounts();
+
 		//Validations for inputs
 		//Check UserName is Empty Or Not
 		if (isEmpty(this.state.UserName)) {
@@ -212,7 +213,8 @@ class LoginNormalScreen extends Component {
 								//To update UserName and Password in preference
 								setData({
 									[ServiceUtilConstant.LOGINUSERNAME]: state.UserName,
-									[ServiceUtilConstant.LOGINPASSWORD]: state.password
+									[ServiceUtilConstant.LOGINPASSWORD]: state.password,
+									[ServiceUtilConstant.ALLOWTOKEN]: NormalLoginData.AllowToken
 								});
 								return Object.assign({}, state, {
 									NormalLoginData,
@@ -437,7 +439,7 @@ function mapStateToProps(state) {
 	return {
 		//Updated Data For Normal Login Api Action
 		login: state.loginReducer,
-		token: state.tokenReducer,
+		token: state.AuthorizeTokenReducer,
 		preference: state.preference,
 		isPortrait: state.preference.dimensions.isPortrait
 	}
@@ -448,7 +450,7 @@ function mapDispatchToProps(dispatch) {
 		//Perform normal login action
 		normalLogin: (loginRequest) => dispatch(normalLogin(loginRequest)),
 		//Perform genrate token action
-		generateToken: (payload) => dispatch(generateToken(payload)),
+		generateToken: (payload) => dispatch(generateTokenApi(payload)),
 		//Perform remove login data action
 		removeLoginData: () => dispatch(removeLoginData()),
 		//Perform clear genrate token data action

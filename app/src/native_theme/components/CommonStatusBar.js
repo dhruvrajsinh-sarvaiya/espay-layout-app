@@ -23,7 +23,7 @@ class CommonStatusBar extends Component {
     }
 
     render() {
-        props = this.props;
+        let props = this.props;
         let backgroundColor = props.backgroundColor ? props.backgroundColor : R.colors.background;
         let barStyle = props.barStyle ? props.barStyle : 'light-content'; //default light-content
         let transclucent = false; //This is important to declare false so that statusbar won't crop

@@ -97,6 +97,7 @@ class ButtonOriginal extends Component {
         return <Ripple
             rippleOpacity={1}
             onPress={this.props.onPress}
+            onLongPress={this.props.onLongPress}
             disabled={this.props.disabled}
             style={buttonStyle}
             rippleContainerBorderRadius={this.props.isRound ? R.dimens.roundButtonRedius : 0}

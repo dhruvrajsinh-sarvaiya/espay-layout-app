@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { View, FlatList, Easing, RefreshControl, Text } from 'react-native';
 import CommonStatusBar from '../../../native_theme/components/CommonStatusBar';
-import CustomToolbar from '../../../native_theme/components/CustomToolbar';
 import { changeTheme, parseArray, getCurrentDate, addPages, convertDateTime } from '../../../controllers/CommonUtils';
-import { isInternet, validateResponseNew, } from '../../../validations/CommonValidation'
+import CustomToolbar from '../../../native_theme/components/CustomToolbar';
 import { connect } from 'react-redux';
+import { isInternet, validateResponseNew, } from '../../../validations/CommonValidation'
 import ListLoader from '../../../native_theme/components/ListLoader';
 import CommonToast from '../../../native_theme/components/CommonToast';
-import Drawer from 'react-native-drawer-menu';
 import { ListEmptyComponent } from '../../../native_theme/components/FlatListWidgets';
+import Drawer from 'react-native-drawer-menu';
 import { isCurrentScreen, addRouteToBackPress } from '../../../components/Navigation';
 import FilterWidget from '../../../components/Widget/FilterWidget';
 import R from '../../../native_theme/R';
@@ -36,50 +36,45 @@ class ReferralParticipantScreen extends Component {
             row: [],
             PageSize: AppConfig.pageSize,
             selectedPage: 1,
+
             FromDate: getCurrentDate(),//for get Current Date
             ToDate: getCurrentDate(),//for get Current Date
             userName: '',
+
             // for ChannelType
             channelType: [],
             selectedChannelType: R.strings.Please_Select,
             ReferralChannelTypeId: 0,
-            // for service slab
-            serviceSlab: [],
-            selectedServiceSlab: R.strings.Please_Select,
-            ReferralServiceId: 0,
+
             // for refreshing
             refreshing: false,
             isFirstTime: true,
             isDrawerOpen: false, // First Time Drawer is Closed
+
+            // for service slab
+            serviceSlab: [],
+            selectedServiceSlab: R.strings.Please_Select,
+            ReferralServiceId: 0,
+
         }
 
         //Add Current Screen to Manual Handling BackPress Events
         addRouteToBackPress(props);
 
         // Bind Method
-        this.onRefresh = this.onRefresh.bind(this);
         this.onResetPress = this.onResetPress.bind(this);
-        this.onCompletePress = this.onCompletePress.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.onCompletePress = this.onCompletePress.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
 
         // create reference
-        this.drawer = React.createRef();
         this.toast = React.createRef();
+        this.drawer = React.createRef();
     }
 
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
-    }
+
 
     componentDidMount = async () => {
         //Add this method to change theme based on stored theme name.
@@ -106,6 +101,18 @@ class ReferralParticipantScreen extends Component {
             }
             // call ReferralParticipant api 
             this.props.getReferralParticipantList(requestParticipantData);
+        }
+    }
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
         }
     }
 
@@ -277,14 +284,14 @@ class ReferralParticipantScreen extends Component {
                     if (state.referralChannelTypeData == null || (state.referralChannelTypeData != null && referralChannelTypeData !== state.referralChannelTypeData)) {
                         if (validateResponseNew({ response: referralChannelTypeData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralChannelTypeData.ReferralChannelTypeDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ChannelTypeName;
+                            let channelTypeForParticipant = parseArray(referralChannelTypeData.ReferralChannelTypeDropDownList);
+                            channelTypeForParticipant.map((item, index) => {
+                                channelTypeForParticipant[index].Id = item.Id;
+                                channelTypeForParticipant[index].value = item.ChannelTypeName;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...channelTypeForParticipant
                             ];
                             return { ...state, channelType: currencyItem, referralChannelTypeData, refreshing: false };
                         }
@@ -304,14 +311,14 @@ class ReferralParticipantScreen extends Component {
                     if (state.referralServiceData == null || (state.referralServiceData != null && referralServiceData !== state.referralServiceData)) {
                         if (validateResponseNew({ response: referralServiceData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralServiceData.ReferralServiceDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ServiceSlab;
+                            let serviceDataForParticipant = parseArray(referralServiceData.ReferralServiceDropDownList);
+                            serviceDataForParticipant.map((item, index) => {
+                                serviceDataForParticipant[index].Id = item.Id;
+                                serviceDataForParticipant[index].value = item.ServiceSlab;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...serviceDataForParticipant
                             ];
                             return { ...state, serviceSlab: currencyItem, referralServiceData };
                         }
@@ -327,18 +334,30 @@ class ReferralParticipantScreen extends Component {
         return null;
     }
 
+    componentWillUnmount() {
+        // call action for clear Reducer value 
+        this.props.clearAllData()
+    }
+
     // Drawer Navigation
     navigationDrawer() {
         return (
-            <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+
+            <SafeView style={{
+                flex: 1,
+                backgroundColor: R.colors.background,
+            }}>
+
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast
+                    ref={cmp => this.toast = cmp}
+                    styles={{ width: R.dimens.FilterDrawarWidth }} />
 
                 {/* filterwidget for display fromdate, todate,username, channeltype and serviceslab data */}
                 <FilterWidget
                     FromDatePickerCall={(date) => this.setState({ FromDate: date })}
-                    FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
+                    FromDate={this.state.FromDate}
                     ToDate={this.state.ToDate}
                     textInputStyle={{ marginTop: 0, marginBottom: 0, }}
                     textInputs={[
@@ -356,29 +375,26 @@ class ReferralParticipantScreen extends Component {
                     comboPickerStyle={{ marginTop: 0, }}
                     pickers={[
                         {
-                            title: R.strings.ChannelType,
                             array: this.state.channelType,
+                            title: R.strings.ChannelType,
                             selectedValue: this.state.selectedChannelType,
                             onPickerSelect: (index, object) => { this.setState({ selectedChannelType: index, ReferralChannelTypeId: object.Id }) }
                         },
                         {
-                            title: R.strings.ServiceSlab,
                             array: this.state.serviceSlab,
+                            title: R.strings.ServiceSlab,
                             selectedValue: this.state.selectedServiceSlab,
                             onPickerSelect: (index, object) => { this.setState({ selectedServiceSlab: index, ReferralServiceId: object.Id }) }
                         },
                     ]}
-                    onResetPress={this.onResetPress}
                     onCompletePress={this.onCompletePress}
+                    onResetPress={this.onResetPress}
                 />
             </SafeView>
         )
     }
 
-    componentWillUnmount() {
-        // call action for clear Reducer value 
-        this.props.clearAllData()
-    }
+
 
     render() {
         const { isParticipantdata } = this.props;
@@ -386,9 +402,9 @@ class ReferralParticipantScreen extends Component {
         let list = this.state.data;
 
         //for final items from search input (validate on ReferUserName and ReferralChanneTypeName)
-        let finalItems = list.filter(item =>
-            item.ReferUserName.toLowerCase().includes(this.state.search.toLowerCase()) ||
-            item.ReferralChanneTypeName.toLowerCase().includes(this.state.search.toLowerCase())
+        let finalItems = list.filter(refParticipantItem =>
+            refParticipantItem.ReferUserName.toLowerCase().includes(this.state.search.toLowerCase()) ||
+            refParticipantItem.ReferralChanneTypeName.toLowerCase().includes(this.state.search.toLowerCase())
         );
 
         return (
@@ -396,14 +412,18 @@ class ReferralParticipantScreen extends Component {
             <Drawer
                 ref={cmpDrawer => this.drawer = cmpDrawer}
                 drawerWidth={R.dimens.FilterDrawarWidth}
-                drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                drawerContent={this.navigationDrawer()}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
-                type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
+                type={Drawer.types.Overlay}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView
+                    style={{
+                        flex: 1,
+                        backgroundColor: R.colors.background
+                    }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -432,11 +452,12 @@ class ReferralParticipantScreen extends Component {
                                             <FlatList
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
-                                                renderItem={({ item, index }) => <FlatListItem
-                                                    item={item}
-                                                    index={index}
-                                                    size={this.state.data.length}
-                                                />}
+                                                renderItem={({ item, index }) =>
+                                                    <ReferralParticipantList
+                                                        refParticipantItem={item}
+                                                        refParticipantIndex={index}
+                                                        refParticipantSize={this.state.data.length}
+                                                    />}
                                                 keyExtractor={(item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
@@ -467,40 +488,39 @@ class ReferralParticipantScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
-
+class ReferralParticipantList extends Component {
     constructor(props) {
         super(props);
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.refParticipantItem === nextProps.refParticipantItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let refParticipantItem = this.props.refParticipantItem;
+        let { refParticipantIndex, refParticipantSize, } = this.props;
         let imageType = R.images.IC_EMAIL_FILLED;
 
         // based on ReferralChanneTypeName set image
-        if (item.ReferralChanneTypeName === 'SMS') imageType = R.images.IC_COMPLAINT;
-        if (item.ReferralChanneTypeName === 'Email') imageType = R.images.IC_EMAIL_FILLED;
-        if (item.ReferralChanneTypeName === 'Twitter') imageType = R.images.IC_TWITTER;
-        if (item.ReferralChanneTypeName === 'Linkedin') imageType = R.images.IC_LINKEDIN_LOGO;
-        if (item.ReferralChanneTypeName === 'Insta') imageType = R.images.IC_INSTAGRAM_LOGO;
-        if (item.ReferralChanneTypeName === 'Facebook') imageType = R.images.IC_FACEBOOK_LOGO;
+        if (refParticipantItem.ReferralChanneTypeName === 'SMS') imageType = R.images.IC_COMPLAINT;
+        if (refParticipantItem.ReferralChanneTypeName === 'Email') imageType = R.images.IC_EMAIL_FILLED;
+        if (refParticipantItem.ReferralChanneTypeName === 'Twitter') imageType = R.images.IC_TWITTER;
+        if (refParticipantItem.ReferralChanneTypeName === 'Linkedin') imageType = R.images.IC_LINKEDIN_LOGO;
+        if (refParticipantItem.ReferralChanneTypeName === 'Insta') imageType = R.images.IC_INSTAGRAM_LOGO;
+        if (refParticipantItem.ReferralChanneTypeName === 'Facebook') imageType = R.images.IC_FACEBOOK_LOGO;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (refParticipantIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (refParticipantIndex == refParticipantSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -522,8 +542,8 @@ class FlatListItem extends Component {
                             />
                             {/* for Display Message */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
-                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {item.ReferUserName ? item.ReferUserName : ''} {R.strings.via} {item.ReferralChanneTypeName ? item.ReferralChanneTypeName : '-'}</Text>
-                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {item.ReferralServiceDescription ? item.ReferralServiceDescription : '-'}</TextViewHML>
+                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {refParticipantItem.ReferUserName ? refParticipantItem.ReferUserName : ''} {R.strings.via} {refParticipantItem.ReferralChanneTypeName ? refParticipantItem.ReferralChanneTypeName : '-'}</Text>
+                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {refParticipantItem.ReferralServiceDescription ? refParticipantItem.ReferralServiceDescription : '-'}</TextViewHML>
                             </View>
                         </View>
 
@@ -534,7 +554,7 @@ class FlatListItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.CreatedDate ? convertDateTime(item.CreatedDate) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{refParticipantItem.CreatedDate ? convertDateTime(refParticipantItem.CreatedDate) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View >

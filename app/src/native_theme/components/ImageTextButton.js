@@ -34,7 +34,7 @@ class ImageButton extends Component {
             this.props.resizeMode === nextProps.resizeMode &&
             this.props.progressive === nextProps.progressive &&
             this.props.numberOfLines === nextProps.numberOfLines &&
-            this.props.preference.theme === nextProps.preference.theme && 
+            this.props.preference.theme === nextProps.preference.theme &&
             this.props.preference.dimensions.isPortrait === nextProps.preference.dimensions.isPortrait) {
             return false;
         }
@@ -169,7 +169,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ImageButton);
+export default connect(mapStateToProps)(ImageButton);

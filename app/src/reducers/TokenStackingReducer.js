@@ -80,7 +80,13 @@ const INTIAL_STATE = {
     UnstakingRequestIsFetching: false,
 }
 
-const TokenStackingReducer = (state = INTIAL_STATE, action) => {
+const TokenStackingReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -105,15 +111,8 @@ const TokenStackingReducer = (state = INTIAL_STATE, action) => {
                 UnstakingRequestFetchData: true,
                 UnstakingRequestDate: '',
             };
-        // Set Unstacking Request success data
+        // Set Unstacking Request success and failure data
         case UNSTAKING_REQUEST_SUCCESS:
-            return {
-                ...state,
-                UnstakingRequestIsFetching: false,
-                UnstakingRequestFetchData: false,
-                UnstakingRequestDate: action.payload,
-            };
-        // Set Unstacking Request failure data
         case UNSTAKING_REQUEST_FAILURE:
             return {
                 ...state,
@@ -134,19 +133,8 @@ const TokenStackingReducer = (state = INTIAL_STATE, action) => {
                 PostReqFetchData: true,
                 WalletListFetchData: true,
             };
-        // Set Wallet Address success data
+        // Set Wallet Address success and failure data
         case GET_AD_WALLETS_SUCCESS:
-            return {
-                ...state,
-                WalletDataIsFetching: false,
-                WalletFetchData: false,
-                WalletData: action.payload,
-                SlabListFetchData: true,
-                PreReqFetchData: true,
-                PostReqFetchData: true,
-                WalletListFetchData: true,
-            };
-        // Set Wallet Address failure data
         case GET_AD_WALLETS_FAILURE:
             return {
                 ...state,
@@ -205,19 +193,8 @@ const TokenStackingReducer = (state = INTIAL_STATE, action) => {
                 WalletListFetchData: true,
                 WalletFetchData: true,
             });
-        // Set Stack Request success data
+        // Set Stack Request success and failure data
         case STAKREQUEST_SUCCESS:
-
-            return Object.assign({}, state, {
-                PostReqFetchData: false,
-                PostReqIsFetching: false,
-                PostReqData: action.payload,
-                SlabListFetchData: true,
-                PreReqFetchData: true,
-                WalletListFetchData: true,
-                WalletFetchData: true,
-            });
-        // Set Stack Request failure data
         case STAKREQUEST_FAILURE:
             return Object.assign({}, state, {
                 PostReqFetchData: false,
@@ -240,19 +217,8 @@ const TokenStackingReducer = (state = INTIAL_STATE, action) => {
                 WalletListFetchData: true,
                 WalletFetchData: true,
             });
-        // Set Pre Confirmation Detail success data
+        // Set Pre Confirmation Detail success and failure data
         case PRECONFIRMATIONDETAILS_SUCCESS:
-
-            return Object.assign({}, state, {
-                PreReqFetchData: false,
-                PreReqIsFetching: false,
-                PreReqData: action.payload,
-                SlabListFetchData: true,
-                PostReqFetchData: true,
-                WalletListFetchData: true,
-                WalletFetchData: true,
-            });
-        // Set Pre Confirmation Detail failure data
         case PRECONFIRMATIONDETAILS_FAILURE:
             return Object.assign({}, state, {
                 PreReqFetchData: false,
@@ -275,18 +241,8 @@ const TokenStackingReducer = (state = INTIAL_STATE, action) => {
                 PostReqFetchData: true,
                 WalletFetchData: true,
             });
-        // Set Wallet Type Master success data
+        // Set Wallet Type Master success failure data
         case GET_WALLET_TYPE_MASTER_SUCCESS:
-            return Object.assign({}, state, {
-                WalletListIsFetching: false,
-                WalletListData: action.payload,
-                WalletListFetchData: false,
-                SlabListFetchData: true,
-                PreReqFetchData: true,
-                PostReqFetchData: true,
-                WalletFetchData: true,
-            });
-        // Set Wallet Type Master failure data
         case GET_WALLET_TYPE_MASTER_FAILURE:
             return Object.assign({}, state, {
                 WalletListIsFetching: false,

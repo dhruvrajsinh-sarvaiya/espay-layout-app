@@ -56,7 +56,7 @@ function* FetchNewAddress(action) {
 }
 
 /* GET WALLETS */
-function* DepositSaga() {
+function* DepositSagas() {
 
     // Call get Deposit History Data
     yield takeLatest(FETCHING_DEPOSIT_HISTORY_DATA, fetchDepositHistoryData)
@@ -65,4 +65,4 @@ function* DepositSaga() {
     yield takeLatest(GENERATE_NEW_ADDRESS, FetchNewAddress)
 }
 
-export default DepositSaga
+export default DepositSagas

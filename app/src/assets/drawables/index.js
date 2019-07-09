@@ -1,4 +1,4 @@
-export default drawables = {
+const drawables = {
     dialogs : {
         ic_dialog_delete : require('./dialogs/delete.png'),
         ic_dialog_failure : require('./dialogs/failure.png'),
@@ -175,3 +175,5 @@ export default drawables = {
     IC_CURVE_DOWN_ARROW: require('./ic_curve_down_arrow.png'),
     IC_LAST_LOGIN: require('./ic_last_login.png')
 }
+
+export default drawables;

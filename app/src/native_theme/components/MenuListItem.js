@@ -11,17 +11,14 @@ import AnimatableItem from './AnimatableItem';
 class MenuListItem extends Component {
 
     shouldComponentUpdate = (nextProps, nextState) => {
-        if (this.props.preference.theme !== nextProps.preference.theme || this.props.preference.locale !== nextProps.preference.locale) {
+        if (this.props.preference.theme !== nextProps.preference.theme ||
+            this.props.preference.locale !== nextProps.preference.locale ||
+            this.props.title !== nextProps.title ||
+            this.props.status !== nextProps.status ||
+            this.props.separator !== nextProps.separator) {
             return true;
-        } else {
-            if (this.props.title !== nextProps.title ||
-                this.props.status !== nextProps.status ||
-                this.props.separator !== nextProps.separator) {
-                return true;
-            } else {
-                return false;
-            }
         }
+        return false;
     }
 
     render() {
@@ -29,7 +26,7 @@ class MenuListItem extends Component {
         // Get required field from props
         let props = this.props;
 
-        padding = props.icon ? 0 : R.dimens.widget_left_right_margin;
+        let padding = props.icon ? 0 : R.dimens.widget_left_right_margin;
 
         // ignore following strings from menu
         const ignoreStrings = [R.strings.Select_Wallet, R.strings.selectToken, R.strings.Select_Coin, R.strings.Please_Select, R.strings.selectCurrency]

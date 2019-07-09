@@ -293,9 +293,8 @@ class LimitControl extends Component {
                     (item.TrnType == 2 && tabItem == 3) ||
                     (item.TrnType == 4 && tabItem == 4)) {
                     return true;
-                } else {
-                    return false;
                 }
+                return false;
             });
 
             //If index is found then get data

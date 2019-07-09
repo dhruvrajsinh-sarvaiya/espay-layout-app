@@ -19,7 +19,12 @@ const INTIAL_STATE = {
     pairListError: false,
 }
 
-export default function marginTradeReducer(state = INTIAL_STATE, action) {
+export default function marginTradeReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout

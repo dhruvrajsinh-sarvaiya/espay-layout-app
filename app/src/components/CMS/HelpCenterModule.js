@@ -141,6 +141,7 @@ class HelpCenterModule extends Component {
             <View>
                 {/* Add HTML View for parsing HTML tags to react native */}
                 <HtmlViewer
+                    style={{ backgroundColor: R.colors.cardBackground }}
                     applyMargin={true}
                     data={section.locale[R.strings.getLanguage()] ? section.locale[R.strings.getLanguage()].content : section.locale.en.content} />
             </View>

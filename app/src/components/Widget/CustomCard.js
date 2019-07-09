@@ -9,7 +9,7 @@ import AnimatableItem from '../../native_theme/components/AnimatableItem';
 import { connect } from 'react-redux';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-var largerHeight = 0;
+var largerHeight;
 var needScale = true;
 
 class CustomCard extends Component {
@@ -20,14 +20,11 @@ class CustomCard extends Component {
 
 	// return status related color
 	valueget = (value) => {
-		if (value === R.strings.VerifyNumbers)
-			return R.colors.successGreen
-		if (value === R.strings.UnverifiedNumbers)
-			return R.colors.failRed
-		if (value === R.strings.AddNumbers)
-			return R.colors.accent
-		else
-			return R.colors.accent
+		if (value === R.strings.VerifyNumbers) { return R.colors.successGreen }
+		if (value === R.strings.UnverifiedNumbers) { return R.colors.failRed }
+		if (value === R.strings.AddNumbers) { return R.colors.accent }
+
+		return R.colors.accent
 	}
 
 	render() {
@@ -74,10 +71,10 @@ class CustomCard extends Component {
 
 												if (needScale) {
 													if (largerHeight != height) {
-														if (largerHeight == 0) {
+														if (largerHeight == 0 || height > largerHeight) {
 															largerHeight = height;
-														} else if (height > largerHeight) {
-															largerHeight = height;
+														} else {
+															largerHeight = 0;
 														}
 													}
 
@@ -109,10 +106,10 @@ class CustomCard extends Component {
 
 											if (needScale) {
 												if (largerHeight != height) {
-													if (largerHeight == 0) {
+													if (largerHeight == 0 || height > largerHeight) {
 														largerHeight = height;
-													} else if (height > largerHeight) {
-														largerHeight = height;
+													} else {
+														largerHeight = 0;
 													}
 												}
 

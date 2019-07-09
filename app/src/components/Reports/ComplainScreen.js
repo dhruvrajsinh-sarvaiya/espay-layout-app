@@ -182,28 +182,32 @@ class ComplainScreen extends Component {
     rightMenuRender = () => {
         return (
             <View style={{ flexDirection: 'row' }}>
+
                 {/* display plus icon */}
                 <ImageTextButton
                     icon={R.images.IC_PLUS}
                     style={{ margin: 0, paddingTop: R.dimens.WidgetPadding, paddingBottom: R.dimens.WidgetPadding, paddingLeft: R.dimens.widgetMargin, paddingRight: R.dimens.widgetMargin, }}
                     iconStyle={[{ height: R.dimens.SMALL_MENU_ICON_SIZE, width: R.dimens.SMALL_MENU_ICON_SIZE, tintColor: R.colors.textSecondary }]}
                     onPress={() => this.props.navigation.navigate('RaiseComplainScreen', { onRefresh: this.onSuccess })} />
+
                 {/* display filter icon */}
                 <ImageTextButton
                     icon={R.images.FILTER}
-                    style={{ margin: 0, paddingTop: R.dimens.WidgetPadding, paddingBottom: R.dimens.WidgetPadding, paddingLeft: R.dimens.widgetMargin, paddingRight: R.dimens.widgetMargin, }}
                     iconStyle={[{ height: R.dimens.SMALL_MENU_ICON_SIZE, width: R.dimens.SMALL_MENU_ICON_SIZE, tintColor: R.colors.textSecondary }]}
+                    style={{ paddingTop: R.dimens.WidgetPadding, paddingBottom: R.dimens.WidgetPadding, paddingLeft: R.dimens.widgetMargin, paddingRight: R.dimens.widgetMargin, margin: 0, }}
                     onPress={() => this.drawer.openDrawer()} />
+
             </View>
         )
     }
 
-    // Drawer Navigation
+    // Navigation Drawer
     navigationDrawer() {
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast styles={{ width: R.dimens.FilterDrawarWidth }} ref={cmp => this.toast = cmp} />
 
                 {/* filterwidget for display fromdate, todate*/}
                 <FilterWidget
@@ -213,13 +217,15 @@ class ComplainScreen extends Component {
                     ToDate={this.state.ToDate}
                     onResetPress={this.onResetPress}
                     onCompletePress={this.onCompletePress}
-                ></FilterWidget>
+                />
+
             </SafeView>
         )
     }
 
-    // Reset FromDate and ToDate
+    // Reset FromDate and ToDate to current date
     onResetPress = async () => {
+
         this.drawer.closeDrawer();
         this.setState({ FromDate: getCurrentDate(), ToDate: getCurrentDate(), searchInput: '' })
 
@@ -288,14 +294,17 @@ class ComplainScreen extends Component {
             <Drawer
                 ref={cmp => this.drawer = cmp}
                 drawerWidth={R.dimens.FilterDrawarWidth}
-                drawerContent={this.navigationDrawer()}
                 type={Drawer.types.Overlay}
+                drawerContent={this.navigationDrawer()}
                 drawerPosition={Drawer.positions.Right}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{
+                    flex: 1,
+                    backgroundColor: R.colors.background
+                }}>
 
                     {/* To Set StatusBar as per our theme */}
                     <CommonStatusBar />
@@ -325,7 +334,7 @@ class ComplainScreen extends Component {
                                         data={finalItems}
                                         /* render all item in list */
                                         renderItem={({ item, index }) =>
-                                            <FlatListItem
+                                            <ComplainList
                                                 index={index}
                                                 id={item.CompainNumber}
                                                 type={item.Type}
@@ -338,8 +347,7 @@ class ComplainScreen extends Component {
                                                 size={finalItems.length}
                                                 item={item}
                                                 onDetail={() => this.onDetail(item, item.Type)}
-                                                onPostReplyPress={() => this.onPostReplyPress(item)}>
-                                            </FlatListItem>
+                                                onPostReplyPress={() => this.onPostReplyPress(item)} />
                                         }
                                         /* assign index as key valye to list item */
                                         keyExtractor={(item, index) => index.toString()}
@@ -369,7 +377,7 @@ class ComplainScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class ComplainList extends Component {
 
     constructor(props) {
         super(props)
@@ -408,13 +416,13 @@ class FlatListItem extends Component {
                 marginRight: R.dimens.widget_left_right_margin
             }}>
                 <CardView style={{
-                    elevation: R.dimens.listCardElevation,
                     flex: 1,
-                    borderRadius: 0,
                     flexDirection: 'column',
+                    borderRadius: 0,
+                    padding: 0,
+                    elevation: R.dimens.listCardElevation,
                     borderBottomLeftRadius: R.dimens.margin,
                     borderTopRightRadius: R.dimens.margin,
-                    padding: 0,
                 }} onPress={this.props.onDetail}>
 
                     <View style={{ padding: R.dimens.WidgetPadding }}>

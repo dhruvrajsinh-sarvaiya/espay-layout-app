@@ -27,7 +27,13 @@ const initialState = {
 
 }
 
-const TransferInOutReducer = (state = initialState, action) => {
+const TransferInOutReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -42,15 +48,8 @@ const TransferInOutReducer = (state = initialState, action) => {
                 OutGoingTransactionData: '',
                 OutGoingTransactionFetchData: true,
             };
-        // Set OutGoing Transaction Report success data
+        // Set OutGoing Transaction Report success and failure data
         case GET_OUTGOINGTRANSACTONS_REPORT_SUCCESS:
-            return {
-                ...state,
-                Loading: false,
-                OutGoingTransactionData: action.payload,
-                OutGoingTransactionFetchData: false,
-            };
-        // Set OutGoing Transaction Report failure data
         case GET_OUTGOINGTRANSACTONS_REPORT_FAILURE:
             return {
                 ...state,

@@ -43,7 +43,7 @@ class BackgroundImageHeaderWidget extends Component {
                         <ImageTextButton
                             icon={R.images.BACK_ARROW}
                             style={{ margin: 0, padding: R.dimens.WidgetPadding }}
-                            onPress={props.onBackPress ? props.onBackPress : this.handleBack}
+                            onPress={this.props.onBackPress ? this.props.onBackPress : this.handleBack}
                             iconStyle={[{ marginTop: getStatusBarHeight(), height: R.dimens.SMALL_MENU_ICON_SIZE, width: R.dimens.SMALL_MENU_ICON_SIZE, tintColor: R.colors.white }]}
                         />
                     </SafeView>}

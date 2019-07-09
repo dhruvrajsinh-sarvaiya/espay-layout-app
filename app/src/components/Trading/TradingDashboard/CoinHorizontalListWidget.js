@@ -256,7 +256,7 @@ const mapStateToProps = (state) => {
     return {
         // Update state from reducer
         preference: state.preference,
-        dataListCoin: state.CoinReducer,
+        dataListCoin: state.FetchCoinReducer,
     }
 }
 

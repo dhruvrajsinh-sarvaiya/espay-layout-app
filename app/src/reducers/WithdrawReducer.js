@@ -98,7 +98,13 @@ const initialState = {
     VerifyGoogleAuthIsFetching: false,
 }
 
-const WithdrawReducer = (state = initialState, action) => {
+const WithdrawReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout
@@ -122,22 +128,8 @@ const WithdrawReducer = (state = initialState, action) => {
                 ResendEmailFetchData: true,
             };
 
-        // Set Verify 2FA success data
+        // Set Verify 2FA success and failure data
         case VERIFY_2FA_WITHDRAW_SUCCESS:
-            return {
-                ...state, VerifyGoogleAuthIsFetching: false,
-                VerifyGoogleAuthData: action.payload,
-                VerifyGoogleAuthFetchData: false,
-                WithdrawFetchData: true,
-                BalanceFetchData: true,
-                GenerateAddressFetchData: true,
-                WalletListFetchData: true,
-                FeeLimitFetchData: true,
-                WalletBalanceFetchData: true,
-                WithdrawHistoryFetchData: true,
-                ResendEmailFetchData: true,
-            };
-        // Set Verify 2FA failure data
         case VERIFY_2FA_WITHDRAW_FAILURE:
             return {
                 ...state, VerifyGoogleAuthIsFetching: false,
@@ -319,16 +311,8 @@ const WithdrawReducer = (state = initialState, action) => {
                 WithdrawHistoryFetchData: true,
                 BalanceFetchData: true,
             });
-        // Set Resend Withdrawal Email success data
+        // Set Resend Withdrawal Email success and failure data
         case RESEND_WITHDRAWAL_EMAIL_SUCCESS:
-            return Object.assign({}, state, {
-                ResendEmailFetchData: false,
-                ResendEmailData: action.payload,
-                ResendEmailIsFetching: false,
-                WithdrawHistoryFetchData: true,
-                BalanceFetchData: true,
-            });
-        // Set Resend Withdrawal Email failure data
         case RESEND_WITHDRAWAL_EMAIL_FAILURE:
             return Object.assign({}, state, {
                 ResendEmailFetchData: false,

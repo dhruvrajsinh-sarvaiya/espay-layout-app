@@ -47,6 +47,9 @@ class NavigationDrawer extends Component {
         // define state
         this.state = {
             fullName: '',
+            isNavigate: false,
+            screenName: '',
+            screenParams: {},
         };
     }
 
@@ -67,14 +70,35 @@ class NavigationDrawer extends Component {
         }
     }
 
+    componentDidUpdate() {
+        //if drawer close then and only then navigate module
+        if (!this.props.navigation.state.isDrawerOpen) {
+            if (this.state.isNavigate) {
+                this.setState({
+                    isNavigate: false
+                }, () => {
+                    if (this.state.screenName === 'Logout') {
+                        //redirect user to login
+                        showAlert(R.strings.Logout, R.strings.logout_message, 4, async () => {
+                            sendEvent(Events.SessionLogout);
+                        }, R.strings.cancel);
+                    } else {
+                        this.props.navigation.navigate(this.state.screenName, this.state.screenParams)
+                    }
+                })
+            }
+        }
+    }
+
     shouldComponentUpdate(nextProps, nextState) {
 
         //To get old name and new name if there's changes then refresh screen.
         let oldName = this.props.preference[ServiceUtilConstant.FIRSTNAME] + ' ' + this.props.preference[ServiceUtilConstant.LASTNAME];
         let newName = nextProps.preference[ServiceUtilConstant.FIRSTNAME] + ' ' + nextProps.preference[ServiceUtilConstant.LASTNAME];
+        let isMargin = nextProps.preference[ServiceUtilConstant.KEY_IsMargin] + ' ' + nextProps.preference[ServiceUtilConstant.KEY_IsMargin];
 
         //If theme or locale is changed then update componenet
-        if (this.props.preference.theme !== nextProps.preference.theme || this.props.preference.locale !== nextProps.preference.locale || oldName !== newName) {
+        if (this.props.preference.theme !== nextProps.preference.theme || this.props.preference.locale !== nextProps.preference.locale || oldName !== newName || isMargin !== nextProps.preference.isMargin) {
             return true;
         } else {
             return isCurrentScreen(nextProps);
@@ -150,100 +174,102 @@ class NavigationDrawer extends Component {
     }
 
     handleClickEvent(event) {
-        //If width is undefined means its working in portrait mode so execute close drawer method
-        this.props.width === undefined && this.props.drawer.closeDrawer();
+        // to close drawer if open
+        if (event != NavigationDrawerConstant.Trading || event != NavigationDrawerConstant.Margin) this.props.navigation.closeDrawer();
+
+        let screenName = '';
+        let screenParams = {};
 
         switch (event) {
             //Redirect to My Account
             case NavigationDrawerConstant.Account: {
-                this.props.navigation.navigate('MyAccount')
+                screenName = 'MyAccount';
                 break;
             }
 
             //Redirect To Deposit
             case NavigationDrawerConstant.Deposit: {
-                this.props.navigation.navigate('CoinSelectScreen', { isAction: ServiceUtilConstant.From_Deposit })
+                screenName = 'CoinSelectScreen';
+                screenParams = { isAction: ServiceUtilConstant.From_Deposit };
                 break;
             }
 
             //Redirect To Withdraw
             case NavigationDrawerConstant.Withdraw: {
-                this.props.navigation.navigate('CoinSelectScreen', { isAction: ServiceUtilConstant.From_Withdraw })
+                screenName = 'CoinSelectScreen';
+                screenParams = { isAction: ServiceUtilConstant.From_Withdraw };
                 break;
             }
 
             //Redirect To Funds
             case NavigationDrawerConstant.Funds: {
-                this.props.navigation.navigate('FundViewScreen')
+                screenName = 'FundViewScreen';
                 break;
             }
 
             //Redirect To Order History
             case NavigationDrawerConstant.OrderManagementScreen: {
-                this.props.navigation.navigate(getData(ServiceUtilConstant.KEY_IsMargin) ? 'MarginOrderManagementScreen' : 'OrderManagementScreen')
+                screenName = getData(ServiceUtilConstant.KEY_IsMargin) ? 'MarginOrderManagementScreen' : 'OrderManagementScreen';
                 break;
             }
 
             //Redirect To Wallets
             case NavigationDrawerConstant.Wallet: {
-                this.props.navigation.navigate('AccountSubMenu', { category: Category.Wallet, title: R.strings.wallet })
+                screenName = 'AccountSubMenu';
+                screenParams = { category: Category.Wallet, title: R.strings.wallet }
                 break;
             }
 
             //Redirect To Social Profile
             case NavigationDrawerConstant.Share: {
-                if (getData(ServiceUtilConstant.KEY_SocialProfilePlan))
-                    this.props.navigation.navigate('SocialProfileDashboard')
-                else
-                    this.props.navigation.navigate('SocialProfileSubscription')
-                //this.props.navigation.navigate('AccountSubMenu', { category: Category.SocialProifle, title: R.strings.SocialProfile })
+                if (getData(ServiceUtilConstant.KEY_SocialProfilePlan)) {
+                    screenName = 'SocialProfileDashboard';
+                } else {
+                    screenName = 'SocialProfileSubscription';
+                }
                 break;
             }
 
             //Redirect To Invitation Program aka Referral Program
             case NavigationDrawerConstant.TellAFriend: {
-                this.props.navigation.navigate('RefereAndEarn')
+                screenName = 'RefereAndEarn';
                 break;
             }
 
             //Redirect To Reports
             case NavigationDrawerConstant.Report: {
-                this.props.navigation.navigate('AccountSubMenu', { category: Category.Report, title: R.strings.reports, pairName: this.state.currencyPair })
+                screenName = 'AccountSubMenu';
+                screenParams = { category: Category.Report, title: R.strings.reports, pairName: this.state.currencyPair };
                 break;
             }
 
             //Redirect To About Us Page
             case NavigationDrawerConstant.AboutUs: {
-                this.props.navigation.navigate('AboutUs')
+                screenName = 'AboutUs';
                 break;
             }
 
             //Redirect To Security Settings
             case NavigationDrawerConstant.Security: {
-                this.props.navigation.navigate('Security')
+                screenName = 'Security';
                 break;
             }
 
             //Redirect To Settings
             case NavigationDrawerConstant.Settings: {
-                this.props.navigation.navigate('SettingScreen')
+                screenName = 'SettingScreen';
                 break;
             }
 
             //Redirect To Contact Us
             case NavigationDrawerConstant.ContactUs: {
-                this.props.navigation.navigate('ContactUs')
+                screenName = 'ContactUs';
                 break;
             }
 
             //Logout User
             case NavigationDrawerConstant.Logout: {
-
-                //redirect user to login
-                showAlert(R.strings.Logout, R.strings.logout_message, 4, async () => {
-                    sendEvent(Events.SessionLogout);
-                }, R.strings.cancel);
-
+                screenName = 'Logout';
                 break;
             }
 
@@ -259,6 +285,9 @@ class NavigationDrawer extends Component {
                 break;
             }
         }
+
+        //set screen Name and screen parameters and isNavigate state
+        this.setState({ screenName, screenParams, isNavigate: isEmpty(screenName) ? false : true })
     }
 
     render() {
@@ -351,7 +380,7 @@ class NavigationDrawer extends Component {
                             <ImageButton
                                 isVertical={true}
                                 icon={R.images.IC_DEPOSIT_GRADIANT}
-                                name={R.strings.Deposit}
+                                name={R.strings.deposit}
                                 onPress={() => this.handleClickEvent(NavigationDrawerConstant.Deposit)}
                                 textStyle={{
                                     color: R.colors.textPrimary,

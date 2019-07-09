@@ -215,7 +215,7 @@ class MyAccount extends Component {
                                     <MenuListItem
                                         title={item.title}
                                         onPress={() => this.moveToScreen(item)}
-                                        status={item.status && item.status}
+                                        status={item.status}
                                         statusStyle={{ color: R.colors.yellow }}
                                         style={{
                                             marginTop: 0,

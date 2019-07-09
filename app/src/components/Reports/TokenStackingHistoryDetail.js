@@ -131,9 +131,11 @@ class TokenStackingHistoryDetail extends Component {
         //----------
 
         return (
-            <LinearGradient style={{ flex: 1, }}
+            <LinearGradient
+                style={{ flex: 1, }}
                 locations={[0, 1]}
-                start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
                 colors={[R.colors.detailBgLight, R.colors.detailBgDark]}>
 
                 <SafeView isDetail={true} style={{ flex: 1 }}>
@@ -143,10 +145,10 @@ class TokenStackingHistoryDetail extends Component {
 
                     {/* To set toolbar as per our theme */}
                     <CustomToolbar
+                        title={R.strings.TokenStacking_History}
+                        textStyle={{ color: 'white' }}
                         backIconStyle={{ tintColor: 'white' }}
                         toolbarColor={'transparent'}
-                        textStyle={{ color: 'white' }}
-                        title={R.strings.TokenStacking_History}
                         isBack={true} nav={this.props.navigation} />
 
                     {/* Progress Dialog */}

@@ -28,7 +28,12 @@ const INTIAL_STATE = {
     marginWalletsError: false,
 }
 
-export default function tradeWalletReducer(state = INTIAL_STATE, action) {
+export default function tradeWalletReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
 

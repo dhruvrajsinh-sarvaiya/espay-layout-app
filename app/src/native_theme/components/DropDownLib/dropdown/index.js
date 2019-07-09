@@ -28,8 +28,8 @@ export default class Dropdown extends PureComponent {
 
         data: [],
 
-        valueExtractor: ({ value } = {}, index) => value,
-        labelExtractor: ({ label } = {}, index) => label,
+        valueExtractor: ({ value }, index) => { if (value === 'undefined') { value = {} } return value },
+        labelExtractor: ({ label }, index) => { if (label === 'undefined') { label = {} } return label },
         propsExtractor: () => null,
 
         absoluteRTLLayout: false,
@@ -366,7 +366,6 @@ export default class Dropdown extends PureComponent {
 
             setTimeout((() => {
                 if (this.mounted) {
-                    this.resetScrollOffset();
 
                     Animated
                         .timing(opacity, {
@@ -490,54 +489,6 @@ export default class Dropdown extends PureComponent {
         return { top, right, bottom, left };
     }
 
-    resetScrollOffset() {
-        let { selected } = this.state;
-        let { data, dropdownPosition } = this.props;
-
-        let offset = 0;
-        let itemCount = data.length;
-        let itemSize = this.itemSize();
-        let tailItemCount = this.tailItemCount();
-        let visibleItemCount = this.visibleItemCount();
-
-        if (itemCount > visibleItemCount) {
-            if (null == dropdownPosition) {
-                switch (selected) {
-                    case -1:
-                        break;
-
-                    case 0:
-                    case 1:
-                        break;
-
-                    default:
-                        if (selected >= itemCount - tailItemCount) {
-                            offset = itemSize * (itemCount - visibleItemCount);
-                        } else {
-                            offset = itemSize * (selected - 1);
-                        }
-                }
-            } else {
-                let index = selected - dropdownPosition;
-
-                if (dropdownPosition < 0) {
-                    index -= visibleItemCount;
-                }
-
-                index = Math.max(0, index);
-                index = Math.min(index, itemCount - visibleItemCount);
-
-                if (~selected) {
-                    offset = itemSize * index;
-                }
-            }
-        }
-
-        if (this.scroll) {
-            //this.scroll.scrollToOffset({ offset, animated: false });
-        }
-    }
-
     updateRef(name, ref) {
         this[name] = ref;
     }
@@ -595,12 +546,16 @@ export default class Dropdown extends PureComponent {
     renderRipple() {
         let {
             baseColor,
-            rippleColor = baseColor,
+            rippleColor,
             rippleOpacity,
             rippleDuration,
             rippleCentered,
             rippleSequential,
         } = this.props;
+
+        if (typeof rippleColor === 'undefined'){
+            rippleColor = baseColor;
+        }
 
         let { bottom, ...insets } = this.rippleInsets();
         let style = {
@@ -650,7 +605,7 @@ export default class Dropdown extends PureComponent {
             textColor,
             itemColor,
             baseColor,
-            selectedItemColor = textColor,
+            selectedItemColor,
             disabledItemColor = baseColor,
             fontSize,
             itemTextStyle,
@@ -658,6 +613,10 @@ export default class Dropdown extends PureComponent {
             rippleDuration,
             shadeOpacity,
         } = this.props;
+
+        if (typeof selectedItemColor === 'undefined') {
+            selectedItemColor = textColor;
+        }
 
         let props = propsExtractor(item, index);
 

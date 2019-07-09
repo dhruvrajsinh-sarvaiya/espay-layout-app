@@ -170,7 +170,7 @@ class SiteTokenConversionHistory extends Component {
                                     showsVerticalScrollIndicator={false}
                                     data={finalItems}
                                     /* render all item in list */
-                                    renderItem={({ item, index }) => <FlatListItem item={item} index={index} size={this.state.response.length} ></FlatListItem>}
+                                    renderItem={({ item, index }) => <ConverstionHistoryList item={item} historyListIndex={index} historyListSize={this.state.response.length} />}
                                     /* assign index as key valye to Site Token History list item */
                                     keyExtractor={(item, index) => index.toString()}
                                     /* For Refresh Functionality In Site Token History FlatList Item */
@@ -193,7 +193,7 @@ class SiteTokenConversionHistory extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class ConverstionHistoryList extends Component {
     constructor(props) {
         super(props);
     }
@@ -209,23 +209,23 @@ class FlatListItem extends Component {
 
         // get required params from props
         let item = this.props.item;
-        let { index, size, } = this.props;
+        let { historyListIndex, historyListSize } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (historyListIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (historyListIndex == historyListSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
-                        borderRadius: 0,
                         flexDirection: 'column',
+                        elevation: R.dimens.listCardElevation,
+                        borderRadius: 0,
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
                     }}>

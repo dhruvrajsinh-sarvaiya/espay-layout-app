@@ -211,12 +211,16 @@ class AddCurrencyLogo extends Component {
                 <TouchableOpacity onPress={onPress} >
                     <View style={this.styles().choosebutton}>
                         <ImageButton
-                            onPress={onPress}
-                            style={{ margin: R.dimens.widgetMargin, }}
+                            style={{ margin: R.dimens.widgetMargin }}
                             icon={R.images.IC_UPLOAD}
-                            iconStyle={this.styles().icon_style}
+                            iconStyle={{
+                                tintColor: R.colors.white,
+                                width: R.dimens.dashboardMenuIcon,
+                                height: R.dimens.dashboardMenuIcon
+                            }}
+                            onPress={onPress}
                         />
-                        <TextViewHML style={{ marginRight: R.dimens.widgetMargin, color: R.colors.white, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{R.strings.Upload}</TextViewHML>
+                        <TextViewHML style={{ color: R.colors.white, fontSize: R.dimens.smallestText, marginRight: R.dimens.widgetMargin, textAlign: 'center' }}>{R.strings.Upload}</TextViewHML>
                     </View>
                 </TouchableOpacity>
 
@@ -237,11 +241,6 @@ class AddCurrencyLogo extends Component {
                 borderRadius: R.dimens.CardViewElivation,
                 alignItems: 'center',
                 justifyContent: 'center',
-            },
-            icon_style: {
-                tintColor: R.colors.white,
-                width: R.dimens.dashboardMenuIcon,
-                height: R.dimens.dashboardMenuIcon
             }
         })
     }

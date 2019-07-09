@@ -21,7 +21,12 @@ const INTIAL_STATE = {
     buySellError: false,
 }
 
-export default function buySellTradeReducer(state = INTIAL_STATE, action) {
+export default function buySellTradeReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
 

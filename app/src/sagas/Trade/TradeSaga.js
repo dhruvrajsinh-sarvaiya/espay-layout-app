@@ -38,36 +38,9 @@ function* getPairListData({ payload }) {
         let favouriteList = yield select(favouriteResponse);
 
         if (favouriteList && favouriteList.ReturnCode == 0 && response.ReturnCode == 0) {
-            let updatedList = response.response;
-
-            //Loop thorugh Market list
-            response.response.map((baseItem, baseIndex) => {
-
-                //Loop through each pairs
-                baseItem.PairList.map((pairItem, pairIndex) => {
-
-                    //Find index of favourite item
-                    let index = favouriteList.response.findIndex(el => el.PairId == pairItem.PairId);
-
-                    //Get condition based color with old and new values
-                    let currentRateColor = getColorCode(updatedList[baseIndex].PairList[pairIndex].CurrentRate);
-                    let changePerColor = getColorCode(updatedList[baseIndex].PairList[pairIndex].ChangePer);
-
-                    //Apply true false based on index found or not
-                    updatedList[baseIndex].PairList[pairIndex].isFavorite = index > -1;
-                    updatedList[baseIndex].PairList[pairIndex].currentRateColor = currentRateColor;
-                    updatedList[baseIndex].PairList[pairIndex].changePerColor = changePerColor;
-
-                    updatedList[baseIndex].PairList[pairIndex].CurrentRate = parseFloatVal(pairItem.CurrentRate).toFixed(8);
-                    updatedList[baseIndex].PairList[pairIndex].Low24Hr = parseFloatVal(pairItem.Low24Hr).toFixed(8);
-                    updatedList[baseIndex].PairList[pairIndex].High24Hr = parseFloatVal(pairItem.High24Hr).toFixed(8);
-                    updatedList[baseIndex].PairList[pairIndex].LowWeek = parseFloatVal(pairItem.LowWeek).toFixed(8);
-                    updatedList[baseIndex].PairList[pairIndex].Low52Week = parseFloatVal(pairItem.Low52Week).toFixed(8);
-                })
-            })
 
             //Update new state of updated list
-            response.response = updatedList;
+            response.response = mergeMarketFavoriteResponse(response, favouriteList);
         }
 
         if (payload.IsMargin !== undefined && payload.IsMargin != 0) {
@@ -82,4 +55,41 @@ function* getPairListData({ payload }) {
             yield put(onMarketFailure());
         }
     }
+}
+
+export function mergeMarketFavoriteResponse(marketResponse, favoriteResponse) {
+
+    let updatedList = marketResponse.response;
+
+    //Loop thorugh Market list
+    marketResponse.response.map((baseItem, baseIndex) => {
+
+        //Loop through each pairs
+        baseItem.PairList.map((pairItem, pairIndex) => {
+
+            //Find index of favourite item
+            let index = -1;
+            //Find index of favourite item
+            if (marketResponse.response) {
+                index = favoriteResponse.response.findIndex(el => el.PairId == pairItem.PairId);
+            }
+
+            //Get condition based color with old and new values
+            let currentRateColor = getColorCode(updatedList[baseIndex].PairList[pairIndex].CurrentRate);
+            let changePerColor = getColorCode(updatedList[baseIndex].PairList[pairIndex].ChangePer);
+
+            //Apply true false based on index found or not
+            updatedList[baseIndex].PairList[pairIndex].isFavorite = index > -1;
+            updatedList[baseIndex].PairList[pairIndex].currentRateColor = currentRateColor;
+            updatedList[baseIndex].PairList[pairIndex].changePerColor = changePerColor;
+
+            updatedList[baseIndex].PairList[pairIndex].CurrentRate = parseFloatVal(pairItem.CurrentRate).toFixed(8);
+            updatedList[baseIndex].PairList[pairIndex].Low24Hr = parseFloatVal(pairItem.Low24Hr).toFixed(8);
+            updatedList[baseIndex].PairList[pairIndex].High24Hr = parseFloatVal(pairItem.High24Hr).toFixed(8);
+            updatedList[baseIndex].PairList[pairIndex].LowWeek = parseFloatVal(pairItem.LowWeek).toFixed(8);
+            updatedList[baseIndex].PairList[pairIndex].Low52Week = parseFloatVal(pairItem.Low52Week).toFixed(8);
+        })
+    })
+
+    return updatedList;
 }

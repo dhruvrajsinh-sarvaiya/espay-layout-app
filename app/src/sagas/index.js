@@ -1,10 +1,9 @@
 import { all } from "redux-saga/effects";
 import tradeSaga from './Trade/TradeSaga';
 import WithdrawSaga from './WithdrawSaga';
-import DepositSaga from './DepositSagas';
-import TransferInOutSaga from './TransferInOutSagas';
+import DepositSagas from './DepositSagas';
+import TransferInOutSaga from './TransferInOutSaga';
 import CommonSaga from './CommonSaga';
-import AboutUsSaga from './AboutUsSaga';
 import ContactUsSaga from './ContactUsSaga';
 import NewsSectionSaga from './NewsSectionSaga';
 import SiteTokenConversionSaga from './SiteTokenConversionSaga';
@@ -25,7 +24,7 @@ import Complain from './ComplainSaga';
 import MemberShipLevelSaga from './MembershipLevelSaga';
 import PageContent from './PageContent';
 import EditProfileSaga from './EditProfileSaga';
-import forgotPasswordSagas from './ForgotPasswordSaga';
+import ForgotPasswordSaga from './ForgotPasswordSaga';
 import EnableGoogleAuthSaga from './EnableGoogleAuthSaga';
 import DisableGoogleAuthSaga from './DisableGoogleAuthSaga';
 import FundViewSaga from './FundViewSaga';
@@ -83,10 +82,9 @@ function* rootSaga() {
         tokenSaga(),
         tradeSaga(),
         WithdrawSaga(),
-        DepositSaga(),
+        DepositSagas(),
         TransferInOutSaga(),
         CommonSaga(),
-        AboutUsSaga(),
         ContactUsSaga(),
         NewsSectionSaga(),
         SiteTokenConversionSaga(),
@@ -107,7 +105,7 @@ function* rootSaga() {
         MemberShipLevelSaga(),
         PageContent(),
         EditProfileSaga(),
-        forgotPasswordSagas(),
+        ForgotPasswordSaga(),
         EnableGoogleAuthSaga(),
         DisableGoogleAuthSaga(),
         FundViewSaga(),

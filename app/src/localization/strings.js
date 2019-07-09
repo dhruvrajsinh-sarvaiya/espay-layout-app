@@ -1,14 +1,14 @@
 import LocalizedStrings from 'react-native-localization';
-import en_US from './en_US';
-import nl_NL from './nl_NL';
-import pt_PT from './pt_PT';
-import es_ES from './es_ES';
+import enUS from './enUS';
+import nlNL from './nlNL';
+import ptPT from './ptPT';
+import esES from './esES';
 
 export const strings = new LocalizedStrings({
-        en: { ...en_US }, //English
-        nl: { ...nl_NL }, //Dutch
-        pt: { ...pt_PT }, //Portuguese
-        es: { ...es_ES }, //Spanish
+        en: { ...enUS }, //English
+        nl: { ...nlNL }, //Dutch
+        pt: { ...ptPT }, //Portuguese
+        es: { ...esES }, //Spanish
 });
 
 export const languages = [

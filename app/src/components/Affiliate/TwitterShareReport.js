@@ -28,19 +28,23 @@ class TwitterShareReport extends Component {
     constructor(props) {
         super(props);
 
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
+
         //Define All initial State
         this.state = {
             row: [],
             selectedPage: 1,
-            data: [],//for store data from the responce
-            search: '',//for search value for data
-            refreshing: false,//for refresh data
             FromDate: getCurrentDate(),//for display Current Date
             ToDate: getCurrentDate(),//for display Current Date
             PageSize: AppConfig.pageSize,
+            data: [],//for store data from the responce
+            search: '',//for search value for data
+            refreshing: false,//for refresh data
+            UserId: 0,
             userList: [],
             selectedUser: R.strings.Please_Select,
-            UserId: 0,
             isFirstTime: true,
             isDrawerOpen: false, // First Time Drawer is Closed
         }
@@ -49,28 +53,13 @@ class TwitterShareReport extends Component {
         addRouteToBackPress(props);
 
         // Bind All Method
-        this.onRefresh = this.onRefresh.bind(this);
-        this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
+        this.onResetPress = this.onResetPress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
 
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
     }
 
     componentDidMount = async () => {
@@ -100,6 +89,18 @@ class TwitterShareReport extends Component {
     shouldComponentUpdate = (nextProps, nextState) => {
         return isCurrentScreen(nextProps);
     };
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
+        }
+    }
 
     //For Swipe to referesh Functionality
     onRefresh = async () => {
@@ -151,24 +152,34 @@ class TwitterShareReport extends Component {
     // Drawer Navigation
     navigationDrawer() {
         return (
-            <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+
+            <SafeView
+                style={{
+                    backgroundColor: R.colors.background,
+                    flex: 1,
+                }}>
 
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast
+                    styles={{ width: R.dimens.FilterDrawarWidth }}
+                    ref={cmp => this.toast = cmp}
+                />
 
                 {/* filterwidget for display fromdate, todate,Parentuser data */}
                 <FilterWidget
-                    FromDatePickerCall={(date) => this.setState({ FromDate: date })}
-                    FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
+                    FromDatePickerCall={(date) => this.setState({ FromDate: date })}
+                    FromDate={this.state.FromDate}
                     onResetPress={this.onResetPress}
                     onCompletePress={this.onCompletePress}
                     firstPicker={{
-                        title: R.strings.parentUser,
                         array: this.state.userList,
+                        title: R.strings.parentUser,
                         selectedValue: this.state.selectedUser,
-                        onPickerSelect: (index, object) => { this.setState({ selectedUser: index, UserId: object.Id }) }
+                        onPickerSelect: (index, object) => {
+                            this.setState({ selectedUser: index, UserId: object.Id })
+                        }
                     }}
                 />
             </SafeView>
@@ -180,11 +191,11 @@ class TwitterShareReport extends Component {
 
         // setstate data as initial value
         this.setState({
-            FromDate: getCurrentDate(),
             ToDate: getCurrentDate(),
-            selectedUser: R.strings.Please_Select,
+            FromDate: getCurrentDate(),
             selectedPage: 1,
             search: '',
+            selectedUser: R.strings.Please_Select,
             UserId: 0,
         })
 
@@ -263,13 +274,13 @@ class TwitterShareReport extends Component {
                 try {
                     if (validateResponseNew({ response: affiliateUserData, isList: true })) {
                         //Get array from response
-                        var newRes = parseArray(affiliateUserData.Response);
-                        newRes.map((item, index) => {
-                            newRes[index].value = newRes[index].UserName
-                            newRes[index].Id = newRes[index].Id
+                        var userDataForTwitter = parseArray(affiliateUserData.Response);
+                        userDataForTwitter.map((item, index) => {
+                            userDataForTwitter[index].value = userDataForTwitter[index].UserName
+                            userDataForTwitter[index].Id = userDataForTwitter[index].Id
                         })
                         //----
-                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...userDataForTwitter]
 
                         return { ...state, userList: res };
                     }
@@ -314,25 +325,26 @@ class TwitterShareReport extends Component {
 
         //for final items from search input (validate on UserEmail , FirstName and LastName)
         //default searchInput is empty so it will display all records.
-        let finalItems = list.filter(item =>
-            (item.UserEmail.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
+        let finalItems = list.filter(twitterItem =>
+            (twitterItem.UserEmail.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (twitterItem.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (twitterItem.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
         );
 
         return (
             //apply filter for Twitter report 
             <Drawer
                 ref={cmp => this.drawer = cmp}
-                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
+                easingFunc={Easing.ease}
+                drawerWidth={R.dimens.FilterDrawarWidth}
                 type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
-                easingFunc={Easing.ease}>
+            >
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -362,22 +374,21 @@ class TwitterShareReport extends Component {
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
                                                 renderItem={({ item, index }) =>
-                                                    <FlatlistItem
-                                                        item={item}
-                                                        index={index}
-                                                        size={this.state.data.length}
+                                                    <TwitterList
+                                                        twitterItem={item}
+                                                        twitterIndex={index}
+                                                        twitterSize={this.state.data.length}
                                                     />
                                                 }
                                                 keyExtractor={(item, index) => index.toString()}
                                                 contentContainerStyle={[
-                                                    { flexGrow: 1 },
-                                                    this.state.data.length ? null : { justifyContent: 'center' }
+                                                    { flexGrow: 1 }, this.state.data.length ? null : { justifyContent: 'center' }
                                                 ]}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
                                                     <RefreshControl
-                                                        colors={[R.colors.accent]}
                                                         progressBackgroundColor={R.colors.background}
+                                                        colors={[R.colors.accent]}
                                                         refreshing={this.state.refreshing}
                                                         onRefresh={this.onRefresh}
                                                     />}
@@ -391,7 +402,10 @@ class TwitterShareReport extends Component {
                         {/* to show Pagination */}
                         <View>
                             {finalItems.length > 0 &&
-                                <PaginationWidget row={this.state.row} selectedPage={this.state.selectedPage} onPageChange={(item) => { this.onPageChange(item) }} />}
+                                <PaginationWidget
+                                    selectedPage={this.state.selectedPage}
+                                    row={this.state.row}
+                                    onPageChange={(item) => { this.onPageChange(item) }} />}
                         </View>
                     </View>
                 </SafeView>
@@ -401,32 +415,31 @@ class TwitterShareReport extends Component {
 }
 
 // This Class is used for display record in list
-class FlatlistItem extends Component {
+class TwitterList extends Component {
 
     constructor(props) {
         super(props);
-
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.twitterItem === nextProps.twitterItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let twitterItem = this.props.twitterItem;
+        let { twitterIndex, twitterSize, } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (twitterIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (twitterIndex == twitterSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -448,9 +461,9 @@ class FlatlistItem extends Component {
                             />
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
                                 <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.twitterLinkInvite}</Text>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.FirstName ? item.FirstName + ' ' + item.LastName : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.UserEmail ? item.UserEmail : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} {R.strings.IPAddress} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.IpAddress ? item.IpAddress : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{twitterItem.FirstName ? twitterItem.FirstName + ' ' + twitterItem.LastName : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{twitterItem.UserEmail ? twitterItem.UserEmail : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} {R.strings.IPAddress} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{twitterItem.IpAddress ? twitterItem.IpAddress : '-'}</TextViewHML></TextViewHML>
                             </View>
                         </View>
 
@@ -461,7 +474,7 @@ class FlatlistItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.ClickTime ? convertDateTime(item.ClickTime) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{twitterItem.ClickTime ? convertDateTime(twitterItem.ClickTime) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View >

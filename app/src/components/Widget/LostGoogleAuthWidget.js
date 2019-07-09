@@ -16,9 +16,10 @@ import { isCurrentScreen } from '../Navigation';
 import CommonToast from '../../native_theme/components/CommonToast';
 import ImageButton from '../../native_theme/components/ImageTextButton';
 import TextViewHML from '../../native_theme/components/TextViewHML';
-import { setData } from '../../App';
+import { setData, getData } from '../../App';
 import KeyboardAvoidingView from '../../native_theme/components/KeyboardAvoidingView';
 import DeviceInfo from 'react-native-device-info';
+import { getBottomSpace } from '../../controllers/iPhoneXHelper';
 
 class LostGoogleAuthWidget extends Component {
 	constructor(props) {
@@ -152,10 +153,10 @@ class LostGoogleAuthWidget extends Component {
 					let verifyCodeRequest = {
 						Code: this.state.googleAuthCode,
 						TwoFAKey: this.state.TwoFAToken,
+						AllowToken: getData(ServiceUtilConstant.ALLOWTOKEN),
 						DeviceId: await getDeviceID(),
 						Mode: ServiceUtilConstant.Mode,
 						HostName: ServiceUtilConstant.hostName,
-
 						//Note : ipAddress parameter is passed in its saga.
 					}
 
@@ -196,14 +197,25 @@ class LostGoogleAuthWidget extends Component {
 						this.props.onCancel();
 					}}>
 
-					<View style={isLandscape ? [this.style.contentLandscapeStyle, { backgroundColor: 'rgba(0,0,0, 0.3)' }] : [this.style.contentStyle, { backgroundColor: 'rgba(0,0,0, 0.3)' }]}>
-						<KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={0} style={isLandscape ? this.style.contentLandscapeStyle : this.style.contentStyle}>
+					<View style={[{
+						flex: 1,
+						backgroundColor: 'rgba(0,0,0, 0.3)',
+					}]}>
+						<KeyboardAvoidingView
+							behavior="padding"
+							keyboardVerticalOffset={0}
+							styles={{
+								width: '100%',
+								position: 'absolute',
+								bottom: 0,
+							}}>
 
 							{/* common toast*/}
 							<CommonToast ref={comp => this.toast = comp} />
 
 							<View style={{
-								width: '100%',
+								width: isLandscape ? '75%' : '100%',
+								alignSelf: 'center',
 								backgroundColor: R.colors.background,
 								borderTopLeftRadius: R.dimens.activity_margin,
 								borderTopRightRadius: R.dimens.activity_margin,
@@ -286,7 +298,7 @@ class LostGoogleAuthWidget extends Component {
 									isRound={true}
 									title={R.strings.confirm}
 									onPress={this.onVerifyGoogleAuth}
-									style={{ marginTop: R.dimens.padding_top_bottom_margin, marginBottom: R.dimens.padding_top_bottom_margin, }} />
+									style={{ marginTop: R.dimens.padding_top_bottom_margin, marginBottom: R.dimens.padding_top_bottom_margin + (getBottomSpace() / 2), }} />
 							</View>
 						</KeyboardAvoidingView>
 					</View>
@@ -294,30 +306,13 @@ class LostGoogleAuthWidget extends Component {
 			</View>
 		);
 	}
-
-	get style() {
-		return {
-			contentStyle: {
-				flex: 1,
-				justifyContent: 'flex-end',
-				alignContent: 'flex-end'
-			},
-			contentLandscapeStyle: {
-				flex: 1,
-				paddingLeft: R.dimens.activity_margin,
-				paddingRight: R.dimens.activity_margin,
-				justifyContent: 'flex-end',
-				alignContent: 'flex-end'
-			}
-		}
-	}
 }
 
 function mapStateToProps(state) {
 	return {
 		//For Verify 2FA Google Auth Code
 		login: state.loginReducer,
-		token: state.tokenReducer,
+		token: state.AuthorizeTokenReducer,
 		isPortrait: state.preference.dimensions.isPortrait
 	}
 }

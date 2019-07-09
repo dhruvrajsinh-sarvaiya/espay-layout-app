@@ -86,7 +86,7 @@ class WithdrawRequest extends Component {
             Alert_Visibility1: false,
             Amount: '',
             isVisible: false,
-            googleAuthCode: '',
+            authCode: '',
             count: true,
         }
         //----------
@@ -145,29 +145,37 @@ class WithdrawRequest extends Component {
             if (!VerifyGoogleAuthFetchData) {
                 try {
                     if (validateResponseNew({ response: VerifyGoogleAuthData })) {
+
                         //if ErrorCode is also 0 and generate token is not called yet then call generateToken method
                         if (VerifyGoogleAuthData.ErrorCode == 0) {
                             if (this.state.count) {
                                 this.setState({ count: false });
-                                showAlert(R.strings.Are_you_sure, R.strings.withdrawMailMsg, 3, async () => {
-                                    this.setState({ count: true });
-                                    //Check NetWork is Available or not
-                                    if (await isInternet()) {
-                                        //Bind Request For withdrawal
-                                        let withdrawRequest = {
-                                            asset: this.state.symbol,
-                                            address: this.state.Address,
-                                            DebitWalletID: this.state.accWalletID,
-                                            TrnMode: 21,//Static For App
-                                            Amount: this.state.receivedAmount,
-                                            WhitelistingBit: this.state.checkWhiteListing == true ? 1 : 0,
-                                            AddressLabel: this.state.label,
-                                            Nonce: new Date().getTime()//DateTime in MiliSecond
+                                showAlert(
+                                    R.strings.Are_you_sure,
+                                    R.strings.withdrawMailMsg,
+                                    3,
+                                    async () => {
+                                        this.setState({ count: true });
+                                        //Check NetWork is Available or not
+                                        if (await isInternet()) {
+                                            //Bind Request For withdrawal
+                                            let withdrawRequest = {
+                                                TrnMode: 21,//Static For App
+                                                asset: this.state.symbol,
+                                                address: this.state.Address,
+                                                DebitWalletID: this.state.accWalletID,
+                                                AddressLabel: this.state.label,
+                                                WhitelistingBit: this.state.checkWhiteListing == true ? 1 : 0,
+                                                Amount: this.state.receivedAmount,
+                                                Nonce: new Date().getTime()//DateTime in MiliSecond
+                                            }
+                                            //call withdrawal API
+                                            this.props.WithdrawRequest(withdrawRequest);
                                         }
-                                        //call Coin withdrawal API
-                                        this.props.WithdrawRequest(withdrawRequest);
-                                    }
-                                }, R.strings.cancel, () => { this.setState({ count: true }); }, R.strings.agree);
+                                    },
+                                    R.strings.cancel,
+                                    () => { this.setState({ count: true }) },
+                                    R.strings.agree);
                             }
                         }
                         else if (VerifyGoogleAuthData.ErrorCode == 4137) {
@@ -382,7 +390,6 @@ class WithdrawRequest extends Component {
                         return {
                             ...state,
                             walletItems: [{ value: R.strings.Please_Select }],
-                            IsWhiteListing: WalletListData.IsWhitelisting,
                             AddressItems: [],
                             IsWhiteListing: '0',
                             AvailableBalance: '-',
@@ -393,7 +400,6 @@ class WithdrawRequest extends Component {
                     return {
                         ...state,
                         walletItems: [{ value: R.strings.Please_Select }],
-                        IsWhiteListing: WalletListData.IsWhitelisting,
                         AddressItems: [],
                         IsWhiteListing: '0',
                         AvailableBalance: '-',
@@ -409,7 +415,7 @@ class WithdrawRequest extends Component {
                 try {
                     return {
                         ...state,
-                        googleAuthCode: ''
+                        authCode: ''
                     }
                 } catch (e) {
                     return null;
@@ -427,7 +433,7 @@ class WithdrawRequest extends Component {
             if (index !== R.strings.Please_Select) {
                 this.props.OnDropdownChange();
                 //Chcek if Item is Select From Select Wallet DropDown
-                if (this.refs.spSelectWallet != null) {
+                if (this.refs.spWallet != null) {
                     //Store Update DropDown Item and Perform Wallet Change Action For Update Item
                     if (object.AccWalletID !== this.state.accWalletID) {
                         //Check NetWork is Available or not
@@ -532,7 +538,7 @@ class WithdrawRequest extends Component {
             if (CheckAmountValidation(Amount)) {
                 this.setState({ Amount: CheckAmountValidation(Amount) });
                 if (this.state.ChargeType == 1) {
-                    this.setState({ receivedAmount: ((parseFloatVal(CheckAmountValidation(Amount)) - parseIntVal(this.state.ChargeValue))).toFixed(8) });
+                    this.setState({ receivedAmount: (parseFloatVal(CheckAmountValidation(Amount)) - parseIntVal(this.state.ChargeValue)).toFixed(8) });
                 }
                 if (this.state.ChargeType == 2) {
                     this.setState({ receivedAmount: (parseFloatVal(CheckAmountValidation(Amount)) - getPercentage(parseFloatVal(CheckAmountValidation(Amount)), parseIntVal(this.state.ChargeValue))) });
@@ -541,6 +547,31 @@ class WithdrawRequest extends Component {
         } else {
             this.setState({ Amount: '' });
             this.setState({ receivedAmount: 0 });
+        }
+    }
+
+    // Verify 2FA
+    verify2FA = async () => {
+        // Check validation
+        if (isEmpty(this.state.authCode)) {
+            this.refs.ToastIn.Show(R.strings.authentication_code_validate);
+            return;
+        }
+        else if (this.state.authCode.length != 6) {
+            this.refs.ToastIn.Show(R.strings.Enter_valid_Code);
+            return;
+        }
+        else {
+            this.setState({ isVisible: false })
+            //Check NetWork is Available or not
+            if (await isInternet()) {
+                //Bind VerifyCode API Request
+                let verifyCodeRequest = {
+                    Code: this.state.authCode,
+                }
+                //call api for verify 2FA Google Auth
+                this.props.twoFAGoogleAuthentication(verifyCodeRequest);
+            }
         }
     }
 
@@ -666,34 +697,8 @@ class WithdrawRequest extends Component {
                             //call Coin withdrawal API
                             this.props.WithdrawRequest(withdrawRequest);
                         }
-                    }, R.strings.cancel, () => { this.setState({ count: true }); }, R.strings.agree);
+                    }, R.strings.cancel, () => { this.setState({ count: true }) }, R.strings.agree);
                 }
-            }
-        }
-    }
-
-    // Verify 2FA
-    verify2FA = async () => {
-        // Check validation
-        if (isEmpty(this.state.googleAuthCode)) {
-            this.refs.ToastIn.Show(R.strings.authentication_code_validate);
-            return;
-        }
-        else if (this.state.googleAuthCode.length != 6) {
-            this.refs.ToastIn.Show(R.strings.Enter_valid_Code);
-            return;
-        }
-        else {
-            this.setState({ isVisible: false })
-            //Check NetWork is Available or not
-            if (await isInternet()) {
-
-                //Bind VerifyCode API Request
-                let verifyCodeRequest = {
-                    Code: this.state.googleAuthCode,
-                }
-                //call api for verify 2FA Google Auth
-                this.props.twoFAGoogleAuthentication(verifyCodeRequest);
             }
         }
     }
@@ -702,7 +707,7 @@ class WithdrawRequest extends Component {
     validateGoogleCode = (text) => {
         //Validate Google Auth Code for 6 digits.
         if (validateGoogleAuthCode(text)) {
-            this.setState({ googleAuthCode: text })
+            this.setState({ authCode: text })
         }
     }
 
@@ -789,7 +794,7 @@ class WithdrawRequest extends Component {
                             secureTextEntry={true}
                             textContentType='password'
                             onChangeText={(text) => this.validateGoogleCode(text)}
-                            value={this.state.googleAuthCode}
+                            value={this.state.authCode}
                         />
                     </View>
                 </AlertDialog>
@@ -821,25 +826,25 @@ class WithdrawRequest extends Component {
                     {/* To Set All View in ScrolView */}
                     <InputScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps={'always'}>
                         <View style={{ paddingLeft: R.dimens.activity_margin, paddingRight: R.dimens.activity_margin, paddingBottom: R.dimens.padding_top_bottom_margin, paddingTop: R.dimens.padding_top_bottom_margin }}>
-                            {/* To Set Coin*/}
-                            <SelectedCoin
-                                symbol={this.state.symbol}
-                                onCoinItemSelection={() => this.onCoinItemSelection()}>
-                            </SelectedCoin>
 
-                            {/* To Set Wallet in Dropdown */}
+                            {/* To Set Coin*/}
+                            <CoinBlock
+                                currency={this.state.symbol}
+                                onCoinItemSelection={() => this.onCoinItemSelection()}>
+                            </CoinBlock>
+
+                            {/* To Set selected coin Wallet in Dropdown */}
                             <TextViewMR style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary, marginTop: R.dimens.widget_top_bottom_margin }}>{R.strings.Select_Wallet}</TextViewMR>
                             <Picker
-                                cardStyle={{ marginLeft: 0, marginRight: 0, }}
-                                ref='spSelectWallet'
-                                title={R.strings.Select_Wallet}
                                 searchable={true}
                                 data={this.state.walletItems}
-                                value={this.state.CoinName ? this.state.CoinName : ''}
+                                cardStyle={{ marginLeft: 0, marginRight: 0, }}
+                                ref='spWallet'
+                                width={'100%'}
+                                title={R.strings.Select_Wallet}
                                 onPickerSelect={(index, object) => this.onWalletChange(index, object)}
                                 displayArrow={'true'}
-                                width={'100%'}
-                            />
+                                value={this.state.CoinName ? this.state.CoinName : ''} />
 
                             <CardView style={{ marginTop: R.dimens.padding_top_bottom_margin, flex: 1, paddingBottom: R.dimens.margin_top_bottom, paddingTop: R.dimens.margin_top_bottom, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }} cardRadius={0}>
                                 {this.state.CoinName !== R.strings.Please_Select ?
@@ -1022,13 +1027,13 @@ class WithdrawRequest extends Component {
 }
 
 // Set Selected Coin
-class SelectedCoin extends Component {
+class CoinBlock extends Component {
     constructor(props) {
         super(props);
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.symbol === nextProps.symbol) {
+        if (this.props.currency === nextProps.currency) {
             return false
         }
         return true
@@ -1038,8 +1043,8 @@ class SelectedCoin extends Component {
         return (
             <CardView style={{ height: R.dimens.ButtonHeight, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }} cardRadius={0}>
                 <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <ImageViewWidget url={this.props.symbol ? this.props.symbol : null} style={{ marginRight: R.dimens.margin }} width={R.dimens.SMALL_MENU_ICON_SIZE} height={R.dimens.SMALL_MENU_ICON_SIZE} />
-                    <TextViewMR style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary }}>{this.props.symbol ? this.props.symbol : ''}</TextViewMR>
+                    <ImageViewWidget url={this.props.currency ? this.props.currency : null} style={{ marginRight: R.dimens.margin }} width={R.dimens.SMALL_MENU_ICON_SIZE} height={R.dimens.SMALL_MENU_ICON_SIZE} />
+                    <TextViewMR style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary }}>{this.props.currency ? this.props.currency : ''}</TextViewMR>
                 </View>
                 <TextViewHML
                     onPress={this.props.onCoinItemSelection}
@@ -1102,9 +1107,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 const styles = {
-    container: {
-        flex: 1
-    },
     overlay: {
         justifyContent: 'center',
         position: 'absolute',
@@ -1113,6 +1115,13 @@ const styles = {
         left: 0,
         alignItems: 'center'
     },
+    scanScreenMessage: {
+        fontSize: R.dimens.smallText,
+        color: R.colors.accent,
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     topOverlay: {
         top: 0,
         flex: 1,
@@ -1120,13 +1129,9 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center'
     },
-    scanScreenMessage: {
-        fontSize: R.dimens.smallText,
-        color: R.colors.accent,
-        textAlign: 'center',
-        alignItems: 'center',
-        justifyContent: 'center'
-    }
+    container: {
+        flex: 1
+    },
 };
 
 export default connect(

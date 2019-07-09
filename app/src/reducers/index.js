@@ -1,10 +1,8 @@
-import { combineReducers } from 'redux';
-import nav from './navigationReducer'
+import navigationReducer from './navigationReducer'
 import tradeData from './TradeReducer';
 import marginTradeReducer from './MarginTradeReducer';
 import DepositReducer from './DepositReducer';
 import WithdrawReducer from './WithdrawReducer';
-import AboutUsReducer from './AboutUsReducer';
 import ContactUsReducer from './ContactUsReducer';
 import NewsSectionReducer from './NewsSectionReducer'
 import TransferInOutReducer from './TransferInOutReducer'
@@ -33,16 +31,16 @@ import EnableGoogleAuthReducer from './EnableGoogleAuthReducer';
 import DisableGoogleAuthReducer from './DisableGoogleAuthReducer';
 import favouriteReducer from './Trade/FavouriteReducer';
 import UserLedgerReducer from './UserLedgerReducer';
-import CoinReducer from './FetchCoinReducer'
+import FetchCoinReducer from './FetchCoinReducer'
 import CoinlistReducer from './CoinlistReducer';
-import tokenReducer from './AuthorizeTokenReducer';
-import preference from './PreferenceReducer';
+import AuthorizeTokenReducer from './AuthorizeTokenReducer';
+import preference from './preference';
 import notificationReducer from './NotificationReducer';
 import ChatReducer from './ChatReducer';
 import KYCReducer from './KYCReducer';
 import SocialProfileReducer from './SocialProfileReducer'
 import AppSettingsReducer from './AppSettingsReducer'
-import marketTickerReducer from './Trade/MarketTickersReducer';
+import MarketTickersReducer from './Trade/MarketTickersReducer';
 import topGainerReducer from './Trade/TopGainerReducer';
 import topLoserReducer from './Trade/TopLoserReducer';
 import topGainerLoserReducer from './Trade/TopGainerLoserReducer';
@@ -84,13 +82,12 @@ import OpenPositionReportReducer from './OpenPositionReportReducer';
 import DeleverageReducer from './DeleverageReducer';
 
 const rootFrontReducer = {
-    nav,
+    navigationReducer,
     preference,
     cacheReducer,
     tradeData,
     marginTradeReducer,
     DepositReducer,
-    AboutUsReducer,
     ContactUsReducer,
     WithdrawReducer,
     TransferInOutReducer,
@@ -119,15 +116,15 @@ const rootFrontReducer = {
     DisableGoogleAuthReducer,
     favouriteReducer,
     UserLedgerReducer,
-    CoinReducer,
+    FetchCoinReducer,
     CoinlistReducer,
-    tokenReducer,
+    AuthorizeTokenReducer,
     notificationReducer,
     ChatReducer,
     KYCReducer,
     SocialProfileReducer,
     AppSettingsReducer,
-    marketTickerReducer,
+    MarketTickersReducer,
     topGainerReducer,
     topLoserReducer,
     topGainerLoserReducer,

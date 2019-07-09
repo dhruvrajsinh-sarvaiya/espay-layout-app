@@ -19,7 +19,12 @@ const INTIAL_STATE = {
     error: false
 }
 
-export default function marketDepthReducer(state = INTIAL_STATE, action) {
+export default function marketDepthReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
 

@@ -8,7 +8,7 @@ import { changeTheme, parseArray, addPages } from '../../controllers/CommonUtils
 import { isInternet, validateResponseNew, } from '../../validations/CommonValidation';
 import { ListEmptyComponent, contentContainerStyle } from '../../native_theme/components/FlatListWidgets';
 import ListLoader from '../../native_theme/components/ListLoader';
-import { getLeaderWatchlist } from '../../actions/SocialProfile/SocialProfileActions';
+import { getLeaderWatchlist as getLeaderWatchlistAPI } from '../../actions/SocialProfile/SocialProfileActions';
 import PaginationWidget from '../Widget/PaginationWidget';
 import { AppConfig } from '../../controllers/AppConfig';
 import R from '../../native_theme/R';
@@ -308,7 +308,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         //get My Watcher list
-        getLeaderWatchlist: (Request) => dispatch(getLeaderWatchlist(Request)),
+        getLeaderWatchlist: (Request) => dispatch(getLeaderWatchlistAPI(Request)),
     }
 }
 

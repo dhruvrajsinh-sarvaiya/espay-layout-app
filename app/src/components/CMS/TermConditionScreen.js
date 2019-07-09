@@ -19,7 +19,7 @@ class TermConditionScreen extends Component {
 
     //Define All State initial state
     this.state = {
-      response: null,
+      conditionRes: null,
     }
   }
 
@@ -45,22 +45,22 @@ class TermConditionScreen extends Component {
     if (isCurrentScreen(props)) {
 
       // Get All Updated field of Particular actions 
-      var { data } = props;
+      var { conditionData } = props;
 
       //check page content data is available
-      if (data.pageContents != null) {
-        let response = data.pageContents;
+      if (conditionData.pageContents != null) {
+        let conditionResponse = conditionData.pageContents;
         try {
 
           //get response language wise
           return {
             ...state,
-            response: response.locale[R.strings.getLanguage()].content
+            conditionRes: conditionResponse.locale[R.strings.getLanguage()].content
           };
         } catch (error) {
           return {
             ...state,
-            response: null
+            conditionRes: null
           }
         }
       }
@@ -77,7 +77,7 @@ class TermConditionScreen extends Component {
   render() {
 
     //loading bit for handling progress dialog
-    let { loading } = this.props.data
+    let { loading } = this.props.conditionData
 
     return (
       <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
@@ -93,15 +93,15 @@ class TermConditionScreen extends Component {
           justifyContent: 'center',
           marginTop: R.dimens.widget_top_bottom_margin,
           marginBottom: R.dimens.widget_top_bottom_margin,
+          marginRight: R.dimens.padding_left_right_margin,
           marginLeft: R.dimens.padding_left_right_margin,
-          marginRight: R.dimens.padding_left_right_margin
         }}>
           {/* display webview with data if not loading */}
           {loading
             ?
             <ListLoader />
             :
-            this.state.response != null && <HtmlViewer applyMargin={true} data={this.state.response} />
+            this.state.conditionRes != null && <HtmlViewer data={this.state.conditionRes} applyMargin={true} />
           }
         </View>
       </SafeView>
@@ -112,7 +112,7 @@ class TermConditionScreen extends Component {
 function mapStateToProps(state) {
   return {
     //data get from the reducer
-    data: state.PageContentAppReducer
+    conditionData: state.PageContentAppReducer
   }
 }
 function mapDispatchToProps(dispatch) {

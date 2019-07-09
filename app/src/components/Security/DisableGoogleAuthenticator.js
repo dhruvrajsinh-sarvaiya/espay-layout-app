@@ -23,7 +23,7 @@ class DisableGoogleAuthenticator extends Component {
 
         //Define initial state
         this.state = {
-            code: ''
+            disableCode: ''
         };
     }
 
@@ -58,11 +58,10 @@ class DisableGoogleAuthenticator extends Component {
                             this.props.navigation.navigate('MyAccount', {})
                         })
                     } else {
-                        this.setState({ code: '' })
+                        this.setState({ disableCode: '' })
                     }
                 } catch (e) {
-                    //Handle Catch and Notify User to Exception.
-                    //Alert.alert('Status', e);
+
                 }
             }
         }
@@ -72,19 +71,19 @@ class DisableGoogleAuthenticator extends Component {
 
         //Validate Google Auth Code for 6 digits.
         if (validateGoogleAuthCode(text)) {
-            this.setState({ code: text })
+            this.setState({ disableCode: text })
         }
     }
 
     onSubmit = async () => {
 
         //To check Auth Code is Empty or Not
-        if (isEmpty(this.state.code)) {
+        if (isEmpty(this.state.disableCode)) {
             this.refs.Toast.Show(R.strings.authentication_code_validate);
             return;
         }
         //google auth code must be 6 digits
-        if (this.state.code.length != 6) {
+        if (this.state.disableCode.length != 6) {
             this.refs.Toast.Show(R.strings.authentication_code_length_validate);
             return;
         }
@@ -94,7 +93,7 @@ class DisableGoogleAuthenticator extends Component {
 
                 //Bind Enable Google Auth API Request
                 let disableGoogleAuthRequest = {
-                    Code: this.state.code
+                    Code: this.state.disableCode
                 }
                 // call API validate OTP and login
                 this.props.disableGoogleauth(disableGoogleAuthRequest);
@@ -146,10 +145,10 @@ class DisableGoogleAuthenticator extends Component {
                             BorderStyle={{
                                 backgroundColor: R.colors.background,
                                 borderColor: R.colors.accent,
-                                borderWidth: R.dimens.pickerBorderWidth,
                                 marginTop: R.dimens.widgetMargin,
-                                justifyContent: 'center',
+                                borderWidth: R.dimens.pickerBorderWidth,
                                 alignSelf: 'center',
+                                justifyContent: 'center',
                                 width: R.screen().isPortrait ? '100%' : '75%',
                             }}
                             textInputStyle={{
@@ -157,12 +156,12 @@ class DisableGoogleAuthenticator extends Component {
                                 color: R.colors.textPrimary,
                             }}
                             multiline={false}
+                            returnKeyType={"done"}
                             maxLength={6}
                             keyboardType='numeric'
-                            returnKeyType={"done"}
-                            secureTextEntry={true}
                             onChangeText={(text) => this.validateGoogleCode(text)}
-                            value={this.state.code}
+                            secureTextEntry={true}
+                            value={this.state.disableCode}
                         />
                         <View style={{ marginTop: R.dimens.activity_margin }}>
 

@@ -252,8 +252,8 @@ class MarginMarketListScreen extends Component {
                     rightIcon={R.images.SEARCH_ICON}
                     isBack={this.state.simple}
                     nav={this.props.navigation}
-                    onLeftMenuPress={() => this.props.navigation.navigate('MarginFavoriteScreen')}
-                    onRightMenuPress={() => this.props.navigation.navigate('MarginMarketSearchScreen')}
+                    onLeftMenuPress={() => this.props.navigation.navigate('EditFavorite')}
+                    onRightMenuPress={() => this.props.navigation.navigate('MarketSearch')}
                 />
 
                 {/* Progress */}
@@ -396,7 +396,7 @@ class MarketPairItem extends Component {
                                 </View>
                             </View>
                         </View>
-                        {!props.isFavorite && item.isFavorite && <Image source={R.images.FAVORITE} style={{ tintColor: null, position: 'absolute', width: R.dimens.widget_left_right_margin, height: R.dimens.widget_left_right_margin }} />}
+                        {!this.props.isFavorite && item.isFavorite && <Image source={R.images.FAVORITE} style={{ tintColor: null, position: 'absolute', width: R.dimens.widget_left_right_margin, height: R.dimens.widget_left_right_margin }} />}
                     </View>
                 </TouchableWithoutFeedback>
             </AnimatableItem>

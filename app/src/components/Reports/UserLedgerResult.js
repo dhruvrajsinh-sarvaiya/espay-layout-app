@@ -197,15 +197,15 @@ class UserLedgerHistoryResult extends Component {
                     if (state.WalletListData == null || (state.WalletListData != null && WalletList !== state.WalletListData)) {
                         if (validateResponseNew({ response: WalletList, isList: true })) {
 
-                            let tempList = WalletList.Wallets;
-                            tempList.map((el, index) => {
-                                tempList[index].value = el.WalletName;
+                            let tempWalletList = WalletList.Wallets;
+                            tempWalletList.map((el, index) => {
+                                tempWalletList[index].value = el.WalletName;
                             })
 
                             return Object.assign({}, state, {
-                                WalletList: tempList,
+                                WalletList: tempWalletList,
+                                coinname: tempWalletList[0].WalletName,
                                 WalletListData: WalletList,
-                                coinname: tempList[0].WalletName,
                             })
                         } else {
                             return Object.assign({}, state, {
@@ -333,7 +333,7 @@ class UserLedgerHistoryResult extends Component {
         var { isFetchingUserLedger } = this.props.userLedgerResult
 
         //for final items from search input (validate on CrAmount, DrAmount)
-		//default searchInput is empty so it will display all records.
+        //default searchInput is empty so it will display all records.
         let finalItems
         if (this.state.response != undefined) {
             finalItems = this.state.response.filter(item => ('' + item.CrAmount).includes(this.state.searchInput) || ('' + item.DrAmount).includes(this.state.searchInput))
@@ -343,12 +343,12 @@ class UserLedgerHistoryResult extends Component {
             // DrawerLayout for Order History Filteration
             <Drawer
                 ref={cmp => this.drawer = cmp}
-                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerPosition={Drawer.positions.Right}
+                drawerWidth={R.dimens.FilterDrawarWidth}
+                type={Drawer.types.Overlay}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
-                type={Drawer.types.Overlay}
                 easingFunc={Easing.ease}>
 
                 <SafeView style={this.styles().container}>
@@ -469,33 +469,33 @@ class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
+                    marginLeft: R.dimens.widget_left_right_margin,
+                    marginRight: R.dimens.widget_left_right_margin,
                     marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
                 }}>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
-                        borderRadius: 0,
                         flexDirection: 'column',
+                        borderRadius: 0,
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
+                        elevation: R.dimens.listCardElevation,
                     }}>
                         <View>
 
                             {/*for show transaction Id  */}
                             <View style={{ flexDirection: 'row' }}>
-                                <Text style={{ flex: 1, fontSize: R.dimens.smallText, color: R.colors.textPrimary, fontFamily: Fonts.MontserratSemiBold, }}>
+                                <Text style={{ flex: 1, color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>
                                     {R.strings.TrnId + " : " + item.LedgerId}
                                 </Text>
-                                <TextViewMR style={{ flex: 1, fontSize: R.dimens.smallText, color: R.colors.yellow, textAlign: 'right' }}>
+                                <TextViewMR style={{ flex: 1, color: R.colors.yellow, fontSize: R.dimens.smallText, textAlign: 'right' }}>
                                     {parseFloatVal(item.Amount).toFixed(8).toString()}
                                 </TextViewMR>
                             </View>
 
                             {/* for Show Remarks */}
-                            <TextViewHML style={{ flex: 1, color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{item.Remarks}</TextViewHML>
+                            <TextViewHML style={{ flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{item.Remarks}</TextViewHML>
 
                             {/* for show pre and post balance */}
                             <View style={{ flexDirection: 'row' }}>
@@ -504,22 +504,22 @@ class FlatListItem extends Component {
                                     <TextViewHML style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary, }}>{item.PreBal.toFixed(8)}</TextViewHML>
                                 </View>
                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                    <TextViewHML style={{ fontSize: R.dimens.smallestText, color: R.colors.textSecondary, }}>{R.strings.Post_Bal}</TextViewHML>
-                                    <TextViewHML style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary, }}>{item.PostBal.toFixed(8)}</TextViewHML>
+                                    <TextViewHML style={{ fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{R.strings.Post_Bal}</TextViewHML>
+                                    <TextViewHML style={{ fontSize: R.dimens.smallText, color: R.colors.textPrimary }}>{item.PostBal.toFixed(8)}</TextViewHML>
                                 </View>
                             </View>
 
                             {/* for show horizontal line */}
-                            <Separator style={{ marginTop: R.dimens.widgetMargin, marginLeft: 0, marginRight: 0 }} />
+                            <Separator style={{ marginLeft: 0, marginRight: 0, marginTop: R.dimens.widgetMargin, }} />
 
                             {/* for show Cr amount */}
                             <View style={{ flexDirection: 'row', marginTop: R.dimens.widgetMargin }}>
-                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', alignContent: 'center', }}>
+                                <View style={{ flexDirection: 'row', justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                                     <StatusChip
                                         color={crColor}
-                                        value={R.strings.Cr}></StatusChip>
+                                        value={R.strings.Cr} />
 
-                                    <TextViewHML style={{ marginLeft: R.dimens.widgetMargin, color: crColor, fontSize: R.dimens.smallText }}>{parseFloatVal(item.CrAmount).toFixed(8).toString()}</TextViewHML>
+                                    <TextViewHML style={{ marginLeft: R.dimens.widgetMargin, fontSize: R.dimens.smallText, color: crColor }}>{parseFloatVal(item.CrAmount).toFixed(8).toString()}</TextViewHML>
                                 </View>
                             </View>
 
@@ -528,12 +528,12 @@ class FlatListItem extends Component {
                                 <View style={{ width: '50%', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                                     <StatusChip
                                         color={drColor}
-                                        value={R.strings.Dr}></StatusChip>
+                                        value={R.strings.Dr} />
 
                                     <TextViewHML style={{ marginLeft: R.dimens.widgetMargin, color: drColor, fontSize: R.dimens.smallText }}>{parseFloatVal(item.DrAmount).toFixed(8).toString()}</TextViewHML>
                                 </View>
                                 <View style={{ justifyContent: 'flex-end', width: '50%' }}>
-                                    <TextViewHML style={{ textAlign: 'right', color: R.colors.textSecondary, fontSize: R.dimens.secondCurrencyText, textAlign: 'right' }}>{convertDateTime(item.TrnDate, 'YYYY-MM-DD HH:mm:ss A', false)}</TextViewHML>
+                                    <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.secondCurrencyText, textAlign: 'right' }}>{convertDateTime(item.TrnDate, 'YYYY-MM-DD HH:mm:ss A', false)}</TextViewHML>
                                 </View>
                             </View>
                         </View>
@@ -549,14 +549,14 @@ const mapStateToProps = (state) => {
         // Updated Data for User ledger 
         userLedgerResult: state.UserLedgerReducer,
         // Updated Data for Coin List
-        coinResult: state.CoinReducer,
+        coinResult: state.FetchCoinReducer,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     // perform user ledger list Action
     fetchUserLedgerList: (requestUserLedger) => dispatch(fetchUserLedgerList(requestUserLedger)),
-    
+
     // perform get Wallet Action
     getWallets: () => dispatch(getWallets()),
 })

@@ -19,7 +19,12 @@ const INTIAL_STATE = {
     type: 1
 }
 
-export default function topLoserReducer(state = INTIAL_STATE, action) {
+export default function topLoserReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
 

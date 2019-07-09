@@ -431,9 +431,9 @@ class ApiActivePlanListDetail extends Component {
 												{/* Read Only Method List Detail */}
 												<View>
 													{
-														item.ReadOnlyAPI != null && Object.values(item.ReadOnlyAPI).map((item, index) =>
+														item.ReadOnlyAPI != null && Object.values(item.ReadOnlyAPI).map((itemReadOnly, index) =>
 															<View style={{ flexDirection: 'row' }} key={index.toString()}>
-																<TextViewHML style={{ flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{item}</TextViewHML>
+																<TextViewHML style={{ flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{itemReadOnly}</TextViewHML>
 																<ImageButton
 																	style={{ margin: 0, }}
 																	icon={R.images.IC_CHECK_CIRCLE}
@@ -456,9 +456,9 @@ class ApiActivePlanListDetail extends Component {
 												{/* Full Access Method List Title */}
 												<View>
 													{
-														item.FullAccessAPI != null && Object.values(item.FullAccessAPI).map((item, index) =>
+														item.FullAccessAPI != null && Object.values(item.FullAccessAPI).map((itemFullAccess, index) =>
 															<View style={{ flexDirection: 'row' }} key={index.toString()}>
-																<TextViewHML style={{ flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{item}</TextViewHML>
+																<TextViewHML style={{ flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{itemFullAccess}</TextViewHML>
 																<ImageButton
 																	style={{ margin: 0, }}
 																	icon={R.images.IC_CHECK_CIRCLE}

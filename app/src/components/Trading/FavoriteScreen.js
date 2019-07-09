@@ -9,7 +9,7 @@ import { validateResponseNew, isInternet } from '../../validations/CommonValidat
 import Separator from '../../native_theme/components/Separator';
 import { contentContainerStyle, ListEmptyComponent } from '../../native_theme/components/FlatListWidgets';
 import ListLoader from '../../native_theme/components/ListLoader';
-import { getFavourites, removeFavourite } from '../../actions/Trade/FavouriteActions';
+import { getFavourites, removeFavourite as removeFavouriteApi } from '../../actions/Trade/FavouriteActions';
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import R from '../../native_theme/R';
 import ImageButton from '../../native_theme/components/ImageTextButton';
@@ -18,6 +18,8 @@ import TextViewHML from '../../native_theme/components/TextViewHML';
 import TextViewMR from '../../native_theme/components/TextViewMR';
 import AnimatableItem from '../../native_theme/components/AnimatableItem';
 import SafeView from '../../native_theme/components/SafeView';
+import { getData } from '../../App';
+import { ServiceUtilConstant } from '../../controllers/Constants';
 
 class FavoriteScreen extends Component {
     constructor(props) {
@@ -34,7 +36,7 @@ class FavoriteScreen extends Component {
 
         //Define all initial State
         this.state = {
-            favouriteList: null,
+            favList: null,
             removeFavourite: null,
             response: [],
             refreshing: false
@@ -48,8 +50,12 @@ class FavoriteScreen extends Component {
         //Check for internet connection
         if (await isInternet()) {
 
-            //To get the favourites list
-            this.props.getFavourites({});
+            //To get the favourites list based on IsMargin bit
+            if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                this.props.getFavourites({ IsMargin: 1 });
+            } else {
+                this.props.getFavourites({});
+            }
         }
     };
 
@@ -74,25 +80,27 @@ class FavoriteScreen extends Component {
         if (isCurrentScreen(props)) {
             try {
                 //Get All Updated field of Particular actions 
-                let { favourites: { favouriteList } } = props;
+                let { favourites: { favouriteList, marginFavouriteList } } = props;
+
+                let favList = getData(ServiceUtilConstant.KEY_IsMargin) ? marginFavouriteList : favouriteList;
 
                 //if favourite response is not null then handle resposne
-                if (favouriteList) {
+                if (favList) {
 
                     //if local favouritesData state is null or its not null and also different then new response then and only then validate response.
-                    if (state.favouriteList == null || (state.favouriteList != null && favouriteList !== state.favouriteList)) {
+                    if (state.favList == null || (state.favList != null && favList !== state.favList)) {
 
                         //if favouriteList response is success then store array list else store empty list
-                        if (validateResponseNew({ response: favouriteList, isList: true })) {
-                            let res = parseArray(favouriteList.response);
+                        if (validateResponseNew({ response: favList, isList: true })) {
+                            let res = parseArray(favList.response);
                             return Object.assign({}, state, {
-                                favouriteList,
+                                favList,
                                 response: res,
                                 refreshing: false
                             })
                         } else {
                             return Object.assign({}, state, {
-                                favouriteList,
+                                favList,
                                 response: [],
                                 refreshing: false
                             })
@@ -127,11 +135,15 @@ class FavoriteScreen extends Component {
                 // check for internet connection
                 if (await isInternet()) {
 
-                    //To get the favourites list
-                    this.props.getFavourites({});
+                    //Call Get Get Favourite list API based on IsMargin Bit
+                    if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                        this.props.getFavourites({ IsMargin: 1 });
+                    } else {
+                        this.props.getFavourites({});
+                    }
                 }
                 this.setState({
-                    favouriteList: null
+                    favList: null
                 })
             }
         }
@@ -142,7 +154,12 @@ class FavoriteScreen extends Component {
 
         //check for internet connection
         if (await isInternet()) {
-            this.props.removeFavourite({ PairId: id });
+            //Call Remove Favourite Item API based on IsMargin Bit
+            if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                this.props.removeFavourite({ PairId: id, IsMargin: 1 });
+            } else {
+                this.props.removeFavourite({ PairId: id });
+            }
         }
     }
 
@@ -153,8 +170,12 @@ class FavoriteScreen extends Component {
         //Check NetWork is Available or not
         if (await isInternet()) {
 
-            //Call Get Get Favourite list API
-            this.props.getFavourites({});
+            //Call Get Get Favourite list API based on IsMargin Bit
+            if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                this.props.getFavourites({ IsMargin: 1 });
+            } else {
+                this.props.getFavourites({});
+            }
         } else {
             this.setState({ refreshing: false });
         }
@@ -204,6 +225,7 @@ class FavoriteScreen extends Component {
 
                 {this.props.favourites.isFetching && !this.state.refreshing ? <ListLoader /> :
                     <View style={{ flex: 1 }}>
+                        {/* if Response Length is > 0 then display favourit list else none */}
                         {this.state.response.length > 0 && <View>
                             <View style={this.styles().headerContainer}>
 
@@ -258,6 +280,7 @@ class FavoriteScreen extends Component {
         );
     }
 
+    // styles for this class
     styles = () => {
         return {
             container: {
@@ -347,7 +370,7 @@ function mapDispatchToProps(dispatch) {
         getFavourites: (payload) => dispatch(getFavourites(payload)),
 
         // Perform Remove Favourites Action
-        removeFavourite: (payload) => dispatch(removeFavourite(payload)),
+        removeFavourite: (payload) => dispatch(removeFavouriteApi(payload)),
     }
 }
 

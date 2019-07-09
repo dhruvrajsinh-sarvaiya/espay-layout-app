@@ -97,13 +97,13 @@ class PaginationWidget extends Component {
             }
 
             // concate first and last blocks to create sub array item
-            let finalRecord = firstItems.sort(function (a, b) { return a - b });
+            firstItems.sort(function (a, b) { return a - b });
 
             // To remove last item
             displayPages.pop();
 
             // to add last item as per new structure
-            displayPages.push(finalRecord.concat(lastItems));
+            displayPages.push(firstItems.concat(lastItems));
         }
 
         return (

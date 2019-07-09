@@ -5,6 +5,11 @@ import CustomToolbar from '../../../native_theme/components/CustomToolbar';
 import { changeTheme, parseArray, getCurrentDate, addPages, convertDateTime } from '../../../controllers/CommonUtils';
 import { isInternet, validateResponseNew, } from '../../../validations/CommonValidation'
 import { connect } from 'react-redux';
+import SafeView from '../../../native_theme/components/SafeView';
+import ImageTextButton from '../../../native_theme/components/ImageTextButton';
+import TextViewHML from '../../../native_theme/components/TextViewHML';
+import { Fonts } from '../../../controllers/Constants';
+import AnimatableItem from '../../../native_theme/components/AnimatableItem';
 import ListLoader from '../../../native_theme/components/ListLoader';
 import CommonToast from '../../../native_theme/components/CommonToast';
 import Drawer from 'react-native-drawer-menu';
@@ -18,16 +23,15 @@ import PaginationWidget from '../../../components/Widget/PaginationWidget';
 import { AppConfig } from '../../../controllers/AppConfig';
 import { DateValidation } from '../../../validations/DateValidation';
 import CardView from '../../../native_theme/components/CardView';
-import ImageTextButton from '../../../native_theme/components/ImageTextButton';
-import TextViewHML from '../../../native_theme/components/TextViewHML';
-import { Fonts } from '../../../controllers/Constants';
-import AnimatableItem from '../../../native_theme/components/AnimatableItem';
-import SafeView from '../../../native_theme/components/SafeView';
 
 class ReferralClickDataScreen extends Component {
 
     constructor(props) {
         super(props);
+
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
 
         //Define All initial State
         this.state = {
@@ -36,20 +40,24 @@ class ReferralClickDataScreen extends Component {
             row: [],
             PageSize: AppConfig.pageSize,
             selectedPage: 1,
+
             FromDate: getCurrentDate(), //for get current date
             ToDate: getCurrentDate(), //for get current date
+
             // for ChannelType Data
             channelType: [],
             selectedChannelType: R.strings.Please_Select,
             ReferralChannelTypeId: 0,
-            // for service slab Data
-            serviceSlab: [],
-            selectedServiceSlab: R.strings.Please_Select,
-            ReferralServiceId: 0,
+
             // for refreshing
             refreshing: false,
             isFirstTime: true,
             isDrawerOpen: false, // First Time Drawer is Closed
+
+            // for service slab Data
+            serviceSlab: [],
+            selectedServiceSlab: R.strings.Please_Select,
+            ReferralServiceId: 0,
         }
 
         //Add Current Screen to Manual Handling BackPress Events
@@ -57,26 +65,12 @@ class ReferralClickDataScreen extends Component {
 
         //To Bind All Method
         this.onRefresh = this.onRefresh.bind(this);
+        this.onBackPress = this.onBackPress.bind(this);
+        this.props.navigation.setParams({ onBackPress: this.onBackPress });
         this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
-        this.onBackPress = this.onBackPress.bind(this);
-        this.props.navigation.setParams({ onBackPress: this.onBackPress });
 
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        } else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
     }
 
     componentDidMount = async () => {
@@ -131,6 +125,17 @@ class ReferralClickDataScreen extends Component {
             this.props.getReferralClicksList(requestClicksData);
         } else {
             this.setState({ refreshing: false });
+        }
+    }
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        } else {
+            //going back screen
+            this.props.navigation.goBack();
         }
     }
 
@@ -273,14 +278,14 @@ class ReferralClickDataScreen extends Component {
                     if (state.referralChannelTypeData == null || (state.referralChannelTypeData != null && referralChannelTypeData !== state.referralChannelTypeData)) {
                         if (validateResponseNew({ response: referralChannelTypeData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralChannelTypeData.ReferralChannelTypeDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ChannelTypeName;
+                            let channelTypeForRefClick = parseArray(referralChannelTypeData.ReferralChannelTypeDropDownList);
+                            channelTypeForRefClick.map((item, index) => {
+                                channelTypeForRefClick[index].Id = item.Id;
+                                channelTypeForRefClick[index].value = item.ChannelTypeName;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...channelTypeForRefClick
                             ];
                             return { ...state, channelType: currencyItem, referralChannelTypeData, refreshing: false };
                         }
@@ -300,23 +305,37 @@ class ReferralClickDataScreen extends Component {
                     if (state.referralServiceData == null || (state.referralServiceData != null && referralServiceData !== state.referralServiceData)) {
                         if (validateResponseNew({ response: referralServiceData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralServiceData.ReferralServiceDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ServiceSlab;
+                            let serviceDataForRefClick = parseArray(referralServiceData.ReferralServiceDropDownList);
+                            serviceDataForRefClick.map((item, index) => {
+                                serviceDataForRefClick[index].Id = item.Id;
+                                serviceDataForRefClick[index].value = item.ServiceSlab;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...serviceDataForRefClick
                             ];
-                            return { ...state, serviceSlab: currencyItem, referralServiceData };
+                            return {
+                                ...state,
+                                referralServiceData,
+                                serviceSlab: currencyItem,
+                            };
                         }
                         else {
-                            return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0 };
+                            return {
+                                ...state,
+                                serviceSlab: [{ value: R.strings.Please_Select }],
+                                selectedServiceSlab: R.strings.Please_Select,
+                                ReferralServiceId: 0
+                            };
                         }
                     }
                 } catch (e) {
-                    return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0 };
+                    return {
+                        ...state,
+                        serviceSlab: [{ value: R.strings.Please_Select }],
+                        selectedServiceSlab: R.strings.Please_Select,
+                        ReferralServiceId: 0
+                    };
                 }
             }
         }
@@ -333,11 +352,13 @@ class ReferralClickDataScreen extends Component {
 
                 {/* filterwidget for display fromdate, todate, channeltype and serviceslab data */}
                 <FilterWidget
-                    FromDatePickerCall={(date) => this.setState({ FromDate: date })}
+                    comboPickerStyle={{ marginTop: 0 }}
+                    FromDatePickerCall={(date) =>
+                        this.setState({ FromDate: date })}
                     FromDate={this.state.FromDate}
-                    ToDatePickerCall={(date) => this.setState({ ToDate: date })}
+                    ToDatePickerCall={(date) =>
+                        this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
-                    comboPickerStyle={{ marginTop: 0, }}
                     pickers={[
                         {
                             title: R.strings.ChannelType,
@@ -369,8 +390,8 @@ class ReferralClickDataScreen extends Component {
 
         let list = this.state.data;
         //apply filter on ChannelType 
-        let finalItems = list.filter(item =>
-            item.ReferralChanneTypeName.toLowerCase().includes(this.state.search.toLowerCase())
+        let finalItems = list.filter(referralClickItem =>
+            referralClickItem.ReferralChanneTypeName.toLowerCase().includes(this.state.search.toLowerCase())
         );
 
         return (
@@ -380,8 +401,8 @@ class ReferralClickDataScreen extends Component {
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
-                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
+                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 drawerPosition={Drawer.positions.Right}
                 easingFunc={Easing.ease}>
 
@@ -415,11 +436,12 @@ class ReferralClickDataScreen extends Component {
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
                                                 /* render all item in list */
-                                                renderItem={({ item, index }) => <FlatListItem
-                                                    item={item}
-                                                    index={index}
-                                                    size={this.state.data.length}
-                                                />}
+                                                renderItem={({ item, index }) =>
+                                                    <ReferralClickList
+                                                        referralClickItem={item}
+                                                        referralClickIndex={index}
+                                                        referralClickSize={this.state.data.length}
+                                                    />}
                                                 keyExtractor={(_item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
@@ -451,15 +473,14 @@ class ReferralClickDataScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
-
+class ReferralClickList extends Component {
     constructor(props) {
         super(props);
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.referralClickItem === nextProps.referralClickItem) {
             return false
         }
         return true
@@ -467,25 +488,25 @@ class FlatListItem extends Component {
 
     render() {
 
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let referralClickItem = this.props.referralClickItem;
+        let { referralClickIndex, referralClickSize, } = this.props;
         let imageType = R.images.IC_EMAIL_FILLED;
 
         // based on ReferralChanneTypeName set image
-        if (item.ReferralChanneTypeName === 'SMS') imageType = R.images.IC_COMPLAINT;
-        if (item.ReferralChanneTypeName === 'Email') imageType = R.images.IC_EMAIL_FILLED;
-        if (item.ReferralChanneTypeName === 'Twitter') imageType = R.images.IC_TWITTER;
-        if (item.ReferralChanneTypeName === 'Linkedin') imageType = R.images.IC_LINKEDIN_LOGO;
-        if (item.ReferralChanneTypeName === 'Insta') imageType = R.images.IC_INSTAGRAM_LOGO;
-        if (item.ReferralChanneTypeName === 'Facebook') imageType = R.images.IC_FACEBOOK_LOGO;
+        if (referralClickItem.ReferralChanneTypeName === 'SMS') imageType = R.images.IC_COMPLAINT;
+        if (referralClickItem.ReferralChanneTypeName === 'Email') imageType = R.images.IC_EMAIL_FILLED;
+        if (referralClickItem.ReferralChanneTypeName === 'Twitter') imageType = R.images.IC_TWITTER;
+        if (referralClickItem.ReferralChanneTypeName === 'Linkedin') imageType = R.images.IC_LINKEDIN_LOGO;
+        if (referralClickItem.ReferralChanneTypeName === 'Insta') imageType = R.images.IC_INSTAGRAM_LOGO;
+        if (referralClickItem.ReferralChanneTypeName === 'Facebook') imageType = R.images.IC_FACEBOOK_LOGO;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (referralClickIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (referralClickIndex == referralClickSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -507,8 +528,8 @@ class FlatListItem extends Component {
                             />
                             {/* for show message  */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
-                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {R.strings.via} {item.ReferralChanneTypeName ? item.ReferralChanneTypeName : '-'}</Text>
-                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {item.ReferralServiceDescription ? item.ReferralServiceDescription : '-'}</TextViewHML>
+                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {R.strings.via} {referralClickItem.ReferralChanneTypeName ? referralClickItem.ReferralChanneTypeName : '-'}</Text>
+                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {referralClickItem.ReferralServiceDescription ? referralClickItem.ReferralServiceDescription : '-'}</TextViewHML>
                             </View>
                         </View>
 
@@ -519,7 +540,7 @@ class FlatListItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.CreatedDate ? convertDateTime(item.CreatedDate) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{referralClickItem.CreatedDate ? convertDateTime(referralClickItem.CreatedDate) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View>

@@ -37,7 +37,7 @@ class WithdrawHistory extends Component {
     constructor(props) {
         super(props);
 
-        this.CurrencyData = this.props.navigation.state.params && this.props.navigation.state.params.data;
+        this.coinData = this.props.navigation.state.params && this.props.navigation.state.params.data;
 
         //Define All State initial state
         this.state = {
@@ -55,15 +55,15 @@ class WithdrawHistory extends Component {
         addRouteToBackPress(props);
 
         //To Bind All Method
+        this.onBackPress = this.onBackPress.bind(this);
+        this.props.navigation.setParams({ onBackPress: this.onBackPress });
         this.onRefresh = this.onRefresh.bind(this);
         this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
-        this.onBackPress = this.onBackPress.bind(this);
-        this.props.navigation.setParams({ onBackPress: this.onBackPress });
 
         // create reference
-        this.drawer = React.createRef();
         this.toast = React.createRef();
+        this.drawer = React.createRef();
     }
 
     //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
@@ -95,12 +95,12 @@ class WithdrawHistory extends Component {
             this.props.onWithdrawHistory(withdrawHistoryRequest);
             //----------
 
-            if (this.CurrencyData) {
+            if (this.coinData) {
                 try {
                     //Store Api Response Felid and display in Screen.
                     let WalletIems = [{ value: R.strings.Please_Select }];
-                    for (var i = 0; i < this.CurrencyData.length; i++) {
-                        let item = this.CurrencyData[i].SMSCode;
+                    for (var i = 0; i < this.coinData.length; i++) {
+                        let item = this.coinData[i].SMSCode;
                         WalletIems.push({ value: item });
                     }
                     this.setState({ walletItems: WalletIems })
@@ -179,16 +179,16 @@ class WithdrawHistory extends Component {
                     if (validateResponseNew({ response: Balancedata, isList: true })) {
 
                         //Store Api Response Felid and display in Screen.
-                        let WalletIems = [{ value: R.strings.Please_Select }];
+                        let CurrencytIems = [{ value: R.strings.Please_Select }];
                         for (var i = 0; i < Balancedata.Response.length; i++) {
                             if (Balancedata.Response[i].IsWithdraw == 1) {
                                 let item = Balancedata.Response[i].SMSCode;
-                                WalletIems.push({ value: item });
+                                CurrencytIems.push({ value: item });
                             }
                         }
                         return {
                             ...state,
-                            walletItems: WalletIems,
+                            walletItems: CurrencytIems,
                         };
                     } else {
                         return {
@@ -201,7 +201,6 @@ class WithdrawHistory extends Component {
                         ...state,
                         walletItems: [{ value: R.strings.Please_Select }],
                     };
-                    //Handle Catch and Notify User to Exception.
                 }
             }
 
@@ -344,12 +343,12 @@ class WithdrawHistory extends Component {
             <Drawer
                 ref={cmp => this.drawer = cmp}
                 drawerWidth={R.dimens.FilterDrawarWidth}
-                drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
-                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
-                easingFunc={Easing.ease}>
+                easingFunc={Easing.ease}
+                drawerContent={this.navigationDrawer()}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                onDrawerClose={() => this.setState({ isDrawerOpen: false })}>
 
                 <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
@@ -430,27 +429,23 @@ class FlatListItem extends Component {
         let item = this.props.item
         let { index, size, } = this.props;
 
-        let color = R.colors.accent;
+        let color;
         //To Display various Status Color in ListView
         if (item.Status == 0) {
             color = R.colors.textSecondary
-        }
-        if (item.Status == 1) {
+        } else if (item.Status == 1) {
             color = R.colors.successGreen
-        }
-        if (item.Status == 2) {
+        } else if (item.Status == 2) {
             color = R.colors.failRed
-        }
-        if (item.Status == 3) {
+        } else if (item.Status == 3) {
             color = R.colors.failRed
-        }
-        if (item.Status == 4) {
+        } else if (item.Status == 4) {
             color = R.colors.accent
-        }
-        if (item.Status == 5) {
+        } else if (item.Status == 5) {
             color = R.colors.sellerPink
-        }
-        if (item.Status == 6) {
+        } else if (item.Status == 6) {
+            color = R.colors.accent
+        } else {
             color = R.colors.accent
         }
 
@@ -458,43 +453,44 @@ class FlatListItem extends Component {
             <AnimatableItem>
                 <View style={{
                     flex: 1,
-                    flexDirection: 'column',
+                    marginLeft: R.dimens.widget_left_right_margin,
+                    marginRight: R.dimens.widget_left_right_margin,
                     marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
+                    flexDirection: 'column'
                 }}>
-                    <CardView style={{
-                        elevation: R.dimens.listCardElevation,
-                        flex: 1,
-                        borderRadius: 0,
-                        flexDirection: 'column',
-                        borderBottomLeftRadius: R.dimens.margin,
-                        borderTopRightRadius: R.dimens.margin,
-                    }}
+                    <CardView
+                        style={{
+                            borderRadius: 0,
+                            flexDirection: 'column',
+                            elevation: R.dimens.listCardElevation,
+                            borderTopRightRadius: R.dimens.margin,
+                            flex: 1,
+                            borderBottomLeftRadius: R.dimens.margin
+                        }}
                         onPress={this.props.onPress}>
 
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row', flex: 1 }}>
 
                             {/* Currency Image */}
-                            <ImageViewWidget url={item.CoinName ? item.CoinName : ''} width={R.dimens.IconWidthHeight} height={R.dimens.IconWidthHeight} />
+                            <ImageViewWidget width={R.dimens.IconWidthHeight} url={item.CoinName ? item.CoinName : ''} height={R.dimens.IconWidthHeight} />
 
-                            <View style={{ flex: 1, marginLeft: R.dimens.widgetMargin, }}>
+                            <View style={{ marginLeft: R.dimens.widgetMargin, flex: 1 }}>
 
                                 {/* Amount , Currecncy Name and Confirmation */}
-                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                    <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{(parseFloatVal(item.Amount).toFixed(8).toString()) !== 'NaN' ? parseFloatVal(item.Amount).toFixed(8).toString() : '-'} {item.CoinName ? item.CoinName : '-'}</Text>
-                                    <View style={{ flexDirection: 'row', }}>
+                                <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                                    <Text style={{ fontSize: R.dimens.smallText, color: R.colors.listSeprator, fontFamily: Fonts.MontserratSemiBold, }}>{(parseFloatVal(item.Amount).toFixed(8).toString()) !== 'NaN' ? parseFloatVal(item.Amount).toFixed(8).toString() : '-'} {item.CoinName ? item.CoinName : '-'}</Text>
+                                    <View style={{ flexDirection: 'row' }}>
                                         {item.Confirmations ?
-                                            <View style={{ flexDirection: 'row', }}>
-                                                <TextViewMR style={{ color: R.colors.yellow, fontSize: R.dimens.smallestText, }}>{validateValue(item.Confirmations)} </TextViewMR>
-                                                <TextViewMR style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.Conf}</TextViewMR>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TextViewMR style={{ fontSize: R.dimens.smallestText, color: R.colors.yellow }}>{validateValue(item.Confirmations)} </TextViewMR>
+                                                <TextViewMR style={{ fontSize: R.dimens.smallestText, color: R.colors.textSecondary }}>{R.strings.Conf}</TextViewMR>
                                             </View>
                                             : null
                                         }
                                         <Image
-                                            source={R.images.RIGHT_ARROW_DOUBLE}
                                             style={{ marginLeft: R.dimens.widgetMargin, width: R.dimens.dashboardMenuIcon, height: R.dimens.dashboardMenuIcon, tintColor: R.colors.textPrimary }}
+                                            source={R.images.RIGHT_ARROW_DOUBLE}
                                         />
                                     </View>
                                 </View>
@@ -502,38 +498,37 @@ class FlatListItem extends Component {
                                 {/* To Address */}
                                 <View style={{ flexDirection: 'row', marginTop: R.dimens.widgetMargin }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, }}>{R.strings.from} : </TextViewHML>
-                                    <TextViewHML numberOfLines={1} ellipsizeMode="tail"
-                                        style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{item.Address ? item.Address : '-'}</TextViewHML>
+                                    <TextViewHML ellipsizeMode="tail" numberOfLines={1}
+                                        style={{ alignSelf: 'center', flex: 1, color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.Address ? item.Address : '-'}</TextViewHML>
                                 </View>
 
                                 {/* Information */}
                                 <View style={{ flexDirection: 'row', }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, }}>{R.strings.Info} : </TextViewHML>
                                     <TextViewHML numberOfLines={1} ellipsizeMode="tail"
-                                        style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{item.Information ? item.Information : '-'}</TextViewHML>
+                                        style={{ alignSelf: 'center', flex: 1, fontSize: R.dimens.smallestText, color: R.colors.textPrimary }}>{item.Information ? item.Information : '-'}</TextViewHML>
                                 </View>
                             </View>
                         </View >
 
                         {/* Transaction Id */}
                         {item.TrnId ?
-                            <View style={{ flex: 1, marginTop: R.dimens.widgetMargin, }}>
+                            <View style={{ flex: 1, marginTop: R.dimens.widgetMargin }}>
                                 <View style={{ flexDirection: 'row', }}>
                                     <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{R.strings.txnid.toUpperCase()}</Text>
                                     <Separator style={{ flex: 1, justifyContent: 'center', }} />
                                 </View>
-                                <TextViewHML style={{ marginLeft: R.dimens.widget_left_right_margin, fontSize: R.dimens.smallestText, color: R.colors.textPrimary, }}>{item.TrnId ? item.TrnId : '-'}</TextViewHML>
+                                <TextViewHML style={{ marginLeft: R.dimens.widget_left_right_margin, color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.TrnId ? item.TrnId : '-'}</TextViewHML>
                             </View> : null
                         }
 
                         {/* Status and DateTime */}
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginTop: R.dimens.widget_top_bottom_margin, marginLeft: R.dimens.widget_left_right_margin }}>
                             <StatusChip
-                                color={color}
-                                value={item.StatusStr ? item.StatusStr : '-'}></StatusChip>
+                                value={item.StatusStr ? item.StatusStr : '-'}
+                                color={color}></StatusChip>
                             <TextViewHML style={{ alignSelf: 'center', color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{convertDateTime(item.Date, 'YYYY-MM-DD HH:mm:ss', false)}</TextViewHML>
                         </View>
-
                     </CardView>
                 </View>
             </AnimatableItem>

@@ -247,4 +247,4 @@ export function collapseExpand(duration = 250) {
             return { opacity, transform: [{ scaleY }] };
         },
     }
-};
+}

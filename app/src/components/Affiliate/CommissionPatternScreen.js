@@ -15,7 +15,7 @@ import TextViewMR from '../../native_theme/components/TextViewMR';
 import TextViewHML from '../../native_theme/components/TextViewHML';
 import SafeView from '../../native_theme/components/SafeView';
 import { getCardStyle } from '../../native_theme/components/CardView';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 let title = ''
 
@@ -34,7 +34,6 @@ class CommissionPatternScreen extends Component {
 			activeSections: [],
 		}
 	}
-
 
 	async componentDidMount() {
 		//Add this method to change theme based on stored theme name.
@@ -74,19 +73,9 @@ class CommissionPatternScreen extends Component {
 							let mainResponse = []
 							getPlan.Response.map((item, index) => {
 
-								//for using common title name
-								let isUniqueTitle = true
-								if (title === item.Value + ' : ' + item.Name) {
-									isUniqueTitle = false
-								}
-								else {
-									title = item.Value + ' : ' + item.Name
-									isUniqueTitle = true
-								}
-
 								//adding title and other required arrys for further use
 								mainResponse.push({
-									title: isUniqueTitle ? item.Value + ' : ' + item.Name : '',
+									title: (title === item.Value + ' : ' + item.Name) ? item.Value + ' : ' + item.Name : '',
 									AvailableScheme: item.AvailableScheme
 								})
 							})
@@ -111,8 +100,6 @@ class CommissionPatternScreen extends Component {
 							...state,
 							finalArray: []
 						}
-						//Handle Catch and Notify User to Exception.
-						//logger(e)
 					}
 				}
 			}
@@ -277,14 +264,13 @@ class CommissionPatternScreen extends Component {
 function mapStateToProps(state) {
 	return {
 		//For Update isPortrait true or false
-        preference: state.preference.dimensions.isPortrait,
+		preference: state.preference.dimensions.isPortrait,
 		//Updated Data For Affiliate Signup
 		AffiliateSignUpReducer: state.AffiliateSignUpReducer,
 	}
 }
 
 function mapDispatchToProps(dispatch) {
-
 	return {
 		//Perform Normal SignUp Action
 		getAffiliateCommissionPattern: (registerRequest) => dispatch(getAffiliateCommissionPattern(registerRequest)),

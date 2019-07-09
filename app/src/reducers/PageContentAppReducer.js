@@ -18,7 +18,13 @@ const initialState = {
     pageContents: null,
 };
 
-export default (state = initialState, action) => {
+export default (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout

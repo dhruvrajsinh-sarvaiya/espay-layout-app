@@ -22,7 +22,12 @@ const INTIAL_STATE = {
     helpmanualdetails: null,
 };
 
-export default HelpCenterReducer = (state = INTIAL_STATE, action) => {
+export default function HelpCenterReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout

@@ -19,7 +19,12 @@ const initialState = {
     type: 1
 }
 
-export default function topGainerReducer(state = initialState, action) {
+export default function topGainerReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
 
     switch (action.type) {
 

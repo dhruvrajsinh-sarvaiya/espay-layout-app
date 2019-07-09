@@ -28,6 +28,10 @@ class CommissionReport extends Component {
     constructor(props) {
         super(props);
 
+        // create reference
+        this.toast = React.createRef();
+        this.drawer = React.createRef();
+
         //Define All initial State
         this.state = {
             row: [],
@@ -55,28 +59,12 @@ class CommissionReport extends Component {
         addRouteToBackPress(props);
 
         //To Bind All Method
+        this.onBackPress = this.onBackPress.bind(this);
+        this.props.navigation.setParams({ onBackPress: this.onBackPress });
         this.onRefresh = this.onRefresh.bind(this);
         this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
-        this.onBackPress = this.onBackPress.bind(this);
-        this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -109,6 +97,19 @@ class CommissionReport extends Component {
             this.props.getCommissionReport(this.request);
         }
     }
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
+        }
+    }
+
 
     static oldProps = {};
 
@@ -161,12 +162,12 @@ class CommissionReport extends Component {
                 try {
                     if (validateResponseNew({ response: affiliateUserData, isList: true })) {
                         //Store Api Response Field and display in Screen.
-                        var newRes = parseArray(affiliateUserData.Response);
-                        newRes.map((item, index) => {
-                            newRes[index].value = newRes[index].UserName
+                        var userDataForCommission = parseArray(affiliateUserData.Response);
+                        userDataForCommission.map((item, index) => {
+                            userDataForCommission[index].value = userDataForCommission[index].UserName
                         })
                         //----
-                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...userDataForCommission]
                         return { ...state, userList: res };
                     }
                     else {
@@ -306,32 +307,26 @@ class CommissionReport extends Component {
         this.setState({ refreshing: true });
 
         this.request = {
-            PageNo: this.state.selectedPage - 1,
-            PageSize: this.state.PageSize
+            PageNo: this.state.selectedPage - 1, PageSize: this.state.PageSize
         }
         if (this.state.FromDate !== "" && this.state.ToDate !== "") {
             this.request = {
-                ...this.request,
-                FromDate: this.state.FromDate,
-                ToDate: this.state.ToDate,
+                ...this.request, FromDate: this.state.FromDate, ToDate: this.state.ToDate,
             }
         }
         if (this.state.trnRefno !== '') {
             this.request = {
-                ...this.request,
-                TrnRefNo: this.state.trnRefno,
+                ...this.request, TrnRefNo: this.state.trnRefno,
             }
         }
         if (this.state.selectedSchemeId !== R.strings.Please_Select) {
             this.request = {
-                ...this.request,
-                SchemeMappingId: this.state.SchemeMappingId
+                ...this.request, SchemeMappingId: this.state.SchemeMappingId
             }
         }
         if (this.state.selectedUser !== R.strings.Please_Select) {
             this.request = {
-                ...this.request,
-                TrnUserId: this.state.TrnUserId
+                ...this.request, TrnUserId: this.state.TrnUserId
             }
         }
         //Check NetWork is Available or not
@@ -462,10 +457,10 @@ class CommissionReport extends Component {
         //for final items from search input (validate on StrStatus , AffiliateEmail and Level)
         //default searchInput is empty so it will display all records.
         if (finalItems.length > 0) {
-            finalItems = finalItems.filter(item =>
-                (item.StrStatus.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
-                (item.AffiliateEmail.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
-                (item.Level.toString().toLowerCase().includes(this.state.searchInput.toLowerCase()))
+            finalItems = finalItems.filter(commissionReportItem =>
+                (commissionReportItem.StrStatus.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
+                (commissionReportItem.AffiliateEmail.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
+                (commissionReportItem.Level.toString().toLowerCase().includes(this.state.searchInput.toLowerCase()))
             )
         }
 
@@ -473,15 +468,15 @@ class CommissionReport extends Component {
             //DrawerLayout for CommissionReport
             <Drawer
                 ref={cmpDrawer => this.drawer = cmpDrawer}
+                easingFunc={Easing.ease}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
-                easingFunc={Easing.ease}>
-
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+            >
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -509,9 +504,9 @@ class CommissionReport extends Component {
                                         data={finalItems}
                                         renderItem={({ item, index }) =>
                                             <CommissionListItem
-                                                item={item}
-                                                index={index}
-                                                size={this.state.response.length}
+                                                commissionReportItem={item}
+                                                commissionReportIndex={index}
+                                                commissionReportSize={this.state.response.length}
                                                 onPress={() => this.props.navigation.navigate('CommissionReportDetail', { item })}
                                             />
                                         }
@@ -552,23 +547,23 @@ class CommissionListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.commissionReportItem === nextProps.commissionReportItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let commissionReportItem = this.props.commissionReportItem;
+        let { commissionReportIndex, commissionReportSize, } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (commissionReportIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (commissionReportIndex == commissionReportSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -584,8 +579,8 @@ class CommissionListItem extends Component {
                         <View>
                             {/* for display email and level and arrow right image */}
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: R.dimens.widgetMargin, }}>
-                                <Text style={{ fontFamily: Fonts.MontserratSemiBold, fontSize: R.dimens.smallText, color: R.colors.textPrimary, }} >{item.AffiliateEmail ? item.AffiliateEmail : '-'} </Text>
-                                <Text style={{ flex: 1, textAlign: 'right', fontFamily: Fonts.MontserratSemiBold, fontSize: R.dimens.smallText, color: R.colors.textSecondary, }} > {'LV.'} {item.Level ? item.Level : '-'} </Text>
+                                <Text style={{ fontFamily: Fonts.MontserratSemiBold, fontSize: R.dimens.smallText, color: R.colors.textPrimary, }} >{commissionReportItem.AffiliateEmail ? commissionReportItem.AffiliateEmail : '-'} </Text>
+                                <Text style={{ flex: 1, textAlign: 'right', fontFamily: Fonts.MontserratSemiBold, fontSize: R.dimens.smallText, color: R.colors.textSecondary, }} > {'LV.'} {commissionReportItem.Level ? commissionReportItem.Level : '-'} </Text>
                                 <ImageTextButton
                                     icon={R.images.RIGHT_ARROW_DOUBLE}
                                     onPress={this.props.onPress}
@@ -601,15 +596,15 @@ class CommissionListItem extends Component {
                             <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', marginBottom: R.dimens.widgetMargin }}>
                                 <View style={{ width: '34%' }}>
                                     <TextViewHML style={[this.mystyle().headerText]} >{R.strings.Amount} </TextViewHML>
-                                    <TextViewHML style={[this.mystyle().valueText]} >  {(parseFloatVal(item.Amount).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.Amount).toFixed(8)) : '-')} </TextViewHML>
+                                    <TextViewHML style={[this.mystyle().valueText]} >  {(parseFloatVal(commissionReportItem.Amount).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(commissionReportItem.Amount).toFixed(8)) : '-')} </TextViewHML>
                                 </View>
                                 <View style={{ width: '33%' }}>
                                     <TextViewHML style={[this.mystyle().headerText]} >{R.strings.commi} </TextViewHML>
-                                    <TextViewHML style={[this.mystyle().valueText]} >{(parseFloatVal(item.CommissionPer) !== 'NaN' ? validateValue(parseFloatVal(item.CommissionPer) + '%') : '-')} </TextViewHML>
+                                    <TextViewHML style={[this.mystyle().valueText]} >{(parseFloatVal(commissionReportItem.CommissionPer) !== 'NaN' ? validateValue(parseFloatVal(commissionReportItem.CommissionPer) + '%') : '-')} </TextViewHML>
                                 </View>
                                 <View style={{ width: '33%' }}>
                                     <TextViewHML style={[this.mystyle().headerText]} >{R.strings.trnAmount} </TextViewHML>
-                                    <TextViewHML style={[this.mystyle().valueText]} >{(parseFloatVal(item.TransactionAmount).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.TransactionAmount).toFixed(8)) : '-')} </TextViewHML>
+                                    <TextViewHML style={[this.mystyle().valueText]} >{(parseFloatVal(commissionReportItem.TransactionAmount).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(commissionReportItem.TransactionAmount).toFixed(8)) : '-')} </TextViewHML>
                                 </View>
                             </View>
 
@@ -617,15 +612,15 @@ class CommissionListItem extends Component {
                             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                                 <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                                     <StatusChip
-                                        color={(item.Status === 1) ? R.colors.successGreen : R.colors.failRed}
-                                        value={item.Status === 1 ? R.strings.Success : R.strings.Failed}></StatusChip>
+                                        color={(commissionReportItem.Status === 1) ? R.colors.successGreen : R.colors.failRed}
+                                        value={commissionReportItem.Status === 1 ? R.strings.Success : R.strings.Failed}></StatusChip>
                                 </View>
                                 <ImageTextButton
                                     style={{ margin: 0, paddingRight: R.dimens.LineHeight, }}
                                     icon={R.images.IC_TIMER}
                                     iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                                 />
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.TrnDate ? convertDateTime(item.TrnDate) : '-'}</TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{commissionReportItem.TrnDate ? convertDateTime(commissionReportItem.TrnDate) : '-'}</TextViewHML>
                             </View>
                         </View>
                     </CardView>

@@ -24,6 +24,8 @@ import TextViewHML from '../../../native_theme/components/TextViewHML';
 import AnimatableItem from '../../../native_theme/components/AnimatableItem';
 import FilterWidget from '../../Widget/FilterWidget';
 import SafeView from '../../../native_theme/components/SafeView';
+import { getData } from '../../../App';
+import { ServiceUtilConstant } from '../../../controllers/Constants';
 
 class TradingSummaryScreen extends Component {
 
@@ -45,6 +47,7 @@ class TradingSummaryScreen extends Component {
         this.onPageChange = this.onPageChange.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
+        this.isMargin = getData(ServiceUtilConstant.KEY_IsMargin);
 
         this.request = {
             PageNo: 0,
@@ -52,6 +55,11 @@ class TradingSummaryScreen extends Component {
             FromDate: getCurrentDate(),
             ToDate: getCurrentDate(),
         };
+
+        // if Margin is on then add IsMargin : 1 bit
+        if (this.isMargin) {
+            this.request = Object.assign({}, this.request, { IsMargin: 1 });
+        }
 
         //Define All initial State
         this.state = {
@@ -291,6 +299,11 @@ class TradingSummaryScreen extends Component {
             PageSize: AppConfig.pageSize
         };
 
+        // if Margin is on then add IsMargin : 1 bit
+        if (this.isMargin) {
+            this.request = Object.assign({}, this.request, { IsMargin: 1 });
+        }
+
         // Set state to original value
         this.setState({
             fromDate: getCurrentDate(),
@@ -344,10 +357,15 @@ class TradingSummaryScreen extends Component {
                 this.setState({ selectedPage: pageNo - 1 });
 
                 // // Bind Request for treding settled list
-                this.request = {
-                    ...this.request,
+                this.request = Object.assign({}, this.request, {
                     PageNo: pageNo - 1
+                });
+
+                // if Margin is on then add IsMargin : 1 bit
+                if (this.isMargin) {
+                    this.request = Object.assign({}, this.request, { IsMargin: 1 });
                 }
+
                 //To get trading settled list
                 this.props.getTradingSettledList(this.request);
             } else {
@@ -436,7 +454,7 @@ class TradingSummaryScreen extends Component {
                 type={Drawer.types.Overlay}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={this.styles().container}>
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -496,15 +514,6 @@ class TradingSummaryScreen extends Component {
             </Drawer>
         );
     }
-
-    styles = () => {
-        return {
-            container: {
-                flex: 1,
-                backgroundColor: R.colors.background,
-            },
-        }
-    }
 }
 
 // This Class is used for display record in list
@@ -545,6 +554,7 @@ export class FlatListItem extends Component {
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
+                    
                     <CardView style={{
                         elevation: R.dimens.listCardElevation,
                         flex: 1,
@@ -560,7 +570,6 @@ export class FlatListItem extends Component {
                                 <TextViewMR style={{ marginLeft: R.dimens.widgetMargin, fontSize: R.dimens.smallestText, color: color }}>{item.TrnType ? item.TrnType.toUpperCase() : '-'}</TextViewMR>
                                 <TextViewMR style={{ fontSize: R.dimens.smallestText, color: color }}>{' - '}{item.OrderType ? item.OrderType.toUpperCase() : '-'}</TextViewMR>
                             </View>
-
                             <ImageTextButton
                                 icon={R.images.RIGHT_ARROW_DOUBLE}
                                 onPress={this.props.onPress}
@@ -586,9 +595,9 @@ export class FlatListItem extends Component {
                         </View>
 
                         {/* for show trn no and DateTime */}
-                        <View style={{ flexDirection: 'row', }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', alignContent: 'center', justifyContent: 'center', marginTop: R.dimens.widgetMargin }}>
 
-                            <View style={{ flexDirection: 'row', }}>
+                            <View style={{ flexDirection: 'row' }}>
                                 <TextViewHML style={{ fontSize: R.dimens.smallText, color: R.colors.textSecondary, }}>{R.strings.TrnId}</TextViewHML>
                                 <TextViewHML style={{ marginLeft: R.dimens.widgetMargin, fontSize: R.dimens.smallText, color: R.colors.yellow, }}>{validateValue(item.TrnNo)}</TextViewHML>
                             </View>
@@ -602,6 +611,7 @@ export class FlatListItem extends Component {
                                 <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.TrnDate ? convertDateTime(item.TrnDate) : '-'}</TextViewHML>
                             </View>
                         </View>
+
                     </CardView>
                 </View >
             </AnimatableItem>

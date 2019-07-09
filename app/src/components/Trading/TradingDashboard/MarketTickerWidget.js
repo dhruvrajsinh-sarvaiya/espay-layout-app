@@ -22,7 +22,7 @@ class MarketTickerWidget extends Component {
         // To handle resume screen event
         addComponentDidResume({ props, componentDidResume: this.componentDidResume, widgetName: CacheName });
 
-        let { width, height } = Dimensions.get('window');	
+        let { width, height } = Dimensions.get('window');
         let contentPercentage = width * 65 / 100;
 
         //Define All initial State
@@ -67,11 +67,11 @@ class MarketTickerWidget extends Component {
 
                             //Get condition based color with old and new values
                             let currentRateColor = getColorCode(originalResponse[pairIndex].CurrentRate);
-                            let changePerColor = getColorCode(originalResponse[pairIndex].ChangePer);
+                            let changePerColorORF = getColorCode(originalResponse[pairIndex].ChangePer);
 
                             //Add Colors object and change float value with 8 digit decimal format
                             originalResponse[pairIndex].currentRateColor = currentRateColor;
-                            originalResponse[pairIndex].changePerColor = changePerColor;
+                            originalResponse[pairIndex].changePerColor = changePerColorORF;
                             originalResponse[pairIndex].CurrentRate = parseFloatVal(pairItem.CurrentRate).toFixed(8);
                             originalResponse[pairIndex].Low24Hr = parseFloatVal(pairItem.Low24Hr).toFixed(8);
                             originalResponse[pairIndex].High24Hr = parseFloatVal(pairItem.High24Hr).toFixed(8);
@@ -95,11 +95,11 @@ class MarketTickerWidget extends Component {
 
                         //Get condition based color with old and new values
                         let currentRateColor = getColorCode(tickerItem.CurrentRate);
-                        let changePerColor = getColorCode(tickerItem.ChangePer);
+                        let changePerColorTI = getColorCode(tickerItem.ChangePer);
 
                         //Add Colors object and change float value with 8 digit decimal format
                         tickerItem.currentRateColor = currentRateColor;
-                        tickerItem.changePerColor = changePerColor;
+                        tickerItem.changePerColor = changePerColorTI;
                         tickerItem.CurrentRate = parseFloatVal(tickerItem.CurrentRate).toFixed(8);
                         tickerItem.Low24Hr = parseFloatVal(tickerItem.Low24Hr).toFixed(8);
                         tickerItem.High24Hr = parseFloatVal(tickerItem.High24Hr).toFixed(8);
@@ -161,10 +161,10 @@ class MarketTickerWidget extends Component {
 
                             //Get condition based color with old and new values
                             let currentRateColor = getColorCode(originalResponse[pairIndex].CurrentRate);
-                            let changePerColor = getColorCode(originalResponse[pairIndex].ChangePer);
+                            let changePerColorOR = getColorCode(originalResponse[pairIndex].ChangePer);
 
                             originalResponse[pairIndex].currentRateColor = currentRateColor;
-                            originalResponse[pairIndex].changePerColor = changePerColor;
+                            originalResponse[pairIndex].changePerColor = changePerColorOR;
 
                             originalResponse[pairIndex].CurrentRate = parseFloatVal(pairItem.CurrentRate).toFixed(8);
                             originalResponse[pairIndex].Low24Hr = parseFloatVal(pairItem.Low24Hr).toFixed(8);
@@ -231,9 +231,9 @@ class MarketTickerWidget extends Component {
 class MarketTickerItem extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.preference.theme !== nextProps.preference.theme || this.props.preference.locale !== nextProps.preference.locale) {
-            return true;
-        } else if (this.props.item !== nextProps.item) {
+        if (this.props.preference.theme !== nextProps.preference.theme
+            || this.props.preference.locale !== nextProps.preference.locale
+            || this.props.item !== nextProps.item) {
             return true;
         }
         return false;
@@ -247,12 +247,11 @@ class MarketTickerItem extends Component {
         //if colors are available in item then use it otherwise display default colors.
         let currentRateColor = item.currentRateColor ? item.currentRateColor : R.colors.white;
         currentRateColor = currentRateColor === R.colors.textPrimary ? R.colors.white : currentRateColor;
-        changePerColor = changePerColor === R.colors.textPrimary ? R.colors.white : changePerColor;
+        let changePerColor = changePerColor === R.colors.textPrimary ? R.colors.white : changePerColor;
 
         let sign = item.ChangePer != 0 ? (item.ChangePer > 0 ? '+' : '') : '';
 
         // apply changePer color based on sign
-        let changePerColor;
         if (sign === '' && item.ChangePer == 0) {
             changePerColor = R.colors.textSecondary;
         } else if (sign === '+') {
@@ -292,7 +291,7 @@ class MarketTickerItem extends Component {
 const mapStateToProps = (state) => {
     return {
         // get updated state from reducer
-        marketData: state.marketTickerReducer,
+        marketData: state.MarketTickersReducer,
         preference: state.preference,
     }
 }

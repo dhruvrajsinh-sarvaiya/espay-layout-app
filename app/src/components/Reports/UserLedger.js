@@ -271,7 +271,7 @@ function mapDispatchToProps(dispatch) {
     return {
         // perform get Wallet Action
         getWallets: () => dispatch(getWallets()),
-        
+
         // perform user ledger list Action
         fetchUserLedgerList: (requestUserLedger) => dispatch(fetchUserLedgerList(requestUserLedger)),
     }

@@ -9,7 +9,8 @@ import { sendEvent, logger, showAlert, addListener, showTimeoutRequestDialog, pa
 import R from '../../native_theme/R';
 import moment from 'moment';
 import { refreshMarkets } from '../../actions/Trade/TradeActions';
-import PushNotification from 'react-native-push-notification';
+import FCM from "react-native-fcm";
+import { AppConfig } from '../../controllers/AppConfig';
 
 class SignalRWidget extends Component {
 
@@ -201,23 +202,23 @@ class SignalRWidget extends Component {
                             setData({ [ServiceUtilConstant.KEY_GoogleAuth]: false })
                         }
 
-                        PushNotification.localNotification({
-                            /* Android Only Properties */
+                        /* PushNotification.localNotification({
+                            // Android Only Properties
                             largeIcon: "",
                             color: R.colors.accent, // (optional) default: system default
 
-                            /* iOS and Android properties */
+                            // iOS and Android properties
                             message: message, // (required)
-                        });
+                        }); */
 
-                        /* FCM.presentLocalNotification({
+                        FCM.presentLocalNotification({
                             channel: 'default',
                             id: new Date().valueOf().toString(), // (optional for instant notification)
                             title: AppConfig.appName,
                             body: message,
                             show_in_foreground: true,
                             priority: "high",
-                        }) */
+                        })
 
                     }
                 } catch (error) {
@@ -394,7 +395,6 @@ class SignalRWidget extends Component {
                     let message = R.strings.formatString(R.strings[`activityNotification.message.${receivedMessage.Data.MsgCode}`], receivedMessage.Data)
 
                     showAlert(R.strings.SessionError, message, 2, () => {
-                        dialogShowCount = 0;
                         if (dialog.sessionExpire) {
 
                             setData({ [ServiceUtilConstant.ACCESS_TOKEN]: null })

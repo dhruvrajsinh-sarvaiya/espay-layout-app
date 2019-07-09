@@ -183,31 +183,23 @@ class OpenPositionReportScreen extends Component {
                 try {
 
                     if (validateResponseNew({ response: pairList, isList: true })) {
-                        let res = parseArray(pairList.Response);
+                        let resPair = parseArray(pairList.Response);
 
-                        res.map((item, index) => {
-                            res[index].value = item.PairName;
+                        resPair.map((item, index) => {
+                            resPair[index].value = item.PairName;
                         })
 
                         let currencyPairs = [
                             { value: R.strings.all, PairId: 0 },
-                            ...res
+                            ...resPair
                         ];
 
-                        return Object.assign({}, state, {
-                            pairList,
-                            currencyPairs
-                        })
+                        return Object.assign({}, state, { pairList, currencyPairs })
                     } else {
-                        return Object.assign({}, state, {
-                            pairList,
-                            currencyPairs: [{ value: R.strings.all, PairId: 0 }]
-                        })
+                        return Object.assign({}, state, { pairList, currencyPairs: [{ value: R.strings.all, PairId: 0 }] })
                     }
                 } catch (e) {
-                    return Object.assign({}, state, {
-                        refreshing: false,
-                    });
+                    return Object.assign({}, state, { refreshing: false });
                 }
             }
 
@@ -246,19 +238,16 @@ class OpenPositionReportScreen extends Component {
 
                 {/* filterwidget for display currencypair data */}
                 <FilterWidget
-                    comboPickerStyle={{ marginTop: 0, }}
-                    pickers={[
-                        {
-                            title: R.strings.selectPair,
-                            array: this.state.currencyPairs,
-                            selectedValue: this.state.selectedCurrencyPair,
-                            onPickerSelect: (item, object) => { this.setState({ selectedCurrencyPair: item, currencyPairId: object.PairId }) }
-                        }
-                    ]}
-                    onResetPress={this.onResetPress}
+                    comboPickerStyle={{ marginTop: 0 }}
+                    pickers={[{
+                        title: R.strings.selectPair,
+                        array: this.state.currencyPairs,
+                        selectedValue: this.state.selectedCurrencyPair,
+                        onPickerSelect: (item, object) => { this.setState({ selectedCurrencyPair: item, currencyPairId: object.PairId }) }
+                    }]}
                     onCompletePress={this.onCompletePress}
-
-                ></FilterWidget>
+                    onResetPress={this.onResetPress}
+                />
             </SafeView>
         )
     }
@@ -270,21 +259,21 @@ class OpenPositionReportScreen extends Component {
         //----------
 
         //for final items from search input on pairname, trnno, and ordertype
-        let finalItems = this.state.response.filter(item =>
-            item.PairName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
-            ("" + item.TrnNo).includes(this.state.searchInput) ||
-            item.OrderType.toLowerCase().includes(this.state.searchInput.toLowerCase()));
+        let finalItems = this.state.response.filter(opnPositionReportItem =>
+            opnPositionReportItem.PairName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
+            ("" + opnPositionReportItem.TrnNo).includes(this.state.searchInput) ||
+            opnPositionReportItem.OrderType.toLowerCase().includes(this.state.searchInput.toLowerCase()));
 
         return (
             //DrawerLayout for Withdraw History Filteration
             <Drawer
                 ref={cmp => this.drawer = cmp}
+                type={Drawer.types.Overlay}
+                drawerPosition={Drawer.positions.Right}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
-                type={Drawer.types.Overlay}
-                drawerPosition={Drawer.positions.Right}
                 easingFunc={Easing.ease}>
 
                 <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
@@ -295,15 +284,15 @@ class OpenPositionReportScreen extends Component {
                     {/* To set toolbar as per our theme */}
                     <CustomToolbar
                         title={R.strings.openPositionReport}
-                        isBack={true}
                         nav={this.props.navigation}
+                        isBack={true}
                         searchable={true}
                         onSearchText={(text) => this.setState({ searchInput: text })}
                         rightIcon={R.images.FILTER}
                         onRightMenuPress={() => this.drawer.openDrawer()}
                     />
 
-                    <View style={{ flex: 1, justifyContent: 'space-between' }}>
+                    <View style={{ flex: 1, justifyContent: 'space-between', }}>
                         {/* To Check Response fetch or not if loading = true then display progress bar else display List*/}
                         {
                             (loading && !this.state.refreshing) ?
@@ -316,10 +305,10 @@ class OpenPositionReportScreen extends Component {
                                                 showsVerticalScrollIndicator={false}
                                                 data={finalItems}
                                                 renderItem={({ item, index }) =>
-                                                    <FlatListItem
-                                                        item={item}
-                                                        index={index}
-                                                        size={this.state.response.length}
+                                                    <OpenPositionReportList
+                                                        opnPositionReportItem={item}
+                                                        opnPositionReportIndex={index}
+                                                        opnPositionReportSize={this.state.response.length}
                                                     />
                                                 }
                                                 keyExtractor={(item, index) => index.toString()}
@@ -346,31 +335,35 @@ class OpenPositionReportScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class OpenPositionReportList extends Component {
     constructor(props) {
         super(props);
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item !== nextProps.item) {
+        if (this.props.opnPositionReportItem !== nextProps.opnPositionReportItem) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {
 
         // Get required fields from props 
-        let { item, index, size } = this.props;
+        let { opnPositionReportItem, opnPositionReportIndex, opnPositionReportSize } = this.props;
 
         // Set color based on status
-        let statusColor = item.OrderType === 'Buy' ? R.colors.successGreen : R.colors.failRed
+        let statusColor = opnPositionReportItem.OrderType === 'Buy' ? R.colors.successGreen : R.colors.failRed
 
         return (
             <AnimatableItem>
-                <View style={{ flexDirection: 'row', marginLeft: R.dimens.WidgetPadding, marginRight: R.dimens.WidgetPadding, marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin, marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin, }}>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: R.dimens.WidgetPadding,
+                    marginRight: R.dimens.WidgetPadding, marginTop: (opnPositionReportIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    arginBottom: (opnPositionReportIndex == opnPositionReportSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                }}>
 
                     <CardView style={{
                         elevation: R.dimens.listCardElevation,
@@ -383,36 +376,36 @@ class FlatListItem extends Component {
 
                         {/* for show pairName,OrderType and TrnNo */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                            <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.PairName}  <Text style={{ color: statusColor, fontSize: R.dimens.volumeText, fontFamily: Fonts.MontserratSemiBold }}>{item.OrderType}</Text></Text>
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, textAlign: 'right' }}>{R.strings.Trn_No} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.TrnNo}</TextViewHML></TextViewHML>
+                            <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{opnPositionReportItem.PairName}  <Text style={{ color: statusColor, fontSize: R.dimens.volumeText, fontFamily: Fonts.MontserratSemiBold }}>{opnPositionReportItem.OrderType}</Text></Text>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, textAlign: 'right' }}>{R.strings.Trn_No} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{opnPositionReportItem.TrnNo}</TextViewHML></TextViewHML>
                         </View>
 
                         {/* for show qty,bid price and landing price */}
                         <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', marginBottom: R.dimens.widgetMargin }}>
                             <View style={{ width: '30%', justifyContent: 'center', alignItems: 'center' }}>
                                 <TextViewHML numberOfLines={1} ellipsizeMode={'tail'} style={[this.styles().headerItem]}>{R.strings.Qty}</TextViewHML>
-                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(item.Qty).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.Qty).toFixed(8)) : '-')}</TextViewHML>
+                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(opnPositionReportItem.Qty).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(opnPositionReportItem.Qty).toFixed(8)) : '-')}</TextViewHML>
                             </View>
 
                             <View style={{ width: '40%', justifyContent: 'center', alignItems: 'center' }}>
                                 <TextViewHML numberOfLines={1} ellipsizeMode={'tail'} style={[this.styles().headerItem]}>{R.strings.bidPrice}</TextViewHML>
-                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(item.BidPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.BidPrice).toFixed(8)) : '-')}</TextViewHML>
+                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(opnPositionReportItem.BidPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(opnPositionReportItem.BidPrice).toFixed(8)) : '-')}</TextViewHML>
                             </View>
 
                             <View style={{ width: '30%', justifyContent: 'center', alignItems: 'center' }}>
                                 <TextViewHML numberOfLines={1} ellipsizeMode={'tail'} style={[this.styles().headerItem]}>{R.strings.landingPrice}</TextViewHML>
-                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(item.LandingPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.LandingPrice).toFixed(8)) : '-')}</TextViewHML>
+                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(opnPositionReportItem.LandingPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(opnPositionReportItem.LandingPrice).toFixed(8)) : '-')}</TextViewHML>
                             </View>
                         </View>
 
                         {/* for show Datetime*/}
-                        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end' }}>
+                        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                             <ImageTextButton
-                                style={{ margin: 0, paddingRight: R.dimens.LineHeight, }}
+                                style={{ margin: 0, paddingRight: R.dimens.LineHeight }}
                                 icon={R.images.IC_TIMER}
-                                iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
+                                iconStyle={{ tintColor: R.colors.textSecondary, width: R.dimens.smallestText, height: R.dimens.smallestText }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.TrnDate ? convertDateTime(item.TrnDate, 'YYYY-MM-DD HH:mm:ss', false) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, textAlign: 'center', fontSize: R.dimens.smallestText }}>{opnPositionReportItem.TrnDate ? convertDateTime(opnPositionReportItem.TrnDate, 'YYYY-MM-DD HH:mm:ss', false) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View>

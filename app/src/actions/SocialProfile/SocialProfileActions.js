@@ -299,104 +299,104 @@ export function clearFollowerConfig() {
 // Redux Action To Get Follower List
 export function getFollowerList(payload) {
     return action(GET_FOLLOWER_LIST, { payload })
-};
+}
 
 // Redux Action Get Follower List Success
 export function getFollowerListSuccess(data) {
     return action(GET_FOLLOWER_LIST_SUCCESS, { data })
-};
+}
 
 // Redux Action Get Follower List Failure
 export function getFollowerListFailure() {
     return action(GET_FOLLOWER_LIST_FAILURE)
-};
+}
 
 // Redux Action To Get Leader Watchlist
 export function getLeaderWatchlist(payload) {
     return action(GET_LEADER_WATCH_LIST, { payload })
-};
+}
 
 // Redux Action Get Leader Watchlist Success
 export function getLeaderWatchlistSuccess(data) {
     return action(GET_LEADER_WATCH_LIST_SUCCESS, { data })
-};
+}
 
 //Action Get Leader Watchlist Failure
 export function getLeaderWatchlistFailure() {
     return action(GET_LEADER_WATCH_LIST_FAILURE)
-};
+}
 
 // Redux Action for Top Gainer List
 export function getSocialProfileTopGainerList(payload) {
     return action(GET_SOCIAL_PROFILE_TOP_GAINER_LIST, { payload })
-};
+}
 
 // Redux Action for Top Gainer List Success
 export function getSocialProfileTopGainerListSuccess(data) {
     return action(GET_SOCIAL_PROFILE_TOP_GAINER_LIST_SUCCESS, { data })
-};
+}
 
 // Redux Action for Top Gainer List Failure
 export function getSocialProfileTopGainerListFailure() {
     return action(GET_SOCIAL_PROFILE_TOP_GAINER_LIST_FAILURE)
-};
+}
 
 // Redux Action for Top Loser List
 export function getSocialProfileTopLoserList(payload) {
     return action(GET_SOCIAL_PROFILE_TOP_LOSER_LIST, { payload })
-};
+}
 
 // Redux Action for Top Loser List Success
 export function getSocialProfileTopLoserListSuccess(data) {
     return action(GET_SOCIAL_PROFILE_TOP_LOSER_LIST_SUCCESS, { data })
-};
+}
 
 // Redux Action for Top Loser List Failure
 export function getSocialProfileTopLoserListFailure() {
     return action(GET_SOCIAL_PROFILE_TOP_LOSER_LIST_FAILURE)
-};
+}
 
 // Redux Action for Top Leader List
 export function getSocialProfileTopLeaderList() {
     return action(GET_SOCIAL_PROFILE_TOP_LEADER_LIST)
-};
+}
 
 // Redux Action for Top Leader List Success
 export function getSocialProfileTopLeaderListSuccess(data) {
     return action(GET_SOCIAL_PROFILE_TOP_LEADER_LIST_SUCCESS, { data })
-};
+}
 
 // Redux Action for Top Leader List Failure
 export function getSocialProfileTopLeaderListFailure() {
     return action(GET_SOCIAL_PROFILE_TOP_LEADER_LIST_FAILURE)
-};
+}
 
 //  Redux Action To Get Leader Portfolio List
 export function getLeaderPortfolioList(data) {
     return action(GET_LEADER_PORTFOLIO_LIST, { data })
-};
+}
 
 //Redux Action To Get Leader Portfolio List Success
 export function getLeaderPortfolioListSuccess(data) {
     return action(GET_LEADER_PORTFOLIO_LIST_SUCCESS, { data })
-};
+}
 
 //Redux Action To Get Leader Portfolio List Failure
 export function getLeaderPortfolioListFailure() {
     return action(GET_LEADER_PORTFOLIO_LIST_FAILURE)
-};
+}
 
 // Redux Action for Historical Performance Chart
 export function getHistoricalPerformChart(payload) {
     return action(GET_HISTORICAL_PERFORM_CHART, { payload })
-};
+}
 
 // Redux Action for Historical Performance Chart Success
 export function getHistoricalPerformChartSuccess(data) {
     return action(GET_HISTORICAL_PERFORM_CHART_SUCCESS, { data })
-};
+}
 
 // Redux Action for Historical Performance Chart Failure
 export function getHistoricalPerformChartFailure() {
     return action(GET_HISTORICAL_PERFORM_CHART_FAILURE)
-};
+}

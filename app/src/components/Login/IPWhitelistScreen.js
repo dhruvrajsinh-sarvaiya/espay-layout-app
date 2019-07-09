@@ -7,7 +7,7 @@ import { isCurrentScreen, addRouteToBackPress } from '../Navigation';
 import { listIPWhitelist, AddIPToWhitelist, DeleteIPToWhitelist, disableIPWhitelist, enableIPWhitelist, UpdateIPToWhitelist, clearIpWhiteList } from '../../actions/Login/IPWhiteListActions';
 import EditText from '../../native_theme/components/EditText';
 import { isEmpty, isInternet, validateResponseNew } from '../../validations/CommonValidation';
-import { changeTheme, showAlert, getIPAddress, getDeviceID, parseArray, addPages, getCurrentDate, convertDateTime, logger } from '../../controllers/CommonUtils';
+import { changeTheme, showAlert, getIPAddress, getDeviceID, parseArray, addPages, getCurrentDate, convertDateTime } from '../../controllers/CommonUtils';
 import { ListEmptyComponent, contentContainerStyle } from '../../native_theme/components/FlatListWidgets';
 import ListLoader from '../../native_theme/components/ListLoader';
 import AlertDialog from '../../native_theme/components/AlertDialog';
@@ -110,7 +110,6 @@ class IPWhitelistScreen extends Component {
                 Page_Size: this.state.Page_Size,
                 FromDate: this.state.FromDate,
                 ToDate: this.state.ToDate,
-
             }
 
             //To fetch IP whitelist
@@ -704,9 +703,9 @@ class IPWhitelistScreen extends Component {
 
                         {/* Existing IP Address */}
                         <TextViewHML style={{
+                            color: R.colors.textPrimary,
                             paddingTop: R.dimens.WidgetPadding,
                             paddingBottom: R.dimens.WidgetPadding,
-                            color: R.colors.textPrimary,
                             fontSize: R.dimens.smallText,
                         }}> {R.strings.ipAddress} : {this.state.MobileIp}
                         </TextViewHML>
@@ -714,9 +713,9 @@ class IPWhitelistScreen extends Component {
                         {/* Input of Alias Name */}
                         <EditText
                             placeholder={R.strings.aliasName}
-                            multiline={false}
                             keyboardType='default'
                             returnKeyType={"done"}
+                            multiline={false}
                             onChangeText={(item) => this.setState({ aliasName: item })}
                             value={this.state.aliasName}
                             style={{ marginTop: 0, width: '100%' }} />
@@ -724,9 +723,9 @@ class IPWhitelistScreen extends Component {
                         {/* Input of Alias Name */}
                         <EditText
                             placeholder={R.strings.IpAddress}
-                            multiline={false}
                             keyboardType='default'
                             returnKeyType={"done"}
+                            multiline={false}
                             onChangeText={(item) => this.setState({ IpAddress: item })}
                             value={this.state.IpAddress}
                             style={{ marginTop: 0, width: '100%' }} />
@@ -755,14 +754,14 @@ class IPWhitelistScreen extends Component {
                             paddingTop: R.dimens.WidgetPadding,
                             paddingBottom: R.dimens.WidgetPadding,
                             color: R.colors.textPrimary,
-                            fontSize: R.dimens.smallText,
+                            fontSize: R.dimens.smallText
                         }}> {R.strings.ipAddress} : {this.state.MobileIp}
                         </TextViewHML>
 
                         {/* Input of Alias Name */}
                         <EditText
-                            placeholder={R.strings.aliasName}
                             multiline={false}
+                            placeholder={R.strings.aliasName}
                             keyboardType='default'
                             returnKeyType={"done"}
                             onChangeText={(item) => this.setState({ aliasName: item })}
@@ -771,8 +770,8 @@ class IPWhitelistScreen extends Component {
 
                         {/* Input of Alias Name */}
                         <EditText
-                            placeholder={R.strings.IpAddress}
                             multiline={false}
+                            placeholder={R.strings.IpAddress}
                             keyboardType='default'
                             returnKeyType={"done"}
                             onChangeText={(item) => this.setState({ IpAddress: item })}
@@ -870,7 +869,7 @@ class FlatListItem extends Component {
                     flexDirection: 'row',
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin,
-                    marginTop: (this.props.index == 0) ? R.dimens.widgetMargin : R.dimens.widgetMargin,
+                    marginTop: R.dimens.widgetMargin,
                     marginBottom: (this.props.index == this.props.size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                 }}>
                     <CardView style={{

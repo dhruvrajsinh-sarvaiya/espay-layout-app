@@ -239,8 +239,8 @@ class ListWalletUser extends Component {
                                     showsVerticalScrollIndicator={false}
                                     data={finalItems}
                                     renderItem={({ item, index }) => {
-                                        return <FlatListItem
-                                            index={index}
+                                        return <UserWalletList
+                                            userWalletIndex={index}
                                             /* render all item in list */
                                             item={item}
                                             onDelete={() => {
@@ -256,7 +256,7 @@ class ListWalletUser extends Component {
                                                     () => { },
                                                     R.strings.yes_text);
                                             }}
-                                            size={this.state.response.length} />
+                                            userWalletSize={this.state.response.length} />
                                     }}
                                     /* assign index as key valye to List Wallet User Item */
                                     keyExtractor={(item, index) => index.toString()}
@@ -283,7 +283,7 @@ class ListWalletUser extends Component {
 }
 
 // This Class is used for display record in list
-export class FlatListItem extends Component {
+export class UserWalletList extends Component {
     constructor(props) {
         super(props);
     }
@@ -300,7 +300,7 @@ export class FlatListItem extends Component {
 
         // Get required fields from props
         let item = this.props.item;
-        let { index, size, onDelete } = this.props;
+        let { userWalletIndex, userWalletSize, onDelete } = this.props;
 
         // apply color based on role id
         let color = R.colors.accent;
@@ -318,15 +318,15 @@ export class FlatListItem extends Component {
             <AnimatableItem>
                 <View style={{
                     flex: 1,
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (userWalletIndex == userWalletSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (userWalletIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
                         borderRadius: 0,
+                        elevation: R.dimens.listCardElevation,
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
                     }}>

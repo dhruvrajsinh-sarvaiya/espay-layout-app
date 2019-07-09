@@ -1,4 +1,4 @@
-import { scale, moderateScale} from './scalUtils';
+import { moderateScale} from './scalUtils';
 
 export const normalizePixels = (size) => {
     return moderateScale(size)

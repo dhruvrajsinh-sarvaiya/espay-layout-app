@@ -46,32 +46,20 @@ class FacebookShareReport extends Component {
             isDrawerOpen: false, // First Time Drawer is Closed
         }
 
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
+
         //Add Current Screen to Manual Handling BackPress Events
         addRouteToBackPress(props);
 
         // Bind All Method
         this.onRefresh = this.onRefresh.bind(this);
         this.onResetPress = this.onResetPress.bind(this);
-        this.onCompletePress = this.onCompletePress.bind(this);
-        this.onPageChange = this.onPageChange.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
-
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
+        this.onCompletePress = this.onCompletePress.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
     }
 
     componentDidMount = async () => {
@@ -151,18 +139,21 @@ class FacebookShareReport extends Component {
     // Drawer Navigation
     navigationDrawer() {
         return (
-            <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+            <SafeView
+                style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast
+                    ref={cmp => this.toast = cmp}
+                    styles={{ width: R.dimens.FilterDrawarWidth, }} />
 
                 {/* filterwidget for display fromdate, todate,parentuser data */}
                 <FilterWidget
+                    onResetPress={this.onResetPress}
                     FromDatePickerCall={(date) => this.setState({ FromDate: date })}
                     FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
-                    onResetPress={this.onResetPress}
                     onCompletePress={this.onCompletePress}
                     firstPicker={{
                         title: R.strings.parentUser,
@@ -173,6 +164,18 @@ class FacebookShareReport extends Component {
                 />
             </SafeView>
         )
+    }
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
+        }
     }
 
     onResetPress = async () => {
@@ -262,13 +265,13 @@ class FacebookShareReport extends Component {
                 try {
                     if (validateResponseNew({ response: affiliateUserData, isList: true })) {
                         //Store Api Response Field and display in Screen.
-                        var newRes = parseArray(affiliateUserData.Response);
-                        newRes.map((item, index) => {
-                            newRes[index].value = newRes[index].UserName
-                            newRes[index].Id = newRes[index].Id
+                        var userDataForFacebook = parseArray(affiliateUserData.Response);
+                        userDataForFacebook.map((item, index) => {
+                            userDataForFacebook[index].value = userDataForFacebook[index].UserName
+                            userDataForFacebook[index].Id = userDataForFacebook[index].Id
                         })
                         //----
-                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...userDataForFacebook]
 
                         return { ...state, userList: res };
                     }
@@ -311,25 +314,26 @@ class FacebookShareReport extends Component {
         let list = this.state.data;
 
         //for final items from search input (validate on UserEmail , FirstName and LastName)
-        let finalItems = list.filter(item =>
-            (item.UserEmail.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
+        let finalItems = list.filter(facebookItem =>
+            (facebookItem.UserEmail.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (facebookItem.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (facebookItem.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
         );
 
         return (
             // for apply filter for facebookSharereport
             <Drawer
                 ref={cmp => this.drawer = cmp}
+                easingFunc={Easing.ease}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
-                easingFunc={Easing.ease}>
+            >
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{ backgroundColor: R.colors.background, flex: 1 }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -359,10 +363,10 @@ class FacebookShareReport extends Component {
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
                                                 renderItem={({ item, index }) =>
-                                                    <FlatlistItem
-                                                        item={item}
-                                                        index={index}
-                                                        size={this.state.data.length}
+                                                    <FacebookList
+                                                        facebookItem={item}
+                                                        facebookIndex={index}
+                                                        facebookSize={this.state.data.length}
                                                     />
                                                 }
                                                 keyExtractor={(item, index) => index.toString()}
@@ -397,16 +401,15 @@ class FacebookShareReport extends Component {
 }
 
 // This Class is used for display record in list
-class FlatlistItem extends Component {
+class FacebookList extends Component {
 
     constructor(props) {
         super(props);
-
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.facebookItem === nextProps.facebookItem) {
             return false
         }
         return true
@@ -414,16 +417,16 @@ class FlatlistItem extends Component {
 
     render() {
 
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let facebookItem = this.props.facebookItem;
+        let { facebookIndex, facebookSize, } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (facebookIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (facebookIndex == facebookSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -446,9 +449,9 @@ class FlatlistItem extends Component {
                             {/* for display username and email and ip */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
                                 <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.facebookLinkInvite}</Text>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.FirstName ? item.FirstName + ' ' + item.LastName : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.UserEmail ? item.UserEmail : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} {R.strings.IPAddress} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.IpAddress ? item.IpAddress : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{facebookItem.FirstName ? facebookItem.FirstName + ' ' + facebookItem.LastName : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{facebookItem.UserEmail ? facebookItem.UserEmail : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} {R.strings.IPAddress} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{facebookItem.IpAddress ? facebookItem.IpAddress : '-'}</TextViewHML></TextViewHML>
                             </View>
                         </View>
 
@@ -459,7 +462,7 @@ class FlatlistItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.ClickTime ? convertDateTime(item.ClickTime) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{facebookItem.ClickTime ? convertDateTime(facebookItem.ClickTime) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View >

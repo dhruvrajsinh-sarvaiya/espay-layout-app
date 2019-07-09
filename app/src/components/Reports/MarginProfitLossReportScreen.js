@@ -246,8 +246,7 @@ class MarginProfitLossReportScreen extends Component {
                         })
 
                         let currencyPairs = [
-                            { value: R.strings.all, PairId: 0 },
-                            ...res
+                            { value: R.strings.all, PairId: 0 }, ...res
                         ];
 
                         return Object.assign({}, state, {
@@ -256,14 +255,11 @@ class MarginProfitLossReportScreen extends Component {
                         })
                     } else {
                         return Object.assign({}, state, {
-                            pairList,
-                            currencyPairs: [{ value: R.strings.all, PairId: 0 }]
+                            pairList, currencyPairs: [{ value: R.strings.all, PairId: 0 }]
                         })
                     }
                 } catch (e) {
-                    return Object.assign({}, state, {
-                        refreshing: false,
-                    });
+                    return Object.assign({}, state, { refreshing: false, });
                 }
             }
 
@@ -272,28 +268,25 @@ class MarginProfitLossReportScreen extends Component {
                 try {
                     if (validateResponseNew({ response: Balancedata, isList: true })) {
 
-                        let WalletIems = [{ value: R.strings.Please_Select }];
+                        let WalletListIems = [{ value: R.strings.Please_Select }];
 
                         for (var i = 0; i < Balancedata.Response.length; i++) {
                             if (Balancedata.Response[i].IsWithdraw == 1) {
                                 let item = Balancedata.Response[i].SMSCode;
-                                WalletIems.push({ value: item });
+                                WalletListIems.push({ value: item });
                             }
                         }
                         return {
-                            ...state,
-                            walletItems: WalletIems,
+                            ...state, walletItems: WalletListIems,
                         };
                     } else {
                         return {
-                            ...state,
-                            walletItems: [{ value: R.strings.Please_Select }],
+                            ...state, walletItems: [{ value: R.strings.Please_Select }],
                         };
                     }
                 } catch (e) {
                     return {
-                        ...state,
-                        walletItems: [{ value: R.strings.Please_Select }],
+                        ...state, walletItems: [{ value: R.strings.Please_Select }],
                     };
                 }
             }
@@ -332,7 +325,6 @@ class MarginProfitLossReportScreen extends Component {
     //Navigation Drawer Functionality
     navigationDrawer = () => {
         return (
-
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
                 {/* filterwidget for display currencypair and walletitem data */}
@@ -354,8 +346,7 @@ class MarginProfitLossReportScreen extends Component {
                     ]}
                     onResetPress={this.onResetPress}
                     onCompletePress={this.onCompletePress}
-
-                ></FilterWidget>
+                />
             </SafeView>
         )
     }
@@ -367,10 +358,10 @@ class MarginProfitLossReportScreen extends Component {
         //----------
 
         //for final items from search input on pairname, trnno, and ordertype
-        let finalItems = this.state.response.filter(item =>
-            item.PairName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
-            ("" + item.TrnNo).includes(this.state.searchInput) ||
-            item.OrderType.toLowerCase().includes(this.state.searchInput.toLowerCase()));
+        let finalItems = this.state.response.filter(mrgnProfitLossItem =>
+            mrgnProfitLossItem.PairName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
+            ("" + mrgnProfitLossItem.TrnNo).includes(this.state.searchInput) ||
+            mrgnProfitLossItem.OrderType.toLowerCase().includes(this.state.searchInput.toLowerCase()));
 
         return (
             //DrawerLayout for Withdraw History Filteration
@@ -378,24 +369,24 @@ class MarginProfitLossReportScreen extends Component {
                 ref={cmp => this.drawer = cmp}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
-                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 easingFunc={Easing.ease}>
 
                 <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
-                     {/* To set status bar as per our theme */}
+                    {/* To set status bar as per our theme */}
                     <CommonStatusBar />
 
-                     {/* To set toolbar as per our theme */}
+                    {/* To set toolbar as per our theme */}
                     <CustomToolbar
-                        title={R.strings.marginProfitLossReport}
                         isBack={true}
-                        nav={this.props.navigation}
+                        title={R.strings.marginProfitLossReport}
                         searchable={true}
                         onSearchText={(text) => this.setState({ searchInput: text })}
+                        nav={this.props.navigation}
                         rightIcon={R.images.FILTER}
                         onRightMenuPress={() => this.drawer.openDrawer()}
                     />
@@ -410,10 +401,10 @@ class MarginProfitLossReportScreen extends Component {
                                     showsVerticalScrollIndicator={false}
                                     data={finalItems}
                                     renderItem={({ item, index }) =>
-                                        <FlatListItem
-                                            item={item}
-                                            index={index}
-                                            size={this.state.response.length}
+                                        <MarginProfitLossList
+                                            mrgnProfitLossItem={item}
+                                            mrgnProfitLossIndex={index}
+                                            mrgnProfitLossSize={this.state.response.length}
                                         />
                                     }
                                     keyExtractor={(item, index) => index.toString()}
@@ -445,7 +436,7 @@ class MarginProfitLossReportScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class MarginProfitLossList extends Component {
 
     constructor(props) {
         super(props);
@@ -453,24 +444,28 @@ class FlatListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item !== nextProps.item) {
+        if (this.props.mrgnProfitLossItem !== nextProps.mrgnProfitLossItem) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {
 
         // Get required fields from props
-        let { item, index, size } = this.props;
+        let { mrgnProfitLossItem, mrgnProfitLossIndex, mrgnProfitLossSize } = this.props;
 
         // set color based on status
-        let statusColor = item.OrderType === 'Buy' ? R.colors.successGreen : R.colors.failRed
+        let statusColor = mrgnProfitLossItem.OrderType === 'Buy' ? R.colors.successGreen : R.colors.failRed
 
         return (
             <AnimatableItem>
-                <View style={{ flexDirection: 'row', marginLeft: R.dimens.WidgetPadding, marginRight: R.dimens.WidgetPadding, marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin, marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin, }}>
+                <View style={{
+                    flexDirection: 'row',
+                    marginLeft: R.dimens.WidgetPadding, marginRight: R.dimens.WidgetPadding,
+                    marginTop: (mrgnProfitLossIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (mrgnProfitLossIndex == mrgnProfitLossSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                }}>
 
                     <CardView style={{
                         elevation: R.dimens.listCardElevation,
@@ -483,25 +478,25 @@ class FlatListItem extends Component {
 
                         {/* for Show pairName and trnNo */}
                         <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                            <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold }}>{item.PairName}  <Text style={{ color: statusColor, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold }}>{item.OrderType}</Text></Text>
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, textAlign: 'right' }}>{R.strings.Trn_No} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.TrnNo}</TextViewHML></TextViewHML>
+                            <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold }}>{mrgnProfitLossItem.PairName}  <Text style={{ color: statusColor, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold }}>{mrgnProfitLossItem.OrderType}</Text></Text>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, textAlign: 'right' }}>{R.strings.Trn_No} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{mrgnProfitLossItem.TrnNo}</TextViewHML></TextViewHML>
                         </View>
 
                         {/* for show qty,bid price and landing price  */}
                         <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row', marginBottom: R.dimens.widgetMargin }}>
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <TextViewHML style={[this.styles().headerItem]}>{R.strings.Qty}</TextViewHML>
-                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(item.Qty).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.Qty).toFixed(8)) : '-')}</TextViewHML>
+                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(mrgnProfitLossItem.Qty).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(mrgnProfitLossItem.Qty).toFixed(8)) : '-')}</TextViewHML>
                             </View>
 
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <TextViewHML style={[this.styles().headerItem]}>{R.strings.bidPrice}</TextViewHML>
-                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(item.BidPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.BidPrice).toFixed(8)) : '-')}</TextViewHML>
+                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(mrgnProfitLossItem.BidPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(mrgnProfitLossItem.BidPrice).toFixed(8)) : '-')}</TextViewHML>
                             </View>
 
                             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                 <TextViewHML style={[this.styles().headerItem]}>{R.strings.landingPrice}</TextViewHML>
-                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(item.LandingPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(item.LandingPrice).toFixed(8)) : '-')}</TextViewHML>
+                                <TextViewHML style={[this.styles().detailItem]}>{(parseFloatVal(mrgnProfitLossItem.LandingPrice).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(mrgnProfitLossItem.LandingPrice).toFixed(8)) : '-')}</TextViewHML>
                             </View>
                         </View>
 
@@ -512,7 +507,7 @@ class FlatListItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.TrnDate ? convertDateTime(item.TrnDate, 'YYYY-MM-DD HH:mm:ss', false) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{mrgnProfitLossItem.TrnDate ? convertDateTime(mrgnProfitLossItem.TrnDate, 'YYYY-MM-DD HH:mm:ss', false) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View>
@@ -557,10 +552,10 @@ function mapDispatchToProps(dispatch) {
     return {
         // Perform margin profit loss Action
         getMarginProfitLossData: (ReqObj) => dispatch(getMarginProfitLossData(ReqObj)),
-        
+
         // Perform currency pair Action
         getCurrencyPairs: () => dispatch(getPairList()),
-        
+
         // Perform Get Balance Action
         GetBalance: () => dispatch(GetBalance()),
     }

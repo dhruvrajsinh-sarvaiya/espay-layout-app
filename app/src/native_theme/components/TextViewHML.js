@@ -9,15 +9,11 @@ class TextViewHML extends Component {
 
     shouldComponentUpdate = (nextProps, nextState) => {
         if (this.props.preference.locale !== nextProps.preference.locale ||
-            this.props.preference.theme !== nextProps.preference.theme) {
+            this.props.preference.theme !== nextProps.preference.theme ||
+            this.props !== nextProps) {
             return true;
-        } else {
-            if (this.props !== nextProps) {
-                return true;
-            } else {
-                return false;
-            }
         }
+        return false;
     }
 
     render() {

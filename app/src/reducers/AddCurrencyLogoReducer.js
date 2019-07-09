@@ -17,7 +17,13 @@ const INTIAL_STATE = {
     AddCurrencyLogoisFetching: false,
 }
 
-const AddCurrencyLogoReducer = (state = INTIAL_STATE, action) => {
+const AddCurrencyLogoReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -31,14 +37,8 @@ const AddCurrencyLogoReducer = (state = INTIAL_STATE, action) => {
                 AddCurrencyLogoisFetching: true,
                 AddCurrencyLogodata: ''
             });
-        // Set Add Currency Logo success data
+        // Set Add Currency Logo success and failure data
         case ADD_CURRENCY_LOGO_SUCCESS:
-            return Object.assign({}, state, {
-                AddCurrencyLogoFetchData: false,
-                AddCurrencyLogoisFetching: false,
-                AddCurrencyLogodata: action.payload
-            });
-        // Set Add Currency Logo failure data
         case ADD_CURRENCY_LOGO_FAILURE:
             return Object.assign({}, state, {
                 AddCurrencyLogoFetchData: false,

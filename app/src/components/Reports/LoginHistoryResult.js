@@ -254,13 +254,9 @@ class LoginHistoryResult extends Component {
 
 				} catch (e) {
 					return {
-						...state,
-						response: [],
-						refreshing: false,
-						row: []
+						...state, response: [],
+						refreshing: false, row: []
 					}
-					//Handle Catch and Notify User to Exception.
-					//Alert.alert('Status', e);
 				}
 			}
 		}
@@ -270,20 +266,21 @@ class LoginHistoryResult extends Component {
 	// Drawer Navigation
 	navigationDrawer = () => {
 		return (
-			<SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
-
+			<SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 				{/* For Toast */}
-				<CommonToast ref="Toast" styles={{ width: R.dimens.FilterDrawarWidth }} />
+				<CommonToast styles={{ width: R.dimens.FilterDrawarWidth }} ref="Toast" />
 
 				{/* FilterWidget For From Date , To Date */}
 				<FilterWidget
-					FromDatePickerCall={(date) => this.setState({ FromDate: date })}
-					ToDatePickerCall={(date) => this.setState({ ToDate: date })}
+					FromDatePickerCall={(date) =>
+						this.setState({ FromDate: date })}
+					ToDatePickerCall={(date) =>
+						this.setState({ ToDate: date })}
 					FromDate={this.state.FromDate}
 					ToDate={this.state.ToDate}
-					onResetPress={this.onResetPress}
 					onCompletePress={this.onCompletePress}
-				></FilterWidget>
+					onResetPress={this.onResetPress}
+				/>
 			</SafeView>
 		)
 	}
@@ -299,14 +296,15 @@ class LoginHistoryResult extends Component {
 		let finalItems = this.state.response.filter(item => item.Device.toLowerCase().includes(this.state.searchInput.toLowerCase()) || item.Date.toLowerCase().includes(this.state.searchInput.toLowerCase()) || item.IpAddress.toLowerCase().includes(this.state.searchInput.toLowerCase()) || item.Location.toLowerCase().includes(this.state.searchInput.toLowerCase()));
 
 		return (
+
 			//DrawerLayout for Login History Filteration
 			<Drawer
 				ref={cmp => this.drawer = cmp}
 				drawerWidth={R.dimens.FilterDrawarWidth}
-				drawerContent={this.navigationDrawer()}
 				onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
 				onDrawerClose={() => this.setState({ isDrawerOpen: false })}
 				type={Drawer.types.Overlay}
+				drawerContent={this.navigationDrawer()}
 				drawerPosition={Drawer.positions.Right}
 				easingFunc={Easing.ease}>
 
@@ -397,9 +395,8 @@ export class FlatListItem extends Component {
 		//Check If Old Props and New Props are Equal then Return False
 		if (this.props.item !== nextProps.item) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	render() {

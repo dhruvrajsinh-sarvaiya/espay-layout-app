@@ -147,7 +147,6 @@ class ApiPlanListScreen extends Component {
 							res.map((item, index) => {
 								if (item.IsSubscribePlan == 1) {
 									subScribeId = item.ID
-									subscribeApiPlan = item
 								}
 							})
 							return {

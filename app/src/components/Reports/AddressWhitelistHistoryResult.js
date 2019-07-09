@@ -465,20 +465,19 @@ class FlatListItem extends Component {
             <AnimatableItem>
                 <View style={{
                     flex: 1,
-                    marginTop: R.dimens.widgetMargin,
                     marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
-                }
-                }>
-                    <CardView style={{
-                        elevation: R.dimens.listCardElevation,
-                        flex: 1,
-                        borderRadius: 0,
-                        borderBottomLeftRadius: R.dimens.margin,
-                        borderTopRightRadius: R.dimens.margin,
-                    }}
-                        onPress={this.props.onPress}>
+                    marginRight: R.dimens.widget_left_right_margin,
+                }}>
+                    <CardView
+                        style={{
+                            flex: 1,
+                            borderRadius: 0,
+                            borderBottomLeftRadius: R.dimens.margin,
+                            borderTopRightRadius: R.dimens.margin,
+                            elevation: R.dimens.listCardElevation,
+                        }} onPress={this.props.onPress}>
 
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 

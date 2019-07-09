@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { ServiceUtilConstant } from '../controllers/Constants';
 import qs from 'querystring';
 import { logger, showSlowInternetDialog, showTimeoutRequestDialog, getBaseUrl, getWebPageUrl } from '../controllers/CommonUtils';
 import moment from 'moment';
@@ -20,7 +19,6 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
     logRequest(getBaseUrl(), 'DELETE', methodName, request, headers);
 
     var responseData = await httpClient.delete(getBaseUrl() + methodName, request)
-        .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => {
             if (error.message.includes(requestTimeoutError)) {
                 showTimeoutRequestDialog();
@@ -44,7 +42,6 @@ export const swaggerGetAPI = async (methodName, request, headers = {}) => {
     logRequest(getBaseUrl(), 'GET', methodName, request, headers);
 
     var responseData = await httpClient.get(getBaseUrl() + methodName, request)
-        .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => {
             if (error.message.includes(requestTimeoutError)) {
                 showTimeoutRequestDialog();
@@ -68,7 +65,6 @@ export const swaggerPostAPI = async (methodName, request, headers = {}) => {
     logRequest(getBaseUrl(), 'POST', methodName, request, headers);
 
     var responseData = await httpClient.post(getBaseUrl() + methodName, request)
-        .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => {
             if (error.message.includes(requestTimeoutError)) {
                 showTimeoutRequestDialog();
@@ -91,7 +87,6 @@ export const swaggerPostHeaderFormAPI = async (methodName, request) => {
     logRequest(getBaseUrl(), 'POST', methodName, request, { 'Content-Type': 'application/x-www-form-urlencoded' })
 
     var responseData = await httpClient.post(getBaseUrl() + methodName, qs.stringify(request))
-        .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => {
             if (error.message.includes(requestTimeoutError)) {
                 showTimeoutRequestDialog();
@@ -115,7 +110,6 @@ export const WebPageUrlGetApi = async (methodName, request, headers = {}) => {
     logRequest(getWebPageUrl(), 'GET', methodName, request, headers);
 
     var responseData = await httpClient.get(getWebPageUrl() + methodName, request)
-        .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => {
             if (error.message.includes(requestTimeoutError)) {
                 showTimeoutRequestDialog();
@@ -138,7 +132,6 @@ export const WebPageUrlPostAPI = async (methodName, request, headers = {}) => {
     logRequest(getWebPageUrl(), 'POST', methodName, request, headers);
 
     var responseData = await httpClient.post(getWebPageUrl() + methodName, request)
-        .then(response => JSON.parse(JSON.stringify(response)))
         .catch(error => {
             if (error.message.includes(requestTimeoutError)) {
                 showTimeoutRequestDialog();
@@ -217,7 +210,7 @@ export function loginErrCode() {
  * Function to static response
  */
 function staticResponseObj(statusCode) {
-    response = {
+    let response = {
         ErrorCode: statusCode,
         ReturnCode: 1,
         ReturnMsg: "Please try after sometime.",
@@ -229,7 +222,7 @@ function staticResponseObj(statusCode) {
 
 //Slow Internet Static Response
 export function slowInternetStaticResponse(statusCode) {
-    response = {
+    let response = {
         ErrorCode: statusCode,
         ReturnCode: 1,
         ReturnMsg: R.strings.SLOW_INTERNET,
@@ -251,7 +244,19 @@ var startTime = {};
  * @param {jsonObject} request 
  * @param {jsonObject} headers 
  */
-export function logRequest(URL, methodType = '', methodName, request = {}, headers = {}) {
+export function logRequest(URL, methodType, methodName, request, headers) {
+
+    if (typeof methodType === 'undefined') {
+        methodType = '';
+    }
+
+    if (typeof request === 'undefined'){
+        request = {};
+    }
+
+    if (typeof headers === 'undefined'){
+        headers = {};
+    }
 
     //customization bits for log
     let show = {
@@ -265,8 +270,8 @@ export function logRequest(URL, methodType = '', methodName, request = {}, heade
     let logMethodType = 'Type : ' + methodType + '\n';
     let logMethod = 'Method : ' + extractMethod(methodName) + '\n';
     let logURL = 'URL : ' + URL + methodName + '\n';
-    let logReq = Object.keys(request).length !== 0 ? (logReq = 'Request : ' + JSON.stringify(request) + '\n') : '';
-    let logHeader = Object.keys(headers).length !== 0 ? (logHeader = 'Headers : ' + JSON.stringify(headers) + '\n') : '';
+    let logReq = Object.keys(request).length !== 0 ? ('Request : ' + JSON.stringify(request) + '\n') : '';
+    let logHeader = Object.keys(headers).length !== 0 ? ('Headers : ' + JSON.stringify(headers) + '\n') : '';
 
     startTime = Object.assign({}, startTime, {
         [extractMethod(methodName)]: moment(),
@@ -344,7 +349,6 @@ export function convertObjToFormData(ObjData) {
 
         if (isFirst) {
             isFirst = false;
-        } else {
         }
         formData.append([key], ObjData[key]);
     })

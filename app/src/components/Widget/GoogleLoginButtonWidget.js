@@ -165,7 +165,7 @@ const mapStateToProps = (state) => {
 
     return {
         SocialLoginData: state.loginReducer,
-        token: state.tokenReducer,
+        token: state.AuthorizeTokenReducer,
     }
 }
 

@@ -39,27 +39,14 @@ class ListWallets extends Component {
         //Add Current Screen to Manual Handling BackPress Events
         addRouteToBackPress(props);
 
-        //To Bind All Method
-        this.onRefresh = this.onRefresh.bind(this);
-        this.onBackPress = this.onBackPress.bind(this);
-        this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
         // create reference
         this.drawer = React.createRef();
-    }
 
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
+        //To Bind All Method
+        this.onBackPress = this.onBackPress.bind(this);
+        this.props.navigation.setParams({ onBackPress: this.onBackPress });
+        this.onRefresh = this.onRefresh.bind(this);
 
-        // close the drawer if drawer is open
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //goging back screen
-            this.props.navigation.goBack();
-        }
     }
 
     componentDidMount = async () => {
@@ -77,6 +64,19 @@ class ListWallets extends Component {
             //----------
         } else {
             this.setState({ refreshing: false });
+        }
+    }
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        // close the drawer if drawer is open
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //goging back screen
+            this.props.navigation.goBack();
         }
     }
 
@@ -262,14 +262,14 @@ class ListWallets extends Component {
             <Drawer
                 ref={cmp => this.drawer = cmp}
                 drawerWidth={R.dimens.FilterDrawarWidth}
-                drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
+                drawerContent={this.navigationDrawer()}
                 drawerPosition={Drawer.positions.Right}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -301,13 +301,13 @@ class ListWallets extends Component {
                                         data={finalItems}
                                         /* render all item in list */
                                         renderItem={({ item, index }) => {
-                                            return <FlatListItem
-                                                index={index}
+                                            return <ListOfWallets
+                                                walletIndex={index}
                                                 item={item}
                                                 onListWalletUser={() => {
                                                     this.props.navigation.navigate('ListWalletUser', { WalletId: item.AccWalletID })
                                                 }}
-                                                size={this.state.response.length} />
+                                                walletSize={this.state.response.length} />
                                         }}
                                         /* assign index as key valye to List Wallet Item */
                                         keyExtractor={(item, index) => index.toString()}
@@ -335,7 +335,7 @@ class ListWallets extends Component {
 }
 
 // This Class is used for display record in list
-export class FlatListItem extends Component {
+export class ListOfWallets extends Component {
     constructor(props) {
         super(props);
     }
@@ -352,7 +352,7 @@ export class FlatListItem extends Component {
 
         // Get required fields from params
         let item = this.props.item;
-        let { index, size, onListWalletUser } = this.props;
+        let { walletIndex, walletSize, onListWalletUser } = this.props;
 
         // apply color based on role id
         let color = R.colors.accent;
@@ -370,16 +370,16 @@ export class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (walletIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (walletIndex == walletSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }
                 }>
                     <CardView style={{
                         elevation: R.dimens.listCardElevation,
-                        flex: 1,
                         borderRadius: 0,
+                        flex: 1,
                         flexDirection: 'column',
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,

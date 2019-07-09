@@ -109,7 +109,7 @@ class MembershipLevels extends Component {
     };
 
     render() {
-    
+
         const { activeSlide } = this.state;
 
         //Get is Fetching value For All APIs to handle Progress bar in All Activity
@@ -186,11 +186,11 @@ class FlatListItem extends Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item !== nextProps.item || this.props.isPortrait != nextProps.isPortrait) {
+        if (this.props.item !== nextProps.item
+            || this.props.isPortrait != nextProps.isPortrait) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {

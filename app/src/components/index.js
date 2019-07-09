@@ -30,7 +30,7 @@ import AddressWhitelistHistoryResult from './Reports/AddressWhitelistHistoryResu
 import FavoriteScreen from './Trading/FavoriteScreen';
 import BuySellTradeScreen from './Trading/BuySellTradeScreen';
 import BuySellTradeSuccessScreen from './Trading/BuySellTradeSuccessScreen';
-import OrderHistory from './Trading/OrderHistory/OrderHistory';
+import OrderHistory from './Trading/OrderHistory';
 import OpenOrder from './Trading/OpenOrder';
 import RefereAndEarn from './CMS/RefereAndEarn';
 import Announcement from './CMS/Announcement';
@@ -73,7 +73,7 @@ import EnableGoogleAuthenticator from './Security/EnableGoogleAuthenticator';
 import DisableGoogleAuthenticator from './Security/DisableGoogleAuthenticator';
 import FundDetailScreen from './Reports/FundDetailScreen';
 import FundDetailSubScreen from './Reports/FundDetailSubScreen';
-import GlobalMarketTradeWidget from './Widget/GlobalMarketTradeWidget'
+import GlobalMarketTradeWidget from './Trading/GlobalMarketTradeWidget'
 import RecentOrder from './Trading/RecentOrder'
 import UserLedger from './Reports/UserLedger'
 import UserLedgerResult from './Reports/UserLedgerResult'
@@ -83,8 +83,6 @@ import ChatScreen from './CMS/ChatScreen';
 import LeaderProfileConfiguration from './SocialProfile/LeaderProfileConfiguration'
 import FollowerProfileConfiguration from './SocialProfile/FollowerProfileConfiguration'
 import SocialProfileSubscription from './SocialProfile/SocialProfileSubscription'
-import TopGainer from './Trading/TopGainerLoser/TopGainer';
-import TopLoser from './Trading/TopGainerLoser/TopLoser';
 import TopGainerLoser from './Trading/TopGainerLoser/TopGainerLoser';
 import ActivityLogScreen from './Reports/ActivityLogScreen'
 import TradingSummaryScreen from './Trading/TradeSummary/TradingSummaryScreen';
@@ -135,17 +133,11 @@ import CreateMarginWallet from './Margin/CreateMarginWallet'
 import ConfirmMarginWalletScreen from './Margin/ConfirmMarginWalletScreen'
 import ApiPlanListScreen from './ApiPlan/ApiPlanListScreen';
 import ApiPlanListDetailScreen from './ApiPlan/ApiPlanListDetailScreen';
-import MarginRecentOrder from './Margin/trading/MarginRecentOrder';
 import MarginOpenOrder from './Margin/trading/MarginOpenOrder';
 import MarginMarketPairDetail from './Margin/trading/MarginMarketPairDetail';
 import MarginBuySellTradeScreen from './Margin/trading/MarginBuySellTradeScreen';
-import MarginTradingSummaryScreen from './Margin/trading/MarginTradingSummaryScreen';
 import MarginMarketListScreen from './Margin/trading/MarginMarketListScreen';
-import MarginMarketSearchScreen from './Margin/trading/MarginMarketSearchScreen';
 import MarginBuyerSellerBookWidget from './Margin/trading/MarginBuyerSellerBookWidget';
-import MarginGlobalMarketTradeWidget from './Margin/trading/MarginGlobalMarketTradeWidget';
-import MarginFavoriteScreen from './Margin/trading/MarginFavoriteScreen';
-import MarginTradingSummaryDetailScreen from './Margin/trading/MarginTradingSummaryDetailScreen';
 import ApiActivePlanListDetail from './ApiPlan/ApiActivePlanListDetail';
 import ManualRenewPlan from './ApiPlan/ManualRenewPlan';
 import ReferralInvitesScreen from './Account/ReferralSystem/ReferralInvitesScreen';
@@ -157,7 +149,6 @@ import AddApiKeyScreen from './ApiKey/AddApiKeyScreen';
 import ViewPublicApiKey from './ApiKey/ViewPublicApiKey';
 import SetAutoRenewApiPlan from './ApiPlan/SetAutoRenewApiPlan';
 import ViewPublicApiKeyDetail from './ApiKey/ViewPublicApiKeyDetail';
-import MarginTradingHistory from './Margin/trading/MarginTradingHistory';
 import StopAutoRenewApiPlan from './ApiPlan/StopAutoRenewApiPlan';
 import AffliateSignUpMain from './Affiliate/AffiliateSignUpMain';
 import ApiKeyIpWhitelist from './ApiKey/ApiKeyIpWhitelist';
@@ -183,16 +174,33 @@ import OpenPositionReportScreen from './Reports/OpenPositionReportScreen';
 import Deleverage from './Margin/Deleverage';
 import AlertModal from './AlertModal';
 
+import React from 'react'
 import { Platform } from 'react-native';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
 import { configureTransition } from '../validations/CommonValidation';
 import { collapseExpand, fromRight, fromLeft } from '../native_theme/components/NavigationTransition';
+import R from '../native_theme/R';
+import NavigationDrawer from './MainBoard/NavigationDrawer';
 
 const navigationOptions = { header: null };
 
+const DrawerMenus = createDrawerNavigator(
+    {
+        Home: {
+            screen: MainScreen,
+            navigationOptions
+        }
+    },
+    {
+        initialRouteName: 'Home',
+        contentComponent: NavigationDrawer,
+        drawerWidth: R.dimens.drawer_width
+    }
+);
+
 const MainStack = {
     SplashScreen: { screen: SplashScreen, navigationOptions }, //Needed
-    MainScreen: { screen: MainScreen, navigationOptions }, //Needed
+    MainScreen: { screen: DrawerMenus, navigationOptions }, //Needed
     CoinInfo: { screen: CoinInfo, navigationOptions }, //Needed
     ListCoinScreen: { screen: ListCoinScreen, navigationOptions }, //Needed
     MarketList: { screen: MarketListScreen, navigationOptions }, //Needed
@@ -228,7 +236,6 @@ const MainStack = {
     RefereAndEarn: { screen: RefereAndEarn, navigationOptions }, //Needed
     Announcement: { screen: Announcement, navigationOptions }, //Needed
     AppIntroScreen: { screen: AppIntroScreen, navigationOptions }, //Needed
-    SplashScreen: { screen: SplashScreen, navigationOptions }, //Needed
     FAQsScreen: { screen: FAQsScreen, navigationOptions }, //Needed
     ForgotPasswordComponent: { screen: ForgotPasswordComponent, navigationOptions }, //Needed
     IPWhitelistScreen: { screen: IPWhitelistScreen, navigationOptions }, //Needed
@@ -291,9 +298,7 @@ const MainStack = {
     //Widget
     MultipleSelection: { screen: MultipleSelection, navigationOptions }, //Needed
 
-    //Top Gainer, Loser, Gainer & Loser Both
-    TopGainer: { screen: TopGainer, navigationOptions }, //Needed
-    TopLoser: { screen: TopLoser, navigationOptions }, //Needed
+    //Top Gainer Loser
     TopGainerLoser: { screen: TopGainerLoser, navigationOptions }, //Needed
 
     TradingSummary: { screen: TradingSummaryScreen, navigationOptions }, //Needed
@@ -357,16 +362,10 @@ const MainStack = {
     ApiUpgradeDowngradeScreen: { screen: ApiUpgradeDowngradeScreen, navigationOptions },
 
     MarginOpenOrder: { screen: MarginOpenOrder, navigationOptions },
-    MarginRecentOrder: { screen: MarginRecentOrder, navigationOptions },
     MarginMarketPairDetail: { screen: MarginMarketPairDetail, navigationOptions },
     MarginBuySellTradeScreen: { screen: MarginBuySellTradeScreen, navigationOptions },
-    MarginTradingSummaryScreen: { screen: MarginTradingSummaryScreen, navigationOptions },
     MarginMarketListScreen: { screen: MarginMarketListScreen, navigationOptions },
-    MarginMarketSearchScreen: { screen: MarginMarketSearchScreen, navigationOptions },
     MarginBuyerSellerBookWidget: { screen: MarginBuyerSellerBookWidget, navigationOptions }, //Needed
-    MarginGlobalMarketTradeWidget: { screen: MarginGlobalMarketTradeWidget, navigationOptions }, //Needed
-    MarginFavoriteScreen: { screen: MarginFavoriteScreen, navigationOptions }, //Needed
-    MarginTradingSummaryDetailScreen: { screen: MarginTradingSummaryDetailScreen, navigationOptions }, //Needed
 
     ReferralInvitesScreen: { screen: ReferralInvitesScreen, navigationOptions },
     ReferralEmailDataScreen: { screen: ReferralEmailDataScreen, navigationOptions },
@@ -377,7 +376,6 @@ const MainStack = {
     AddApiKeyScreen: { screen: AddApiKeyScreen, navigationOptions }, //Needed
     ViewPublicApiKey: { screen: ViewPublicApiKey, navigationOptions }, //Neede
     ViewPublicApiKeyDetail: { screen: ViewPublicApiKeyDetail, navigationOptions }, //Needed
-    MarginTradingHistory: { screen: MarginTradingHistory, navigationOptions },
     AffliateSignUpMain: { screen: AffliateSignUpMain, navigationOptions },
 
     ApiKeyIpWhitelist: { screen: ApiKeyIpWhitelist, navigationOptions },
@@ -417,7 +415,6 @@ const handleCustomTransition = ({ scenes }) => {
         { prev: 'ViewPublicApiKey', next: 'ViewPublicApiKeyDetail' },
         { prev: 'NewsSection', next: 'NewsSectionDetail' },
         { prev: 'MarginWalletList', next: 'MarginWalletListDetail' },
-        { prev: 'MarginTradingSummaryScreen', next: 'MarginTradingSummaryDetailScreen' },
         { prev: 'LeverageReport', next: 'LeverageReportDetail' },
         { prev: 'TokenStackingScreen', next: 'TokenStakingDetailScreen' },
         { prev: 'TokenStackingHistoryResult', next: 'TokenStackingHistoryDetail' },
@@ -426,7 +423,7 @@ const handleCustomTransition = ({ scenes }) => {
         { prev: 'TradingSummary', next: 'TradingSummaryDetail' },
         { prev: 'ListCoinScreen', next: 'CoinInfo' },
         { prev: 'ListWallets', next: 'ListWalletUser' },
-        { prev: 'ComplainScreen', next: 'ComplainDetailsScreen' },	
+        { prev: 'ComplainScreen', next: 'ComplainDetailsScreen' },
         { prev: 'FundDetailScreen', next: 'FundDetailSubScreen' },
     ]
 

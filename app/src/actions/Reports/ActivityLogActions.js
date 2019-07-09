@@ -14,25 +14,25 @@ import {
 // Redux Action for Activity Log List
 export function getActivityLogList(payload) {
     return action(GET_ACTIVITY_LOG_LIST, { payload })
-};
+}
 // Redux Action for Activity Log List Success
 export function getActivityLogListSuccess(data) {
     return action(GET_ACTIVITY_LOG_LIST_SUCCESS, { data })
-};
+}
 // Redux Action for Activity Log List Failure
 export function getActivityLogListFailure() {
     return action(GET_ACTIVITY_LOG_LIST_FAILURE)
-};
+}
 
 // Redux Action To Get Module Type
 export function getModuleType() {
     return action(GET_MODULE_TYPE)
-};
+}
 // Redux Action Get Module Type Success
 export function getModuleTypeSuccess(data) {
     return action(GET_MODULE_TYPE_SUCCESS, { data })
-};
+}
 // Redux Action  Get Module Type Failure
 export function getModuleTypeFailure() {
     return action(GET_MODULE_TYPE_FAILURE)
-};
+}

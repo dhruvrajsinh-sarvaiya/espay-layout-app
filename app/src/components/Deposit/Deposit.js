@@ -117,6 +117,8 @@ class Deposit extends Component {
         return isCurrentScreen(nextProps);
     };
 
+    static oldProps = {};
+
     static getDerivedStateFromProps(props, state) {
 
         //To Skip Render First Time for available reducer data if exists
@@ -125,6 +127,13 @@ class Deposit extends Component {
                 ...state,
                 isFirstTime: false,
             };
+        }
+
+        // To Skip Render if old and new props are equal
+        if (Deposit.oldProps !== props) {
+            Deposit.oldProps = props;
+        } else {
+            return null;
         }
 
         if (isCurrentScreen(props)) {

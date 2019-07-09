@@ -110,7 +110,12 @@ const INITIAL_STATE = {
 };
 
 // Initial state for Api Key
-export default (state = INITIAL_STATE, action) => {
+export default (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout
@@ -153,14 +158,8 @@ export default (state = INITIAL_STATE, action) => {
                 VerifyGoogleAuthIsFetching: true,
                 VerifyGoogleAuthData: null,
             };
-        // Set Verify 2FA success data
+        // Set Verify 2FA success and failure data
         case VERIFY_2FA_API_KEY_SUCCESS:
-            return {
-                ...state,
-                VerifyGoogleAuthIsFetching: false,
-                VerifyGoogleAuthData: action.payload,
-            };
-        // Set Verify 2FA failure data
         case VERIFY_2FA_API_KEY_FAILURE:
             return {
                 ...state,

@@ -264,9 +264,9 @@ class SetCustomLimitsForKeys extends Component {
 												<View style={{ marginTop: R.dimens.margin }}>
 													<Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{R.strings.readOnlyApiMethods}</Text>
 													{
-														item[0].ReadOnlyAPI != null && Object.values(item[0].ReadOnlyAPI).map((item, index) =>
+														item[0].ReadOnlyAPI != null && Object.values(item[0].ReadOnlyAPI).map((itemReadOnly, index) =>
 															<View style={{ flexDirection: 'row', marginTop: R.dimens.widgetMargin }} key={index.toString()}>
-																<TextViewHML style={this.styles().itemTitle}>{item}</TextViewHML>
+																<TextViewHML style={this.styles().itemTitle}>{itemReadOnly}</TextViewHML>
 																<ImageTextButton
 																	style={{ margin: 0, }}
 																	icon={R.images.IC_CHECK_CIRCLE}
@@ -283,9 +283,9 @@ class SetCustomLimitsForKeys extends Component {
 												<View style={{ marginTop: R.dimens.margin }}>
 													<Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{R.strings.fullAccessApiMethods}</Text>
 													{
-														item[0].FullAccessAPI != null && Object.values(item[0].FullAccessAPI).map((item, index) =>
+														item[0].FullAccessAPI != null && Object.values(item[0].FullAccessAPI).map((itemFullAccess, index) =>
 															<View style={{ flexDirection: 'row', marginTop: R.dimens.widgetMargin }} key={index.toString()}>
-																<TextViewHML style={this.styles().itemTitle}>{item}</TextViewHML>
+																<TextViewHML style={this.styles().itemTitle}>{itemFullAccess}</TextViewHML>
 																<ImageTextButton
 																	style={{ margin: 0, }}
 																	icon={R.images.IC_CHECK_CIRCLE}

@@ -28,62 +28,51 @@ class SendMailReport extends Component {
     constructor(props) {
         super(props);
 
-        //Define All initial State
-        this.state = {
-            // for pagination
-            row: [],
-            selectedPage: 1,
-            data: [],//for store data from the responce
-            search: '',//for search value for data
-            refreshing: false,//for refresh data
-            FromDate: getCurrentDate(),//for display Current Date
-            ToDate: getCurrentDate(),//for display Current Date
-            PageSize: AppConfig.pageSize,
-            userList: [],
-            selectedUser: R.strings.Please_Select,
-            UserId: 0,
-            isFirstTime: true,
-            isDrawerOpen: false, // First Time Drawer is Closed
-        }
-        //Add Current Screen to Manual Handling BackPress Events
-        addRouteToBackPress(props);
-
-        // bind all Method
-        this.onRefresh = this.onRefresh.bind(this);
-        this.onResetPress = this.onResetPress.bind(this);
-        this.onCompletePress = this.onCompletePress.bind(this);
-        this.onPageChange = this.onPageChange.bind(this);
-        this.onBackPress = this.onBackPress.bind(this);
-        this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
         // create reference
         this.drawer = React.createRef();
         this.toast = React.createRef();
-    }
 
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
+        //Define All initial State
+        this.state = {
+            // for pagination
+            data: [],//for store data from the responce
+            selectedPage: 1,
+            row: [],
+            refreshing: false,//for refresh data
+            search: '',//for search value for data
+            isDrawerOpen: false, // First Time Drawer is Closed
+            isFirstTime: true,
+            ToDate: getCurrentDate(),//for display Current Date
+            FromDate: getCurrentDate(),//for display Current Date
+            userList: [],
+            PageSize: AppConfig.pageSize,
+            UserId: 0,
+            selectedUser: R.strings.Please_Select,
         }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
+
+        // bind all Method
+        this.onResetPress = this.onResetPress.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
+        this.onCompletePress = this.onCompletePress.bind(this);
+        this.onBackPress = this.onBackPress.bind(this);
+        this.props.navigation.setParams({ onBackPress: this.onBackPress });
+
+        //Add Current Screen to Manual Handling BackPress Events
+        addRouteToBackPress(props);
     }
 
     componentDidMount = async () => {
         //Add this method to change theme based on stored theme name.
         changeTheme();
 
-        //Check NetWork is Available or not
+        //Check NetWork is Available or not.
         if (await isInternet()) {
 
-            // call api for get AffiliateUserList data 
+            // call api for get AffiliateUserList data
             this.props.getAffiliateUserList();
 
-            //Bind Request For get EmailReport data
+            // Bind Request For get EmailReport data
             let requestEmailReport = {
                 FromDate: this.state.FromDate,
                 ToDate: this.state.ToDate,
@@ -150,12 +139,27 @@ class SendMailReport extends Component {
         }
     }
 
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
+        }
+    }
+
     // Drawer Navigation
     navigationDrawer() {
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast
+                    ref={cmp => this.toast = cmp}
+                    styles={{ width: R.dimens.FilterDrawarWidth, }} />
 
                 {/* filter on fromdate,todate and parent user */}
                 <FilterWidget
@@ -163,14 +167,14 @@ class SendMailReport extends Component {
                     FromDate={this.state.FromDate}
                     ToDatePickerCall={(date) => this.setState({ ToDate: date })}
                     ToDate={this.state.ToDate}
-                    onResetPress={this.onResetPress}
                     onCompletePress={this.onCompletePress}
                     firstPicker={{
                         title: R.strings.parentUser,
-                        array: this.state.userList,
                         selectedValue: this.state.selectedUser,
+                        array: this.state.userList,
                         onPickerSelect: (index, object) => { this.setState({ selectedUser: index, UserId: object.Id }) }
                     }}
+                    onResetPress={this.onResetPress}
                 />
 
             </SafeView>
@@ -268,13 +272,13 @@ class SendMailReport extends Component {
                 try {
                     if (validateResponseNew({ response: affiliateUserData, isList: true })) {
                         //Store Api Response Field and display in Screen.
-                        var newRes = parseArray(affiliateUserData.Response);
-                        newRes.map((item, index) => {
-                            newRes[index].value = newRes[index].UserName
-                            newRes[index].Id = newRes[index].Id
+                        var userDataForMailReport = parseArray(affiliateUserData.Response);
+                        userDataForMailReport.map((item, index) => {
+                            userDataForMailReport[index].value = userDataForMailReport[index].UserName
+                            userDataForMailReport[index].Id = userDataForMailReport[index].Id
                         })
                         //----
-                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...userDataForMailReport]
 
                         return { ...state, userList: res };
                     }
@@ -318,25 +322,26 @@ class SendMailReport extends Component {
         // for search record using Email,firstname lastname
         //for final items from search input (validate on Email , firstname and lastname)
         //default searchInput is empty so it will display all records.
-        let finalItems = list.filter(item =>
-            (item.Email.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
-            (item.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
+        let finalItems = list.filter(mailReportItem =>
+            (mailReportItem.Email.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (mailReportItem.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
+            (mailReportItem.LastName.toLowerCase().includes(this.state.search.toLowerCase()))
         );
 
         return (
             // for apply filter for sendmail report
             <Drawer
                 ref={cmp => this.drawer = cmp}
-                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                drawerWidth={R.dimens.FilterDrawarWidth}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
-                type={Drawer.types.Overlay}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 drawerPosition={Drawer.positions.Right}
-                easingFunc={Easing.ease}>
+                easingFunc={Easing.ease}
+                type={Drawer.types.Overlay}
+            >
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{ backgroundColor: R.colors.background, flex: 1 }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -367,24 +372,24 @@ class SendMailReport extends Component {
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
                                                 renderItem={({ item, index }) =>
-                                                    <FlatlistItem
-                                                        item={item}
+                                                    <MailReportList
+                                                        mailReportItem={item}
                                                         index={index}
                                                         size={this.state.data.length}
                                                     />
                                                 }
-                                                keyExtractor={(item, index) => index.toString()}
                                                 contentContainerStyle={[
                                                     { flexGrow: 1 },
                                                     this.state.data.length ? null : { justifyContent: 'center' }
                                                 ]}
+                                                keyExtractor={(item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
                                                     <RefreshControl
                                                         colors={[R.colors.accent]}
-                                                        progressBackgroundColor={R.colors.background}
                                                         refreshing={this.state.refreshing}
                                                         onRefresh={this.onRefresh}
+                                                        progressBackgroundColor={R.colors.background}
                                                     />}
                                             />
                                         </View>
@@ -395,7 +400,7 @@ class SendMailReport extends Component {
                         <View>
                             {/* show pagination if response contains more data  */}
                             {finalItems.length > 0 &&
-                                <PaginationWidget row={this.state.row} selectedPage={this.state.selectedPage} onPageChange={(item) => { this.onPageChange(item) }} />}
+                                <PaginationWidget selectedPage={this.state.selectedPage} onPageChange={(item) => { this.onPageChange(item) }} row={this.state.row} />}
                         </View>
                     </View>
                 </SafeView>
@@ -405,15 +410,14 @@ class SendMailReport extends Component {
 }
 
 // This Class is used for display record in list
-class FlatlistItem extends Component {
+class MailReportList extends Component {
     constructor(props) {
         super(props);
-
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.mailReportItem === nextProps.mailReportItem) {
             return false
         }
         return true
@@ -421,24 +425,23 @@ class FlatlistItem extends Component {
 
     render() {
 
-        let item = this.props.item;
+        let mailReportItem = this.props.mailReportItem;
         let { index, size, } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
-                    flexDirection: 'column',
                     marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    flexDirection: 'column',
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
+                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginRight: R.dimens.widget_left_right_margin,
                 }}>
                     <CardView style={{
+                        flex: 1, flexDirection: 'column',
                         elevation: R.dimens.listCardElevation,
-                        flex: 1,
                         borderRadius: 0,
-                        flexDirection: 'column',
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
                     }}>
@@ -453,9 +456,9 @@ class FlatlistItem extends Component {
                             {/* for display username and email and ip */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
                                 <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.emailLinkInvite}</Text>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.FirstName ? item.FirstName + ' ' + item.LastName : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.UserEmail ? item.UserEmail : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.Email ? item.Email : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{mailReportItem.FirstName ? mailReportItem.FirstName + ' ' + mailReportItem.LastName : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{mailReportItem.UserEmail ? mailReportItem.UserEmail : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{mailReportItem.Email ? mailReportItem.Email : '-'}</TextViewHML></TextViewHML>
                             </View>
                         </View>
 
@@ -466,7 +469,7 @@ class FlatlistItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.SentTime ? convertDateTime(item.SentTime) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{mailReportItem.SentTime ? convertDateTime(mailReportItem.SentTime) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View >

@@ -46,7 +46,7 @@ class ApiKeyUpdateScreen extends Component {
             showInfo: false,
             isRestrictedAccess: item.IPAccess === 1 ? true : false,
             isUnRestrictedAccess: item.IPAccess === 0 ? true : false,
-            apiKey: item == undefined ? '' : item.APIKey,
+            apiKey: item === 'undefined' ? '' : item.APIKey,
             isRestrictedFromApi: item.IPAccess === 1 ? true : false,
             isDisplayUpdate: false,
             isStatic: item.IPAccess === 0 ? true : false,
@@ -67,7 +67,7 @@ class ApiKeyUpdateScreen extends Component {
             if (addIPAddressData) {
                 try {
                     if (validateResponseNew({ response: addIPAddressData })) {
-                        showAlert(R.strings.Success + '!', addIPAddressData.ReturnMsg, 0, onPress = () => {
+                        showAlert(R.strings.Success + '!', addIPAddressData.ReturnMsg, 0, () => {
                             //clear data
                             this.props.clearApikeyData();
                             //----

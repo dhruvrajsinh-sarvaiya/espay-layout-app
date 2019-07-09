@@ -52,20 +52,26 @@ class AddCustomLimitsForKeys extends Component {
 		changeTheme();
 
 		let newReadOnlyData = [], newAccessData = []
-		Object.keys(this.state.ReadOnlyMethod).map((item, index) => {
+
+		let keyPairs = Object.keys(this.state.ReadOnlyMethod);
+		let fullAccessPairs = Object.keys(this.state.FullAccessMethod);
+		
+		for (let i = 0; i < keyPairs.length; i++) {
 			newReadOnlyData.push({
-				id: item,
-				title: this.state.ReadOnlyMethod[item],
+				id: keyPairs[i],
+				title: this.state.ReadOnlyMethod[keyPairs[i]],
 				isSelected: false
 			})
-		})
-		Object.keys(this.state.FullAccessMethod).map((item, index) => {
+		}
+
+		for (let i = 0; i < fullAccessPairs.length; i++) {
 			newAccessData.push({
-				id: item,
-				title: this.state.FullAccessMethod[item],
+				id: fullAccessPairs[i],
+				title: this.state.FullAccessMethod[fullAccessPairs[i]],
 				isSelected: false
 			})
-		})
+		}
+
 		this.setState({ ReadOnlyMethod: newReadOnlyData, FullAccessMethod: newAccessData })
 	};
 

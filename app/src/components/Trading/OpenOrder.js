@@ -200,12 +200,12 @@ class OpenOrder extends Component {
                                 if (parseFloatVal(newData.Amount) == 0) {
 
                                     //find index of same Id record
-                                    var findIndexOrderId = latestOrderList.findIndex(order => parseFloatVal(order.Id) === parseFloatVal(newData.Id));
+                                    var removeRecordIndex = latestOrderList.findIndex(order => parseFloatVal(order.Id) === parseFloatVal(newData.Id));
 
-                                    if (findIndexOrderId > -1) {
+                                    if (removeRecordIndex > -1) {
 
                                         //remove record if its amount is 0
-                                        latestOrderList.splice(findIndexOrderId, 1);
+                                        latestOrderList.splice(removeRecordIndex, 1);
                                         openOrder = latestOrderList;
                                     }
                                 } else {
@@ -450,7 +450,7 @@ class OpenOrder extends Component {
             // if there are records available to cancel than show dialog
             if (this.state.response.length > 0 && isOrderType) {
 
-                let message = R.strings.cancelAllMessage;
+                let message;
 
                 switch (i) {
                     case 0: message = R.strings.cancelAllMessage; break;
@@ -712,8 +712,11 @@ class OpenOrder extends Component {
         if (finalItem) {
             finalItems = finalItem.filter((item) => {
                 if (item) {
-                    return item.PairName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
-                        item.Amount.toString().includes(this.state.searchInput)
+                    return item.PairName.replace('_', '/').toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
+                        parseFloatVal(item.Amount).toFixed(8).includes(this.state.searchInput) ||
+                        parseFloatVal(item.Price).toFixed(8).includes(this.state.searchInput) ||
+                        item.Type.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
+                        item.OrderType.toLowerCase().includes(this.state.searchInput.toLowerCase())
                 } else {
                     return true;
                 }
@@ -984,9 +987,8 @@ class OpenOrderItem extends Component {
             || this.props.isPortrait !== nextProps.isPortrait
             || this.props.item !== nextProps.item) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {

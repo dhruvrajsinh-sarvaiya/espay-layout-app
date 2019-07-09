@@ -14,27 +14,31 @@ const styles = StyleSheet.create({
 })
 
 function KeyboardAvoidingView(props) {
+
+  let style = props.styles !== undefined ? props.styles : {};
+  delete props['styles'];
+
   switch (Platform.OS) {
     case 'android':
-      return <View {...props} style={[styles.container, props.style]} />;
+      return <View {...props} style={[styles.container, style]} />;
     case 'ios':
       return <NativeKeyboardAvoidingView
         keyboardVerticalOffset={props.offset || 0}
         behavior="padding"
         {...props}
-        style={[styles.container, props.styles]}
+        style={[styles.container, style]}
       >
         <View style={styles.container}>{props.children}</View>
       </NativeKeyboardAvoidingView>;
     default:
-      return <View {...props} style={[styles.container, props.styles]} />
+      return <View {...props} style={[styles.container, style]} />
   }
 }
 
 KeyboardAvoidingView.propTypes = {
   offset: PropTypes.number,
   children: PropTypes.node,
-  styles: PropTypes.array
+  style: PropTypes.array
 }
 
 export default KeyboardAvoidingView

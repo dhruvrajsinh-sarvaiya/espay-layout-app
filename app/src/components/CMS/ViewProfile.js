@@ -5,7 +5,6 @@ import { isCurrentScreen } from '../Navigation';
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar'
 import CustomToolbar from '../../native_theme/components/CustomToolbar'
 import { changeTheme, getIPAddress } from '../../controllers/CommonUtils';
-import ImageButton from '../../native_theme/components/ImageTextButton';
 import { isInternet, isEmpty, validateResponseNew, validateValue } from '../../validations/CommonValidation';
 import { getProfileByID, clearReducerData } from '../../actions/account/EditProfileActions';
 import { ServiceUtilConstant } from '../../controllers/Constants';
@@ -124,17 +123,17 @@ class ViewProfile extends Component {
 
                             //To update FirstName and LastName in preference
                             setData({
+                                [ServiceUtilConstant.LASTNAME]: data.UserData.LastName,
                                 [ServiceUtilConstant.FIRSTNAME]: data.UserData.FirstName,
-                                [ServiceUtilConstant.LASTNAME]: data.UserData.LastName
                             })
                             return {
                                 ...state,
                                 viewProfile: data,
                                 firstName: data.UserData.FirstName,
+                                email: data.UserData.Email,
                                 lastName: data.UserData.LastName,
                                 userName: data.UserData.Username,
                                 isEmailConfirmed: data.UserData.IsEmailConfirmed,
-                                email: data.UserData.Email,
                                 phoneNumber: data.UserData.MobileNo,
                             }
 

@@ -69,9 +69,6 @@ class DatePickerWidget extends Component {
                 const { action, year, month, day } = await DatePickerAndroid.open(options);
 
                 //check user select new date or not
-                if (action == DatePickerAndroid.dismissedAction) {
-
-                }
                 if (action == DatePickerAndroid.dateSetAction) {
                     var newDay = (day + "").length == 1 ? ("0" + day) : day;
                     var opMonth = month + 1;

@@ -71,7 +71,13 @@ const INITIAL_STATE = {
     UpdateIpWhitelistdata: '',
 };
 
-export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
+export default function IPWhiteListReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -91,20 +97,8 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
                 EnableIpWhitelistFetchData: true,
                 UpdateIpWhitelistFetchData: true,
             };
-        // Set IP Whitelist success data
+        // Set IP Whitelist success and failure data
         case LIST_IP_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                IpWhitelistFetchData: false,
-                IpWhitelistisFetching: false,
-                IpWhitelistdata: action.payload,
-                AddIpToWhitelistFetchData: true,
-                DeleteIpWhitelistFetchData: true,
-                DisableIpWhitelistFetchData: true,
-                EnableIpWhitelistFetchData: true,
-                UpdateIpWhitelistFetchData: true,
-            };
-        // Set IP Whitelist failure data
         case LIST_IP_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -131,20 +125,8 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
                 EnableIpWhitelistFetchData: true,
                 UpdateIpWhitelistFetchData: true,
             };
-        // Set add to IP Whitelist success data
+        // Set add to IP Whitelist success and failure data
         case ADD_IP_TO_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                AddIpToWhitelistFetchData: false,
-                AddIpToWhitelistisFetching: false,
-                AddIpToWhitelistdata: action.payload,
-                IpWhitelistFetchData: true,
-                DeleteIpWhitelistFetchData: true,
-                DisableIpWhitelistFetchData: true,
-                EnableIpWhitelistFetchData: true,
-                UpdateIpWhitelistFetchData: true,
-            };
-        // Set add to IP Whitelist failure data
         case ADD_IP_TO_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -171,20 +153,8 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
                 EnableIpWhitelistFetchData: true,
                 UpdateIpWhitelistFetchData: true,
             };
-        // Set delete to IP Whitelist success data
+        // Set delete to IP Whitelist success and failure data
         case DELETE_IP_TO_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                DeleteIpWhitelistFetchData: false,
-                DeleteIpWhitelistisFetching: false,
-                DeleteIpWhitelistdata: action.payload,
-                IpWhitelistFetchData: true,
-                AddIpToWhitelistFetchData: true,
-                DisableIpWhitelistFetchData: true,
-                EnableIpWhitelistFetchData: true,
-                UpdateIpWhitelistFetchData: true,
-            };
-        // Set delete to IP Whitelist failure data
         case DELETE_IP_TO_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -211,20 +181,8 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
                 EnableIpWhitelistFetchData: true,
                 UpdateIpWhitelistFetchData: true,
             };
-        // Set disable to IP Whitelist Success data
+        // Set disable to IP Whitelist Success and failure data
         case DISABLE_IP_TO_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                DisableIpWhitelistFetchData: false,
-                DisableIpWhitelistisFetching: false,
-                DisableIpWhitelistdata: action.payload,
-                IpWhitelistFetchData: true,
-                AddIpToWhitelistFetchData: true,
-                DeleteIpWhitelistFetchData: true,
-                EnableIpWhitelistFetchData: true,
-                UpdateIpWhitelistFetchData: true,
-            };
-        // Set disable to IP Whitelist failure data
         case DISABLE_IP_TO_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -251,20 +209,8 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
                 DisableIpWhitelistFetchData: true,
                 UpdateIpWhitelistFetchData: true,
             };
-        // Set enable to IP Whitelist success data
+        // Set enable to IP Whitelist success and failure data
         case ENABLE_IP_TO_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                EnableIpWhitelistFetchData: false,
-                EnableIpWhitelistisFetching: false,
-                EnableIpWhitelistdata: action.payload,
-                IpWhitelistFetchData: true,
-                AddIpToWhitelistFetchData: true,
-                DeleteIpWhitelistFetchData: true,
-                DisableIpWhitelistFetchData: true,
-                UpdateIpWhitelistFetchData: true,
-            };
-        // Set enable to IP Whitelist failure data
         case ENABLE_IP_TO_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -291,20 +237,8 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
                 DisableIpWhitelistFetchData: true,
                 EnableIpWhitelistFetchData: true,
             };
-        // Set update to IP Whitelist success data 
+        // Set update to IP Whitelist success failure data 
         case UPDATE_IP_TO_WHITELIST_SUCCESS:
-            return {
-                ...state,
-                UpdateIpWhitelistFetchData: false,
-                UpdateIpWhitelistisFetching: false,
-                UpdateIpWhitelistdata: action.payload,
-                IpWhitelistFetchData: true,
-                AddIpToWhitelistFetchData: true,
-                DeleteIpWhitelistFetchData: true,
-                DisableIpWhitelistFetchData: true,
-                EnableIpWhitelistFetchData: true,
-            };
-        // Set update to IP Whitelist failure data
         case UPDATE_IP_TO_WHITELIST_FAILURE:
             return {
                 ...state,
@@ -319,11 +253,11 @@ export default function IPWhiteListReducer(state = INITIAL_STATE, action) {
             };
 
         // Clear Ip Whitelist data
-        case CLEAR_IP_WHITELIST: 
+        case CLEAR_IP_WHITELIST:
             return INITIAL_STATE;
 
         // If no actions were found from reducer than return default [existing] state value
         default:
             return state;
     }
-};
+}

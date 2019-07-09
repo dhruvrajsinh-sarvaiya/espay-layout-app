@@ -396,7 +396,7 @@ class MarketPairItem extends Component {
                                 </View>
                             </View>
                         </View>
-                        {!props.isFavorite && item.isFavorite && <Image source={R.images.FAVORITE} style={{ tintColor: null, position: 'absolute', width: R.dimens.widget_left_right_margin, height: R.dimens.widget_left_right_margin }} />}
+                        {!this.props.isFavorite && item.isFavorite && <Image source={R.images.FAVORITE} style={{ tintColor: null, position: 'absolute', width: R.dimens.widget_left_right_margin, height: R.dimens.widget_left_right_margin }} />}
                     </View>
                 </TouchableWithoutFeedback>
             </AnimatableItem>

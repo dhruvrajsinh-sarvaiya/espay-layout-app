@@ -119,49 +119,49 @@ export function getCurrencyListSuccess(payload) { return action(GET_CURRENCY_LIS
 export function getCurrencyListFailure() { return action(GET_CURRENCY_LIST_FAILURE); }
 
 // Redux action to Get Organization List
-export function getOrgList() { return action(ORGLIST) };
+export function getOrgList() { return action(ORGLIST) }
 
 // Redux action to Get Organization List Success
-export function getOrgListSuccess(payload) { return action(ORGLIST_SUCCESS, { payload }) };
+export function getOrgListSuccess(payload) { return action(ORGLIST_SUCCESS, { payload }) }
 
 // Redux action to Get Organization List Failure
-export function getOrgListFail(payload) { return action(ORGLIST_FAIL, { payload }) };
+export function getOrgListFail(payload) { return action(ORGLIST_FAIL, { payload }) }
 
 // Redux action to Get Wallet Type Master
-export function getWalletTypeMaster() { return action(GET_WALLET_TYPE_MASTER) };
+export function getWalletTypeMaster() { return action(GET_WALLET_TYPE_MASTER) }
 
 // Redux action to Get Wallet Type Master - success
-export function getWalletTypeMasterSuccess(payload) { return action(GET_WALLET_TYPE_MASTER_SUCCESS, { payload }) };
+export function getWalletTypeMasterSuccess(payload) { return action(GET_WALLET_TYPE_MASTER_SUCCESS, { payload }) }
 
 // Redux action to Get Wallet Type Master - failure
-export function getWalletTypeMasterFailure(payload) { return action(GET_WALLET_TYPE_MASTER_FAILURE, { payload }) };
+export function getWalletTypeMasterFailure(payload) { return action(GET_WALLET_TYPE_MASTER_FAILURE, { payload }) }
 
 // Redux action to Get Wallet Type
-export function getWalletType() { return action(GET_WALLET_TYPE) };
+export function getWalletType() { return action(GET_WALLET_TYPE) }
 
 // Redux action to Get Wallet Type Success
-export function getWalletTypeSuccess(payload) { return action(GET_WALLET_TYPE_SUCCESS, { payload }) };
+export function getWalletTypeSuccess(payload) { return action(GET_WALLET_TYPE_SUCCESS, { payload }) }
 
 // Redux action to Get Wallet Type Failure
-export function getWalletTypeFailure(payload) { return action(GET_WALLET_TYPE_FAILURE, { payload }) };
+export function getWalletTypeFailure(payload) { return action(GET_WALLET_TYPE_FAILURE, { payload }) }
 
 // Redux action to Get Role Details
-export function getRoleDetails() { return action(GET_ROLE_DETAILS) };
+export function getRoleDetails() { return action(GET_ROLE_DETAILS) }
 
 // Redux action to Get Role Details Success
-export function getRoleDetailsSuccess(payload) { return action(GET_ROLE_DETAILS_SUCCESS, { payload }) };
+export function getRoleDetailsSuccess(payload) { return action(GET_ROLE_DETAILS_SUCCESS, { payload }) }
 
 // Redux action to Get Role Details Failure
-export function getRoleDetailsFailure(payload) { return action(GET_ROLE_DETAILS_FAILURE, { payload }) };
+export function getRoleDetailsFailure(payload) { return action(GET_ROLE_DETAILS_FAILURE, { payload }) }
 
 // Redux action to get trasancation type
-export function getWalletTransactionType() { return action(GET_WALLET_TRANSACTION_TYPE) };
+export function getWalletTransactionType() { return action(GET_WALLET_TRANSACTION_TYPE) }
 
 // Redux action to get trasancation type success
-export function getWalletTransactionTypeSuccess(payload) { return action(GET_WALLET_TRANSACTION_TYPE_SUCCESS, { payload }) };
+export function getWalletTransactionTypeSuccess(payload) { return action(GET_WALLET_TRANSACTION_TYPE_SUCCESS, { payload }) }
 
 // Redux action to get trasancation type failure
-export function getWalletTransactionTypeFailure(payload) { return action(GET_WALLET_TRANSACTION_TYPE_FAILURE, { payload }) };
+export function getWalletTransactionTypeFailure(payload) { return action(GET_WALLET_TRANSACTION_TYPE_FAILURE, { payload }) }
 
 // Redux action to Get Balance
 export function GetBalance() {

@@ -99,11 +99,10 @@ class LanguageFreshScreen extends Component {
                             showsVerticalScrollIndicator={false}
                             data={this.state.languages}
                             extraData={this.state}
-                            renderItem={({ item, index }) => <LanguageItem
-                                item={item}
-                                isFirst={index == 0}
-                                isLast={index == (this.state.languages.length - 1)}
-                                index={index}
+                            renderItem={({ item, index }) => <LanguageFreshItem
+                                languageItem={item}
+                                isFirstLanguage={index == 0}
+                                isLastLanguage={index == (this.state.languages.length - 1)}
                                 key={item.name}
                                 onPress={() => this.updateLocale(item.locale)}
                             />}
@@ -128,7 +127,7 @@ class LanguageFreshScreen extends Component {
     }
 }
 
-class LanguageItem extends Component {
+class LanguageFreshItem extends Component {
     constructor(props) {
         super(props)
 
@@ -142,7 +141,7 @@ class LanguageItem extends Component {
 
     render() {
 
-        let { isFirst, isLast, item: { name, locale, selected }, onPress } = this.props;
+        let { isFirstLanguage, isLastLanguage, languageItem, onPress } = this.props;
         return (
             <AnimatableItem>
                 <TouchableWithoutFeedback onPress={onPress}>
@@ -150,8 +149,8 @@ class LanguageItem extends Component {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginTop: isFirst ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                        marginBottom: isLast ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                        marginTop: isFirstLanguage ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                        marginBottom: isLastLanguage ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                         marginLeft: R.dimens.padding_left_right_margin,
                         marginRight: R.dimens.padding_left_right_margin
                     }}>
@@ -161,18 +160,18 @@ class LanguageItem extends Component {
                                     color: R.colors.textPrimary,
                                     fontSize: R.dimens.mediumText,
                                 }}>
-                                {this.state[locale]}
+                                {this.state[languageItem.locale]}
                             </TextViewMR>
                             <TextViewHML
                                 style={{
                                     color: R.colors.textSecondary,
                                     fontSize: R.dimens.smallText
                                 }}>
-                                {name}
+                                {languageItem.name}
                             </TextViewHML>
                         </View>
 
-                        {selected && <Image source={R.images.IC_CHECKMARK} style={{
+                        {languageItem.selected && <Image source={R.images.IC_CHECKMARK} style={{
                             tintColor: R.colors.accent,
                             height: R.dimens.dashboardMenuIcon,
                             width: R.dimens.dashboardMenuIcon

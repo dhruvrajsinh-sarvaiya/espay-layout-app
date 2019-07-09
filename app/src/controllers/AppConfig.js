@@ -23,11 +23,6 @@ export const AppConfig = {
 
     referral_link: "https://new-stack-front.azurewebsites.net?ref=",
 
-    //Staging - NOT IN USED
-    // hostName: 'SSO_Account',    
-    // hostName: 'SSO_Account_Staging',
-    // hostName: 'BackOffice',
-
     license: {
         code: "LC000068",
         url: "http://api.espay.in/Biztechws/SiteService.asmx",

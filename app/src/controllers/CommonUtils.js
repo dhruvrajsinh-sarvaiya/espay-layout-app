@@ -3,7 +3,6 @@ import { Platform } from 'react-native';
 import DeviceInfo from 'react-native-device-info';
 import Moment from 'moment'
 import { AppConfig } from './AppConfig';
-import RNStyledDialogs from 'react-native-styled-dialogs';
 import { getData, setData } from '../App';
 import { isEmpty } from '../validations/CommonValidation';
 import R from '../native_theme/R';
@@ -204,64 +203,28 @@ export function showAlert(title = '', message = '', imageBit = DialogTypes.Info,
 
     if (dialogShowCount == 0) {
 
-        let oldDialog = false;
-        if (oldDialog) {
-
-            let images = ['alert_success.png', 'alert_fail.png', 'alert_session_expired.png', 'alert_info.png', 'alert_logout.png', 'alert_network_error.png', 'alert_delete.png']
-            let color = [R.colors.successGreen, R.colors.failRed, R.colors.sessionExpiredBg, R.colors.accent, R.colors.accent, R.colors.networkErrorBg, R.colors.accent]
-
-            let dialogConfig = {
-                title: title,
-                description: message,
-                positiveText: successText ? successText : R.strings.OK,
-                onPositive: () => { setData({ [ServiceUtilConstant.KEY_DialogCount]: 0 }); onPress(); },
-                headerBackgroundColor: color[color.findIndex((_val, index) => index == imageBit)],
-                cancelable: false,
-                headerIconAnimation: true,
-                dialogAnimation: true,
-                darkerOverlay: true,
-                headerIcon: images[images.findIndex((_val, index) => index == imageBit)]
-            }
-            if (!isEmpty(cancelText)) {
-                dialogConfig = Object.assign({}, dialogConfig, {
-                    negativeText: cancelText,
-                    onNegative: () => { setData({ [ServiceUtilConstant.KEY_DialogCount]: 0 }); onCancelPress(); },
-                })
-            }
-
-            dialogShowCount++;
-            setData({ [ServiceUtilConstant.KEY_DialogCount]: dialogShowCount });
-
-            if (Platform.OS === 'ios') {
-                setTimeout(() => RNStyledDialogs.Show(dialogConfig), 100)
-            } else {
-                RNStyledDialogs.Show(dialogConfig)
-            }
-
-        } else {
-
-            let dialogConfig = {
-                dialogType: imageBit,
-                title: title,
-                description: message,
-                positiveText: (successText ? successText : R.strings.OK),
-                onPressPositiveButton: onPress,
-            }
-            if (!isEmpty(cancelText)) {
-                dialogConfig = Object.assign({}, dialogConfig, {
-                    negativeText: cancelText,
-                    onPressNegativeButton: onCancelPress,
-                })
-            }
-
-            dialogShowCount++;
-            setData({ [ServiceUtilConstant.KEY_DialogCount]: dialogShowCount })
-
-            sendEvent(Events.ProgressDismiss);
-
-            // navigate to modal dialog screen
-            navigate('Modal', dialogConfig);
+        let dialogConfig = {
+            dialogType: imageBit,
+            title: title,
+            description: message,
+            positiveText: (successText ? successText : R.strings.OK),
+            onPressPositiveButton: onPress,
         }
+        if (!isEmpty(cancelText)) {
+            dialogConfig = Object.assign({}, dialogConfig, {
+                negativeText: cancelText,
+                onPressNegativeButton: onCancelPress,
+            })
+        }
+
+        dialogShowCount++;
+        setData({ [ServiceUtilConstant.KEY_DialogCount]: dialogShowCount })
+
+        sendEvent(Events.ProgressDismiss);
+
+        // navigate to modal dialog screen
+        navigate('Modal', dialogConfig);
+
     } else {
         sendEvent(Events.ProgressDismiss);
     }

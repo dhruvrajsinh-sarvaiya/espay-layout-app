@@ -130,7 +130,13 @@ const initialState = {
 
 }
 
-export default function AffiliateReducer(state = initialState, action) {
+export default function AffiliateReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -390,6 +396,8 @@ export default function AffiliateReducer(state = initialState, action) {
                 affiliateUserDataFetch: true,
             }
 
+    }
+    switch (action.type) {
         // Handle affiliate signup report method data
         case GET_AFFILIATE_SIGNUP_REPORT:
             return {

@@ -59,12 +59,23 @@ class ActivityLogScreen extends Component {
         this.inputs = {};
 
         //To Bind All Method
-        this.onRefresh = this.onRefresh.bind(this);
-        this.onPageChange = this.onPageChange.bind(this);
-        this.onResetPress = this.onResetPress.bind(this);
-        this.onCompletePress = this.onCompletePress.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
+        this.onRefresh = this.onRefresh.bind(this);
+        this.onPageChange = this.onPageChange.bind(this);
+        this.onCompletePress = this.onCompletePress.bind(this);
+        this.onResetPress = this.onResetPress.bind(this);
+    }
+
+    async componentDidMount() {
+        //Add this method to change theme based on stored theme name.
+        changeTheme();
+
+        // Check internet connection
+        if (await isInternet()) {
+            // Called Activity Log List Api
+            this.props.getActivityLogList(this.Request)
+        }
     }
 
     //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
@@ -76,17 +87,6 @@ class ActivityLogScreen extends Component {
         else {
             //goging back screen
             this.props.navigation.goBack();
-        }
-    }
-
-    async componentDidMount() {
-        //Add this method to change theme based on stored theme name.
-        changeTheme();
-
-        // Check internet connection
-        if (await isInternet()) {
-            // Called Activity Log List Api
-            this.props.getActivityLogList(this.Request)
         }
     }
 
@@ -298,8 +298,10 @@ class ActivityLogScreen extends Component {
     }
 
     render() {
+
         //Get is Fetching value For All APIs to handle Progress bar in All Activity
         let { ActivityLogLoading } = this.props.ActivityLogResult
+
         let finalItems = this.state.ActivityLogResponse
         //for final items from search input (validate on Amount and StatusStr)
         //default searchInput is empty so it will display all records.
@@ -311,18 +313,20 @@ class ActivityLogScreen extends Component {
                 item.Date.toLowerCase().includes(this.state.searchInput.toLowerCase())
             )
         }
+
         return (
             // Drawer for Activity Log Filteration
             <Drawer
                 ref={component => this.drawer = component}
-                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerPosition={Drawer.positions.Right}
+                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
-                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
-                easingFunc={Easing.ease}>
-                <SafeView style={this.styles().container}>
+                easingFunc={Easing.ease}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                onDrawerClose={() => this.setState({ isDrawerOpen: false })}>
+
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -415,7 +419,7 @@ export class FlatListItem extends Component {
                     flexDirection: 'row',
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin,
-                    marginTop: (this.props.index == 0) ? R.dimens.widgetMargin : R.dimens.widgetMargin,
+                    marginTop: R.dimens.widgetMargin,
                     marginBottom: (this.props.index == this.props.size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                 }}>
                     <CardView style={{

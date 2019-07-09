@@ -29,6 +29,10 @@ class ReferralInvitesScreen extends Component {
     constructor(props) {
         super(props);
 
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
+
         //Define All initial State
         this.state = {
             data: [],
@@ -38,50 +42,40 @@ class ReferralInvitesScreen extends Component {
             selectedPage: 1,
             FromDate: getCurrentDate(),//for get Current Date
             ToDate: getCurrentDate(),//for get Current Date
-            // for ChannelType
-            channelType: [],
-            selectedChannelType: R.strings.Please_Select,
-            ReferralChannelTypeId: 0,
-            // for payType 
-            payType: [],
-            selectedPayType: R.strings.Please_Select,
-            ReferralPayTypeId: 0,
+
             // for service slab
             serviceSlab: [],
             selectedServiceSlab: R.strings.Please_Select,
             ReferralServiceId: 0,
+
+            // for ChannelType
+            channelType: [],
+            selectedChannelType: R.strings.Please_Select,
+            ReferralChannelTypeId: 0,
+
             // for refreshing
             refreshing: false,
             isFirstTime: true,
             isDrawerOpen: false, // First Time Drawer is Closed
+
+            // for payType 
+            payType: [],
+            selectedPayType: R.strings.Please_Select,
+            ReferralPayTypeId: 0,
         }
 
         //Add Current Screen to Manual Handling BackPress Events
         addRouteToBackPress(props);
 
         // Bind Method
-        this.onRefresh = this.onRefresh.bind(this);
         this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.onRefresh = this.onRefresh.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
 
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
-    }
 
-    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
-    onBackPress() {
-        if (this.state.isDrawerOpen) {
-            this.drawer.closeDrawer();
-            this.setState({ isDrawerOpen: false })
-        }
-        else {
-            //going back screen
-            this.props.navigation.goBack();
-        }
     }
 
     componentDidMount = async () => {
@@ -117,6 +111,18 @@ class ReferralInvitesScreen extends Component {
     shouldComponentUpdate = (nextProps, nextState) => {
         return isCurrentScreen(nextProps);
     };
+
+    //for BackPress if Drawer is Open Than First Close The Drawer else Back to Previous Screen
+    onBackPress() {
+        if (this.state.isDrawerOpen) {
+            this.drawer.closeDrawer();
+            this.setState({ isDrawerOpen: false })
+        }
+        else {
+            //going back screen
+            this.props.navigation.goBack();
+        }
+    }
 
     //For Swipe to referesh Functionality
     onRefresh = async () => {
@@ -285,14 +291,14 @@ class ReferralInvitesScreen extends Component {
                     if (state.referralChannelTypeData == null || (state.referralChannelTypeData != null && referralChannelTypeData !== state.referralChannelTypeData)) {
                         if (validateResponseNew({ response: referralChannelTypeData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralChannelTypeData.ReferralChannelTypeDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ChannelTypeName;
+                            let channelTypeForRefInvite = parseArray(referralChannelTypeData.ReferralChannelTypeDropDownList);
+                            channelTypeForRefInvite.map((item, index) => {
+                                channelTypeForRefInvite[index].Id = item.Id;
+                                channelTypeForRefInvite[index].value = item.ChannelTypeName;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...channelTypeForRefInvite
                             ];
                             return { ...state, channelType: currencyItem, referralChannelTypeData, refreshing: false };
                         }
@@ -324,23 +330,23 @@ class ReferralInvitesScreen extends Component {
                     if (state.referralServiceData == null || (state.referralServiceData != null && referralServiceData !== state.referralServiceData)) {
                         if (validateResponseNew({ response: referralServiceData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralServiceData.ReferralServiceDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.ServiceSlab;
+                            let serviceDataForRefInvite = parseArray(referralServiceData.ReferralServiceDropDownList);
+                            serviceDataForRefInvite.map((item, index) => {
+                                serviceDataForRefInvite[index].Id = item.Id;
+                                serviceDataForRefInvite[index].value = item.ServiceSlab;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...serviceDataForRefInvite
                             ];
-                            return { ...state, serviceSlab: currencyItem, referralServiceData };
+                            return { ...state, referralServiceData, serviceSlab: currencyItem, };
                         }
                         else {
-                            return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0 };
+                            return { ...state, selectedServiceSlab: R.strings.Please_Select, serviceSlab: [{ value: R.strings.Please_Select }], ReferralServiceId: 0 };
                         }
                     }
                 } catch (e) {
-                    return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0 };
+                    return { ...state, serviceSlab: [{ value: R.strings.Please_Select }], selectedServiceSlab: R.strings.Please_Select, ReferralServiceId: 0, };
                 }
             }
 
@@ -351,23 +357,23 @@ class ReferralInvitesScreen extends Component {
                     if (state.referralPaytypeData == null || (state.referralPaytypeData != null && referralPaytypeData !== state.referralPaytypeData)) {
                         if (validateResponseNew({ response: referralPaytypeData, isList: true })) {
                             //Store Api Response Field and display in Screen.
-                            let res = parseArray(referralPaytypeData.ReferralPayTypeDropDownList);
-                            res.map((item, index) => {
-                                res[index].Id = item.Id;
-                                res[index].value = item.PayTypeName;
+                            let paytypeDataForRefInvite = parseArray(referralPaytypeData.ReferralPayTypeDropDownList);
+                            paytypeDataForRefInvite.map((item, index) => {
+                                paytypeDataForRefInvite[index].Id = item.Id;
+                                paytypeDataForRefInvite[index].value = item.PayTypeName;
                             })
                             let currencyItem = [
                                 { value: R.strings.Please_Select },
-                                ...res
+                                ...paytypeDataForRefInvite
                             ];
-                            return { ...state, payType: currencyItem, referralPaytypeData };
+                            return { ...state, payType: currencyItem, referralPaytypeData, };
                         }
                         else {
-                            return { ...state, payType: [{ value: R.strings.Please_Select }], selectedPayType: R.strings.Please_Select, ReferralPayTypeId: 0 };
+                            return { ...state, payType: [{ value: R.strings.Please_Select }], selectedPayType: R.strings.Please_Select, ReferralPayTypeId: 0, };
                         }
                     }
                 } catch (e) {
-                    return { ...state, payType: [{ value: R.strings.Please_Select }], selectedPayType: R.strings.Please_Select, ReferralPayTypeId: 0 };
+                    return { ...state, payType: [{ value: R.strings.Please_Select }], selectedPayType: R.strings.Please_Select, ReferralPayTypeId: 0, };
                 }
             }
         }
@@ -378,8 +384,11 @@ class ReferralInvitesScreen extends Component {
     navigationDrawer() {
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+
                 {/* for display Toast */}
-                <CommonToast ref={cmp => this.toast = cmp} styles={{ width: R.dimens.FilterDrawarWidth }} />
+                <CommonToast
+                    ref={cmp => this.toast = cmp}
+                    styles={{ width: R.dimens.FilterDrawarWidth }} />
 
                 {/* filterwidget for display fromdate, todate,channeltype,Paytype and serviceslab data */}
                 <FilterWidget
@@ -393,11 +402,11 @@ class ReferralInvitesScreen extends Component {
                             title: R.strings.ChannelType,
                             array: this.state.channelType,
                             selectedValue: this.state.selectedChannelType,
-                            onPickerSelect: (index, object) => { this.setState({ selectedChannelType: index, ReferralChannelTypeId: object.Id }) }
+                            onPickerSelect: (index, object) => { this.setState({ selectedChannelType: index, ReferralChannelTypeId: object.Id, }) }
                         },
                         {
-                            title: R.strings.ServiceSlab,
                             array: this.state.serviceSlab,
+                            title: R.strings.ServiceSlab,
                             selectedValue: this.state.selectedServiceSlab,
                             onPickerSelect: (index, object) => { this.setState({ selectedServiceSlab: index, ReferralServiceId: object.Id }) }
                         },
@@ -428,9 +437,9 @@ class ReferralInvitesScreen extends Component {
 
         //for final items from search input (validate on ChannelTypeName and PayTypeName)
         //default searchInput is empty so it will display all records.
-        let finalItems = list.filter(item =>
-            item.ChannelTypeName.toLowerCase().includes(this.state.search.toLowerCase()) ||
-            item.PayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
+        let finalItems = list.filter(inviteFriendsItem =>
+            inviteFriendsItem.ChannelTypeName.toLowerCase().includes(this.state.search.toLowerCase()) ||
+            inviteFriendsItem.PayTypeName.toLowerCase().includes(this.state.search.toLowerCase())
         );
 
         return (
@@ -439,13 +448,13 @@ class ReferralInvitesScreen extends Component {
                 ref={cmpDrawer => this.drawer = cmpDrawer}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
+                drawerPosition={Drawer.positions.Right}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
-                drawerPosition={Drawer.positions.Right}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -474,19 +483,20 @@ class ReferralInvitesScreen extends Component {
                                             <FlatList
                                                 data={finalItems}
                                                 showsVerticalScrollIndicator={false}
-                                                renderItem={({ item, index }) => <FlatListItem
-                                                    item={item}
-                                                    index={index}
-                                                    size={this.state.data.length}
-                                                />}
+                                                renderItem={({ item, index }) =>
+                                                    <InviteFriendList
+                                                        inviteFriendsItem={item}
+                                                        inviteFriendIndex={index}
+                                                        inviteFriendSize={this.state.data.length}
+                                                    />}
                                                 keyExtractor={(item, index) => index.toString()}
                                                 /* for refreshing data of flatlist */
                                                 refreshControl={
                                                     <RefreshControl
                                                         colors={[R.colors.accent]}
                                                         progressBackgroundColor={R.colors.background}
-                                                        refreshing={this.state.refreshing}
                                                         onRefresh={this.onRefresh}
+                                                        refreshing={this.state.refreshing}
                                                     />}
                                             />
                                         </View>
@@ -497,7 +507,7 @@ class ReferralInvitesScreen extends Component {
                         <View>
                             {/* show pagination if response contains more data  */}
                             {finalItems.length > 0 &&
-                                <PaginationWidget row={this.state.row} selectedPage={this.state.selectedPage} onPageChange={(item) => { this.onPageChange(item) }} />
+                                <PaginationWidget selectedPage={this.state.selectedPage} row={this.state.row} onPageChange={(item) => { this.onPageChange(item) }} />
                             }
                         </View>
                     </View>
@@ -508,7 +518,7 @@ class ReferralInvitesScreen extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class InviteFriendList extends Component {
 
     constructor(props) {
         super(props);
@@ -516,26 +526,26 @@ class FlatListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.inviteFriendsItem === nextProps.inviteFriendsItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
-        let color = item.Status == 1 ? R.colors.successGreen : R.colors.failRed;
-        let paytype = item.PayTypeName ? item.PayTypeName : '-';
+        let inviteFriendsItem = this.props.inviteFriendsItem;
+        let { inviteFriendIndex, inviteFriendSize, } = this.props;
+        let color = inviteFriendsItem.Status == 1 ? R.colors.successGreen : R.colors.failRed;
+        let paytype = inviteFriendsItem.PayTypeName ? inviteFriendsItem.PayTypeName : '-';
         let imageType = R.images.IC_EMAIL_FILLED;
 
         // based on ChannelTypeName set image
-        if (item.ChannelTypeName === 'SMS') imageType = R.images.IC_COMPLAINT;
-        if (item.ChannelTypeName === 'Email') imageType = R.images.IC_EMAIL_FILLED;
-        if (item.ChannelTypeName === 'Twitter') imageType = R.images.IC_TWITTER;
-        if (item.ChannelTypeName === 'Linkedin') imageType = R.images.IC_LINKEDIN_LOGO;
-        if (item.ChannelTypeName === 'Insta') imageType = R.images.IC_INSTAGRAM_LOGO;
-        if (item.ChannelTypeName === 'Facebook') imageType = R.images.IC_FACEBOOK_LOGO;
+        if (inviteFriendsItem.ChannelTypeName === 'SMS') imageType = R.images.IC_COMPLAINT;
+        if (inviteFriendsItem.ChannelTypeName === 'Email') imageType = R.images.IC_EMAIL_FILLED;
+        if (inviteFriendsItem.ChannelTypeName === 'Twitter') imageType = R.images.IC_TWITTER;
+        if (inviteFriendsItem.ChannelTypeName === 'Linkedin') imageType = R.images.IC_LINKEDIN_LOGO;
+        if (inviteFriendsItem.ChannelTypeName === 'Insta') imageType = R.images.IC_INSTAGRAM_LOGO;
+        if (inviteFriendsItem.ChannelTypeName === 'Facebook') imageType = R.images.IC_FACEBOOK_LOGO;
 
         // for paytype and replace percentage text with % sign
         if (paytype === "Percentage on maker/taker charges") paytype = paytype.replace("Percentage", "%")
@@ -545,17 +555,17 @@ class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (inviteFriendIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (inviteFriendIndex == inviteFriendSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
+                    marginRight: R.dimens.widget_left_right_margin,
                 }}>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
                         borderRadius: 0,
-                        flexDirection: 'column',
+                        elevation: R.dimens.listCardElevation,
                         borderBottomLeftRadius: R.dimens.margin,
+                        flexDirection: 'column',
                         borderTopRightRadius: R.dimens.margin,
                     }}>
 
@@ -563,14 +573,14 @@ class FlatListItem extends Component {
                             {/* for show Image */}
                             <ImageTextButton
                                 icon={imageType}
-                                style={{ justifyContent: 'center', alignSelf: 'center', width: R.dimens.ButtonHeight, height: R.dimens.ButtonHeight, margin: 0, backgroundColor: R.colors.accent, borderRadius: R.dimens.ButtonHeight }}
-                                iconStyle={{ width: R.dimens.drawerMenuIconWidthHeight, height: R.dimens.drawerMenuIconWidthHeight, tintColor: R.colors.white }}
+                                iconStyle={{ width: R.dimens.drawerMenuIconWidthHeight, height: R.dimens.drawerMenuIconWidthHeight, tintColor: R.colors.white, }}
+                                style={{ margin: 0, justifyContent: 'center', alignSelf: 'center', width: R.dimens.ButtonHeight, height: R.dimens.ButtonHeight, backgroundColor: R.colors.accent, borderRadius: R.dimens.ButtonHeight }}
                             />
                             {/* for Display Message */}
-                            <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
-                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {item.ReferralReceiverAddress ? item.ReferralReceiverAddress : ''} {R.strings.via} {item.ChannelTypeName ? item.ChannelTypeName : '-'}</Text>
+                            <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin, }}>
+                                <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.invited} {inviteFriendsItem.ReferralReceiverAddress ? inviteFriendsItem.ReferralReceiverAddress : ''} {R.strings.via} {inviteFriendsItem.ChannelTypeName ? inviteFriendsItem.ChannelTypeName : '-'}</Text>
                                 <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.PayType + ' :'}<TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}> {paytype}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {item.Description ? item.Description : '-'}</TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{R.strings.referralMessage} {inviteFriendsItem.Description ? inviteFriendsItem.Description : '-'}</TextViewHML>
                             </View>
                         </View>
 
@@ -579,14 +589,14 @@ class FlatListItem extends Component {
                             <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
                                 <StatusChip
                                     color={color}
-                                    value={item.Status == 1 ? 'Success' : 'Failed'}></StatusChip>
+                                    value={inviteFriendsItem.Status == 1 ? 'Success' : 'Failed'}></StatusChip>
                             </View>
                             <ImageTextButton
                                 style={{ margin: 0, paddingRight: R.dimens.LineHeight, }}
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.CreatedDate ? convertDateTime(item.CreatedDate) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{inviteFriendsItem.CreatedDate ? convertDateTime(inviteFriendsItem.CreatedDate) : '-'}</TextViewHML>
                         </View>
 
                     </CardView>

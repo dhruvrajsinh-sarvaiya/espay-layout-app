@@ -66,7 +66,7 @@ class SignUpReport extends Component {
 		this.onPageChange = this.onPageChange.bind(this);
 		this.onResetPress = this.onResetPress.bind(this);
 		this.onCompletePress = this.onCompletePress.bind(this);
-		this.onBackPress = this.onBackPress.bind(this);;
+		this.onBackPress = this.onBackPress.bind(this);
 
 		this.props.navigation.setParams({ onBackPress: this.onBackPress });
 
@@ -310,15 +310,15 @@ class SignUpReport extends Component {
 				try {
 					if (validateResponseNew({ response: affiliateUserData, isList: true })) {
 						//Store Api Response Field and display in Screen.
-						var newRes = parseArray(affiliateUserData.Response);
-						newRes.map((item, index) => {
-							newRes[index].value = newRes[index].UserName
-							newRes[index].Id = newRes[index].Id
+						var resAffiliateUserDataArray = parseArray(affiliateUserData.Response);
+						resAffiliateUserDataArray.map((item, index) => {
+							resAffiliateUserDataArray[index].value = resAffiliateUserDataArray[index].UserName
+							resAffiliateUserDataArray[index].Id = resAffiliateUserDataArray[index].Id
 						})
 						//----
-						let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+						let resAffiliateUserData = [{ value: R.strings.Please_Select, Id: 0 }, ...resAffiliateUserDataArray]
 
-						return { ...state, userList: res };
+						return { ...state, userList: resAffiliateUserData };
 					}
 					else {
 						return { ...state, userList: [], selectedUser: R.strings.Please_Select, ParentUser: 0 };
@@ -334,15 +334,15 @@ class SignUpReport extends Component {
 					if (state.getPlan == null || (state.getPlan != null && getPlan !== state.getPlan)) {
 						if (validateResponseNew({ response: getPlan })) {
 							//Store Api Response Field and display in Screen.
-							let newRes = parseArray(getPlan.Response)
-							newRes.map((item, index) => {
-								newRes[index].value = newRes[index].Value
-								newRes[index].Id = newRes[index].Id
+							let resPlanArray = parseArray(getPlan.Response)
+							resPlanArray.map((item, index) => {
+								resPlanArray[index].value = resPlanArray[index].Value
+								resPlanArray[index].Id = resPlanArray[index].Id
 							})
 							//----
-							let res = [{ value: R.strings.select_scheme_type }, ...newRes]
+							let resPlan = [{ value: R.strings.select_scheme_type }, ...resPlanArray]
 
-							return { ...state, spinnerSchemeTypeData: res, getPlan };
+							return { ...state, spinnerSchemeTypeData: resPlan, getPlan };
 						}
 						else {
 							return { ...state, spinnerSchemeTypeData: [], selectedSchemeType: R.strings.select_scheme_type, SchemeTypeId: 0 };
@@ -358,8 +358,8 @@ class SignUpReport extends Component {
 				try {
 					if (validateResponseNew({ response: signupReportData, isList: true })) {
 						//Store Api Response Field and display in Screen.
-						var res = parseArray(signupReportData.Response);
-						return { ...state, data: res, signupReportData, row: addPages(signupReportData.TotalCount), refreshing: false };
+						var resSignUpReportData = parseArray(signupReportData.Response);
+						return { ...state, data: resSignUpReportData, signupReportData, row: addPages(signupReportData.TotalCount), refreshing: false };
 					}
 					else {
 						return { ...state, refreshing: false, data: [], row: [] };
@@ -386,15 +386,15 @@ class SignUpReport extends Component {
 
 		//for final items from search input (validate on FirstName , LastName , Email and SchemeType)
 		//default searchInput is empty so it will display all records.
-		let finalItems = list.filter(item =>
-			(item.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
-			(item.LastName.toLowerCase().includes(this.state.search.toLowerCase())) ||
-			(item.Email.toLowerCase().includes(this.state.search.toLowerCase())) ||
-			(item.SchemeType.toLowerCase().includes(this.state.search.toLowerCase()))
+		let finalItems = list.filter(signUpReportItem =>
+			(signUpReportItem.FirstName.toLowerCase().includes(this.state.search.toLowerCase())) ||
+			(signUpReportItem.LastName.toLowerCase().includes(this.state.search.toLowerCase())) ||
+			(signUpReportItem.Email.toLowerCase().includes(this.state.search.toLowerCase())) ||
+			(signUpReportItem.SchemeType.toLowerCase().includes(this.state.search.toLowerCase()))
 		);
 
 		return (
-			 //apply filter for signup report 
+			//apply filter for signup report 
 			<Drawer
 				ref={cmp => this.drawer = cmp}
 				drawerWidth={R.dimens.FilterDrawarWidth}
@@ -435,10 +435,10 @@ class SignUpReport extends Component {
 												data={finalItems}
 												showsVerticalScrollIndicator={false}
 												renderItem={({ item, index }) => {
-													return <FlatListItem
-														item={item}
-														index={index}
-														size={this.state.data.length}
+													return <SignUpReportList
+														signUpReportItem={item}
+														signUpReportIndex={index}
+														signUpReportSize={this.state.data.length}
 													/>
 												}}
 												keyExtractor={(item, index) => index.toString()}
@@ -474,7 +474,7 @@ class SignUpReport extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class SignUpReportList extends Component {
 
 	constructor(props) {
 		super(props);
@@ -482,24 +482,24 @@ class FlatListItem extends Component {
 
 	shouldComponentUpdate(nextProps) {
 		//Check If Old Props and New Props are Equal then Return False
-		if (this.props.item === nextProps.item) {
+		if (this.props.signUpReportItem === nextProps.signUpReportItem) {
 			return false
 		}
 		return true
 	}
 
 	render() {
-		let item = this.props.item;
-		let { index, size, } = this.props;
-		let color = item.StatusMsg === 'Confirm' ? R.colors.successGreen : R.colors.failRed;
+		let signUpReportItem = this.props.signUpReportItem;
+		let { signUpReportIndex, signUpReportSize, } = this.props;
+		let color = signUpReportItem.StatusMsg === 'Confirm' ? R.colors.successGreen : R.colors.failRed;
 
 		return (
 			<AnimatableItem>
 				<View style={{
 					flex: 1,
 					flexDirection: 'column',
-					marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-					marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+					marginTop: (signUpReportIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+					marginBottom: (signUpReportIndex == signUpReportSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
 					marginLeft: R.dimens.widget_left_right_margin,
 					marginRight: R.dimens.widget_left_right_margin
 				}}>
@@ -520,9 +520,9 @@ class FlatListItem extends Component {
 								iconStyle={{ width: R.dimens.drawerMenuIconWidthHeight, height: R.dimens.drawerMenuIconWidthHeight, tintColor: R.colors.white }}
 							/>
 							<View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
-								<Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.FirstName ? item.FirstName + ' ' + item.LastName : '-'}</Text>
-								<TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.Email ? item.Email : '-'}</TextViewHML>
-								<TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText }}>{R.strings.scheme}<TextViewHML style={{ color: R.colors.yellow, fontSize: R.dimens.smallText }}> {item.SchemeType ? item.SchemeType : '-'}</TextViewHML></TextViewHML>
+								<Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{signUpReportItem.FirstName ? signUpReportItem.FirstName + ' ' + signUpReportItem.LastName : '-'}</Text>
+								<TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{signUpReportItem.Email ? signUpReportItem.Email : '-'}</TextViewHML>
+								<TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText }}>{R.strings.scheme}<TextViewHML style={{ color: R.colors.yellow, fontSize: R.dimens.smallText }}> {signUpReportItem.SchemeType ? signUpReportItem.SchemeType : '-'}</TextViewHML></TextViewHML>
 							</View>
 						</View>
 
@@ -531,14 +531,14 @@ class FlatListItem extends Component {
 							<View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
 								<StatusChip
 									color={color}
-									value={item.StatusMsg === 'Confirm' ? item.StatusMsg : 'Failed'}></StatusChip>
+									value={signUpReportItem.StatusMsg === 'Confirm' ? signUpReportItem.StatusMsg : 'Failed'}></StatusChip>
 							</View>
 							<ImageTextButton
 								style={{ margin: 0, paddingRight: R.dimens.LineHeight, }}
 								icon={R.images.IC_TIMER}
 								iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
 							/>
-							<TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{item.JoinDate ? convertDateTime(item.JoinDate) : '-'}</TextViewHML>
+							<TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{signUpReportItem.JoinDate ? convertDateTime(signUpReportItem.JoinDate) : '-'}</TextViewHML>
 						</View>
 					</CardView>
 				</View >

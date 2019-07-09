@@ -444,14 +444,15 @@ class DeviceWhitelistScreen extends Component {
         return (
             <Drawer
                 ref={cmpDrawer => this.drawer = cmpDrawer}
-                drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
-                type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
+                drawerWidth={R.dimens.FilterDrawarWidth}
+                type={Drawer.types.Overlay}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 easingFunc={Easing.ease}>
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
+
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -560,20 +561,21 @@ class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'row',
+                    marginTop: R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin,
-                    marginTop: (this.props.index == 0) ? R.dimens.widgetMargin : R.dimens.widgetMargin,
                     marginBottom: (this.props.index == this.props.size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                 }}>
-                    <CardView style={{
-                        elevation: R.dimens.listCardElevation,
-                        flex: 1,
-                        borderRadius: 0,
-                        flexDirection: 'column',
-                        borderBottomLeftRadius: R.dimens.margin,
-                        borderTopRightRadius: R.dimens.margin,
-                        paddingBottom: 0
-                    }}>
+                    <CardView
+                        style={{
+                            flex: 1,
+                            elevation: R.dimens.listCardElevation,
+                            borderRadius: 0,
+                            flexDirection: 'column',
+                            borderTopRightRadius: R.dimens.margin,
+                            borderBottomLeftRadius: R.dimens.margin,
+                            paddingBottom: 0,
+                        }}>
                         <View style={{ flexDirection: 'row', flex: 1 }}>
 
                             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -615,19 +617,19 @@ class FlatListItem extends Component {
                                     onValueChange={this.props.onUpdateFeature}
                                     textStyle={{
                                         color: R.colors.textSecondary,
+                                        fontSize: R.dimens.smallestText,
                                         marginLeft: R.dimens.widget_left_right_margin,
-                                        fontSize: R.dimens.smallestText
                                     }}
                                     style={{
                                         backgroundColor: 'transparent',
-                                        paddingLeft: R.dimens.WidgetPadding,
                                         paddingRight: R.dimens.WidgetPadding,
+                                        paddingLeft: R.dimens.WidgetPadding,
                                     }} />
                             </View>
                             <ImageTextButton
-                                style={{ margin: 0, paddingRight: R.dimens.widgetMargin, }}
                                 icon={R.images.IC_TIMER}
-                                iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
+                                style={{ margin: 0, paddingRight: R.dimens.widgetMargin, }}
+                                iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary, }}
                             />
                             <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{convertDateTime(item.CreatedDate)}</TextViewHML>
                         </View>

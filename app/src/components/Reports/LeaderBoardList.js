@@ -141,10 +141,10 @@ class LeaderBoardList extends Component {
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
-                 {/* To set status bar as per our theme */}
+                {/* To set status bar as per our theme */}
                 <CommonStatusBar />
 
-                 {/* To set toolbar as per our theme */}
+                {/* To set toolbar as per our theme */}
                 <CustomToolbar
                     title={R.strings.LeaderBoard}
                     isBack={true}
@@ -165,7 +165,7 @@ class LeaderBoardList extends Component {
                                     showsVerticalScrollIndicator={false}
                                     data={finalItems}
                                     /* render all item in list */
-                                    renderItem={({ item, index }) => <FlatListItem Items={item} index={index} size={this.state.response.length}></FlatListItem>}
+                                    renderItem={({ item, index }) => <FlatListItems Items={item} leaderListIndex={index} leaderListSize={this.state.response.length} />}
                                     /* assign index as key valye to LeaderBoard list item */
                                     keyExtractor={(item, index) => index.toString()}
                                     /* For Refresh Functionality In LeaderBoard FlatList Item */
@@ -188,8 +188,7 @@ class LeaderBoardList extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
-
+class FlatListItems extends Component {
     constructor(props) {
         super(props);
     }
@@ -203,26 +202,28 @@ class FlatListItem extends Component {
     }
 
     render() {
+
         let item = this.props.Items;
-        let { index, size, } = this.props;
+        let { leaderListIndex, leaderListSize, } = this.props;
 
         return (
             <AnimatableItem>
+
                 <View style={{
                     flex: 1,
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (leaderListIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (leaderListIndex == leaderListSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
+                    marginRight: R.dimens.widget_left_right_margin,
                 }}>
+
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
+                        elevation: R.dimens.listCardElevation,
                         borderRadius: 0,
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
                     }}>
-
                         {/* User Name and Up or Down Arrow */}
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <Text style={{ flex: 1, color: R.colors.listSeprator, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold, }}>{item.UserName ? item.UserName : '-'}</Text>

@@ -20,7 +20,13 @@ const INTIAL_STATE = {
     errorOrderHistory: false,
 }
 
-export default function orderHistoryReducer(state = INTIAL_STATE, action) {
+export default function orderHistoryReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout

@@ -18,7 +18,12 @@ const INTIAL_STATE = {
     marketTickerError: false,
 }
 
-export default function marketTickerReducer(state = INTIAL_STATE, action) {
+export default function MarketTickersReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
 

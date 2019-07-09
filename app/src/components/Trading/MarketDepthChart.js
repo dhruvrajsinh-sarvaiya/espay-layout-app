@@ -9,6 +9,9 @@ import { getMarketDepthData } from '../../actions/Trade/MarketDepthActions';
 import R from '../../native_theme/R';
 import ListLoader from '../../native_theme/components/ListLoader';
 import SafeView from '../../native_theme/components/SafeView';
+import { getData } from '../../App';
+import { ServiceUtilConstant } from '../../controllers/Constants';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 class MarketDepthChart extends Component {
     constructor(props) {
@@ -30,8 +33,13 @@ class MarketDepthChart extends Component {
         // check for internet connection
         if (this.props.result.marketDepth === null && await isInternet()) {
 
-            // Call get market depth chart 
-            this.props.getMarketDepthData({ Pair: this.props.PairName });
+            if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                // Call get market depth chart 
+                this.props.getMarketDepthData({ Pair: this.props.PairName, IsMargin: 1 });
+            } else {
+                // Call get market depth chart 
+                this.props.getMarketDepthData({ Pair: this.props.PairName });
+            }
         }
     };
 
@@ -118,7 +126,7 @@ class MarketDepthChart extends Component {
             chart: {
                 type: 'area',
                 zoomType: 'xy',
-                backgroundColor: R.colors.background,
+                backgroundColor: 'transparent',
             },
             credits: { enabled: false },
             title: {
@@ -129,7 +137,7 @@ class MarketDepthChart extends Component {
                 title: {
                     text: null,
                 },
-                width: '50%',
+                width: wp('50%'),
                 labels: {
                     style: {
                         color: R.colors.buyerGreen
@@ -146,8 +154,8 @@ class MarketDepthChart extends Component {
                     }
                 },
                 offset: 0,
-                left: '50%',
-                width: '50%'
+                left: wp('50%'),
+                width: wp('50%')
             }],
             yAxis: {
                 gridLineWidth: 0,
@@ -259,7 +267,9 @@ function mapStateToProps(state) {
     // Updated Data of Market Depth and Preference
     return {
         result: state.marketDepthReducer,
-        preference: state.preference
+        preference: state.preference,
+        //For Update isPortrait true or false
+        orientation: state.preference.dimensions.isPortrait,
     }
 }
 

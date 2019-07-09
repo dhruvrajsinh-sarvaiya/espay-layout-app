@@ -81,6 +81,7 @@ class CommonToast extends PureComponent {
                     width: (this.props.isMainScreen && this.state.width > this.state.height) ? this.state.width * 65 / 100 : Dimensions.get('window').width,
                     top: '80%',
                     zIndex: 9999,
+                    padding: R.dimens.activity_margin,
                     position: 'absolute',
                     justifyContent: 'center',
                     alignItems: 'center',

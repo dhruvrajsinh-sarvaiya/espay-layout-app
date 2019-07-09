@@ -26,7 +26,6 @@ import CommonToast from '../../native_theme/components/CommonToast';
 import { getData } from '../../App';
 import AnimatableItem from '../../native_theme/components/AnimatableItem';
 import SafeView from '../../native_theme/components/SafeView';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
 class ViewPublicApiKey extends Component {
     constructor(props) {
@@ -62,7 +61,7 @@ class ViewPublicApiKey extends Component {
         const { UserActivePlanData } = this.props.Listdata;
 
         //if UserActivePlanData is Not Available From Previous Screen Than Call Api
-        if ((UserActivePlanData == null || UserActivePlanData == undefined) && await isInternet()) {
+        if ((UserActivePlanData == null || UserActivePlanData === 'undefined') && await isInternet()) {
             this.props.getUserActivePlan({})
         }
     }

@@ -225,7 +225,6 @@ class IpHistoryResult extends Component {
 						response: [],
 						row: []
 					})
-					//Handle Catch and Notify User to Exception.
 				}
 			}
 		}
@@ -234,8 +233,13 @@ class IpHistoryResult extends Component {
 
 	//For Navigation Drawer Functionality
 	navigationDrawer = () => {
+
 		return (
-			<SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+			<SafeView
+				style={{
+					flex: 1,
+					backgroundColor: R.colors.background
+				}}>
 
 				{/* For Toast */}
 				<CommonToast ref="Toast" styles={{ width: R.dimens.FilterDrawarWidth }} />
@@ -246,10 +250,9 @@ class IpHistoryResult extends Component {
 					ToDatePickerCall={(date) => this.setState({ ToDate: date })}
 					FromDate={this.state.FromDate}
 					ToDate={this.state.ToDate}
-					onResetPress={this.onResetPress}
 					onCompletePress={this.onCompletePress}
-
-				></FilterWidget>
+					onResetPress={this.onResetPress}
+				/>
 			</SafeView>
 		)
 	}
@@ -368,9 +371,8 @@ class FlatListItem extends Component {
 		//Check If Old Props and New Props are Equal then Return False
 		if (this.props.item !== nextProps.item || this.props.finalItemsLength !== nextProps.finalItemsLength) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	render() {

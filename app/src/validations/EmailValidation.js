@@ -2,7 +2,7 @@
 export function CheckEmailValidation(Email) {
     try {
         //regex for Email validation
-        let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        let regex = new RegExp(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/);
 
         //To check if user input anything or not
         if (Email) {
@@ -10,9 +10,7 @@ export function CheckEmailValidation(Email) {
             if (regex.test(Email)) {
                 return false;
             }
-            else {
-                return true;
-            }
+            return true;
         }
     } catch (error) {
         //logger(error.message)

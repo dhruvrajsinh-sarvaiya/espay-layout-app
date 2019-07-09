@@ -14,7 +14,6 @@ import { changeTheme, getCurrentDate, parseArray, addListener, parseFloatVal, co
 import R from '../../../native_theme/R';
 import { Method } from '../../../controllers/Constants';
 import CustomToolbar from '../../../native_theme/components/CustomToolbar';
-import MarginRecentOrder from './MarginRecentOrder';
 import CommonToast from '../../../native_theme/components/CommonToast';
 import FilterWidget from '../../Widget/FilterWidget';
 import Drawer from 'react-native-drawer-menu';
@@ -32,6 +31,7 @@ import { clearMarketList, onFetchMarkets } from '../../../actions/Trade/TradeAct
 import { clearRecentOrder } from '../../../actions/Trade/RecentOrderAction';
 import AnimatableItem from '../../../native_theme/components/AnimatableItem';
 import SafeView from '../../../native_theme/components/SafeView';
+import RecentOrder from '../../Trading/RecentOrder';
 
 class MarginOrderManagementScreen extends Component {
 
@@ -57,7 +57,7 @@ class MarginOrderManagementScreen extends Component {
         //request to pass in API call
         this.request = {}
 
-        let from = 0;
+        let from;
         if (props.navigation.state.params !== undefined && props.navigation.state.params.from !== undefined) {
             from = props.navigation.state.params.from;
         } else if (props.from !== undefined) {
@@ -591,7 +591,7 @@ class MarginOrderManagementScreen extends Component {
                             }
                         </View>
                         :
-                        <MarginRecentOrder navigation={this.props.navigation} search={this.state.search} />}
+                        <RecentOrder navigation={this.props.navigation} search={this.state.search} />}
                 </SafeView>
             </Drawer>
         );
@@ -616,9 +616,8 @@ class OrderHistoryItem extends Component {
             this.props.size !== nextProps.size
         ) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {

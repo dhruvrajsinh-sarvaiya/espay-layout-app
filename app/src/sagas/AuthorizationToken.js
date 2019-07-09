@@ -46,7 +46,7 @@ function* gerenateTokenAPI({ payload }) {
     try {
         const response = yield call(swaggerPostHeaderFormAPI, swaggerUrl, request);
         if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            let staticRes = staticResponse(response.statusCode);
             yield put(generateTokenSuccess(staticRes));
         } else {
             yield put(generateTokenSuccess(response));
@@ -78,7 +78,7 @@ function* refreshTokenAPI() {
         const response = yield call(swaggerPostHeaderFormAPI, Method.token, request);
 
         if (statusErrCode.includes(response.statusCode)) {
-            staticRes = staticResponse(response.statusCode);
+            let staticRes = staticResponse(response.statusCode);
             yield put(refreshTokenSuccess(staticRes));
         } else {
             if (validateResponseNew({ response: response, isList: true })) {

@@ -501,7 +501,7 @@ class RefereAndEarn extends Component {
                         //check input is mobile
                         if (isMobile) {
                             // request for SMS Send
-                            requestSmsSend = {
+                            let requestSmsSend = {
                                 MobileNumber: this.state.emailMobile,
                                 SMSShareURL: this.state.smsLink,
                                 ReferralChannelTypeId: 2
@@ -516,7 +516,7 @@ class RefereAndEarn extends Component {
                         if (isEmail) {
 
                             // request for Email Send
-                            requestEmailSend = {
+                            let requestEmailSend = {
                                 EmailAddress: this.state.emailMobile,
                                 EmailShareURL: this.state.emailLink,
                                 ReferralChannelTypeId: 1
@@ -975,8 +975,7 @@ class RefereAndEarn extends Component {
                     onPress={() => {
                         this.onCancel();
                         setTimeout(() => {
-
-                            // make string for Email message which is send to user
+                            // make string for Email message which is send to user.
                             let refLinkJoin = referralLink ? (this.state.emailLink !== defaultRefLink ? ' and' : '') : '';
                             let refIDMsg = ' referral Id- ' + referralId + refLinkJoin;
                             let refID = referralId ? refIDMsg : '';
@@ -984,10 +983,10 @@ class RefereAndEarn extends Component {
 
                             let object = {
                                 user: userDes,
+                                websiteLink: websiteLink,
+                                referralLink: refLink,
                                 appName: AppConfig.appName,
                                 referralId: refID,
-                                referralLink: refLink,
-                                websiteLink: websiteLink
                             }
                             let message = R.strings.formatString(R.strings.inviteShareMessage, object);
 
@@ -1045,7 +1044,7 @@ class RefereAndEarn extends Component {
                                 appName: AppConfig.appName,
                                 referralId: refID,
                                 referralLink: refLink,
-                                websiteLink: websiteLink
+                                websiteLink: websiteLink,
                             }
                             let message = R.strings.formatString(R.strings.inviteShareMessage, object);
 

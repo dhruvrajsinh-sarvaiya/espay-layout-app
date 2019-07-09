@@ -396,10 +396,10 @@ class LeverageReport extends Component {
 
         //for final items from search input (validate on Amount, WalletTypeName, UserName, SystemRemarks)
         //default searchInput is empty so it will display all records.
-        let finalItems = this.state.response.filter(item => ((('' + item.Amount).includes(this.state.searchInput) ||
+        let finalItems = this.state.response.filter(item => (('' + item.Amount).includes(this.state.searchInput) ||
             item.WalletTypeName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
             item.UserName.toLowerCase().includes(this.state.searchInput.toLowerCase()) ||
-            item.SystemRemarks.toLowerCase().includes(this.state.searchInput.toLowerCase()))));
+            item.SystemRemarks.toLowerCase().includes(this.state.searchInput.toLowerCase())));
 
         return (
 

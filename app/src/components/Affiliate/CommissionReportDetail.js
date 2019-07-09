@@ -75,28 +75,25 @@ class CommissionReportDetail extends Component {
                                     color: R.colors.white,
                                     textAlign: 'left',
                                 }}>{((parseFloatVal(this.state.item.Amount).toFixed(8)) !== 'NaN' ? parseFloatVal(this.state.item.Amount).toFixed(8) : '-') + ' ' + (this.state.item.TrnWalletTypeName ? (this.state.item.TrnWalletTypeName.toUpperCase()) : '')}</Text>
-
-
                         </View>
 
                         {/* Card for rest details to display item */}
                         <CardView style={{
-                            margin: R.dimens.margin_top_bottom,
                             padding: 0,
+                            margin: R.dimens.margin_top_bottom,
                             backgroundColor: R.colors.cardBackground,
                         }} cardRadius={R.dimens.detailCardRadius}>
 
                             {/* Holding Currency with Icon and Balance */}
                             <View style={{
-                                flexDirection: 'row',
-                                margin: R.dimens.widget_top_bottom_margin,
+                                flexDirection: 'row', margin: R.dimens.widget_top_bottom_margin,
                             }}>
                                 <View style={{ width: wp('25%'), }}>
                                     <View style={{
+                                        borderRadius: R.dimens.paginationButtonRadious,
                                         width: R.dimens.signup_screen_logo_height,
                                         height: R.dimens.signup_screen_logo_height,
                                         backgroundColor: 'transparent',
-                                        borderRadius: R.dimens.paginationButtonRadious,
                                     }}>
                                         <ImageViewWidget url={this.state.item.TrnWalletTypeName ? this.state.item.TrnWalletTypeName : ''} width={R.dimens.signup_screen_logo_height} height={R.dimens.signup_screen_logo_height} />
                                     </View>
@@ -122,7 +119,7 @@ class CommissionReportDetail extends Component {
                             {this.rowItem(R.strings.level, this.state.item.Level ? this.state.item.Level : '-')}
                             {this.rowItem(R.strings.trnAmount, (parseFloatVal(this.state.item.TransactionAmount).toFixed(8) !== 'NaN' ? validateValue(parseFloatVal(this.state.item.TransactionAmount).toFixed(8)) : '-'))}
                             {this.rowItem(R.strings.Trn_Date, this.state.item.TrnDate ? convertDate(this.state.item.TrnDate) : '-')}
-                            {this.rowItem(R.strings.status, this.state.item.Status ? (this.state.item.Status === 1 ? R.strings.Success : R.strings.Failed) : '-', true, color = this.state.item.Status === 1 ? R.colors.successGreen : R.colors.failRed)}
+                            {this.rowItem(R.strings.status, this.state.item.Status ? (this.state.item.Status === 1 ? R.strings.Success : R.strings.Failed) : '-', true, this.state.item.Status === 1 ? R.colors.successGreen : R.colors.failRed)}
                         </CardView>
 
                     </ScrollView>
@@ -131,7 +128,12 @@ class CommissionReportDetail extends Component {
         );
     }
 
-    rowItem = (title, value, marginBottom = false, color) => {
+    rowItem = (title, value, marginBottom, color) => {
+
+        if (typeof marginBottom === 'undefined') {
+            marginBottom = false;
+        }
+
         return <View style={{
             flexDirection: 'row',
             justifyContent: 'space-between',

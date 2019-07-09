@@ -28,6 +28,10 @@ class ClickOnLinkReport extends Component {
     constructor(props) {
         super(props);
 
+        // create reference
+        this.drawer = React.createRef();
+        this.toast = React.createRef();
+
         //Define All initial State
         this.state = {
             row: [],
@@ -52,15 +56,11 @@ class ClickOnLinkReport extends Component {
 
         //To Bind All Method
         this.onRefresh = this.onRefresh.bind(this);
-        this.onResetPress = this.onResetPress.bind(this);
         this.onCompletePress = this.onCompletePress.bind(this);
         this.onPageChange = this.onPageChange.bind(this);
+        this.onResetPress = this.onResetPress.bind(this);
         this.onBackPress = this.onBackPress.bind(this);
         this.props.navigation.setParams({ onBackPress: this.onBackPress });
-
-        // create reference
-        this.drawer = React.createRef();
-        this.toast = React.createRef();
     }
 
     shouldComponentUpdate(nextProps, _nextState) {
@@ -132,13 +132,13 @@ class ClickOnLinkReport extends Component {
                 try {
                     if (validateResponseNew({ response: affiliateUserData, isList: true })) {
                         //Store Api Response Field and display in Screen.
-                        var newRes = parseArray(affiliateUserData.Response);
-                        newRes.map((item, index) => {
-                            newRes[index].value = newRes[index].UserName
-                            newRes[index].Id = newRes[index].Id
+                        var userDataForLinkReport = parseArray(affiliateUserData.Response);
+                        userDataForLinkReport.map((item, index) => {
+                            userDataForLinkReport[index].value = userDataForLinkReport[index].UserName
+                            userDataForLinkReport[index].Id = userDataForLinkReport[index].Id
                         })
                         //----
-                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...newRes]
+                        let res = [{ value: R.strings.Please_Select, Id: 0 }, ...userDataForLinkReport]
 
                         return { ...state, userList: res };
                     }
@@ -324,10 +324,10 @@ class ClickOnLinkReport extends Component {
         const { clickOnLinkLoading } = this.props.Listdata;
         let finalItems = this.state.response
         if (finalItems.length > 0) {
-            finalItems = finalItems.filter(item =>
-                (item.UserEmail.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
-                (item.FirstName.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
-                (item.LastName.toLowerCase().includes(this.state.searchInput.toLowerCase()))
+            finalItems = finalItems.filter(linkReportItem =>
+                (linkReportItem.UserEmail.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
+                (linkReportItem.FirstName.toLowerCase().includes(this.state.searchInput.toLowerCase())) ||
+                (linkReportItem.LastName.toLowerCase().includes(this.state.searchInput.toLowerCase()))
             )
         }
 
@@ -337,13 +337,13 @@ class ClickOnLinkReport extends Component {
                 ref={cmpDrawer => this.drawer = cmpDrawer}
                 drawerWidth={R.dimens.FilterDrawarWidth}
                 drawerContent={this.navigationDrawer()}
-                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
-                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
+                onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
+                onDrawerClose={() => this.setState({ isDrawerOpen: false })}
                 easingFunc={Easing.ease}>
 
-                <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
+                <SafeView style={{ flex: 1, backgroundColor: R.colors.background, }}>
 
                     {/* To set status bar as per our theme */}
                     <CommonStatusBar />
@@ -373,9 +373,9 @@ class ClickOnLinkReport extends Component {
                                                 data={finalItems}
                                                 renderItem={({ item, index }) =>
                                                     <ClickOnLinkItem
-                                                        item={item}
-                                                        index={index}
-                                                        size={this.state.response.length}
+                                                        linkReportItem={item}
+                                                        linkReportIndex={index}
+                                                        linkReportSize={this.state.response.length}
                                                     />
                                                 }
                                                 keyExtractor={(item, index) => index.toString()}
@@ -409,31 +409,29 @@ class ClickOnLinkReport extends Component {
 
 // This Class is used for display record in list
 class ClickOnLinkItem extends Component {
-
     constructor(props) {
         super(props);
-
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.linkReportItem === nextProps.linkReportItem) {
             return false
         }
         return true
     }
 
     render() {
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let linkReportItem = this.props.linkReportItem;
+        let { linkReportIndex, linkReportSize, } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (linkReportIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (linkReportIndex == linkReportSize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
                     marginRight: R.dimens.widget_left_right_margin
                 }}>
@@ -456,9 +454,9 @@ class ClickOnLinkItem extends Component {
                             {/* for Display usename,email and ipaddress */}
                             <View style={{ flex: 1, paddingLeft: R.dimens.margin, paddingRight: R.dimens.margin }}>
                                 <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{R.strings.affiliateLinkInvite}</Text>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.FirstName ? item.FirstName + ' ' + item.LastName : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.UserEmail ? item.UserEmail : '-'}</TextViewHML></TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} {R.strings.IPAddress} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.IpAddress ? item.IpAddress : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.UserName} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{linkReportItem.FirstName ? linkReportItem.FirstName + ' ' + linkReportItem.LastName : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.from} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{linkReportItem.UserEmail ? linkReportItem.UserEmail : '-'}</TextViewHML></TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.to} {R.strings.IPAddress} : <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{linkReportItem.IpAddress ? linkReportItem.IpAddress : '-'}</TextViewHML></TextViewHML>
                             </View>
                         </View>
 
@@ -469,7 +467,7 @@ class ClickOnLinkItem extends Component {
                                 icon={R.images.IC_TIMER}
                                 iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textSecondary }}
                             />
-                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.ClickTime ? convertDateTime(item.ClickTime) : '-'}</TextViewHML>
+                            <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{linkReportItem.ClickTime ? convertDateTime(linkReportItem.ClickTime) : '-'}</TextViewHML>
                         </View>
                     </CardView>
                 </View >

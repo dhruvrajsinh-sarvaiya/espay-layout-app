@@ -21,7 +21,7 @@ class AboutUs extends Component {
 
     //Define All initial State
     this.state = {
-      response: null,
+      aboutUsRes: null,
     }
   }
 
@@ -41,20 +41,22 @@ class AboutUs extends Component {
 
   static getDerivedStateFromProps(props, state) {
     if (isCurrentScreen(props)) {
-      var { data } = props;
+
+      var { aboutUsData } = props;
+
       //check data is available or not
-      if (data.pageContents != null) {
-        let response = data.pageContents;
+      if (aboutUsData.pageContents != null) {
+        let aboutusResponse = aboutUsData.pageContents;
         try {
           //get response language wise
           return {
             ...state,
-            response: response.locale[R.strings.getLanguage()].content
+            aboutUsRes: aboutusResponse.locale[R.strings.getLanguage()].content
           };
         } catch (error) {
           return {
             ...state,
-            response: null
+            aboutUsRes: null
           }
         }
       }
@@ -68,10 +70,10 @@ class AboutUs extends Component {
   }
 
   render() {
-    
+
     //loading bit for handling progress dialog
-    let { loading } = this.props.data
-    
+    let { loading } = this.props.aboutUsData
+
     return (
       <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
@@ -89,12 +91,12 @@ class AboutUs extends Component {
           marginLeft: R.dimens.padding_left_right_margin,
           marginRight: R.dimens.padding_left_right_margin
         }}>
-        {/* display webview with data if not loading */}
+          {/* display webview with data if not loading */}
           {loading
             ?
             <ListLoader />
             :
-            this.state.response != null && <HtmlViewer applyMargin={true} data={this.state.response} />
+            this.state.aboutUsRes != null && <HtmlViewer applyMargin={true} data={this.state.aboutUsRes} />
           }
         </View>
       </SafeView>
@@ -105,7 +107,7 @@ class AboutUs extends Component {
 function mapStateToProps(state) {
   return {
     //data get from the reducer
-    data: state.PageContentAppReducer
+    aboutUsData: state.PageContentAppReducer
   }
 }
 function mapDispatchToProps(dispatch) {

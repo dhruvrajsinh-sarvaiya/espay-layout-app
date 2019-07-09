@@ -102,128 +102,128 @@ class MarginBuyerSellerBookWidget extends Component {
 		// Handle Signal-R response for RecieveLastPrice
 		this.listenerRecieveLastPrice = addListener(Method.RecieveLastPrice, (receivedMessage) => {
 
-				try {
-					let response = JSON.parse(receivedMessage);
+			try {
+				let response = JSON.parse(receivedMessage);
 
-					if ((response.EventTime && this.state.socketLastPriceData.length === 0) || (this.state.socketLastPriceData.length > 0 && response.EventTime > this.state.socketLastPriceData.EventTime)) {
-						if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
-							this.setState({ lastPrice: response.Data.LastPrice, socketLastPriceData: response });
-						}
+				if ((response.EventTime && this.state.socketLastPriceData.length === 0) || (this.state.socketLastPriceData.length > 0 && response.EventTime > this.state.socketLastPriceData.EventTime)) {
+					if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
+						this.setState({ lastPrice: response.Data.LastPrice, socketLastPriceData: response });
 					}
-				} catch (_error) {
-					//parsing error
-					// logger(Method.RecieveLastPrice + _error.message);
 				}
+			} catch (_error) {
+				//parsing error
+				// logger(Method.RecieveLastPrice + _error.message);
+			}
 		})
 
 		// Handle Signal-R response for BuyerBook
 		this.listenerRecieveBuyerBook = addListener(Method.RecieveBuyerBook, (receivedMessage) => {
 
-				try {
-					let response = JSON.parse(receivedMessage);
+			try {
+				let response = JSON.parse(receivedMessage);
 
-					if ((response.EventTime && this.state.socketBuyData.length == 0) || (this.state.socketBuyData.length !== 0 && response.EventTime >= this.state.socketBuyData.EventTime)) {
-			
-						if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
-							this.setState({ ...this.amountValidation(true, response), socketBuyData: response });
-						}
+				if ((response.EventTime && this.state.socketBuyData.length == 0) || (this.state.socketBuyData.length !== 0 && response.EventTime >= this.state.socketBuyData.EventTime)) {
+
+					if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
+						this.setState({ ...this.amountValidation(true, response), socketBuyData: response });
 					}
-				} catch (_error) {
-					//parsing error
-					// logger('RecieveBuyerBook Error : ' + _error.message)
 				}
+			} catch (_error) {
+				//parsing error
+				// logger('RecieveBuyerBook Error : ' + _error.message)
+			}
 		})
 
 		// Handle Signal-R response for StopLimitBuyerBook
 		this.listenerRecieveStopLimitBuyerBook = addListener(Method.RecieveStopLimitBuyerBook, (receivedMessage) => {
 
-				try {
-					let response = JSON.parse(receivedMessage);
+			try {
+				let response = JSON.parse(receivedMessage);
 
-					if ((response.EventTime && this.state.stopLimitBuyerBook.length === 0) || (this.state.stopLimitBuyerBook.length !== 0 && response.EventTime > this.state.stopLimitBuyerBook.EventTime)) {
-						if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
+				if ((response.EventTime && this.state.stopLimitBuyerBook.length === 0) || (this.state.stopLimitBuyerBook.length !== 0 && response.EventTime > this.state.stopLimitBuyerBook.EventTime)) {
+					if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
 
-							//Stop Limit Add/Remove validation of response array
-							this.setState({ ...this.stopLimitValidation(true, response), stopLimitBuyerBook: response });
-						}
+						//Stop Limit Add/Remove validation of response array
+						this.setState({ ...this.stopLimitValidation(true, response), stopLimitBuyerBook: response });
 					}
-
-				} catch (_error) {
-					//parsing error
-					// logger('RecieveStopLimitBuyerBook Error : ' + _error.message)
 				}
+
+			} catch (_error) {
+				//parsing error
+				// logger('RecieveStopLimitBuyerBook Error : ' + _error.message)
+			}
 		})
 
 		// Handle Signal-R response for SellerBook
 		this.listenerRecieveSellerBook = addListener(Method.RecieveSellerBook, (receivedMessage) => {
 
-				try {
-					let response = JSON.parse(receivedMessage);
+			try {
+				let response = JSON.parse(receivedMessage);
 
-					if ((response.EventTime && this.state.socketSellData.length == 0) || (this.state.socketSellData.length !== 0 && response.EventTime >= this.state.socketSellData.EventTime)) {
-						if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
-							this.setState({ ...this.amountValidation(false, response), socketSellData: response });
-						}
+				if ((response.EventTime && this.state.socketSellData.length == 0) || (this.state.socketSellData.length !== 0 && response.EventTime >= this.state.socketSellData.EventTime)) {
+					if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
+						this.setState({ ...this.amountValidation(false, response), socketSellData: response });
 					}
-
-				} catch (_error) {
-					//parsing error
-					// logger('RecieveSellerBook Error : ' + _error.message)
 				}
+
+			} catch (_error) {
+				//parsing error
+				// logger('RecieveSellerBook Error : ' + _error.message)
+			}
 		})
 
 		// Handle Signal-R response for StopLimitSellerBook
 		this.listenerRecieveStopLimitSellerBook = addListener(Method.RecieveStopLimitSellerBook, (receivedMessage) => {
 
-				try {
-					let response = JSON.parse(receivedMessage);
+			try {
+				let response = JSON.parse(receivedMessage);
 
-					if ((response.EventTime && this.state.stopLimitSellerBook.length === 0) || (this.state.stopLimitSellerBook.length !== 0 && response.EventTime > this.state.stopLimitSellerBook.EventTime)) {
-						if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
-							//Stop Limit Add/Remove validation of response array
-							this.setState({ ...this.stopLimitValidation(false, response), stopLimitSellerBook: response });
-						}
+				if ((response.EventTime && this.state.stopLimitSellerBook.length === 0) || (this.state.stopLimitSellerBook.length !== 0 && response.EventTime > this.state.stopLimitSellerBook.EventTime)) {
+					if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
+						//Stop Limit Add/Remove validation of response array
+						this.setState({ ...this.stopLimitValidation(false, response), stopLimitSellerBook: response });
 					}
-				} catch (_error) {
-					//parsing error
-					// logger('RecieveStopLimitSellerBook Error : ' + _error.message)
 				}
+			} catch (_error) {
+				//parsing error
+				// logger('RecieveStopLimitSellerBook Error : ' + _error.message)
+			}
 		})
 
 		// Handle Signal-R response for BulkSellerBook
 		this.listenerReceiveBulkSellerBook = addListener(Method.ReceiveBulkSellerBook, (receivedMessage) => {
 
-				try {
-					let response = JSON.parse(receivedMessage);
-					if ((response.EventTime && this.state.socketLPSellData.length == 0) || (this.state.socketLPSellData.length !== 0 && response.EventTime >= this.state.socketLPSellData.EventTime)) {
-						if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
-							let LPSellerBook = this.state.LPSellerBook;
-							LPSellerBook[response.LP] = response.Data;
+			try {
+				let response = JSON.parse(receivedMessage);
+				if ((response.EventTime && this.state.socketLPSellData.length == 0) || (this.state.socketLPSellData.length !== 0 && response.EventTime >= this.state.socketLPSellData.EventTime)) {
+					if (this.props.PairName === response.Parameter && typeof response.IsMargin !== 'undefined' && response.IsMargin === 1) {
+						let LPSellerBook = this.state.LPSellerBook;
+						LPSellerBook[response.LP] = response.Data;
 
-							let sellerBookList = this.state.sellerBookList;
+						let sellerBookList = this.state.sellerBookList;
 
-							if (LPSellerBook && LPSellerBook.length > 0) {
-								LPSellerBook.forEach((item) => {
-									let findLPIndex = sellerBookList.findIndex(sellerOrder => parseFloatVal(sellerOrder.Price) === parseFloatVal(item.Price));
+						if (LPSellerBook && LPSellerBook.length > 0) {
+							LPSellerBook.forEach((item) => {
+								let findLPIndex = sellerBookList.findIndex(sellerOrder => parseFloatVal(sellerOrder.Price) === parseFloatVal(item.Price));
 
-									if (findLPIndex === -1) {
-										sellerBookList.push(item);
-									} else {
-										sellerBookList[findLPIndex].Amount = sellerBookList[findLPIndex].Amount + item.Amount;
-									}
-								})
-							}
-							//Sorting array based on Price
-							let res = arraySort(parseArray(sellerBookList), 'Price', { reverse: true });
-
-							this.setState({ LPSellerBook, socketLPSellData: response, sellerBookList: res })
+								if (findLPIndex === -1) {
+									sellerBookList.push(item);
+								} else {
+									sellerBookList[findLPIndex].Amount = sellerBookList[findLPIndex].Amount + item.Amount;
+								}
+							})
 						}
-					}
+						//Sorting array based on Price
+						let res = arraySort(parseArray(sellerBookList), 'Price', { reverse: true });
 
-				} catch (error) {
-					//parsing error
-					// logger('ReceiveBulkSellerBook Error : ' + _error.message)
+						this.setState({ LPSellerBook, socketLPSellData: response, sellerBookList: res })
+					}
 				}
+
+			} catch (error) {
+				//parsing error
+				// logger('ReceiveBulkSellerBook Error : ' + _error.message)
+			}
 		})
 
 	};
@@ -405,6 +405,7 @@ class MarginBuyerSellerBookWidget extends Component {
 
 		//if connection has data
 		if (receivedMessage.Data) {
+
 			let newData = receivedMessage.Data;
 
 			if (parseFloatVal(newData.Price) !== 0) {
@@ -422,6 +423,7 @@ class MarginBuyerSellerBookWidget extends Component {
 
 						latestOrderList.push(newData)
 					}
+
 				} else {
 
 					//if amount of new record is greater then 0 then update amount in existing record
@@ -457,9 +459,11 @@ class MarginBuyerSellerBookWidget extends Component {
 				return priceValidation(isBuyer, latestOrderList, newData, this.state.lastPrice)
 			}
 		}
+
 		return {};
 	}
 
+	// Decrese decimal point
 	onPressDecimalDecrese() {
 		let decimalPoint = this.state.decimalPoint - 1;
 		if (decimalPoint > 0) {
@@ -467,6 +471,7 @@ class MarginBuyerSellerBookWidget extends Component {
 		}
 	}
 
+	// Increase decimal point
 	onPressDecimalIncrese() {
 		let decimalPoint = this.state.decimalPoint + 1;
 		if (decimalPoint <= 8) {
@@ -476,12 +481,20 @@ class MarginBuyerSellerBookWidget extends Component {
 
 	//To set data in Sell Widget
 	onPressSetSellData(item) {
-		sendEvent(Events.BuySellInputMargin, { module: Constants.TradeTypes.Sell, ...item });
+		try {
+			sendEvent(Events.BuySellInputMargin, { module: Constants.TradeTypes.Sell, ...item });
+		} catch (e) {
+			//handle catch
+		}
 	}
 
 	//To set data in Buy Widget
 	onPressSetBuyData(item) {
-		sendEvent(Events.BuySellInputMargin, { module: Constants.TradeTypes.Buy, ...item });
+		try {
+			sendEvent(Events.BuySellInputMargin, { module: Constants.TradeTypes.Buy, ...item });
+		} catch (e) {
+			//handle catch
+		}
 	}
 
 	render() {
@@ -511,7 +524,7 @@ class MarginBuyerSellerBookWidget extends Component {
 						padding: R.dimens.widgetMargin,
 					}}>
 						<View style={{
-							flex:1,
+							flex: 1,
 							flexDirection: 'row',
 							alignItems: 'flex-end',
 						}}>
@@ -522,7 +535,8 @@ class MarginBuyerSellerBookWidget extends Component {
 								paddingRight: R.dimens.widgetMargin,
 							}}>{parseFloatVal(this.state.lastPrice).toFixed(6)}</TextViewHML>
 
-							{/* <TextViewHML style={{
+							{/* DO NOT DELETE
+								<TextViewHML style={{
 								color: R.colors.textPrimary,
 								fontSize: R.dimens.smallText,
 							}}>{'=' + parseFloatVal(this.state.lastPrice).toFixed(6) + ' USD'}</TextViewHML> */}
@@ -533,7 +547,10 @@ class MarginBuyerSellerBookWidget extends Component {
 								iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textPrimary }}
 								onPress={this.onPressDecimalDecrese}
 								style={{ margin: R.dimens.widgetMargin }} />
-							<TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{this.state.decimalPoint}</TextViewHML>
+							<TextViewHML style={{
+								color: R.colors.textPrimary,
+								fontSize: R.dimens.smallText,
+							}}>{this.state.decimalPoint}</TextViewHML>
 							<ImageButton
 								icon={R.images.IC_PLUS}
 								iconStyle={{ width: R.dimens.smallestText, height: R.dimens.smallestText, tintColor: R.colors.textPrimary }}
@@ -546,6 +563,7 @@ class MarginBuyerSellerBookWidget extends Component {
 								style={{ margin: R.dimens.widgetMargin }} />
 						</View>
 					</View>}
+
 
 				{/* Headers */}
 				<View style={{
@@ -599,7 +617,6 @@ class MarginBuyerSellerBookWidget extends Component {
 							</View>
 						}
 					</View>
-
 					<View style={{ flex: 1 }}>
 
 						{/* Seller Book */}
@@ -648,9 +665,8 @@ class OrderBookItem extends Component {
 		//Check If Old Props and New Props are Equal then Return False
 		if (this.props.item !== nextProps.item || this.props.decimals !== nextProps.decimals || this.props.theme !== nextProps.theme) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	};
 
 	render() {
@@ -717,23 +733,25 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	// Perform BuyerBook Action
 	fetchBuyerBookList: (Pair) => dispatch(fetchBuyerBookList(Pair)),
+
 	// Perform SellerBook Action
 	fetchSellerBookList: (Pair) => dispatch(fetchSellerBookList(Pair)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MarginBuyerSellerBookWidget);
 
-function priceValidation(isBuyer, response, lastPriceRecord = {}, lastPrice) {
+function priceValidation(isBuyer, response, lastPriceRecord, lastPrice) {
 
 	let buyerSellerList = [];
 
 	let stopLimitOrders = [];
 
-	//Check for all records for Price 0
-	response.map((buyerSellerItem) => {
+	for (var buyerSelletKey in response) {
+		let buyerSellerItem = response[buyerSelletKey];
 
 		//If item is regular than add in buyerSellerList
 		if (buyerSellerItem.IsStopLimit == 0) {
+
 			//if current record price is 0 and amount is greater than 0 then add to lastPriceRecord
 			if (parseFloatVal(buyerSellerItem.Price) == 0 && parseFloatVal(buyerSellerItem.Amount) > 0) {
 
@@ -751,10 +769,9 @@ function priceValidation(isBuyer, response, lastPriceRecord = {}, lastPrice) {
 			}
 		} else {
 			stopLimitOrders.push(buyerSellerItem);
-
 		}
 
-	});
+	}
 
 	//if lastPrice is greater then 0 and lastPriceRecord has data with Amount greater then 0 then perform action
 	if (lastPrice > 0 && Object.keys(lastPriceRecord).length !== 0 && lastPriceRecord.Amount > 0) {
@@ -776,7 +793,10 @@ function priceValidation(isBuyer, response, lastPriceRecord = {}, lastPrice) {
 
 	if (stopLimitOrders.length !== 0) {
 
-		stopLimitOrders.map(stopLimitOrder => {
+		for (var stopLimitOrderKey in stopLimitOrders) {
+
+			let stopLimitOrder = stopLimitOrders[stopLimitOrderKey];
+
 			//finding index of price record in existing list
 			let findStopLimitPrice = buyerSellerList.findIndex(buyerOrder => parseFloatVal(buyerOrder.Price) === parseFloatVal(stopLimitOrder.Price));
 
@@ -786,7 +806,7 @@ function priceValidation(isBuyer, response, lastPriceRecord = {}, lastPrice) {
 				//If record is exist then sum amount of that record
 				buyerSellerList[findStopLimitPrice].Amount = buyerSellerList[findStopLimitPrice].Amount + stopLimitOrder.Amount;
 			}
-		})
+		}
 	}
 
 	//Sorting array based on Price

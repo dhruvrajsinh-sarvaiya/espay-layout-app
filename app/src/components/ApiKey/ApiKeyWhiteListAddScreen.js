@@ -71,7 +71,7 @@ class ApiKeyWhiteListAddScreen extends Component {
             if (addIPAddressData) {
                 try {
                     if (validateResponseNew({ response: addIPAddressData })) {
-                        showAlert(R.strings.Success + '!', addIPAddressData.ReturnMsg, 0, onPress = () => {
+                        showAlert(R.strings.Success + '!', addIPAddressData.ReturnMsg, 0, () => {
                             //clear data
                             this.props.clearApikeyData();
                             //----
@@ -111,7 +111,7 @@ class ApiKeyWhiteListAddScreen extends Component {
             if (await isInternet()) {
                 //module not static then call for api otherwise handle adding whitelist at our side
                 if (this.state.isStatic) {
-                    showAlert(R.strings.Success + '!', R.strings.added_msg, 0, onPress = () => {
+                    showAlert(R.strings.Success + '!', R.strings.added_msg, 0, () => {
                         let generateResponse = {
                             ID: 0,
                             AliasName: this.state.aliasName,

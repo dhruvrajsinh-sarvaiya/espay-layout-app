@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { View, FlatList, TouchableWithoutFeedback, Image } from 'react-native';
 import { connect } from 'react-redux';
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
-import { onFetchMarkets } from '../../actions/Trade/TradeActions';
+import { onFetchMarkets, onFetchMarginMarkets } from '../../actions/Trade/TradeActions';
 import { isCurrentScreen } from '../Navigation';
 import { changeTheme, } from '../../controllers/CommonUtils';
 import { isInternet, validateResponseNew } from '../../validations/CommonValidation';
 import Separator from '../../native_theme/components/Separator';
 import CustomToolbar from '../../native_theme/components/CustomToolbar'
-import { addFavourite, getFavourites, removeFavourite } from '../../actions/Trade/FavouriteActions';
+import { addFavourite as addFavouriteApi, getFavourites, removeFavourite as removeFavouriteApi } from '../../actions/Trade/FavouriteActions';
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import R from '../../native_theme/R';
 import CommonToast from '../../native_theme/components/CommonToast';
@@ -20,10 +20,11 @@ import AnimatableItem from '../../native_theme/components/AnimatableItem';
 import SafeView from '../../native_theme/components/SafeView';
 
 class MarketSearchScreen extends Component {
+
     constructor(props) {
         super(props);
 
-        // create reference
+        // Create reference
         this.toast = React.createRef();
 
         // Bind all methods
@@ -46,9 +47,15 @@ class MarketSearchScreen extends Component {
         // check mariket list data is not available then call api for fetching markets
         if (this.props.marketData.marketList == undefined) {
 
-            // check for internet connection
+            //Check NetWork is Available or not
             if (await isInternet()) {
-                this.props.onFetchMarkets();
+
+                // Call API to Get Market List
+                if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                    this.props.onFetchMarginMarkets({ IsMargin: 1 });
+                } else {
+                    this.props.onFetchMarkets();
+                }
             }
         }
     };
@@ -104,17 +111,17 @@ class MarketSearchScreen extends Component {
                         if (validateResponseNew({ response: addFavourite, isList: true })) {
 
                             //take local market list
-                            let marketList = this.state.marketListData;
+                            let marketListTemp = this.state.marketListData;
 
                             //Find item index
-                            let itemIndex = marketList.findIndex(el => el.PairId === this.PairId);
+                            let itemIndex = marketListTemp.findIndex(el => el.PairId === this.PairId);
 
-                            if (itemIndex > -1) marketList[itemIndex].isFavorite = true;
+                            if (itemIndex > -1) marketListTemp[itemIndex].isFavorite = true;
 
                             return Object.assign({}, state, {
                                 addFavourite,
                                 removeFavourite: null,
-                                marketListData: marketList
+                                marketListData: marketListTemp
                             })
                         } else {
                             return Object.assign({}, state, {
@@ -135,17 +142,17 @@ class MarketSearchScreen extends Component {
                         if (validateResponseNew({ response: removeFavourite, isList: true })) {
 
                             //take local market list
-                            let marketList = this.state.marketListData;
+                            let marketListTemp = this.state.marketListData;
 
                             //Find item index
-                            let itemIndex = marketList.findIndex(el => el.PairId === this.PairId);
+                            let itemIndex = marketListTemp.findIndex(el => el.PairId === this.PairId);
 
-                            if (itemIndex > -1) marketList[itemIndex].isFavorite = false;
+                            if (itemIndex > -1) marketListTemp[itemIndex].isFavorite = false;
 
                             return Object.assign({}, state, {
                                 removeFavourite,
                                 addFavourite: null,
-                                marketListData: marketList
+                                marketListData: marketListTemp
                             })
                         } else {
                             return Object.assign({}, state, {
@@ -174,11 +181,15 @@ class MarketSearchScreen extends Component {
             if (addFavourite) {
                 this.toast.Show(addFavourite.ReturnMsg);
 
-                // check for internet connection
+                //Check NetWork is Available or not
                 if (await isInternet()) {
 
                     //To get the favourites list
-                    this.props.getFavourites({});
+                    if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                        this.props.getFavourites({ IsMargin: 1 });
+                    } else {
+                        this.props.getFavourites({});
+                    }
                 }
             }
         }
@@ -194,7 +205,11 @@ class MarketSearchScreen extends Component {
                 if (await isInternet()) {
 
                     //To get the favourites list
-                    this.props.getFavourites({});
+                    if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                        this.props.getFavourites({ IsMargin: 1 });
+                    } else {
+                        this.props.getFavourites({});
+                    }
                 }
             }
         }
@@ -217,21 +232,38 @@ class MarketSearchScreen extends Component {
     // for redirect to details screen
     onTradeHistoryItemPress(item) {
         var { navigate } = this.props.navigation;
-        navigate('MarketPairDetail', { item });
+
+        if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+            navigate('MarginMarketPairDetail', { item });
+        } else {
+            navigate('MarketPairDetail', { item });
+        }
     }
 
     // for add/remove pair to/from favorite
     async addToFavourite(item) {
 
-        // check for internet connection
+        //Check NetWork is Available or not
         if (await isInternet()) {
             this.PairId = item.PairId;
 
             // check for pair is alerady selected for favorite then remove from favorite otherwise add to favorite
-            if (item.isFavorite) {
-                this.props.removeFavourite({ PairId: item.PairId });
+            if (getData(ServiceUtilConstant.KEY_IsMargin)) {
+                if (item.isFavorite) {
+                    // call api for Remove Favourite
+                    this.props.removeFavourite({ PairId: item.PairId, IsMargin: 1 });
+                } else {
+                    // call api for Add Favourite
+                    this.props.addFavourite({ PairId: item.PairId, IsMargin: 1 });
+                }
             } else {
-                this.props.addFavourite({ PairId: item.PairId });
+                if (item.isFavorite) {
+                    // call api for Remove Favourite
+                    this.props.removeFavourite({ PairId: item.PairId });
+                } else {
+                    // call api for Add Favourite
+                    this.props.addFavourite({ PairId: item.PairId });
+                }
             }
         }
     }
@@ -313,9 +345,8 @@ class SearchItem extends Component {
         //Check If Old Props and New Props are Equal then Return False
         if (this.props.isSelect !== nextProps.isSelect) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     };
 
     render() {
@@ -337,6 +368,7 @@ class SearchItem extends Component {
         }
 
         let sign = item.ChangePer != 0 ? (item.ChangePer > 0 ? '+' : '') : '';
+
         return (
             <AnimatableItem>
                 <TouchableWithoutFeedback onPress={props.onPress}>
@@ -380,7 +412,7 @@ function mapStatToProps(state) {
 
     // Updated Data of Market and Favorites
     return {
-        marketData: state.tradeData,
+        marketData: state.preference.isMargin ? state.marginTradeReducer : state.tradeData,
         favourites: state.favouriteReducer
     }
 }
@@ -390,14 +422,17 @@ function mapDispatchToProps(dispatch) {
         // Perform Markets Action
         onFetchMarkets: () => dispatch(onFetchMarkets()),
 
+        // Perform Margin Markets Action
+        onFetchMarginMarkets: (payload) => dispatch(onFetchMarginMarkets(payload)),
+
         // Perform Favourites Action
         getFavourites: (payload) => dispatch(getFavourites(payload)),
 
         // Perform Add Favourites Action
-        addFavourite: (payload) => dispatch(addFavourite(payload)),
+        addFavourite: (payload) => dispatch(addFavouriteApi(payload)),
 
         // Perform remove Favourites Action
-        removeFavourite: (payload) => dispatch(removeFavourite(payload))
+        removeFavourite: (payload) => dispatch(removeFavouriteApi(payload))
     }
 }
 export default connect(mapStatToProps, mapDispatchToProps)(MarketSearchScreen);

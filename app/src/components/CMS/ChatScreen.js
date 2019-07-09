@@ -104,13 +104,11 @@ class ChatScreen extends Component {
                 try {
                     let oldChat = this.state.data;
                     let data = JSON.parse(RecieveChatHistory);
-                    let tempData = [];
 
                     //map for message data
                     data.Data.map((item, _index) => {
                         let userName = getData(ServiceUtilConstant.KEY_USER_NAME);
                         oldChat.push({ Name: item.Name, Message: item.Message, MyMessage: item.Name === userName });
-                        tempData.push({ Name: item.Name, Message: item.Message, MyMessage: item.Name === userName });
                     })
                     if (this._isMounted) {
                         this.setState({ data: oldChat });

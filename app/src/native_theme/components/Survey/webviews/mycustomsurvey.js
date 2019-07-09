@@ -13,14 +13,14 @@ var widget = {
 
         $el = $(el).find('.widget-datepicker');
 
-        var widget = $el.datepicker({
+        var widget1 = $el.datepicker({
             dateFormat: question.dateFormat,
             onSelect: function(dateText) {
                 question.value = dateText;
             }
         });
         question.valueChangedCallback = function() {
-            widget.datepicker('setDate', new Date(question.value));
+            widget1.datepicker('setDate', new Date(question.value));
         }
         question.valueChangedCallback();
     },
@@ -89,7 +89,6 @@ webViewBridgeReady(function (webViewBridge) {
     const message = parseFromBridge(msg);
     if (message.text) document.getElementById('message').innerText = message.text;
 
-    var response = {};
     if (message.action && message.action==='LOAD') {
         loadMySurvey(message.survey, message.surveydata);
     

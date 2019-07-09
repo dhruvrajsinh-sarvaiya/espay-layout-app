@@ -1,9 +1,5 @@
 import React, { Component } from 'react';
-import {
-    View,
-    ScrollView,
-    FlatList
-} from 'react-native';
+import { View, ScrollView, FlatList } from 'react-native';
 import CommonStatusBar from '../../../native_theme/components/CommonStatusBar'
 import CustomToolbar from '../../../native_theme/components/CustomToolbar'
 import { changeTheme, parseFloatVal, convertDateTime } from '../../../controllers/CommonUtils';
@@ -65,7 +61,6 @@ class TradingSummaryDetailScreen extends Component {
                             <TextViewHML style={[this.styles().text_style]}>
                                 {R.strings.TxnID}
                             </TextViewHML>
-
                             <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.volumeText, textAlign: 'right' }}>
                                 {this.state.item.TrnNo}
                             </TextViewHML>
@@ -82,7 +77,6 @@ class TradingSummaryDetailScreen extends Component {
                         {/* Header of Average/Price and their value */}
                         <View style={{ flexDirection: 'row', marginLeft: R.dimens.widget_left_right_margin, marginRight: R.dimens.widget_left_right_margin }}>
                             <TextViewHML style={[this.styles().text_style]}>{R.strings.price}</TextViewHML>
-
                             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
                                 <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.volumeText }}>{parseFloatVal(this.state.item.Price).toFixed(8)}</TextViewHML>
                             </View>
@@ -149,7 +143,7 @@ class TradingSummaryDetailScreen extends Component {
                                                 flexDirection: 'row',
                                                 marginLeft: R.dimens.widget_left_right_margin,
                                                 marginRight: R.dimens.widget_left_right_margin,
-                                                marginTop: (index == 0) ? R.dimens.widgetMargin : R.dimens.widgetMargin,
+                                                marginTop: R.dimens.widgetMargin,
                                                 marginBottom: (index == this.state.item.Trades.size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                                             }}>
                                                 <TextViewHML style={{ flex: 1, color: R.colors.textPrimary, fontSize: R.dimens.smallestText, textAlign: 'center' }}>{item.TrnNo}</TextViewHML>

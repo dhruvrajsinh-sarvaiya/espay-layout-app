@@ -143,7 +143,7 @@ class TransferInHistoryResult extends Component {
 
         //for final items from search input (validate on Amount , TrnID  and WalletType)
         //default searchInput is empty so it will display all records.
-        let finalItems = this.state.response.filter(item => (('' + item.Amount).includes(this.state.searchInput) || ('' + item.TrnID).includes(this.state.searchInput.toLowerCase()) || item.WalletType.toLowerCase().includes(this.state.searchInput.toLowerCase())));
+        let finalItems = this.state.response.filter(trnInHistoryItem => (('' + trnInHistoryItem.Amount).includes(this.state.searchInput) || ('' + trnInHistoryItem.TrnID).includes(this.state.searchInput.toLowerCase()) || trnInHistoryItem.WalletType.toLowerCase().includes(this.state.searchInput.toLowerCase())));
 
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
@@ -173,12 +173,12 @@ class TransferInHistoryResult extends Component {
                                         showsVerticalScrollIndicator={false}
                                         /* render all item in list */
                                         renderItem={({ item, index }) =>
-                                            <FlatListItem
-                                                item={item}
-                                                index={index}
-                                                size={this.state.response.length}
-                                                onTrnIdPress={() => this.onTrnLinkPress(item)}>
-                                            </FlatListItem>}
+                                            <TrnInHistoryList
+                                                trnInHistoryItem={item}
+                                                trnInHistoryIndex={index}
+                                                trnInHistorySize={this.state.response.length}
+                                                onTrnIdPress={() => this.onTrnLinkPress(item)} />
+                                        }
                                         /* assign index as key valye to Transfer In History list item */
                                         keyExtractor={item => item.AutoNo.toString()}
                                         /* For Refresh Functionality In Transfer In History FlatList Item */
@@ -203,7 +203,7 @@ class TransferInHistoryResult extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
+class TrnInHistoryList extends Component {
 
     constructor(props) {
         super(props);
@@ -211,7 +211,7 @@ class FlatListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.trnInHistoryItem === nextProps.trnInHistoryItem) {
             return false
         }
         return true
@@ -220,42 +220,42 @@ class FlatListItem extends Component {
     render() {
 
         // Get required fields from props
-        let item = this.props.item
-        let { index, size, } = this.props;
+        let trnInHistoryItem = this.props.trnInHistoryItem
+        let { trnInHistoryIndex, trnInHistorySize } = this.props;
 
         return (
             <AnimatableItem>
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (trnInHistoryIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginBottom: (trnInHistoryIndex == trnInHistorySize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginRight: R.dimens.widget_left_right_margin,
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
                 }}>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
-                        borderRadius: 0,
                         flexDirection: 'column',
-                        borderBottomLeftRadius: R.dimens.margin,
+                        borderRadius: 0,
                         borderTopRightRadius: R.dimens.margin,
+                        borderBottomLeftRadius: R.dimens.margin,
+                        elevation: R.dimens.listCardElevation,
                     }}>
 
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
                             {/* Currency Image */}
-                            <ImageViewWidget url={item.WalletType ? item.WalletType : ''} width={R.dimens.IconWidthHeight} height={R.dimens.IconWidthHeight} />
+                            <ImageViewWidget url={trnInHistoryItem.WalletType ? trnInHistoryItem.WalletType : ''} width={R.dimens.IconWidthHeight} height={R.dimens.IconWidthHeight} />
 
                             <View style={{ flex: 1, marginLeft: R.dimens.widgetMargin, }}>
 
                                 {/* Amount , Currecncy Name and Transaction No */}
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                    <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{(parseFloatVal(item.Amount).toFixed(8).toString()) !== 'NaN' ? parseFloatVal(item.Amount).toFixed(8).toString() : '-'} {item.WalletType ? item.WalletType : '-'}</Text>
-                                    {item.TrnNo ?
+                                    <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{(parseFloatVal(trnInHistoryItem.Amount).toFixed(8).toString()) !== 'NaN' ? parseFloatVal(trnInHistoryItem.Amount).toFixed(8).toString() : '-'} {trnInHistoryItem.WalletType ? trnInHistoryItem.WalletType : '-'}</Text>
+                                    {trnInHistoryItem.TrnNo ?
                                         <View style={{ flexDirection: 'row', }}>
                                             <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.Trn_No} : </TextViewHML>
-                                            <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{validateValue(item.TrnNo)}</TextViewHML>
+                                            <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{validateValue(trnInHistoryItem.TrnNo)}</TextViewHML>
                                         </View>
                                         : null
                                     }
@@ -264,7 +264,7 @@ class FlatListItem extends Component {
                                 {/* To Address */}
                                 <View style={{ flexDirection: 'row', marginTop: R.dimens.widgetMargin }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallText, }}>{R.strings.to} : </TextViewHML>
-                                    <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{item.Address ? item.Address : '-'}</TextViewHML>
+                                    <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{trnInHistoryItem.Address ? trnInHistoryItem.Address : '-'}</TextViewHML>
                                 </View>
                             </View>
                         </View >
@@ -276,11 +276,11 @@ class FlatListItem extends Component {
                                 <Separator style={{ flex: 1, justifyContent: 'center', }} />
                             </View>
                             {
-                                (item.TrnID && item.ExplorerLink) ?
+                                (trnInHistoryItem.TrnID && trnInHistoryItem.ExplorerLink) ?
                                     <TouchableOpacity onPress={this.props.onTrnIdPress}>
-                                        <TextViewHML style={{ marginLeft: R.dimens.widget_left_right_margin, fontSize: R.dimens.smallestText, color: R.colors.accent, }}>{item.TrnID ? item.TrnID : '-'}</TextViewHML>
+                                        <TextViewHML style={{ marginLeft: R.dimens.widget_left_right_margin, fontSize: R.dimens.smallestText, color: R.colors.accent, }}>{trnInHistoryItem.TrnID ? trnInHistoryItem.TrnID : '-'}</TextViewHML>
                                     </TouchableOpacity> :
-                                    <TextViewHML style={{ marginLeft: R.dimens.widget_left_right_margin, fontSize: R.dimens.smallestText, color: R.colors.textPrimary, }}>{item.TrnID ? item.TrnID : '-'}</TextViewHML>
+                                    <TextViewHML style={{ marginLeft: R.dimens.widget_left_right_margin, fontSize: R.dimens.smallestText, color: R.colors.textPrimary, }}>{trnInHistoryItem.TrnID ? trnInHistoryItem.TrnID : '-'}</TextViewHML>
                             }
                         </View>
 
@@ -288,8 +288,8 @@ class FlatListItem extends Component {
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginTop: R.dimens.widget_top_bottom_margin, marginLeft: R.dimens.widget_left_right_margin }}>
                             <StatusChip
                                 color={R.colors.yellow}
-                                value={(item.ConfirmationCount ? item.ConfirmationCount : '-') + '/' + (item.Confirmations ? item.Confirmations : '-') + ' ' + R.strings.Conf}></StatusChip>
-                            <TextViewHML style={{ alignSelf: 'center', color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{convertDateTime(item.Date)}</TextViewHML>
+                                value={(trnInHistoryItem.ConfirmationCount ? trnInHistoryItem.ConfirmationCount : '-') + '/' + (trnInHistoryItem.Confirmations ? trnInHistoryItem.Confirmations : '-') + ' ' + R.strings.Conf} />
+                            <TextViewHML style={{ alignSelf: 'center', color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{convertDateTime(trnInHistoryItem.Date)}</TextViewHML>
                         </View>
                     </CardView>
                 </View>

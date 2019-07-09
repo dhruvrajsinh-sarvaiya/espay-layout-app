@@ -77,7 +77,7 @@ class ApplicationCenterScreen extends Component {
 
     //loading bit for handling progress dialog
     let { loading } = this.props.data
-    
+
     return (
       <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
 
@@ -117,9 +117,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    // performs Action for get applicationCenter page data
+    // performs Action for get applicationCenter page data.
     getPageContents: (pageId) => dispatch(getPageContents(pageId)),
-    // performs Action for clear applicationCenter page data from reducer
+
+    // performs Action for clear applicationCenter page data from reducer.
     clearPageContents: () => dispatch(clearPageContents()),
   }
 }

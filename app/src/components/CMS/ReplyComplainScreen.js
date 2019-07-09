@@ -340,22 +340,22 @@ class FlatListItem extends PureComponent {
             <View style={{ flexDirection: flexDirection, margin: R.dimens.margin, justifyContent: 'center', alignItems: 'center' }}>
 
                 <View style={{
+                    backgroundColor: R.colors.background,
                     width: R.dimens.signup_screen_logo_height,
                     height: R.dimens.signup_screen_logo_height,
-                    backgroundColor: R.colors.background,
                 }}>
-                    <Image source={R.images.AVATAR_05} style={{ width: R.dimens.signup_screen_logo_height, height: R.dimens.signup_screen_logo_height, padding: R.dimens.margin, borderRadius: R.dimens.signup_screen_logo_height / 2 }}></Image>
+                    <Image source={R.images.AVATAR_05} style={{ padding: R.dimens.margin, width: R.dimens.signup_screen_logo_height, height: R.dimens.signup_screen_logo_height, borderRadius: R.dimens.signup_screen_logo_height / 2 }}></Image>
                 </View>
                 <View
                     style={{
                         flex: 1,
                         flexDirection: 'column',
-                        marginLeft: marginLeft,
-                        marginRight: marginRight,
                         backgroundColor: cardBackground,
                         justifyContent: 'center',
                         padding: R.dimens.widgetMargin,
+                        marginLeft: marginLeft,
                         borderRadius: R.dimens.margin,
+                        marginRight: marginRight,
                         borderBottomEndRadius: borderBottomEndRadius,
                         borderBottomLeftRadius: borderBottomLeftRadius,
                         ...getCardStyle(R.dimens.CardViewElivation),

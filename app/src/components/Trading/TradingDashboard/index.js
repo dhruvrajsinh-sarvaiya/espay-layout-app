@@ -8,8 +8,7 @@ import { connect } from 'react-redux';
 import { isCurrentScreen } from '../../Navigation';
 import CommonStatusBar from '../../../native_theme/components/CommonStatusBar';
 import { changeTheme } from '../../../controllers/CommonUtils';
-import TopGainer from '../TopGainerLoser/TopGainer';
-import TopLoser from '../TopGainerLoser/TopLoser';
+import TopGainerLooser from '../TopGainerLoser/TopGainerLooser';
 import R from '../../../native_theme/R';
 import Separator from '../../../native_theme/components/Separator';
 import DashboardHeaderWidget from './DashboardHeaderWidget';
@@ -54,9 +53,7 @@ class TradingDashboard extends Component {
 
     //To open Drawer
     handleDrawer() {
-        if (this.props.drawer !== null && this.props.drawer.openDrawer !== undefined) {
-            this.props.drawer.openDrawer()
-        }
+        this.props.preference.dimensions.isPortrait && this.props.navigation.openDrawer()
     }
 
     // to update gainer looser selection
@@ -134,9 +131,7 @@ class TradingDashboard extends Component {
                             }} />
                     </View>
 
-                    {this.state.isGainer ?
-                        <TopGainer navigation={this.props.navigation} /> :
-                        <TopLoser navigation={this.props.navigation} />}
+                    <TopGainerLooser navigation={this.props.navigation} isGainer={this.state.isGainer} />
                 </ScrollView>
             </SafeView >
         );

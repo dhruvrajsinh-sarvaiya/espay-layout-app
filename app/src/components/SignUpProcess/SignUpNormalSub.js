@@ -37,9 +37,9 @@ class SignUpNormalSub extends Component {
             MobileNumber: this.props.navigation.state.params ? this.props.navigation.state.params.MobileNumber : '',
             EmailId: this.props.navigation.state.params ? this.props.navigation.state.params.EmailId : '',
             CountryCode: this.props.navigation.state.params ? this.props.navigation.state.params.CountryCode : '',
-            UserName: '',
+            userName: '',
             ReferralID: '',
-            Password: '',
+            password: '',
             ConfirmPassword: '',
             isVisiblePassword: false
         }
@@ -109,38 +109,38 @@ class SignUpNormalSub extends Component {
     //Check All Validation and if validation is proper then call API
     onSignUpButtonPress = async () => {
 
-        //Check UserName is Empty or Not
-        if (isEmpty(this.state.UserName)) {
+        //Check userName is Empty or Not
+        if (isEmpty(this.state.userName)) {
             this.toast.Show(R.strings.username_validate);
             return;
         }
 
-        //Check Password is Empty or Not
-        if (isEmpty(this.state.Password)) {
+        //Check password is Empty or Not
+        if (isEmpty(this.state.password)) {
             this.toast.Show(R.strings.password_validate);
             return;
         }
 
-        //To Check Password length is 10 or not
-        if (this.state.Password.length < 6) {
+        //To Check password length is 10 or not
+        if (this.state.password.length < 6) {
             this.toast.Show(R.strings.password_length_validate);
             return;
         }
 
-        //To Check Password Validation
-        if (!validatePassword(this.state.Password)) {
+        //To Check password Validation
+        if (!validatePassword(this.state.password)) {
             this.toast.Show(R.strings.Strong_Password_Validation);
             return;
         }
 
-        //Check Confirm Password is Empty or Not
+        //Check Confirm password is Empty or Not
         if (isEmpty(this.state.ConfirmPassword)) {
             this.toast.Show(R.strings.confirm_password_validate);
             return;
         }
 
-        //Check Password and Confrim Password are Same 
-        if (this.state.Password != this.state.ConfirmPassword) {
+        //Check password and Confrim password are Same 
+        if (this.state.password != this.state.ConfirmPassword) {
             this.toast.Show(R.strings.password_match_validate);
             return;
         }
@@ -160,11 +160,11 @@ class SignUpNormalSub extends Component {
                 try {
                     //Bind Request For Normal SignUp
                     let registerRequest = {
-                        Username: this.state.UserName,
+                        Username: this.state.userName,
                         Firstname: this.state.FirstName,
                         Lastname: this.state.LastName,
                         Email: (this.state.EmailId).toLowerCase(),
-                        Password: this.state.Password,
+                        Password: this.state.password,
                         Mobile: this.state.MobileNumber,
                         CountryCode: this.state.CountryCode,
                         PreferedLanguage: R.strings.getLanguage(),
@@ -215,7 +215,7 @@ class SignUpNormalSub extends Component {
 
                         <View style={this.styles().input_container}>
 
-                            {/* To Set UserName in EditText */}
+                            {/* To Set userName in EditText */}
                             <EditText
                                 ref={input => { this.mainInputTexts['etUsername'] = input; }}
                                 isRound={true}
@@ -224,14 +224,14 @@ class SignUpNormalSub extends Component {
                                 multiline={false}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(UserName) => this.setState({ UserName })}
+                                onChangeText={(userName) => this.setState({ userName })}
                                 onSubmitEditing={() => { this.focusNextField('etPassword') }}
-                                value={this.state.UserName}
+                                value={this.state.userName}
                                 focusable={true}
                                 onFocus={() => changeFocus(this.mainInputTexts, 'etUsername')}
                             />
 
-                            {/* To Set Password in EditText */}
+                            {/* To Set password in EditText */}
                             <EditText
                                 ref={input => { this.mainInputTexts['etPassword'] = input; }}
                                 isRound={true}
@@ -246,9 +246,9 @@ class SignUpNormalSub extends Component {
                                 }}
                                 keyboardType='default'
                                 returnKeyType={"next"}
-                                onChangeText={(Password) => this.setState({ Password })}
+                                onChangeText={(password) => this.setState({ password })}
                                 onSubmitEditing={() => { this.focusNextField('etConfirmPassword') }}
-                                value={this.state.Password}
+                                value={this.state.password}
                                 focusable={true}
                                 onFocus={() => changeFocus(this.mainInputTexts, 'etPassword')}
                             />

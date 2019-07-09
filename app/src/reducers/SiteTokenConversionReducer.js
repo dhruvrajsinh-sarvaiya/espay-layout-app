@@ -66,7 +66,13 @@ const initialState = {
 
 }
 
-const SiteTokenConversionReducer = (state = initialState, action) => {
+const SiteTokenConversionReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
 
         // Handle Currency List method data
@@ -126,14 +132,8 @@ const SiteTokenConversionReducer = (state = initialState, action) => {
                 SiteTokenHistoryisFetching: true,
                 SiteTokenHistorydata: ''
             });
-        // Set Site Token Report List success data
+        // Set Site Token Report List success and failure data
         case GET_SITE_TOKEN_REPORT_LIST_SUCCESS:
-            return Object.assign({}, state, {
-                SiteTokenHistoryFetchData: false,
-                SiteTokenHistoryisFetching: false,
-                SiteTokenHistorydata: action.payload
-            });
-        // Set Site Token Report List failure data
         case GET_SITE_TOKEN_REPORT_LIST_FAILURE:
             return Object.assign({}, state, {
                 SiteTokenHistoryFetchData: false,

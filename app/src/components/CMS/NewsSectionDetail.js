@@ -61,6 +61,7 @@ class NewsSectionDetail extends Component {
 
                                 {/* Add HTML View for parsing HTML tags to react native */}
                                 <HtmlViewer
+                                    style={{ backgroundColor: R.colors.cardBackground }}
                                     applyMargin={true}
                                     data={params.maincontent ? params.maincontent : '-'} />
                             </CardView>

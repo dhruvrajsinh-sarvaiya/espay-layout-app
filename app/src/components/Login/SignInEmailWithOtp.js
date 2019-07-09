@@ -9,7 +9,7 @@ import { isCurrentScreen } from '../Navigation';
 import { ServiceUtilConstant, timerScreen } from '../../controllers/Constants';
 import ProgressDialog from '../../native_theme/components/ProgressDialog';
 import OTPScreenWidget from '../Widget/OTPScreenWidget';
-import { generateToken, clearGenerateTokenData } from '../../actions/Login/AuthorizeToken';
+import { generateToken as generateTokenApi, clearGenerateTokenData } from '../../actions/Login/AuthorizeToken';
 import { removeLoginData } from '../../actions/SignUpProcess/signUpAction';
 import { setData } from '../../App';
 import { AppConfig } from '../../controllers/AppConfig';
@@ -368,7 +368,7 @@ function mapStateToProps(state) {
 	return {
 		// Updated Data for login and token action
 		login: state.loginReducer,
-		token: state.tokenReducer,
+		token: state.AuthorizeTokenReducer,
 	}
 }
 
@@ -379,7 +379,7 @@ function mapDispatchToProps(dispatch) {
 		//Perform Verify Otp Action
 		signInEmailVerifyOTP: (emailOtpVerifyRequest) => dispatch(signInEmailVerifyOTP(emailOtpVerifyRequest)),
 		// Perform generate Token Action
-		generateToken: (payload) => dispatch(generateToken(payload)),
+		generateToken: (payload) => dispatch(generateTokenApi(payload)),
 		//Perform clear all type of login data Action
 		removeLoginData: () => dispatch(removeLoginData()),
 		// Perform to clear token data Action

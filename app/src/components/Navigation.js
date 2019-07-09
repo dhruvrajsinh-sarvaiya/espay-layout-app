@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { BackHandler, Dimensions } from "react-native";
 import { connect } from 'react-redux';
 import { createStackNavigator, NavigationActions, StackActions } from 'react-navigation';
-import { reduxifyNavigator, createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
+import { createReactNavigationReduxMiddleware, createReduxContainer, createNavigationReducer } from 'react-navigation-redux-helpers';
 import Screens from './';
 import { addListener, showAlert, sendEvent } from "../controllers/CommonUtils";
 import { Events, ServiceUtilConstant, AllOrientations } from "../controllers/Constants";
@@ -25,23 +25,22 @@ const RootNavigator = createStackNavigator(Screens, {
         containerStyle: {
             backgroundColor: 'rgba(0, 0, 0, 0)'
         },
-        screenInterpolator: () => null,
-
-        // below code will only stop forward navigation, goBack() will not work
+        screenInterpolator: () => null
         /* transitionSpec: {
-            duration: 0, // Set the animation duration time as 0 !!
+            duration: 0,  // Set the animation duration time as 0 !!
             timing: Animated.timing,
             easing: Easing.step0,
         }, */
     })
 });
 
+const navReducer = createNavigationReducer(RootNavigator);
+
 const navigationMiddleware = createReactNavigationReduxMiddleware(
-    'root',
-    state => state.nav
+    state => state.navigationReducer
 );
 
-const AppNavigator = reduxifyNavigator(RootNavigator, 'root');
+const AppNavigator = createReduxContainer(RootNavigator, 'root');
 
 var routes, backPressRoutes = [], resumeRoutes = [], globalDispatch;
 
@@ -147,7 +146,6 @@ class ReduxNavigation extends PureComponent {
      */
     setLockStatus(status) {
         this.lock = status;
-        // console.warn('Locked Status : ' + this.isLocked())
     }
 
     /**
@@ -198,7 +196,6 @@ class ReduxNavigation extends PureComponent {
                             Orientation.lockToPortrait();
 
                             setTimeout(() => {
-                                //To reset dimension to portrait forcefully
                                 let { width, height } = Dimensions.get('window');
 
                                 let newData = {
@@ -217,8 +214,7 @@ class ReduxNavigation extends PureComponent {
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 // if lock status is not true than set it true otherwise don't change anything
                 if (!this.isLocked()) {
 
@@ -230,7 +226,6 @@ class ReduxNavigation extends PureComponent {
                 }
             }
 
-            // if resumeRoutes is available then check for its validation
             if (resumeRoutes.length > 0) {
 
                 let rootPrevRoute = prevProps.navigation.routes[prevProps.navigation.index]
@@ -339,7 +334,7 @@ class ReduxNavigation extends PureComponent {
 }
 
 const mapStateToProps = state => ({
-    navigation: state.nav,
+    navigation: state.navigationReducer,
 });
 
 const ReduxNavigator = connect(mapStateToProps)(ReduxNavigation);
@@ -355,7 +350,7 @@ function isCurrentScreen(props) {
 
     while (route.index !== undefined) {
         route = route.routes[route.index]
-    };
+    }
 
     // if current route is Modal than get previous route
     if (route.routeName === 'Modal') {
@@ -370,7 +365,7 @@ function isCurrentScreen(props) {
     // if currentRoute and route is same then return true, otherwise
     // check if route is Modal and current route & prev route are same than return true, otherwise
     // return false
-    return route.routeName == currentRoute || (route.routeName === 'Modal' && currentRoute == prevRoute.routeName);
+    return route.routeName == currentRoute || (route.routeName === 'Modal' && prevRoute !== null && prevRoute !== 'undefined' && currentRoute === prevRoute.routeName);
 }
 
 /**
@@ -456,4 +451,4 @@ function navigateReset(routeName) {
     }))
 }
 
-export { RootNavigator, ReduxNavigator, navigationMiddleware, isCurrentScreen, addRouteToBackPress, addComponentDidResume, navigate, navigateReset };
+export { RootNavigator, ReduxNavigator, navigationMiddleware, isCurrentScreen, addRouteToBackPress, addComponentDidResume, navReducer, navigate, navigateReset };

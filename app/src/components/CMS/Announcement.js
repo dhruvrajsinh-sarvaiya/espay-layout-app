@@ -192,6 +192,7 @@ class Showdata extends Component {
                 {isHtmlData(this.props.Content) ?
                     /* content is display in html viewer */
                     <HtmlViewer
+                        style={{ backgroundColor: R.colors.cardBackground }}
                         data={this.props.Content ? this.props.Content : '-'}
                         applyMargin={true} />
                     :

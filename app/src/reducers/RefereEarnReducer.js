@@ -80,7 +80,13 @@ const initialState = {
     smsData: null,
     smsSendError: false,
 }
-export default function RefereEarnReducer(state = initialState, action) {
+export default function RefereEarnReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return initialState;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT:
@@ -94,14 +100,8 @@ export default function RefereEarnReducer(state = initialState, action) {
                 enstimatedCommissionData: null,
                 referralCode: null,
             }
-        // Set estimated commission success data
+        // Set estimated commission success and failure data
         case GET_ENSTIMATED_COMMISSION_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                enstimatedCommissionData: action.response,
-            }
-        // Set estimated commission failure data
         case GET_ENSTIMATED_COMMISSION_FAILURE:
             return {
                 ...state,

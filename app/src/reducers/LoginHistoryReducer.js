@@ -24,7 +24,13 @@ const INITIAL_STATE = {
     LoginHistoryWidgetData: null,
 }
 
-const LoginHistoryReducer = (state = INITIAL_STATE, action) => {
+const LoginHistoryReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout
@@ -63,7 +69,7 @@ const LoginHistoryReducer = (state = INITIAL_STATE, action) => {
                 LoginIsFetching: false,
                 LoginHistorydata: null
             });
-            
+
         // If no actions were found from reducer than return default [existing] state value
         default:
             return state;

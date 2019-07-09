@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, ScrollView, FlatList, Text, TouchableWithoutFeedback,Dimensions } from 'react-native'
+import { View, Image, ScrollView, FlatList, Text, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
 import CustomToolbar from '../../native_theme/components/CustomToolbar';
 import R from '../../native_theme/R';
@@ -34,17 +34,18 @@ function wp(percentage) {
 
 const slideWidth = wp(85);
 const itemWidth = slideWidth;
-var largerHeight = 0;
+var largerHeight;
 var needScale = true;
 
 export class SocialProfileDashboard extends Component {
 	constructor(props) {
 		super(props);
-		let item = [];
+		let item;
 		if (props.navigation.state.params !== undefined && props.navigation.state.params.item !== undefined) {
 			item = props.navigation.state.params.item;
-		} else 
-			item = []
+		} else {
+			item = [];
+		}
 
 		//initial state
 		this.state = {
@@ -93,17 +94,17 @@ export class SocialProfileDashboard extends Component {
 		}
 
 		try {
-            this.dimensionListener = addListener(Events.Dimensions, (data) => this.setState(Object.assign({}, this.state, data)));
-        } catch (error) {
+			this.dimensionListener = addListener(Events.Dimensions, (data) => this.setState(Object.assign({}, this.state, data)));
+		} catch (error) {
 
-        }
-    }
+		}
+	}
 
-    componentWillUnmount() {
-        if (this.dimensionListener) {
-            this.dimensionListener.remove();
-        }
-    }
+	componentWillUnmount() {
+		if (this.dimensionListener) {
+			this.dimensionListener.remove();
+		}
+	}
 
 	// Called when Top Gainer/Loser button
 	onPressTopGainerLoser = (isGainer) => {
@@ -120,9 +121,9 @@ export class SocialProfileDashboard extends Component {
 	}
 
 	// Checked item is subscribe or not
-	isSubscribe = (item) => {
+	isSubscribe = (subscribeitem) => {
 		let subscribe = false
-		item.map((item) => {
+		subscribeitem.map((item) => {
 			if (item.Subscribe)
 				subscribe = true
 		})
@@ -130,14 +131,15 @@ export class SocialProfileDashboard extends Component {
 	}
 
 	// Which plan is suscribed currently
-	whichPlanSubscribe = (item) => {
-		let subscribe = R.strings.SubscribeNow
-		item.map((item) => {
+	whichPlanSubscribe = (subscribePlan) => {
+		let subscribe;
+		subscribePlan.map((item) => {
 			if (item.Subscribe) {
-				if (item.ProfileType === 'Leader')
-					subscribe = item.ProfileType
-				else if (item.ProfileType === 'Follower')
-					subscribe = item.ProfileType
+				if (item.ProfileType === 'Leader' || item.ProfileType === 'Follower') {
+					subscribe = item.ProfileType;
+				} else {
+					subscribe = R.strings.SubscribeNow;
+				}
 			}
 		})
 		return subscribe
@@ -161,7 +163,7 @@ export class SocialProfileDashboard extends Component {
 	onLeaderListNextPress = () => {
 		// current index of item
 		let index = this.state.index;
-		let nextItemX = this.state.secondItemX;
+		let nextItemX;
 
 		// to determine first and last item of array
 		let isFirstItem = index == 0;
@@ -187,7 +189,7 @@ export class SocialProfileDashboard extends Component {
 			let marginLeft = R.dimens.widgetMargin;
 
 			// Item's right margin based on its current position, if its last item than it's margin will be greater than its previous margin
-			let marginRight = isLastItem ? R.dimens.widget_left_right_margin : R.dimens.widgetMargin;
+			let marginRight = R.dimens.widgetMargin;
 
 			// To get next item's x position
 			// Formula : Previous Item's X position + Item Width + Item's Left margin + Item's Right Margin
@@ -375,10 +377,10 @@ export class SocialProfileDashboard extends Component {
 				},
 			],
 			plotOptions: {
-                series: {
-                    boostThreshold: 500 // number of points in one series, when reaching this number, boost.js module will be used
-                }
-            },
+				series: {
+					boostThreshold: 500 // number of points in one series, when reaching this number, boost.js module will be used
+				}
+			},
 		};
 		const options = {
 			global: {
@@ -687,10 +689,10 @@ export class CardViewItem extends Component {
 
 								if (needScale) {
 									if (largerHeight != height) {
-										if (largerHeight == 0) {
+										if (largerHeight == 0 || height > largerHeight) {
 											largerHeight = height;
-										} else if (height > largerHeight) {
-											largerHeight = height;
+										} else {
+											largerHeight = 0;
 										}
 									}
 

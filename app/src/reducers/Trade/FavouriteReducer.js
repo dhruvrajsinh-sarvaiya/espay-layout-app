@@ -4,17 +4,17 @@ import {
     GET_FAVOURITES,
     GET_FAVOURITES_SUCCESS,
     GET_FAVOURITES_FAILURE,
-    
+
     // Add FAvorite
     ADD_FAVOURITE,
     ADD_FAVOURITE_SUCCESS,
     ADD_FAVOURITE_FAILURE,
-    
+
     // Remove Favorite
     REMOVE_FAVOURITE,
     REMOVE_FAVOURITE_SUCCESS,
     REMOVE_FAVOURITE_FAILURE,
-    
+
     // Action Logout
     ACTION_LOGOUT,
 
@@ -45,7 +45,12 @@ const INTIAL_STATE = {
     removeError: false,
 }
 
-export default function favouriteReducer(state = INTIAL_STATE, action) {
+export default function favouriteReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout
@@ -102,7 +107,6 @@ export default function favouriteReducer(state = INTIAL_STATE, action) {
                 removeFavourite: null,
                 isAdding: true,
                 addError: false,
-                removeFavourite: null,
             })
         }
         // Set Add Favorite success data
@@ -129,7 +133,6 @@ export default function favouriteReducer(state = INTIAL_STATE, action) {
                 addFavourite: null,
                 isRemoving: true,
                 removeError: false,
-                addFavourite: null,
             })
         }
         // Set Remove Favorite success data

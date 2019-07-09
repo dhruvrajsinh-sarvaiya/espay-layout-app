@@ -61,7 +61,13 @@ const INTIAL_STATE = {
 
 }
 
-const MarginWalletListReducer = (state = INTIAL_STATE, action) => {
+const MarginWalletListReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {
@@ -90,18 +96,8 @@ const MarginWalletListReducer = (state = INTIAL_STATE, action) => {
                 AddLevargeRequestFetchData: true,
                 ConfirmLevargeRequestFetchData: true,
             });
-        // Set List Margin Wallet success data
+        // Set List Margin Wallet success and Failure data
         case LIST_MARGIN_WALLETS_SUCCESS:
-            return Object.assign({}, state, {
-                MarginWalletListFetchData: false,
-                MarginWalletListisFetching: false,
-                MarginWalletListdata: action.payload,
-                leverageBaseCoinFetchData: true,
-                WalletListFetchData: true,
-                AddLevargeRequestFetchData: true,
-                ConfirmLevargeRequestFetchData: true,
-            });
-        // Set List Margin Wallet failure data
         case LIST_MARGIN_WALLETS_FAILURE:
             return Object.assign({}, state, {
                 MarginWalletListFetchData: false,
@@ -125,19 +121,8 @@ const MarginWalletListReducer = (state = INTIAL_STATE, action) => {
                 AddLevargeRequestFetchData: true,
                 ConfirmLevargeRequestFetchData: true,
             };
-        // Set Leverage Base Currency success data
+        // Set Leverage Base Currency success and failure data
         case LEVERAGE_BASE_CURRENCY_SUCCESS:
-            return {
-                ...state,
-                leverageBaseCoinFetchData: false,
-                leverageBaseCoinData: action.payload,
-                leverageBaseCoinIsFetching: false,
-                MarginWalletListFetchData: true,
-                WalletListFetchData: true,
-                AddLevargeRequestFetchData: true,
-                ConfirmLevargeRequestFetchData: true,
-            };
-        // Set Leverage Base Currency failure data
         case LEVERAGE_BASE_CURRENCY_FAILURE:
             return {
                 ...state,
@@ -162,19 +147,8 @@ const MarginWalletListReducer = (state = INTIAL_STATE, action) => {
                 MarginWalletListFetchData: true,
                 ConfirmLevargeRequestFetchData: true,
             };
-        // Set Margin Wallet success data
+        // Set Margin Wallet success and failure data
         case GET_MARGIN_WALLET_SUCCESS:
-            return {
-                ...state,
-                WalletListFetchData: false,
-                WalletListdata: action.payload,
-                WalletListIsFetching: false,
-                leverageBaseCoinFetchData: true,
-                AddLevargeRequestFetchData: true,
-                MarginWalletListFetchData: true,
-                ConfirmLevargeRequestFetchData: true,
-            };
-        // Set Margin Wallet failure data
         case GET_MARGIN_WALLET_FAILURE:
             return {
                 ...state,
@@ -199,19 +173,8 @@ const MarginWalletListReducer = (state = INTIAL_STATE, action) => {
                 MarginWalletListFetchData: true,
                 ConfirmLevargeRequestFetchData: true,
             };
-        // Set Add Leverage success data
+        // Set Add Leverage success and failure data
         case ADD_LEVERAGE_SUCCESS:
-            return {
-                ...state,
-                AddLevargeRequestFetchData: false,
-                AddLevargeRequestdata: action.payload,
-                AddLevargeRequestIsFetching: false,
-                leverageBaseCoinFetchData: true,
-                WalletListFetchData: true,
-                MarginWalletListFetchData: true,
-                ConfirmLevargeRequestFetchData: true,
-            };
-        // Set Add Leverage failure data
         case ADD_LEVERAGE_FAILURE:
             return {
                 ...state,
@@ -236,19 +199,8 @@ const MarginWalletListReducer = (state = INTIAL_STATE, action) => {
                 WalletListFetchData: true,
                 AddLevargeRequestFetchData: true,
             };
-        // Set Add Leverage Confirmation success data
+        // Set Add Leverage Confirmation success and failure data
         case ADD_LEVERAGE_CONFIRMATION_SUCCESS:
-            return {
-                ...state,
-                ConfirmLevargeRequestFetchData: false,
-                ConfirmLevargeRequestdata: action.payload,
-                ConfirmLevargeRequestIsFetching: false,
-                MarginWalletListFetchData: true,
-                leverageBaseCoinFetchData: true,
-                WalletListFetchData: true,
-                AddLevargeRequestFetchData: true,
-            };
-        // Set Add Leverage Confirmation failure data
         case ADD_LEVERAGE_CONFIRMATION_FAILURE:
             return {
                 ...state,

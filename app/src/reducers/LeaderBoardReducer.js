@@ -17,7 +17,13 @@ const INITIAL_STATE = {
     LeaderBoardListisFetching: false,
 }
 
-const LeaderBoardReducer = (state = INITIAL_STATE, action) => {
+const LeaderBoardReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
+
     switch (action.type) {
 
         // To reset initial state on logout
@@ -32,21 +38,15 @@ const LeaderBoardReducer = (state = INITIAL_STATE, action) => {
                 LeaderBoardListisFetching: true,
                 LeaderBoardListdata: ''
             });
-        // Set leader board list success data
+        // Set leader board list success and failure data
         case GET_LEADER_BOARD_LIST_SUCCESS:
-            return Object.assign({}, state, {
-                LeaderBoardListFetchData: false,
-                LeaderBoardListisFetching: false,
-                LeaderBoardListdata: action.payload
-            });
-        // Set leader board list failure data
         case GET_LEADER_BOARD_LIST_FAILURE:
             return Object.assign({}, state, {
                 LeaderBoardListFetchData: false,
                 LeaderBoardListisFetching: false,
                 LeaderBoardListdata: action.payload
             });
-            
+
         // If no actions were found from reducer than return default [existing] state value
         default:
             return state;

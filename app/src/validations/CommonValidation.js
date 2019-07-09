@@ -1,4 +1,4 @@
-import { NetInfo } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 import { ServiceUtilConstant, Events } from '../controllers/Constants';
 import { showAlert, sendEvent, logger, parseIntVal } from '../controllers/CommonUtils';
 import { getData, setData } from '../App';
@@ -96,85 +96,6 @@ const statusCodes = [200, 400, 403, 498, 500, 502, 503];
 
 const loginErrorCodes = loginErrCode();
 
-var dialogShowCount = 0;
-
-//Create Common Method to handle response commonly
-export const validateResponse = (response, stCode = '', stMsg = '', fromHistory) => {
-
-    try {
-        //If response is array then return true
-        if (Array.isArray(response)) {
-
-            return true;
-        } else {
-
-            //If response is not array and its object then check for statusCode is 200 or its not available.
-            if (response.statusCode == null || statusCodes.includes(response.statusCode)) {
-
-                //Get Api STCODE and STMSG
-                let statusCode = !isEmpty(stCode) ? stCode : (response.ReturnCode != null ? response.ReturnCode : response.returnCode);
-                let statusMessage = !isEmpty(stMsg) ? stMsg : (response.ReturnMsg != null ? response.ReturnMsg : response.returnMsg);
-
-                if (statusCode == 0) {
-                    //this code will be handle in its main screen
-                }
-                //Handle failure Response of Api.
-                else if (statusCode == 1 || statusCode == 9) {
-                    //Here fromHistory Bit is Equal to true then not Display Alert Dialog 
-                    if (!fromHistory) {
-
-                        if (dialogShowCount == 0) {
-                            showAlert(R.strings.failure + '!', statusMessage, 1, () => dialogShowCount = 0);
-                            dialogShowCount++;
-                        }
-                    }
-                }
-                //Handle Session Expired Condition Response and Redirect User To Login Screen.
-                else if (statusCode == ServiceUtilConstant.SESSION_EXPIRED) {
-
-                    if (dialogShowCount == 0) {
-                        showAlert(R.strings.SessionError, statusMessage, 2, () => dialogShowCount = 0);
-                        dialogShowCount++;
-                    }
-                }
-                //Handle Server Down Connection Response and Display Alert To User
-                else if (statusCode == ServiceUtilConstant.SERVER_CONNECTION) {
-
-                    if (dialogShowCount == 0) {
-                        showAlert(R.strings.Info + '!', R.strings.SERVER_ERROR_MSG, 1, () => dialogShowCount = 0);
-                        dialogShowCount++;
-                    }
-                }
-                //Notify User To Status Message Of Api Repsonse.
-                else {
-                    if (dialogShowCount == 0) {
-                        let res = (JSON.stringify(response)).includes('<!DOCTYPE html>\r\n<html>\r\n<head>\r\n') ? 'API Underconstruction' : JSON.stringify(response);
-                        showAlert(R.strings.failure + '!', statusMessage == null ? res : statusMessage, 1, () => dialogShowCount = 0);
-                        dialogShowCount++;
-                    }
-                }
-
-                return statusCode == 0;
-
-            } else {
-                if (dialogShowCount == 0) {
-                    showAlert(R.strings.failure + '!', response.ReturnMsg ? response.ReturnMsg : R.strings.SERVER_ERROR_MSG, 1, () => dialogShowCount = 0);
-                    dialogShowCount++;
-                }
-                return false
-            }
-        }
-    } catch (error) {
-        if (dialogShowCount == 0) {
-            //logger('Error Response : ' + JSON.stringify(response))
-            showAlert(R.strings.failure + '!', R.strings.SERVER_ERROR_MSG, 1, () => dialogShowCount = 0);
-            dialogShowCount++;
-        }
-        return false
-    }
-
-}
-
 //Create Common Method to handle response commonly
 export function validateResponseNew(data = { response: {}, statusCode: null, returnCode: null, errorCode: null, returnMessage: null, isList: false, enableLog: false }) {
 
@@ -198,13 +119,14 @@ export function validateResponseNew(data = { response: {}, statusCode: null, ret
 
             if (enableLog) logger('Response is not array')
 
+            //Get Api Return Code and Message 
+            let rtCode;
+            let rtMsg = "";
+
             //If response is not array and its object then check for statusCode is 200 or its not available.
             if (stCode === undefined || statusCodes.includes(stCode)) {
 
                 if (enableLog) logger('Response is having success codes')
-
-                //Get Api Return Code and Message 
-                let rtCode, rtMsg;
 
                 if (returnCode !== undefined && !isEmpty(returnCode)) {
 
@@ -366,7 +288,7 @@ function showValidationDialog(dialog) {
 
         // If dialog's show is true or session expire is true then show dialog
         if (dialog.show || (!dialog.show && dialog.sessionExpire)) {
-            let title = R.strings.Status;
+            let title = '';
             if (dialog.type == 2) {
                 title = R.strings.SessionError;
             } else if (dialog.type == 1) {
@@ -402,7 +324,8 @@ function showValidationDialog(dialog) {
 export function validateGoogleAuthCode(code) {
     try {
         //Six Digits only for Google Auth Code
-        return /^[0-9]{0,6}$/.test(code);
+        let reg = new RegExp(/^[0-9]{0,6}$/);
+        return reg.test(code);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -413,7 +336,8 @@ export function validateGoogleAuthCode(code) {
 export function validateAlphaNumeric(text) {
     try {
         // \w any word character (A-Z, a-z, 0-9).
-        return /^[0-9a-zA-Z]+$/.test(text);
+        let reg = new RegExp(/^[0-9a-zA-Z]+$/);
+        return reg.test(text);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -424,7 +348,7 @@ export function validateAlphaNumeric(text) {
 export function validateMobileNumber(number) {
     try {
         //10 Digits for mobile nunber
-        let reg = /^[0-9]{0,10}$/;
+        let reg = new RegExp(/^[0-9]{0,10}$/);
         return reg.test(number);
     } catch (error) {
         //logger(error.message)
@@ -435,7 +359,7 @@ export function validateMobileNumber(number) {
 //For Password Validation
 export function validatePassword(password) {
     try {
-        let reg = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/;
+        let reg = new RegExp(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/);
         return reg.test(password);
     } catch (error) {
         //logger(error.message)
@@ -496,7 +420,7 @@ export function getRemainingSeconds(timerScreen) {
         let duration = moment.duration(newTime.diff(oldTime));
 
         //if stored screen and parameter screen are same then return duration.
-        if (timerScreen == storedScreen 
+        if (timerScreen == storedScreen
             && parseIntVal(duration.asMinutes()) == 0 // if minutes are 0
             && parseIntVal(duration.asSeconds()) > 0 // if seconds are greater than 0
             && parseIntVal(duration.asSeconds()) <= ServiceUtilConstant.timer_time_seconds) { // if seconds are less than and equal to 40 seconds
@@ -523,7 +447,8 @@ export function getRemainingSeconds(timerScreen) {
 export function validateNumeric(text) {
     try {
         // \w any Numeric character (0-9).
-        return /^[0-9]+$/.test(text);
+        let reg = new RegExp(/^[0-9]+$/);
+        return reg.test(text);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -533,7 +458,8 @@ export function validateNumeric(text) {
 //For Validate URL
 export function validateURL(text) {
     try {
-        return /^(ftp|http|https):\/\/[^ "]+$/.test(text);
+        let reg = new RegExp(/^(ftp|http|https):\/\/[^ "]+$/);
+        return reg.test(text);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -543,13 +469,12 @@ export function validateURL(text) {
 //For Validate IP Address
 export function validateIPaddress(ipaddress) {
     try {
-        let regex = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+        let regex = new RegExp(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);
 
         if (ipaddress) {
             if (regex.test(ipaddress))
                 return false;
-            else
-                return true;
+            return true;
         }
     } catch (e) {
         return true;
@@ -559,7 +484,8 @@ export function validateIPaddress(ipaddress) {
 //For Validate Week
 export function validWeek(Week) {
     try {
-        return /^[1-4]+$/.test(Week);
+        let reg = new RegExp(/^[1-4]+$/);
+        return reg.test(Week);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -569,7 +495,8 @@ export function validWeek(Week) {
 //For Validate Month
 export function validMonth(Month) {
     try {
-        return /(^0?[1-9]$)|(^1[0-2]$)/.test(Month);
+        let reg = new RegExp(/(^0?[1-9]$)|(^1[0-2]$)/);
+        return reg.test(Month);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -580,7 +507,8 @@ export function validMonth(Month) {
 export function validPercentage(Percentage) {
     try {
         //Regex for 0.00000000 to 100.00000000
-        return /^100(\.0{0,8}?)?$|^\d{0,2}(\.\d{0,8})?$/.test(Percentage);
+        let reg = new RegExp(/^100(\.0{0,8}?)?$|^\d{0,2}(\.\d{0,8})?$/);
+        return reg.test(Percentage);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -590,7 +518,8 @@ export function validPercentage(Percentage) {
 //For Validate Only Upercase and Lowercase Charcter 
 export function validCharacter(Name) {
     try {
-        return /^[A-Za-z]+$/.test(Name);
+        let reg = new RegExp(/^[A-Za-z]+$/);
+        return reg.test(Name);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -600,7 +529,8 @@ export function validCharacter(Name) {
 //For Validate Withdrawal Address
 export function validWithdrawAddress(Address) {
     try {
-        return /^[0-9A-Za-z?=]+$/.test(Address);
+        let reg = new RegExp(/^[0-9A-Za-z?=]+$/);
+        return reg.test(Address);
     } catch (error) {
         //logger(error.message)
         return false;
@@ -611,7 +541,7 @@ export function validWithdrawAddress(Address) {
 export function multipleMobileNumber(number) {
     try {
         //for enter only digit and comma
-        let reg = /^[0-9,]+$/;
+        let reg = new RegExp(/^[0-9,]+$/);
         return reg.test(number);
     } catch (error) {
         //logger(error.message)

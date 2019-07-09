@@ -18,7 +18,12 @@ const INTIAL_STATE = {
     newsdata: null,
     newsdatafetch: true,
 }
-export default function NewsSectionReducer(state = INTIAL_STATE, action) {
+export default function NewsSectionReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT: {

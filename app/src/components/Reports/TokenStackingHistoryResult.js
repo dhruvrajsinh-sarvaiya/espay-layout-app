@@ -98,13 +98,13 @@ class TokenStackingHistoryResult extends Component {
 
             //Bind Request For Token History
             let stakingHistoryRequest = {
-                PageSize: this.state.PageSize,
-                Page: this.state.Page,
                 FromDate: this.state.FromDate,
                 ToDate: this.state.ToDate,
-                Type: this.state.SelectedType === R.strings.Please_Select ? '' : (this.state.SelectedType === R.strings.Staking ? 1 : 2),
                 Slab: this.state.SelectedSlabType === R.strings.Please_Select ? '' : (this.state.SelectedSlabType === R.strings.Fixed ? 1 : 2),
+                Type: this.state.SelectedType === R.strings.Please_Select ? '' : (this.state.SelectedType === R.strings.Staking ? 1 : 2),
                 StakingType: this.state.SelectedStackingType === R.strings.Please_Select ? '' : (this.state.SelectedStackingType === R.strings.Fixed_Deposit ? 1 : 2),
+                PageSize: this.state.PageSize,
+                Page: this.state.Page,
             }
             //Call Get Token staking History API
             this.props.onTokenStackingHistory(stakingHistoryRequest);
@@ -123,13 +123,13 @@ class TokenStackingHistoryResult extends Component {
 
             //Bind Request For Token History
             let stakingHistoryRequest = {
-                PageSize: this.state.PageSize,
-                Page: this.state.Page,
                 FromDate: this.state.FromDate,
                 ToDate: this.state.ToDate,
-                Type: this.state.SelectedType === R.strings.Please_Select ? '' : (this.state.SelectedType === R.strings.Staking ? 1 : 2),
+                PageSize: this.state.PageSize,
+                Page: this.state.Page,
                 Slab: this.state.SelectedSlabType === R.strings.Please_Select ? '' : (this.state.SelectedSlabType === R.strings.Fixed ? 1 : 2),
                 StakingType: this.state.SelectedStackingType === R.strings.Please_Select ? '' : (this.state.SelectedStackingType === R.strings.Fixed_Deposit ? 1 : 2),
+                Type: this.state.SelectedType === R.strings.Please_Select ? '' : (this.state.SelectedType === R.strings.Staking ? 1 : 2),
             }
             //Call Get Token staking History API
             this.props.onTokenStackingHistory(stakingHistoryRequest);
@@ -158,8 +158,8 @@ class TokenStackingHistoryResult extends Component {
                 FromDate: this.state.FromDate,
                 ToDate: this.state.ToDate,
                 Type: this.state.SelectedType === R.strings.Please_Select ? '' : (this.state.SelectedType === R.strings.Staking ? 1 : 2),
-                Slab: this.state.SelectedSlabType === R.strings.Please_Select ? '' : (this.state.SelectedSlabType === R.strings.Fixed ? 1 : 2),
                 StakingType: this.state.SelectedStackingType === R.strings.Please_Select ? '' : (this.state.SelectedStackingType === R.strings.Fixed_Deposit ? 1 : 2),
+                Slab: this.state.SelectedSlabType === R.strings.Please_Select ? '' : (this.state.SelectedSlabType === R.strings.Fixed ? 1 : 2),
             }
             //Call Get Token staking History API
             this.props.onTokenStackingHistory(stakingHistoryRequest);
@@ -368,7 +368,7 @@ class TokenStackingHistoryResult extends Component {
         //----------
 
         //Filter Functionality on Stacking Currency
-        let finalItems = this.state.response.filter(item => ((item.StakingCurrency).toLowerCase().includes(this.state.searchInput.toLowerCase())));
+        let finalItems = this.state.response.filter(stackingHistoryItem => ((stackingHistoryItem.StakingCurrency).toLowerCase().includes(this.state.searchInput.toLowerCase())));
 
         return (
 
@@ -376,10 +376,10 @@ class TokenStackingHistoryResult extends Component {
             <Drawer
                 ref={cmp => this.drawer = cmp}
                 drawerWidth={R.dimens.FilterDrawarWidth}
+                type={Drawer.types.Overlay}
                 drawerContent={this.navigationDrawer()}
                 onDrawerOpen={() => this.setState({ isDrawerOpen: true })}
                 onDrawerClose={() => this.setState({ isDrawerOpen: false })}
-                type={Drawer.types.Overlay}
                 drawerPosition={Drawer.positions.Right}
                 easingFunc={Easing.ease}>
 
@@ -390,13 +390,13 @@ class TokenStackingHistoryResult extends Component {
 
                     {/* To set toolbar as per our theme */}
                     <CustomToolbar
-                        rightIcon={R.images.FILTER}
-                        onRightMenuPress={() => this.drawer.openDrawer()}
                         title={R.strings.TokenStacking_History}
+                        isBack={true}
                         searchable={true}
                         onSearchText={(text) => this.setState({ searchInput: text })}
-                        isBack={true}
                         onBackPress={this.onBackPress}
+                        rightIcon={R.images.FILTER}
+                        onRightMenuPress={() => this.drawer.openDrawer()}
                         nav={this.props.navigation} />
 
                     <View style={{ flex: 1, justifyContent: 'space-between' }}>
@@ -411,12 +411,13 @@ class TokenStackingHistoryResult extends Component {
                                             data={finalItems}
                                             showsVerticalScrollIndicator={false}
                                             /* render all item in list */
-                                            renderItem={({ item, index }) => <FlatListItem
-                                                item={item}
-                                                index={index}
-                                                size={this.state.response.length}
-                                                onPress={() => this.onViewPress(item)}>
-                                            </FlatListItem>}
+                                            renderItem={({ item, index }) =>
+                                                <TokenStackingHistoryList
+                                                    stackingHistoryItem={item}
+                                                    stackingHistoryIndex={index}
+                                                    stackingHistorySize={this.state.response.length}
+                                                    onPress={() => this.onViewPress(item)} />
+                                            }
                                             /* assign index as key valye to Token History list item */
                                             keyExtractor={(item, index) => index.toString()}
                                             /* For Refresh Functionality In Token History FlatList Item */
@@ -448,15 +449,14 @@ class TokenStackingHistoryResult extends Component {
 }
 
 // This Class is used for display record in list
-class FlatListItem extends Component {
-
+class TokenStackingHistoryList extends Component {
     constructor(props) {
         super(props);
     }
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.stackingHistoryItem === nextProps.stackingHistoryItem) {
             return false
         }
         return true
@@ -465,25 +465,25 @@ class FlatListItem extends Component {
     render() {
 
         // Get required fields from props
-        let item = this.props.item;
-        let { index, size, } = this.props;
+        let stackingHistoryItem = this.props.stackingHistoryItem;
+        let { stackingHistoryIndex, stackingHistorySize } = this.props;
 
         let color = R.colors.accent;
-        
+
         //To Display various Status Color in ListView
-        if (item.Status === 0) {
+        if (stackingHistoryItem.Status === 0) {
             color = R.colors.failRed;
         }
-        if (item.Status === 1) {
+        if (stackingHistoryItem.Status === 1) {
             color = R.colors.successGreen;
         }
-        if (item.Status === 4) {
+        if (stackingHistoryItem.Status === 4) {
             color = R.colors.yellow;
         }
-        if (item.Status === 5) {
+        if (stackingHistoryItem.Status === 5) {
             color = R.colors.accent;
         }
-        if (item.Status === 9) {
+        if (stackingHistoryItem.Status === 9) {
             color = R.colors.failRed;
         }
 
@@ -492,32 +492,32 @@ class FlatListItem extends Component {
                 <View style={{
                     flex: 1,
                     flexDirection: 'column',
-                    marginTop: (index == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
-                    marginBottom: (index == size - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                     marginLeft: R.dimens.widget_left_right_margin,
-                    marginRight: R.dimens.widget_left_right_margin
+                    marginRight: R.dimens.widget_left_right_margin,
+                    marginBottom: (stackingHistoryIndex == stackingHistorySize - 1) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
+                    marginTop: (stackingHistoryIndex == 0) ? R.dimens.widget_top_bottom_margin : R.dimens.widgetMargin,
                 }
                 }>
                     <CardView style={{
-                        elevation: R.dimens.listCardElevation,
                         flex: 1,
                         borderRadius: 0,
                         flexDirection: 'column',
                         borderBottomLeftRadius: R.dimens.margin,
                         borderTopRightRadius: R.dimens.margin,
+                        elevation: R.dimens.listCardElevation,
                     }}
                         onPress={this.props.onPress}>
 
                         <View style={{ flex: 1, flexDirection: 'row' }}>
 
                             {/* StakingCurrency Image */}
-                            <ImageViewWidget url={item.StakingCurrency ? item.StakingCurrency : ''} width={R.dimens.IconWidthHeight} height={R.dimens.IconWidthHeight} />
+                            <ImageViewWidget url={stackingHistoryItem.StakingCurrency ? stackingHistoryItem.StakingCurrency : ''} width={R.dimens.IconWidthHeight} height={R.dimens.IconWidthHeight} />
 
                             <View style={{ flex: 1, marginLeft: R.dimens.widgetMargin, }}>
 
                                 {/* StakingAmount , StakingCurrency , StakingTypeName ,SlabTypeName */}
                                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', }}>
-                                    <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold, }}>{(parseFloatVal(item.StakingAmount).toFixed(8).toString()) !== 'NaN' ? parseFloatVal(item.StakingAmount).toFixed(8).toString() : '-'} {item.StakingCurrency ? item.StakingCurrency : '-'}</Text>
+                                    <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.mediumText, fontFamily: Fonts.MontserratSemiBold, }}>{(parseFloatVal(stackingHistoryItem.StakingAmount).toFixed(8).toString()) !== 'NaN' ? parseFloatVal(stackingHistoryItem.StakingAmount).toFixed(8).toString() : '-'} {stackingHistoryItem.StakingCurrency ? stackingHistoryItem.StakingCurrency : '-'}</Text>
                                     <Image
                                         source={R.images.RIGHT_ARROW_DOUBLE}
                                         style={{ width: R.dimens.dashboardMenuIcon, height: R.dimens.dashboardMenuIcon, tintColor: R.colors.textPrimary }}
@@ -527,29 +527,29 @@ class FlatListItem extends Component {
                                 {/* Stacked Details */}
                                 <View style={{ flexDirection: 'row', }}>
                                     <Text style={{ color: R.colors.listSeprator, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold, }}>{R.strings.Stacked}</Text>
-                                    <TextViewMR style={{ marginLeft: R.dimens.widgetMargin, alignSelf: 'center', color: R.colors.successGreen, fontSize: R.dimens.smallestText, }}>{item.StakingTypeName ? item.StakingTypeName : '-'}-{item.SlabTypeName ? item.SlabTypeName : '-'}</TextViewMR>
+                                    <TextViewMR style={{ marginLeft: R.dimens.widgetMargin, alignSelf: 'center', color: R.colors.successGreen, fontSize: R.dimens.smallestText, }}>{stackingHistoryItem.StakingTypeName ? stackingHistoryItem.StakingTypeName : '-'}-{stackingHistoryItem.SlabTypeName ? stackingHistoryItem.SlabTypeName : '-'}</TextViewMR>
                                 </View>
 
                                 {/* Avalibale Amount */}
                                 <View style={{ flexDirection: 'row', marginTop: R.dimens.widgetMargin }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.AvailAmt} : </TextViewHML>
-                                    {item.SlabType == 1 ?
-                                        <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{(parseFloatVal(item.AvailableAmount).toFixed(8)) !== 'NaN' ? parseFloatVal(item.AvailableAmount).toFixed(8) : '-'}</TextViewHML>
+                                    {stackingHistoryItem.SlabType == 1 ?
+                                        <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{(parseFloatVal(stackingHistoryItem.AvailableAmount).toFixed(8)) !== 'NaN' ? parseFloatVal(stackingHistoryItem.AvailableAmount).toFixed(8) : '-'}</TextViewHML>
                                         :
-                                        <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{(parseFloatVal((item.AvailableAmount).split('-')[0]).toFixed(8)) !== 'NaN' ? parseFloatVal((item.AvailableAmount).split('-')[0]).toFixed(8) : '-'}-{(parseFloatVal((item.AvailableAmount).split('-')[1]).toFixed(8)) !== 'NaN' ? parseFloatVal((item.AvailableAmount).split('-')[1]).toFixed(8) : '-'}</TextViewHML>
+                                        <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{(parseFloatVal((stackingHistoryItem.AvailableAmount).split('-')[0]).toFixed(8)) !== 'NaN' ? parseFloatVal((stackingHistoryItem.AvailableAmount).split('-')[0]).toFixed(8) : '-'}-{(parseFloatVal((stackingHistoryItem.AvailableAmount).split('-')[1]).toFixed(8)) !== 'NaN' ? parseFloatVal((stackingHistoryItem.AvailableAmount).split('-')[1]).toFixed(8) : '-'}</TextViewHML>
                                     }
                                 </View>
 
                                 {/* Wallet */}
                                 <View style={{ flexDirection: 'row', }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.wallet} : </TextViewHML>
-                                    <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{item.WalletName ? item.WalletName : '-'}</TextViewHML>
+                                    <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{stackingHistoryItem.WalletName ? stackingHistoryItem.WalletName : '-'}</TextViewHML>
                                 </View>
 
                                 {/* InterestValue and InterestTypeName */}
                                 <View style={{ flexDirection: 'row', }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.Interest} : </TextViewHML>
-                                    <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{item.InterestValue ? item.InterestValue : '-'}{item.InterestTypeName === 'Percentage' ? ' %' : ''}</TextViewHML>
+                                    <TextViewHML style={{ flex: 1, alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{stackingHistoryItem.InterestValue ? stackingHistoryItem.InterestValue : '-'}{stackingHistoryItem.InterestTypeName === 'Percentage' ? ' %' : ''}</TextViewHML>
                                 </View>
                             </View>
                         </View >
@@ -563,9 +563,9 @@ class FlatListItem extends Component {
                             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginLeft: R.dimens.widget_left_right_margin }}>
                                 <View style={{ flex: 1, flexDirection: 'row' }}>
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText, }}>{R.strings.Received} : </TextViewHML>
-                                    <TextViewHML style={{ alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{validateValue(item.AmountCredited)} / {item.MaturityAmount ? item.MaturityAmount : '-'} {item.MaturityCurrency ? item.MaturityCurrency : '-'}</TextViewHML>
+                                    <TextViewHML style={{ alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallText, }}>{validateValue(stackingHistoryItem.AmountCredited)} / {stackingHistoryItem.MaturityAmount ? stackingHistoryItem.MaturityAmount : '-'} {stackingHistoryItem.MaturityCurrency ? stackingHistoryItem.MaturityCurrency : '-'}</TextViewHML>
                                 </View>
-                                <TextViewHML style={{ alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{convertDateTime(item.MaturityDate)}</TextViewHML>
+                                <TextViewHML style={{ alignSelf: 'center', color: R.colors.textPrimary, fontSize: R.dimens.smallestText, }}>{convertDateTime(stackingHistoryItem.MaturityDate)}</TextViewHML>
                             </View>
                         </View>
 
@@ -573,7 +573,7 @@ class FlatListItem extends Component {
                         <View style={{ flex: 1, flexDirection: 'row', marginTop: R.dimens.widgetMargin, marginLeft: R.dimens.widget_left_right_margin }}>
                             <StatusChip
                                 color={color}
-                                value={item.StrStatus ? item.StrStatus : '-'}></StatusChip>
+                                value={stackingHistoryItem.StrStatus ? stackingHistoryItem.StrStatus : '-'} />
                         </View>
                     </CardView>
                 </View >

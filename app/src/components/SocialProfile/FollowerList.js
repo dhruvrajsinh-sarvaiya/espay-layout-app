@@ -8,7 +8,7 @@ import { changeTheme, parseArray, addPages, parseFloatVal } from '../../controll
 import { isInternet, validateResponseNew, validateValue, } from '../../validations/CommonValidation';
 import { ListEmptyComponent, contentContainerStyle } from '../../native_theme/components/FlatListWidgets';
 import ListLoader from '../../native_theme/components/ListLoader';
-import { getFollowerList } from '../../actions/SocialProfile/SocialProfileActions';
+import { getFollowerList as getFollowerListApi } from '../../actions/SocialProfile/SocialProfileActions';
 import PaginationWidget from '../Widget/PaginationWidget';
 import { AppConfig } from '../../controllers/AppConfig';
 import R from '../../native_theme/R';
@@ -291,7 +291,7 @@ class FolllowerListItem extends Component {
                         </View>
                         <View style={{ flexDirection: 'row', marginTop: R.dimens.widget_top_bottom_margin }}>
                             <StatusChip
-                                color={tradeType == 1 ? R.colors.accent : R.colors.accent}
+                                color={R.colors.accent}
                                 value={tradeType == 1 ? R.strings.copy : R.strings.mirror} />
                         </View>
                     </CardView>
@@ -320,7 +320,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         //get follower list
-        getFollowerList: (Request) => dispatch(getFollowerList(Request)),
+        getFollowerList: (Request) => dispatch(getFollowerListApi(Request)),
     }
 }
 

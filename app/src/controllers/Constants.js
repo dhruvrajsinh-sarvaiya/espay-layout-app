@@ -1,6 +1,3 @@
-// import { MethodBO } from "./ConstantsBO";
-import { AppConfig } from "./AppConfig";
-
 export const ServiceUtilConstant = {
     KEY_Theme: 'theme',
     KEY_Locale: 'locale',
@@ -10,7 +7,7 @@ export const ServiceUtilConstant = {
     KEY_MemberStatus: 'MemberStatus',
     KEY_ExpireDate: 'ExpireDate',
     KEY_WebServiceUrl: 'WebServiceUrl',
-    KEY_LOGOURL: 'LogoUrl',
+    KEY_LOGOURL: 'LOGOURL',
     KEY_WebSiteUrl: 'WebSiteUrl',
     KEY_LicenseCode: 'LicenseCode',
     KEY_ContactNo: 'ContactNo',
@@ -30,6 +27,7 @@ export const ServiceUtilConstant = {
     FIRSTNAME: 'FIRSTNAME',
     LOGINPASSWORD: 'LOGINPASSWORD',
     LOGINUSERNAME: 'LOGINUSERNAME',
+    ALLOWTOKEN: 'ALLOWTOKEN',
     TwoFAToken: 'TwoFAToken',
     DISCOUNTPATTERNTYPE: 'DISCOUNTPATTERNTYPE',
     MEMBERTYPE: 'MEMBERTYPE',
@@ -47,10 +45,7 @@ export const ServiceUtilConstant = {
     ID_TOKEN: 'idToken',
 
     // for License code
-    KEY_LOGOURL: 'LOGOURL',
-    LICENSETYPE: 'LICENSETYPE',
     SYSTEM_ID: 'h4rd1kk41p35h',
-    LICENSETYPE: 'LICENSETYPE',
 
     //for timer
     timer_time_seconds: 40,

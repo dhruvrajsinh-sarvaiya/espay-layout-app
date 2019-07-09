@@ -193,9 +193,8 @@ class CardHeaderItem extends Component {
         //If theme or locale is changed then update componenet
         if (this.props.item !== nextProps.item || this.props.preference.theme !== nextProps.preference.theme || this.props.preference.locale !== nextProps.preference.locale) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     };
 
     render() {

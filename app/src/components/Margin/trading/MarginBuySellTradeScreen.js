@@ -341,8 +341,8 @@ class MarginBuySellTradeScreen extends Component {
                 screenName = 'CoinSelectScreen';
                 option = { isAction: ServiceUtilConstant.From_Deposit };
                 break;
-            };
-            case 1: screenName = 'MarginFavoriteScreen'; break;
+            }
+            case 1: screenName = 'EditFavorite'; break;
             case 2: screenName = 'FeesScreen'; break;
         }
 
@@ -393,7 +393,7 @@ class MarginBuySellTradeScreen extends Component {
                                     style={{ margin: R.dimens.widgetMargin }}
                                     iconStyle={{ tintColor: R.colors.textPrimary, width: R.dimens.dashboardMenuIcon, height: R.dimens.dashboardMenuIcon }}
                                 />}
-                            options={createOptions([R.strings.Deposit, R.strings.favorite, R.strings.fees])}
+                            options={createOptions([R.strings.deposit, R.strings.favorite, R.strings.fees])}
                             actions={createActions([() => this.handleOptionMenu(0), () => this.handleOptionMenu(1), () => this.handleOptionMenu(2)])}
                         />
                     </View>

@@ -95,8 +95,8 @@ class FollowerProfileConfiguration extends Component {
                     return
                 }
             }
-            let copytrade = 1
-            let mirrortrade = 2
+            let copytrade;
+            let mirrortrade;
             if (this.state.selectedTradeType === R.strings.CopyTrade) {
                 copytrade = 1
                 mirrortrade = 2

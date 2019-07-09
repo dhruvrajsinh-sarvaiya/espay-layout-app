@@ -33,9 +33,9 @@ function* forgotPasswordAPI({ payload }) {
 }
 
 // Create Sagas method for Forgot Password
-function* forgotPasswordSagas() {
+function* ForgotPasswordSaga() {
     // To register forgot password method
     yield takeLatest(FORGOT_PASSWORD, forgotPasswordAPI);
 }
 
-export default forgotPasswordSagas
+export default ForgotPasswordSaga

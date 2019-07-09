@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, Text, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
@@ -20,12 +20,6 @@ import TextViewHML from '../../native_theme/components/TextViewHML';
 import Button from '../../native_theme/components/Button';
 import ImageTextButton from '../../native_theme/components/ImageTextButton';
 import SafeView from '../../native_theme/components/SafeView';
-// const { width: viewportWidth } = R.screen();
-
-// const slideWidth = windowPercentage(75, viewportWidth);
-// const itemHorizontalMargin = windowPercentage(2, viewportWidth);
-// const sliderWidth = viewportWidth;
-// const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
 class SocialProfileSubscription extends Component {
 	constructor(props) {
@@ -344,9 +338,8 @@ class FlatListItem extends Component {
 		//Check If Old Props and New Props are Equal then Return False
 		if (this.props.item !== nextProps.item || this.props.isPortrait != nextProps.isPortrait) {
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	render() {
@@ -367,6 +360,7 @@ class FlatListItem extends Component {
 									onPress={this.props.onEditPress} />
 							}
 						</View>
+
 						{/* Value */}
 						<View style={{ height: '40%', }}>
 							<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -374,21 +368,13 @@ class FlatListItem extends Component {
 								<Text style={{ fontSize: R.dimens.membershipMedium, fontFamily: Fonts.MontserratSemiBold, color: R.colors.textPrimary }}>{item.Price}</Text>
 							</View>
 						</View>
+
 						{/*Button */}
-						{
-							item.Subscribe == false ?
-								<Button
-									style={{ marginLeft: R.dimens.activity_margin, marginRight: R.dimens.activity_margin, }}
-									disabled={!item.Subscribe && this.props.disablePlan ? true : false}
-									onPress={this.props.onPress}
-									title={item.Subscribe == true ? R.strings.UnSubscribe : R.strings.Subscribe} />
-								:
-								<Button
-									style={{ marginLeft: R.dimens.activity_margin, marginRight: R.dimens.activity_margin, }}
-									disabled={!item.Subscribe && this.props.disablePlan ? true : false}
-									onPress={this.props.onPress}
-									title={item.Subscribe == true ? R.strings.UnSubscribe : R.strings.Subscribe} />
-						}
+						<Button
+							style={{ marginLeft: R.dimens.activity_margin, marginRight: R.dimens.activity_margin, }}
+							disabled={!item.Subscribe && this.props.disablePlan ? true : false}
+							onPress={this.props.onPress}
+							title={item.Subscribe == true ? R.strings.UnSubscribe : R.strings.Subscribe} />
 
 						< View style={{ height: '40%', justifyContent: 'flex-end', alignContent: 'flex-end' }}>
 							<View style={{ flexDirection: 'row' }}>
@@ -441,20 +427,12 @@ class FlatListItem extends Component {
 								</View>
 
 								{/*Button */}
-								{
-									item.Subscribe == false ?
-										<Button
-											style={{ marginLeft: R.dimens.activity_margin, marginRight: R.dimens.activity_margin, }}
-											disabled={!item.Subscribe && this.props.disablePlan ? true : false}
-											onPress={this.props.onPress}
-											title={item.Subscribe == true ? R.strings.UnSubscribe : R.strings.Subscribe} />
-										:
-										<Button
-											style={{ marginLeft: R.dimens.activity_margin, marginRight: R.dimens.activity_margin, }}
-											disabled={!item.Subscribe && this.props.disablePlan ? true : false}
-											onPress={this.props.onPress}
-											title={item.Subscribe == true ? R.strings.UnSubscribe : R.strings.Subscribe} />
-								}
+
+								<Button
+									style={{ marginLeft: R.dimens.activity_margin, marginRight: R.dimens.activity_margin, }}
+									disabled={!item.Subscribe && this.props.disablePlan ? true : false}
+									onPress={this.props.onPress}
+									title={item.Subscribe == true ? R.strings.UnSubscribe : R.strings.Subscribe} />
 
 							</View>
 

@@ -99,9 +99,7 @@ class KYCPersonalInfoScreen extends Component {
 
     showImagePicker = (stateName) => {
         ImagePicker.launchImageLibrary({}, (response) => {
-            if (response.didCancel) {
-            } else if (response.error) {
-            } else {
+            if (!response.didCancel && !response.error) {
                 //if uri is not null then proceed further
                 if (response.uri != null) {
                     let imageTypes = ['image/jpeg', 'image/png']

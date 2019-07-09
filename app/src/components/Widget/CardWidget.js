@@ -55,7 +55,7 @@ export default class CardWidget extends Component {
                                 marginLeft: R.dimens.widget_left_right_margin,
                                 color: R.colors.white,
                                 fontSize: R.dimens.smallestText
-                            }}>= {props.totalAmount}</Text>}
+                            }}>{'= ' + props.totalAmount}</Text>}
                         </View>
 
                     </View>

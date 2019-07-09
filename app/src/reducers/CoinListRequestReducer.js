@@ -25,7 +25,13 @@ const INIT_STATE = {
     loading: false,
 };
 
-export default (state = INIT_STATE, action) => {
+export default (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+    }
+
     switch (action.type) {
         // To reset initial state on logout
         case ACTION_LOGOUT:

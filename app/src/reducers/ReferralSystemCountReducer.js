@@ -59,13 +59,18 @@ const INITIAL_STATE = {
     convertsDataError: false,
 }
 
-export default function ReferralSystemCountReducer(state = INITIAL_STATE, action) {
+export default function ReferralSystemCountReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INITIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout
-        case ACTION_LOGOUT: 
+        case ACTION_LOGOUT:
             return INITIAL_STATE;
-        
+
         // Handle referral Invites list method data
         case GET_REFERRAL_INVITES_LIST: {
             return Object.assign({}, state, {
@@ -90,7 +95,7 @@ export default function ReferralSystemCountReducer(state = INITIAL_STATE, action
                 invitesDataError: true
             })
         }
-        
+
         // Handle referral email list method data
         case GET_REFERRAL_EMAIL_LIST: {
             return Object.assign({}, state, {
@@ -107,7 +112,7 @@ export default function ReferralSystemCountReducer(state = INITIAL_STATE, action
                 emailDataError: false
             })
         }
-         // Set referral email list failure data
+        // Set referral email list failure data
         case GET_REFERRAL_EMAIL_LIST_FAILURE: {
             return Object.assign({}, state, {
                 referralEmailData: null,

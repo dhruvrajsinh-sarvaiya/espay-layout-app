@@ -20,7 +20,7 @@ class LegalStatementScreen extends Component {
 
     //Define All State initial state
     this.state = {
-      response: null,
+      legalRes: null,
     }
   }
 
@@ -39,23 +39,28 @@ class LegalStatementScreen extends Component {
     return isCurrentScreen(nextProps);
   };
 
+  componentWillUnmount() {
+    // call action for clear Reducer value
+    this.props.clearPageContents()
+  }
+
   static getDerivedStateFromProps(props, state) {
     if (isCurrentScreen(props)) {
-      var { data } = props;
+      var { legalData } = props;
 
       //check page content is available
-      if (data.pageContents != null) {
-        let response = data.pageContents;
+      if (legalData.pageContents != null) {
+        let legalResponse = legalData.pageContents;
         try {
           //get the response language wise
           return {
             ...state,
-            response: response.locale[R.strings.getLanguage()].content
+            legalRes: legalResponse.locale[R.strings.getLanguage()].content
           };
         } catch (error) {
           return {
             ...state,
-            response: null
+            legalRes: null
           }
         }
       }
@@ -63,15 +68,10 @@ class LegalStatementScreen extends Component {
     return null;
   }
 
-  componentWillUnmount() {
-    // call action for clear Reducer value
-    this.props.clearPageContents()
-  }
-
   render() {
 
     //fetch loading bit for progressbar handling
-    let { loading } = this.props.data
+    let { loading } = this.props.legalData
 
     return (
       <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
@@ -94,7 +94,7 @@ class LegalStatementScreen extends Component {
             ?
             <ListLoader />
             :
-            this.state.response != null && <HtmlViewer applyMargin={true} data={this.state.response} />
+            this.state.legalRes != null && <HtmlViewer applyMargin={true} data={this.state.legalRes} />
           }
         </View>
       </SafeView>
@@ -105,13 +105,14 @@ class LegalStatementScreen extends Component {
 function mapStateToProps(state) {
   return {
     //data get from the reducer
-    data: state.PageContentAppReducer
+    legalData: state.PageContentAppReducer
   }
 }
 function mapDispatchToProps(dispatch) {
   return {
     // To perform action for Page Contents
     getPageContents: (pageId) => dispatch(getPageContents(pageId)),
+
     // To perform action for Clear Page Contents
     clearPageContents: () => dispatch(clearPageContents()),
   }

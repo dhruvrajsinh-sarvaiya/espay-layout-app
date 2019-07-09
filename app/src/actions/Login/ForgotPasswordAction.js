@@ -9,7 +9,7 @@ import { action } from '../GlobalActions';
 // Redux Action Forgot Password Success
 export function forgotPasswordSuccess(data) {
   return action(FORGOT_PASSWORD_SUCCESS, { payload: data });
-};
+}
 
 // Redux Action Forgot Password Failure
 export function forgotPasswordFailure(error) {

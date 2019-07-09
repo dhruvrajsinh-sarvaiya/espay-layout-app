@@ -22,6 +22,7 @@ class TermsOfServiceScreen extends Component {
             response: null,
         }
     }
+
     componentDidMount = async () => {
         //Add this method to change theme based on stored theme name.
         changeTheme();
@@ -33,9 +34,15 @@ class TermsOfServiceScreen extends Component {
             this.props.getPageContents(Method.termsOfService);
         }
     }
+
     shouldComponentUpdate = (nextProps) => {
         return isCurrentScreen(nextProps);
     };
+
+    componentWillUnmount() {
+        // call action for clear Reducer value
+        this.props.clearPageContents()
+    }
 
     static getDerivedStateFromProps(props, state) {
 
@@ -43,16 +50,16 @@ class TermsOfServiceScreen extends Component {
         if (isCurrentScreen(props)) {
 
             // Get All Updated field of Particular actions 
-            var { data } = props;
+            var { serviceData } = props;
 
             // check page content is available
-            if (data.pageContents != null) {
-                let response = data.pageContents;
+            if (serviceData.pageContents != null) {
+                let serviceResponse = serviceData.pageContents;
                 try {
                     // get response language wise
                     return {
                         ...state,
-                        response: response.locale[R.strings.getLanguage()].content
+                        response: serviceResponse.locale[R.strings.getLanguage()].content
                     };
                 } catch (error) {
                     return {
@@ -65,15 +72,10 @@ class TermsOfServiceScreen extends Component {
         return null;
     }
 
-    componentWillUnmount() {
-        // call action for clear Reducer value
-        this.props.clearPageContents()
-    }
-
     render() {
 
         //loading bit for handling progress dialog
-        let { loading } = this.props.data
+        let { loading } = this.props.serviceData
 
         return (
             <SafeView style={{ flex: 1, backgroundColor: R.colors.background }}>
@@ -108,7 +110,7 @@ class TermsOfServiceScreen extends Component {
 function mapStateToProps(state) {
     return {
         //data get from the reducer
-        data: state.PageContentAppReducer
+        serviceData: state.PageContentAppReducer
     }
 }
 function mapDispatchToProps(dispatch) {

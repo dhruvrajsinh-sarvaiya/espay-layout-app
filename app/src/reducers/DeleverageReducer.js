@@ -26,7 +26,13 @@ const INTIAL_STATE = {
     DeleverageIsFetching: false,
 }
 
-const DeleverageReducer = (state = INTIAL_STATE, action) => {
+const DeleverageReducer = (state, action) => {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
+
     switch (action.type) {
         // Handle Deleverage Confirm method data
         case DELEVERAGE_CONFIRM:

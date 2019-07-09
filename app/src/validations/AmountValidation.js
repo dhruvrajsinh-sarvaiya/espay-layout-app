@@ -3,7 +3,7 @@
 export function CheckAmountValidation(Amount) {
     try {
         //regex for #.######## validation
-        let regex = /^\d+(\.\d{0,8})?$/;
+        let regex = new RegExp(/^\d+(\.\d{0,8})?$/);
 
         //To check if user input anything or not
         if (Amount) {

@@ -48,9 +48,6 @@ const TextViewAlias = (fontFamily) => {
  */
 function FeatureSwitchOriginal(props) {
 
-    let onTintColor;
-    let tintColor;
-    let thumbTintColor;
     let trackColor;
     let thumbColor;
     let backgroundColor = props.backgroundColor;
@@ -59,22 +56,13 @@ function FeatureSwitchOriginal(props) {
 
     if (props.onTintColor && props.tintColor && props.thumbTintColor) {
         if (props.onTintColor.length == 2 && props.tintColor.length == 2 && props.thumbTintColor.length == 2) {
-            onTintColor = props.isToggle ? props.onTintColor[0] : props.onTintColor[1];
-            tintColor = props.isToggle ? props.tintColor[0] : props.tintColor[1];
-            thumbTintColor = props.isToggle ? props.thumbTintColor[0] : props.thumbTintColor[1];
             trackColor = { true: props.onTintColor[0], false: props.onTintColor[1] };
             thumbColor = props.isToggle ? props.thumbTintColor[0] : props.thumbTintColor[1];
         } else {
-            onTintColor = props.isToggle ? R.colors.lightAccent : R.colors.lightListValue;
-            tintColor = props.isToggle ? R.colors.accent : R.colors.lightListValue;
-            thumbTintColor = props.isToggle ? R.colors.accent : R.colors.listValue;
             trackColor = { true: R.colors.lightAccent, false: R.colors.lightListValue };
             thumbColor = props.isToggle ? R.colors.accent : R.colors.listValue;
         }
     } else {
-        onTintColor = props.isToggle ? R.colors.textSecondary : R.colors.textSecondary;
-        tintColor = props.isToggle ? R.colors.textSecondary : R.colors.textSecondary;
-        thumbTintColor = props.isToggle ? R.colors.buyerGreen : R.colors.toastBackground;
         trackColor = { true: R.colors.textSecondary, false: R.colors.textSecondary };
         thumbColor = props.isToggle ? R.colors.buyerGreen : R.colors.toastBackground;
     }
@@ -120,11 +108,8 @@ function FeatureSwitchOriginal(props) {
                     marginRight: props.reverse == true ? R.dimens.margin : 0,
                 }]}
                 value={props.isToggle}
-                onTintColor={onTintColor}
-                tintColor={tintColor}
-                thumbTintColor={thumbTintColor}
-                // trackColor={trackColor}
-                // thumbColor={thumbColor}
+                trackColor={trackColor}
+                thumbColor={thumbColor}
                 onValueChange={props.onValueChange}
             />
 

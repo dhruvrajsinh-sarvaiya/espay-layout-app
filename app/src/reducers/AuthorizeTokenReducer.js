@@ -41,7 +41,12 @@ const INTIAL_STATE = {
     checkTokenError: false,
 }
 
-export default function tokenReducer(state = INTIAL_STATE, action) {
+export default function AuthorizeTokenReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout

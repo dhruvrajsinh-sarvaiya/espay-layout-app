@@ -106,7 +106,13 @@ const INITIAL_STATE = {
 	SocialFacebookLoginError: false,
 }
 
-export default function loginReducer(state = INITIAL_STATE, action) {
+export default function loginReducer(state, action) {
+
+	//If state is undefine then return with initial state
+	if (typeof state === 'undefined') {
+		return INITIAL_STATE;
+	}
+
 	switch (action.type) {
 
 		// To reset initial state on logout
@@ -134,13 +140,8 @@ export default function loginReducer(state = INITIAL_STATE, action) {
 				VerifyGoogleAuthIsFetching: true,
 				VerifyGoogleAuthData: null
 			});
-		// Set 2FA google authentication success data
+		// Set 2FA google authentication success and failure data
 		case TWO_FA_GOOGLE_AUTHENTICATION_SUCCESS:
-			return Object.assign({}, state, {
-				VerifyGoogleAuthIsFetching: false,
-				VerifyGoogleAuthData: action.payload
-			});
-		// Set 2FA google authentication failure data
 		case TWO_FA_GOOGLE_AUTHENTICATION_FAILURE:
 			return Object.assign({}, state, {
 				VerifyGoogleAuthIsFetching: false,
@@ -175,14 +176,8 @@ export default function loginReducer(state = INITIAL_STATE, action) {
 				SignInMobileFetchData: true,
 				SignInMobileData: ''
 			});
-		// Set signin with email success data
+		// Set signin with email success and failure data
 		case SIGNIN_WITH_EMAIL_SUCCESS:
-			return Object.assign({}, state, {
-				SignInEmailFetchData: false,
-				SignInEmailIsFetching: false,
-				SignInEmailData: action.payload
-			});
-		// Set signin with email failure data
 		case SIGNIN_WITH_EMAIL_FAILURE:
 			return Object.assign({}, state, {
 				SignInEmailFetchData: false,
@@ -239,14 +234,8 @@ export default function loginReducer(state = INITIAL_STATE, action) {
 				SignInEmailFetchData: true,
 				SignInEmailData: ''
 			});
-		// Set signin with mobile success data
+		// Set signin with mobile success and failure data
 		case SIGNIN_WITH_MOBILE_SUCCESS:
-			return Object.assign({}, state, {
-				SignInMobileFetchData: false,
-				SignInMobileIsFetching: false,
-				SignInMobileData: action.payload
-			});
-		// Set signin with mobile failure data
 		case SIGNIN_WITH_MOBILE_FAILURE:
 			return Object.assign({}, state, {
 				SignInMobileFetchData: false,
@@ -334,7 +323,7 @@ export default function loginReducer(state = INITIAL_STATE, action) {
 				SocialFacebookLoginData: null,
 				SocialFacebookLoginError: true
 			})
-			
+
 		// If no actions were found from reducer than return default [existing] state value
 		default:
 			return state

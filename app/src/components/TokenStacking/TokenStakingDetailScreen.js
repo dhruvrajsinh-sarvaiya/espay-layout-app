@@ -128,25 +128,25 @@ class TokenStakingDetailScreen extends Component {
 
                         {/* Token Staking History Result Details in list */}
                         {this.rowItem(R.strings.StakingDetails + ' :', '', false, { color: R.colors.textPrimary, fontFamily: Fonts.MontserratSemiBold })}
-                        {this.rowItem(R.strings.Stacking_Type, this.state.Data.StakingDetails.StakingTypeName ? this.state.Data.StakingDetails.StakingTypeName : '-')}
-                        {this.rowItem(R.strings.Slab_Type, this.state.Data.StakingDetails.SlabTypeName ? this.state.Data.StakingDetails.SlabTypeName : '-')}
+                        {this.rowItem(R.strings.Stacking_Type, this.state.Data.StakingDetails.StakingTypeName ? this.state.Data.StakingDetails.StakingTypeName : '-', false)}
+                        {this.rowItem(R.strings.Slab_Type, this.state.Data.StakingDetails.SlabTypeName ? this.state.Data.StakingDetails.SlabTypeName : '-', false)}
                         {this.state.Data.StakingDetails.InterestType == 0 ? null
                             :
                             <View>
-                                {this.rowItem(R.strings.Interest_Type, this.state.Data.StakingDetails.InterestType ? this.state.Data.StakingDetails.InterestType == 1 ? R.strings.Fixed : this.state.Data.StakingDetails.InterestType == 2 ? R.strings.Percentage : '-' : '-')}
-                                {this.rowItem(R.strings.Interest_Amount, (parseFloatVal(this.state.Data.StakingDetails.InterestValue).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.InterestValue).toFixed(8) : '-'))}
+                                {this.rowItem(R.strings.Interest_Type, this.state.Data.StakingDetails.InterestType ? this.state.Data.StakingDetails.InterestType == 1 ? R.strings.Fixed : this.state.Data.StakingDetails.InterestType == 2 ? R.strings.Percentage : '-' : '-', false)}
+                                {this.rowItem(R.strings.Interest_Amount, (parseFloatVal(this.state.Data.StakingDetails.InterestValue).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.InterestValue).toFixed(8) : '-'), false)}
                             </View>
                         }
-                        {this.rowItem(R.strings.month, validateValue(this.state.Data.StakingDetails.DurationMonth))}
-                        {this.rowItem(R.strings.week, validateValue(this.state.Data.StakingDetails.DurationWeek))}
+                        {this.rowItem(R.strings.month, validateValue(this.state.Data.StakingDetails.DurationMonth), false)}
+                        {this.rowItem(R.strings.week, validateValue(this.state.Data.StakingDetails.DurationWeek), false)}
                         {this.state.Data.StakingDetails.StakingType == 1 ?
                             <View>
-                                {this.rowItem(R.strings.Staking_Before_Maturity_Charge, (parseFloatVal(this.state.Data.StakingDetails.EnableStakingBeforeMaturityCharge).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.EnableStakingBeforeMaturityCharge).toFixed(8) : '-'))}
+                                {this.rowItem(R.strings.Staking_Before_Maturity_Charge, (parseFloatVal(this.state.Data.StakingDetails.EnableStakingBeforeMaturityCharge).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.EnableStakingBeforeMaturityCharge).toFixed(8) : '-'), false)}
                             </View>
                             :
                             <View>
-                                {this.rowItem(R.strings.Marker_Charges, (parseFloatVal(this.state.Data.StakingDetails.MakerCharges).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.MakerCharges).toFixed(8) : '-'))}
-                                {this.rowItem(R.strings.Taker_Charges, (parseFloatVal(this.state.Data.StakingDetails.TakerCharges).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.TakerCharges).toFixed(8) : '-'))}
+                                {this.rowItem(R.strings.Marker_Charges, (parseFloatVal(this.state.Data.StakingDetails.MakerCharges).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.MakerCharges).toFixed(8) : '-'), false)}
+                                {this.rowItem(R.strings.Taker_Charges, (parseFloatVal(this.state.Data.StakingDetails.TakerCharges).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.StakingDetails.TakerCharges).toFixed(8) : '-'), false)}
                             </View>}
 
                         <View style={{
@@ -164,13 +164,13 @@ class TokenStakingDetailScreen extends Component {
                         </View>
 
                         {this.rowItem(R.strings.MaturityDetails + ' :', '', false, { color: R.colors.textPrimary, fontFamily: Fonts.MontserratSemiBold, marginTop: R.dimens.widgetMargin })}
-                        {this.rowItem(R.strings.Amount, (parseFloatVal(this.state.Amount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Amount).toFixed(8) : '-'))}
-                        {this.rowItem(R.strings.DeductionAmount, (parseFloatVal(this.state.Data.MaturityDetail.DeductionAmount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.MaturityDetail.DeductionAmount).toFixed(8) : '-'))}
+                        {this.rowItem(R.strings.Amount, (parseFloatVal(this.state.Amount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Amount).toFixed(8) : '-'), false)}
+                        {this.rowItem(R.strings.DeductionAmount, (parseFloatVal(this.state.Data.MaturityDetail.DeductionAmount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.MaturityDetail.DeductionAmount).toFixed(8) : '-'), false)}
                         {this.state.Data.StakingDetails.Stacking_Type == 1 ?
                             <View>
-                                {this.rowItem(R.strings.Interest_Amount, (parseFloatVal(this.state.Data.MaturityDetail.InterestAmount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.MaturityDetail.InterestAmount).toFixed(8) : '-'))}
+                                {this.rowItem(R.strings.Interest_Amount, (parseFloatVal(this.state.Data.MaturityDetail.InterestAmount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.MaturityDetail.InterestAmount).toFixed(8) : '-'), false)}
                             </View> : null}
-                        {this.rowItem(R.strings.Maturity_Amount, (parseFloatVal(this.state.Data.MaturityDetail.MaturityAmount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.MaturityDetail.MaturityAmount).toFixed(8) : '-'))}
+                        {this.rowItem(R.strings.Maturity_Amount, (parseFloatVal(this.state.Data.MaturityDetail.MaturityAmount).toFixed(8) !== 'NaN' ? parseFloatVal(this.state.Data.MaturityDetail.MaturityAmount).toFixed(8) : '-'), false)}
                         {this.rowItem(R.strings.MaturityDate, convertDateTime(this.state.Data.MaturityDetail.MaturityDate, 'YYYY-MM-DD HH:mm:ss', false), true)}
                     </CardView>
 
@@ -208,10 +208,10 @@ class TokenStakingDetailScreen extends Component {
     }
 
     // To Display Title and Value Horizontally
-    rowItem = (title, value, marginBottom = false, style) => {
+    rowItem = (title, value, marginBottom, style) => {
 
         // To apply color based on status
-        let statusColor
+        let statusColor;
         if (value === R.strings.Pending)
             statusColor = R.colors.accent
         else if (value === R.strings.Hold)

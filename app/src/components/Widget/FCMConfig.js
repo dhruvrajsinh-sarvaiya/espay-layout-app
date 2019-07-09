@@ -10,10 +10,7 @@ class FCMConfig extends Component {
         super(props);
     }
 
-    componentDidMount() {
-
-        //To request permission which is require for FCM
-        FCM.requestPermissions();
+    withPermissions () {
 
         //FCM.createNotificationChannel is mandatory for Android targeting >=8. Otherwise you won't see any notification
         FCM.createNotificationChannel({
@@ -31,7 +28,7 @@ class FCMConfig extends Component {
                 // logger("FCM Token : ", token);
 
                 //To store token in Preference
-                setData({[ServiceUtilConstant.FCMToken]: token})
+                setData({ [ServiceUtilConstant.FCMToken]: token })
             });
         } else {
             //Token is already stored
@@ -55,9 +52,21 @@ class FCMConfig extends Component {
             //logger("TOKEN (refreshUnsubscribe)", token);
 
             //To store refreshed token
-            setData({[ServiceUtilConstant.FCMToken]: token})
+            setData({ [ServiceUtilConstant.FCMToken]: token })
         });
-    };
+    }
+
+    componentWillUnmount() {
+
+        if (this.notificationUnsubscribe !== undefined){
+            this.notificationUnsubscribe.remove();
+        }
+
+        if (this.refreshUnsubscribe !== undefined){
+            this.refreshUnsubscribe.remove();
+        }
+    }
+    
 
     sendRemote(notif) {
         //logger(JSON.stringify(notif));

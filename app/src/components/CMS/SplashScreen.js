@@ -20,6 +20,7 @@ import RNExitApp from 'react-native-exit-app';
 import moment from 'moment';
 
 let statusCode = "";
+let returnId = "";
 let licenseType = "";
 let expirydatestring = "";
 let checkdate = true;
@@ -31,8 +32,9 @@ class SplashScreen extends Component {
 
     constructor(props) {
         super(props);
-        navigationLogin = this.props.navigation;
 
+        this.fcmConfig = React.createRef();
+        
         //Define All State initial state
         this.state = {
             fadeAnim: new Animated.Value(0),
@@ -70,7 +72,7 @@ class SplashScreen extends Component {
         //check for internet connection
         if (await isInternet()) {
 
-            var licenseType = getData(ServiceUtilConstant.LICENSETYPE)
+            licenseType = getData(ServiceUtilConstant.LICENSETYPE)
 
             // to update license based preference if made changes
             var prevLicenseCode = getData(ServiceUtilConstant.KEY_LicenseCode)
@@ -125,15 +127,6 @@ class SplashScreen extends Component {
 
                                 statusCode = this.responseDoc.GetClientInfoResponse.GetClientInfoResult[0].Status[0].StatusCode + "";
                                 returnId = this.responseDoc.GetClientInfoResponse.GetClientInfoResult[0].Status[0].ReturnId + "";
-
-                                var additionalcontact = this.responseDoc.GetClientInfoResponse.GetClientInfoResult[0].AdditionalContact + "";
-
-                                if (additionalcontact !== "" && additionalcontact !== null) {
-                                    var RMobilenovalue = additionalcontact.substring(0, 10);
-                                    var RSmspinvalue = additionalcontact.substring(10);
-                                    RMobileNo = RMobilenovalue.trim();
-                                    RSmsPin = RSmspinvalue.trim();
-                                }
 
                                 var appInfoList = this.responseDoc.GetClientInfoResponse.GetClientInfoResult[0].ApplicationInfoList[0].ApplicationInfo;
                                 let appInfoListCount = appInfoList.length;
@@ -244,6 +237,9 @@ class SplashScreen extends Component {
             //check for status bit
             if (status) {
 
+                // Execute FCM code after all permissions are granted
+                this.fcmConfig.withPermissions();
+                
                 //call API for get client info
                 this.checkForAPICall();
             }
@@ -276,7 +272,7 @@ class SplashScreen extends Component {
                     Once Token is stored it won't generate new token,
                     This token can use to Enable/Disable notification
                  */}
-                <FCMConfig />
+                <FCMConfig ref={comp => this.fcmConfig = comp}/>
 
                 {/* View for image and app name with animation */}
                 <View style={[this.styles().background, { justifyContent: 'center' }]} resizeMode="cover">

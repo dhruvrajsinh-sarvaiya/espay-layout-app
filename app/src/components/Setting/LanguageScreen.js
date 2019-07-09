@@ -3,7 +3,7 @@ import { View, Image, TouchableWithoutFeedback, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import CommonStatusBar from '../../native_theme/components/CommonStatusBar';
 import CustomToolbar from '../../native_theme/components/CustomToolbar';
-import { changeTheme, showAlert } from '../../controllers/CommonUtils';
+import { changeTheme } from '../../controllers/CommonUtils';
 import { setData, getData } from '../../App';
 import { ServiceUtilConstant } from '../../controllers/Constants';
 import { getLanguages, setLanguages } from '../../actions/CMS/AppSettingsActions'

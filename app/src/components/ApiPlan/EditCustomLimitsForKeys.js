@@ -57,45 +57,51 @@ class EditCustomLimitsForKeys extends Component {
 		let newReadOnlyData = [], newAccessData = []
 
 		// Display all read only method and selected method will be checked
-		Object.keys(this.state.OldReadOnlyAPI).map((item, index) => {
-			let findIndex = Object.keys(this.state.ReadOnlyMethod).findIndex(method => method == item)
+		let keyPairOldReadOnlyAPI = Object.keys(this.state.OldReadOnlyAPI);
+		for (var keyReadOnly in keyPairOldReadOnlyAPI) {
+			let itemKeyReadOnly = keyPairOldReadOnlyAPI[keyReadOnly];
+			let findIndex = Object.keys(this.state.ReadOnlyMethod).findIndex(method => method == itemKeyReadOnly)
 
 			// if index > -1 then selected status true otherwise false
 			if (findIndex > -1) {
 				newReadOnlyData.push({
-					id: item,
-					title: this.state.OldReadOnlyAPI[item],
+					id: itemKeyReadOnly,
+					title: this.state.OldReadOnlyAPI[itemKeyReadOnly],
 					isSelected: true
 				})
 			} else {
 
 				newReadOnlyData.push({
-					id: item,
-					title: this.state.OldReadOnlyAPI[item],
+					id: itemKeyReadOnly,
+					title: this.state.OldReadOnlyAPI[itemKeyReadOnly],
 					isSelected: false
 				})
 			}
-		})
+		}
 
 		// Display all full access method and selected method will be checked
-		Object.keys(this.state.OldFullAccessAPI).map((item, index) => {
-			let findIndex = Object.keys(this.state.FullAccessMethod).findIndex(method => method == item)
+		let keyPairOldFullAccessAPI = Object.keys(this.state.OldFullAccessAPI);
+		for (var keyFullAccess in keyPairOldFullAccessAPI) {
+			let itemkeyFullAccess = keyPairOldFullAccessAPI[keyFullAccess];
+			let findIndex = Object.keys(this.state.FullAccessMethod).findIndex(method => method == itemkeyFullAccess)
 
 			// if index > -1 then selected status true otherwise false
 			if (findIndex > -1) {
 				newAccessData.push({
-					id: item,
-					title: this.state.OldFullAccessAPI[item],
+					id: itemkeyFullAccess,
+					title: this.state.OldFullAccessAPI[itemkeyFullAccess],
 					isSelected: true
 				})
 			} else {
+
 				newAccessData.push({
-					id: item,
-					title: this.state.OldFullAccessAPI[item],
+					id: itemkeyFullAccess,
+					title: this.state.OldFullAccessAPI[itemkeyFullAccess],
 					isSelected: false
 				})
 			}
-		})
+		}
+
 		this.setState({ ReadOnlyMethod: newReadOnlyData, FullAccessMethod: newAccessData })
 	};
 

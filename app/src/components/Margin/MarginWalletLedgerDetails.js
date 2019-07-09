@@ -471,7 +471,7 @@ class FlatlistItem extends Component {
                                 </View>
 
                                 <View style={{ justifyContent: 'flex-end', width: wp('50%') }}>
-                                    <TextViewHML style={{ textAlign: 'right', color: R.colors.textSecondary, fontSize: R.dimens.secondCurrencyText, textAlign: 'right' }}>{convertDateTime(item.TrnDate, 'YYYY-MM-DD HH:mm:ss', false)}</TextViewHML>
+                                    <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.secondCurrencyText, textAlign: 'right' }}>{convertDateTime(item.TrnDate, 'YYYY-MM-DD HH:mm:ss', false)}</TextViewHML>
                                 </View>
                             </View>
                         </View>

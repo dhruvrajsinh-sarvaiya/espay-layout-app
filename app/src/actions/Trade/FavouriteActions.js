@@ -35,7 +35,7 @@ export function getMarginFavouritesSuccess(payload) { return action(GET_MARGIN_F
 export function getFavouritesFailure() { return action(GET_FAVOURITES_FAILURE); }
 
 // Redux action to Clear Favorite
-export function clearFavourites() { return action(CLEAR_FAVOURITE) };
+export function clearFavourites() { return action(CLEAR_FAVOURITE) }
 
 // Redux action for Add to Favorite
 export function addFavourite(payload) {

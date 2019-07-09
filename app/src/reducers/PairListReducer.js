@@ -71,7 +71,12 @@ const INTIAL_STATE = {
     errorReferralChannelTypeData: false,
 }
 
-export default function pairListReducer(state = INTIAL_STATE, action) {
+export default function pairListReducer(state, action) {
+
+    //If state is undefine then return with initial state
+    if (typeof state === 'undefined') {
+        return INTIAL_STATE;
+    }
 
     switch (action.type) {
         // To reset initial state on logout

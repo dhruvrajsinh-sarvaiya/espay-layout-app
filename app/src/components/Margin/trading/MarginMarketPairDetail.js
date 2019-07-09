@@ -6,16 +6,13 @@ import CustomToolbar from '../../../native_theme/components/CustomToolbar';
 import { fetchMarketCap } from '../../../actions/Trade/MarketCapActions';
 import { sendEvent, changeTheme, addListener, convertDate, parseFloatVal } from '../../../controllers/CommonUtils';
 import { isInternet, validateResponseNew } from '../../../validations/CommonValidation'
-import { addFavourite, removeFavourite, getFavourites } from '../../../actions/Trade/FavouriteActions';
+import { addFavourite as addFavouriteApi, removeFavourite as removeFavouriteApi, getFavourites } from '../../../actions/Trade/FavouriteActions';
 import ProgressDialog from '../../../native_theme/components/ProgressDialog';
 import { Method, Events } from '../../../controllers/Constants';
 import CommonStatusBar from '../../../native_theme/components/CommonStatusBar';
-import MarginTradeChartWidget from './MarginTradeChartWidget';
 import R from '../../../native_theme/R';
-import MarginMarketDepthChart from './MarginMarketDepthChart';
 import MarginBuyerSellerBookWidget from './MarginBuyerSellerBookWidget';
 import { TitleItem } from '../../../native_theme/components/IndicatorViewPager';
-import MarginGlobalMarketTradeWidget from './MarginGlobalMarketTradeWidget';
 import CommonToast from '../../../native_theme/components/CommonToast';
 import TextViewHML from '../../../native_theme/components/TextViewHML';
 import TextViewMR from '../../../native_theme/components/TextViewMR';
@@ -23,6 +20,9 @@ import { clearMarketDepthData } from '../../../actions/Trade/MarketDepthActions'
 import { clearMarketTradeList } from '../../../actions/Trade/GlobalMarketTradeAction';
 import SafeView from '../../../native_theme/components/SafeView';
 import Button from '../../../native_theme/components/Button';
+import TradeChartWidget from '../../Trading/TradeChartWidget';
+import GlobalMarketTradeWidget from '../../Trading/GlobalMarketTradeWidget';
+import MarketDepthChart from '../../Trading/MarketDepthChart';
 
 class MarginMarketPairDetail extends Component {
 
@@ -406,7 +406,7 @@ class MarginMarketPairDetail extends Component {
 
 							{/* for show Margin Trade Chart Widget */}
 							<View style={{ height: R.dimens.chartHeightMedium }}>
-								<MarginTradeChartWidget navigation={this.props.navigation} pairName={this.state.result.PairName} />
+								<TradeChartWidget navigation={this.props.navigation} pairName={this.state.result.PairName} />
 							</View>
 
 							<View>
@@ -436,7 +436,7 @@ class MarginMarketPairDetail extends Component {
 
 								{this.state.selectedTab == 0 && <View>
 									<View style={{ height: R.dimens.chartHeightMedium }}>
-										<MarginMarketDepthChart navigation={this.props.navigation} PairName={this.state.result.PairName} shouldDisplay={true} />
+										<MarketDepthChart navigation={this.props.navigation} PairName={this.state.result.PairName} shouldDisplay={true} />
 									</View>
 
 									<View style={{ marginTop: R.dimens.widget_top_bottom_margin }}>
@@ -448,7 +448,7 @@ class MarginMarketPairDetail extends Component {
 								</View>}
 
 								{this.state.selectedTab == 1 && <View style={{ flex: 1 }}>
-									<MarginGlobalMarketTradeWidget
+									<GlobalMarketTradeWidget
 										navigation={this.props.navigation}
 										shouldDisplay={true}
 										PairName={this.state.result.PairName} />
@@ -541,7 +541,7 @@ const mapStateToProps = (state) => {
 		marketData: state.tradeData,
 		result: state.marketCapReducer,
 		favourites: state.favouriteReducer,
-		coinList: state.CoinReducer,
+		coinList: state.FetchCoinReducer,
 	}
 }
 
@@ -554,10 +554,10 @@ const mapDispatchToProps = (dispatch) => ({
 	getFavourites: (payload) => dispatch(getFavourites(payload)),
 
 	// Perform Add Favorite Action
-	addFavourite: (payload) => dispatch(addFavourite(payload)),
+	addFavourite: (payload) => dispatch(addFavouriteApi(payload)),
 
 	// Perform Remove Favorite Action
-	removeFavourite: (payload) => dispatch(removeFavourite(payload)),
+	removeFavourite: (payload) => dispatch(removeFavouriteApi(payload)),
 
 	// Perform Market Depth Action
 	clearMarketDepthData: () => dispatch(clearMarketDepthData()),

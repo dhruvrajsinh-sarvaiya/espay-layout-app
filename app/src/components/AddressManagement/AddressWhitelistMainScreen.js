@@ -58,7 +58,7 @@ class AddressWhiteListMainScreen extends Component {
             isToggle: false,
             symbol: '',
             isVisible: false,
-            googleAuthCode: '',
+            authCode: '',
             Alert_Visibility1: false,
             currencyItems: [],
         }
@@ -204,7 +204,7 @@ class AddressWhiteListMainScreen extends Component {
                 try {
                     return {
                         ...state,
-                        googleAuthCode: '',
+                        authCode: '',
                     }
                 } catch (e) {
                     return null;
@@ -376,13 +376,13 @@ class AddressWhiteListMainScreen extends Component {
     verify2FA = async () => {
 
         //Check Google Auth Code is Empty or Not
-        if (isEmpty(this.state.googleAuthCode)) {
+        if (isEmpty(this.state.authCode)) {
             this.toastIn.Show(R.strings.authentication_code_validate);
             return;
         }
 
         //Check Google Auth Code Length is Less then 6 Or Not
-        else if (this.state.googleAuthCode.length != 6) {
+        else if (this.state.authCode.length != 6) {
             this.toastIn.Show(R.strings.Enter_valid_Code);
             return;
         }
@@ -395,7 +395,7 @@ class AddressWhiteListMainScreen extends Component {
                 try {
                     //Bind VerifyCode API Request
                     let verifyCodeRequest = {
-                        Code: this.state.googleAuthCode,
+                        Code: this.state.authCode,
                     }
 
                     //call api for verify 2FA Google Auth
@@ -411,7 +411,7 @@ class AddressWhiteListMainScreen extends Component {
     //Validate Google Auth Code for 6 digits.
     validateGoogleCode = (text) => {
         if (validateGoogleAuthCode(text)) {
-            this.setState({ googleAuthCode: text })
+            this.setState({ authCode: text })
         }
     }
 
@@ -491,24 +491,24 @@ class AddressWhiteListMainScreen extends Component {
                             {/* For Google auth code Edittext */}
                             <EditText
                                 BorderStyle={{
+                                    justifyContent: 'center',
                                     backgroundColor: R.colors.cardBackground,
                                     borderColor: R.colors.accent,
-                                    borderWidth: R.dimens.pickerBorderWidth,
                                     marginTop: R.dimens.widgetMargin,
-                                    justifyContent: 'center',
+                                    borderWidth: R.dimens.pickerBorderWidth,
                                 }}
                                 textInputStyle={{
-                                    fontSize: R.dimens.smallText,
                                     color: R.colors.textPrimary,
+                                    fontSize: R.dimens.smallText,
                                 }}
                                 multiline={false}
+                                secureTextEntry={true}
+                                returnKeyType={"done"}
                                 maxLength={6}
                                 keyboardType='numeric'
-                                returnKeyType={"done"}
-                                secureTextEntry={true}
                                 textContentType='password'
                                 onChangeText={(text) => this.validateGoogleCode(text)}
-                                value={this.state.googleAuthCode}
+                                value={this.state.authCode}
                             />
                         </View>
                     </AlertDialog>
@@ -656,10 +656,6 @@ const mapStateToProps = (state) => {
         //Set user preference
         setGlobalPerfFetchData: state.AddressManagementReducer.setGlobalPerfFetchData,
         setGlobalPrefdata: state.AddressManagementReducer.setGlobalPrefdata,
-
-        //Add WhiteListed Address
-        AddToWhitelistFetchData: state.AddressManagementReducer.AddToWhitelistFetchData,
-        AddToWhitelistdata: state.AddressManagementReducer.AddToWhitelistdata,
 
         //For 2FA
         VerifyGoogleAuthData: state.AddressManagementReducer.VerifyGoogleAuthData,

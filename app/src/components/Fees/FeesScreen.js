@@ -211,9 +211,9 @@ class FeesScreen extends Component {
                                                     /* render all item in list */
                                                     renderItem={({ item, index }) => {
                                                         return <TradingFeesListItem
-                                                            index={index}
-                                                            item={item}
-                                                            size={finalItems.length} />
+                                                            tradingFeesIndex={index}
+                                                            tradingFeesItem={item}
+                                                            tradingFeesSize={finalItems.length} />
                                                     }}
                                                     /* assign index as key valye to Deposit History list item */
                                                     keyExtractor={(item, index) => index.toString()}
@@ -264,9 +264,9 @@ class FeesScreen extends Component {
                                                     /* render all item in list */
                                                     renderItem={({ item, index }) => {
                                                         return <WithdrawalFeesListItem
-                                                            index={index}
-                                                            item={item}
-                                                            size={finalItems.length} />
+                                                            withdrawalFeesIndex={index}
+                                                            withdrawalFeesItem={item}
+                                                            withdrawalFeesSize={finalItems.length} />
                                                     }}
                                                     /* assign index as key value  list item */
                                                     keyExtractor={(item, index) => index.toString()}
@@ -295,14 +295,14 @@ export class TradingFeesListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.tradingFeesItem === nextProps.tradingFeesItem) {
             return false
         }
         return true
     }
 
     render() {
-        let { index, size, item } = this.props;
+        let { tradingFeesIndex, tradingFeesSize, tradingFeesItem } = this.props;
         return (
             <AnimatableItem>
                 <View style={{ flex: 1, marginTop: R.dimens.widgetMargin }}>
@@ -310,27 +310,27 @@ export class TradingFeesListItem extends Component {
 
                         <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', }}>
                             {/* Coin Image */}
-                            <ImageViewWidget url={item.CoinName ? item.CoinName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
+                            <ImageViewWidget url={tradingFeesItem.CoinName ? tradingFeesItem.CoinName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
                         </View>
 
                         <View style={{ flex: 1, marginLeft: R.dimens.widgetMargin }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                                     {/* Coin Name */}
-                                    <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.CoinName ? item.CoinName : '-'} </Text>
+                                    <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{tradingFeesItem.CoinName ? tradingFeesItem.CoinName : '-'} </Text>
                                 </View>
 
-                                {!(item.ChargeCurrencyName == '-') &&
+                                {(tradingFeesItem.ChargeCurrencyName != '-') &&
                                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                                         <View style={{ flexDirection: 'row' }}>
                                             {/* Charge */}
                                             <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.Charge + ' :'} </TextViewHML>
                                             {/* Charge currency Image */}
-                                            <ImageViewWidget url={item.ChargeCurrencyName ? item.ChargeCurrencyName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
+                                            <ImageViewWidget url={tradingFeesItem.ChargeCurrencyName ? tradingFeesItem.ChargeCurrencyName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
                                         </View>
                                         <View style={{ marginLeft: R.dimens.widgetMargin }}>
                                             {/* Charge currency Name */}
-                                            <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.ChargeCurrencyName ? item.ChargeCurrencyName : ''} </TextViewHML>
+                                            <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{tradingFeesItem.ChargeCurrencyName ? tradingFeesItem.ChargeCurrencyName : ''} </TextViewHML>
                                         </View>
 
                                     </View>}
@@ -340,18 +340,18 @@ export class TradingFeesListItem extends Component {
                                 <View style={{ flexDirection: 'row' }}>
                                     {/* Marker Fee */}
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.Maker_Fee + ' :'} </TextViewHML>
-                                    <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText }}>{item.MakerCharge} </TextViewHML>
+                                    <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText }}>{tradingFeesItem.MakerCharge} </TextViewHML>
                                 </View>
                                 <View style={{ flexDirection: 'row' }}>
                                     {/* Taker Fee */}
                                     <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.Taker_Fee + ' :'} </TextViewHML>
-                                    <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText }}>{item.TakerCharge} </TextViewHML>
+                                    <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText }}>{tradingFeesItem.TakerCharge} </TextViewHML>
                                 </View>
                             </View>
 
                             {/* if not last index than show the seprator */}
                             {
-                                !(index == size - 1) &&
+                                (tradingFeesIndex != tradingFeesSize - 1) &&
                                 <Separator style={{ marginLeft: 0, marginRight: 0 }} />
                             }
                         </View>
@@ -370,14 +370,14 @@ export class WithdrawalFeesListItem extends Component {
 
     shouldComponentUpdate(nextProps) {
         //Check If Old Props and New Props are Equal then Return False
-        if (this.props.item === nextProps.item) {
+        if (this.props.withdrawalFeesItem === nextProps.withdrawalFeesItem) {
             return false
         }
         return true
     }
 
     render() {
-        let { index, size, item } = this.props;
+        let { withdrawalFeesIndex, withdrawalFeesSize, withdrawalFeesItem } = this.props;
         return (
             <AnimatableItem>
                 <View style={{ flex: 1, marginTop: R.dimens.widgetMargin }}>
@@ -385,27 +385,27 @@ export class WithdrawalFeesListItem extends Component {
 
                         <View style={{ justifyContent: 'flex-start', alignItems: 'flex-start', }}>
                             {/* Coin Image */}
-                            <ImageViewWidget url={item.CoinName ? item.CoinName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
+                            <ImageViewWidget url={withdrawalFeesItem.CoinName ? withdrawalFeesItem.CoinName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
                         </View>
 
                         <View style={{ flex: 1, marginLeft: R.dimens.widgetMargin }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                                     {/* Coin Name */}
-                                    <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{item.CoinName ? item.CoinName : '-'} </Text>
+                                    <Text style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText, fontFamily: Fonts.MontserratSemiBold }}>{withdrawalFeesItem.CoinName ? withdrawalFeesItem.CoinName : '-'} </Text>
                                 </View>
 
-                                {!(item.WithdrawalChargeCurrencyName == '-') &&
+                                {(withdrawalFeesItem.WithdrawalChargeCurrencyName != '-') &&
                                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' }}>
                                         <View style={{ flexDirection: 'row' }}>
                                             <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.Charge + ' :'} </TextViewHML>
                                             {/* Withdrawal Charge currency Image */}
-                                            <ImageViewWidget url={item.WithdrawalChargeCurrencyName ? item.WithdrawalChargeCurrencyName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
+                                            <ImageViewWidget url={withdrawalFeesItem.WithdrawalChargeCurrencyName ? withdrawalFeesItem.WithdrawalChargeCurrencyName : ''} width={R.dimens.LARGE_MENU_ICON_SIZE} height={R.dimens.LARGE_MENU_ICON_SIZE} />
                                         </View>
 
                                         <View style={{ marginLeft: R.dimens.widgetMargin }}>
                                             {/* Withdrawal Charge currency Name */}
-                                            <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{item.WithdrawalChargeCurrencyName ? item.WithdrawalChargeCurrencyName : ''} </TextViewHML>
+                                            <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallestText }}>{withdrawalFeesItem.WithdrawalChargeCurrencyName ? withdrawalFeesItem.WithdrawalChargeCurrencyName : ''} </TextViewHML>
                                         </View>
                                     </View>
                                 }
@@ -414,11 +414,11 @@ export class WithdrawalFeesListItem extends Component {
                             <View style={{ flexDirection: 'row', marginBottom: R.dimens.widgetMargin, alignItems: 'center' }}>
                                 {/* Withdrawal Charge  */}
                                 <TextViewHML style={{ color: R.colors.textSecondary, fontSize: R.dimens.smallestText }}>{R.strings.fee + ' :'} </TextViewHML>
-                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText }}>{item.WithdrawalCharge} </TextViewHML>
+                                <TextViewHML style={{ color: R.colors.textPrimary, fontSize: R.dimens.smallText }}>{withdrawalFeesItem.WithdrawalCharge} </TextViewHML>
                             </View>
                             {/* if not last index than show the seprator */}
                             {
-                                !(index == size - 1) &&
+                                (withdrawalFeesIndex != withdrawalFeesSize - 1) &&
                                 <Separator style={{ marginLeft: 0, marginRight: 0 }} />
                             }
 

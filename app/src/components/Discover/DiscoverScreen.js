@@ -279,11 +279,12 @@ class TrendItem extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.props.preference.theme !== nextProps.preference.theme || this.props.preference.locale !== nextProps.preference.locale || this.props.item !== nextProps.item) {
+        if (this.props.preference.theme !== nextProps.preference.theme
+            || this.props.preference.locale !== nextProps.preference.locale
+            || this.props.item !== nextProps.item) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
     render() {
