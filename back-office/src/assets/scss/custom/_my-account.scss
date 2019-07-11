@@ -1,0 +1,190 @@
+
+
+// My Account Dashboard
+.myaccountbox{
+    text-align: center;
+    width: 100%;
+    padding: 10px 0;
+   
+    img{
+      width:80px;
+      height:80px;
+    }
+    span{
+      display: inline-block;
+      width:100%;
+      font-size:18px;
+      color:$black;
+      padding:10px 0;
+    }
+  }
+  
+  //Added By Kevin Ladani
+  .pricing-main{
+    font-size:50px;
+  }
+  .pricing-main > sup{
+    font-size: 20px;
+    vertical-align: middle;
+  }
+  .pricing-main > sub{
+    font-size: 20px;
+    vertical-align: middle;
+  }
+  .membershiptitle > h2{
+    border: 2px solid orange;
+    border-radius: 15px;
+    padding: 15px 30px;
+    display: inline-block;
+    min-width: 350px;
+  }
+
+
+  //Personal Information
+.PerInformation{
+  .form-control{
+      box-shadow:none;
+      border-radius:none;
+      border-radius: 0 !important;
+  }
+}
+
+//My Account Help & Support Complain List
+.Complainlist{
+    text-overflow:ellipsis;
+    width:100px;
+    overflow:hidden;
+    white-space:nowrap;
+    font-size:12px;
+    margin:0;
+}
+
+//MyAccount Application Configuration Checkbox position
+.CheckPosition{
+  position: relative
+}
+
+//MyApplication Img back set color
+.createAppBox{
+  &:focus{
+    background:#FFF !important;
+    z-index:999;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+    padding-bottom:10px;
+    box-shadow:0 5px 20px 5px rgba(0, 0, 0, 0.4);
+  }
+  .createAppImg{
+    background:#000;
+    opacity:0.8;
+  }
+  
+}
+
+
+@media only screen and (max-width:767px) {
+    .report-status {
+      ul{
+        li{
+          overflow:hidden;
+          h4{
+            font-size:0.6rem;
+          }
+          h2{
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+}
+
+//For Forgot Confirmation Dialog
+.forgotconfirmradius{
+  h1{
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .jbs-block{
+    border-radius:10px;
+  }
+  .forgotconfirmbox, .forgotconfirmboxfail {
+    margin:0 auto;
+    width:100%;
+    text-align:center;
+    position: relative;
+    bottom:65px;
+    
+    span{
+      i{
+        font-weight: bold;
+      }
+    }
+
+  span:nth-child(1){
+    color:$white;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: inline-block;
+    padding:32px 0 0 0;
+  }
+  }
+  .forgotconfirmdetails{
+    margin: -30px 0 20px 0;
+    text-align:center;
+  }
+}
+
+.forgotconfirmbox{
+  span:nth-child(1){
+    background:$primary;
+  }  
+}
+
+.formForgotePass{
+  border: 1px solid;
+  padding: 20px;
+  box-shadow: 0 5px 30px rgba(0,0,0,.1);
+}
+
+.lableCenter{
+  text-align: center;
+  > label {
+    span{
+      font-size: 30px;
+      font-weight: bold
+    }
+  }
+}
+
+.forgot-passwrong{
+  background: red !important;
+}
+
+
+//pagination 
+
+.paginationmain{
+  list-style:none;
+  margin:0 15px 0 !important;
+  li:first-child{
+    span{
+      display:inline-block;
+    }
+    select{
+      box-shadow:none;
+      border-radius:0;
+      margin-left:5px;
+    }
+  }
+  li{
+    display:inline-block;
+  }
+  .pagerecord{
+    position:relative;
+    top:-24px;
+  }
+  
+}

@@ -1,0 +1,48 @@
+/**
+ * Auther : Kevin Ladani
+ * Created : 08/10/2018
+ * Updated : 22/10/2018 (Salim Deraiya)
+ * Disable SMS Auth Sagas
+ */
+
+import {
+	//For Enable Google Auth
+	ENABLE_GOOGLE_AUTH,
+	ENABLE_GOOGLE_AUTH_SUCCESS,
+	ENABLE_GOOGLE_AUTH_FAILURE,
+
+	//Get Google Auth Info
+	GET_GOOGLE_AUTH_INFO,
+	GET_GOOGLE_AUTH_INFO_SUCCESS,
+	GET_GOOGLE_AUTH_INFO_FAILURE
+} from "Actions/types";
+
+/**
+ * initial auth user
+ */
+const INIT_STATE = {
+	data: [],
+	loading: false
+};
+
+export default (state, action) => {
+    if (typeof state === 'undefined') {
+        return INIT_STATE;
+	}
+	
+	switch (action.type) {
+		//For Enable Google Auth
+		case ENABLE_GOOGLE_AUTH:
+		case GET_GOOGLE_AUTH_INFO:
+			return { ...state, loading: true, data : '' };
+
+		case ENABLE_GOOGLE_AUTH_SUCCESS:
+		case ENABLE_GOOGLE_AUTH_FAILURE:
+		case GET_GOOGLE_AUTH_INFO_SUCCESS:
+		case GET_GOOGLE_AUTH_INFO_FAILURE:
+			return { ...state, loading: false, data: action.payload };
+
+		default:
+			return { ...state };
+	}
+};  
