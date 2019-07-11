@@ -56,9 +56,7 @@ class ListMarginWalletLedger extends Component {
     getListFromServer = (Page, PageSize) => {
         var newObj = Object.assign({}, this.state);
         newObj['Page'] = Page > 0 ? Page : this.state.Page;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState(newObj);
         //For Action API...
         var reqObj = newObj;
@@ -87,7 +85,10 @@ class ListMarginWalletLedger extends Component {
     //apply filter
     applyFilter = () => {
         if (this.state.walletid !== "" && this.state.FromDate !== "" && this.state.ToDate !== "") {
-            this.setState({ showReset: true }, this.getListFromServer(1, this.state.PageSize));
+            setTimeout(() => {
+                this.setState({ showReset: true });
+            }, 1000);
+            this.getListFromServer(1, this.state.PageSize);
         }
     };
 

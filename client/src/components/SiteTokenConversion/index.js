@@ -74,7 +74,7 @@ class SiteTokenConversion extends React.Component {
     // set data from recieves from props in state
     componentWillReceiveProps(nextprops) {
         // set error message  for calculation error 
-        if (nextprops.calcError && nextprops.calcError.ReturnCode == 1 || nextprops.calcError.ReturnCode == 9 && this.state.displayError) {
+        if (nextprops.calcError && (nextprops.calcError.ReturnCode === 1 || nextprops.calcError.ReturnCode === 9) && this.state.displayError) {
             NotificationManager.error(<IntlMessages id={`error.trading.transaction.${nextprops.calcError.ErrorCode}`} />);
             this.setState({
                 displayError: 0,
@@ -85,7 +85,7 @@ class SiteTokenConversion extends React.Component {
         }
 
         // set error message for conversion error
-        if (nextprops.conversionError && nextprops.conversionError.ReturnCode == 1 || nextprops.conversionError.ReturnCode == 9 && this.state.isConvert) {
+        if (nextprops.conversionError && (nextprops.conversionError.ReturnCode === 1 || nextprops.conversionError.ReturnCode === 9) && this.state.isConvert) {
             NotificationManager.error(<IntlMessages id={`error.trading.transaction.${nextprops.conversionError.ErrorCode}`} />);
             this.setState({
                 isConvert: 0,
@@ -277,7 +277,7 @@ class SiteTokenConversion extends React.Component {
             NotificationManager.error(<IntlMessages id={`sidebar.sitetoken.maxlimit`} values={{ Param2: this.state.tokenMaxLimit }} />)
         } else {
             // Set and API Call If Required Data is available
-            if (this.state.selectedId !== 0 && this.state.selectedSiteTokenID !== 0 && this.state.amount !== "") {
+            if (this.state.amount !== "") {
 
                 const Data = {
                     SourceCurrencyID: parseFloat(this.state.selectedId),
@@ -421,7 +421,7 @@ class SiteTokenConversion extends React.Component {
                             const Data = {
                                 SourceCurrencyID: parseFloat(e.currencyID),
                                 SiteTokenMasterID: parseFloat(this.state.selectedSiteTokenID),
-                                Qty: this.state.amount ? parseFloat(this.state.amount) : 0,
+                                Qty: parseFloat(this.state.amount),
                                 ISSiteTokenToCurrency: 0
                             }
 
@@ -441,7 +441,7 @@ class SiteTokenConversion extends React.Component {
                             const Data = {
                                 SourceCurrencyID: parseFloat(e.currencyID),
                                 SiteTokenMasterID: parseFloat(this.state.selectedSiteTokenID),
-                                Qty: this.state.token ? parseFloat(this.state.token) : 0,
+                                Qty: parseFloat(this.state.token),
                                 ISSiteTokenToCurrency: 1
                             }
                             this.setState({
@@ -474,7 +474,7 @@ class SiteTokenConversion extends React.Component {
                     const Data = {
                         SourceCurrencyID: parseFloat(this.state.selectedId),
                         SiteTokenMasterID: parseFloat(e.tokenId),
-                        Qty: this.state.token ? parseFloat(this.state.token) : 0,
+                        Qty: parseFloat(this.state.token),
                         ISSiteTokenToCurrency: 1
                     }
 

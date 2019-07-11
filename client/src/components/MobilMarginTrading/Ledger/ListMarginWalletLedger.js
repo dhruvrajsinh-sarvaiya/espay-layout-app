@@ -123,7 +123,6 @@ class ListMarginWalletLedger extends Component {
                 name: intl.formatMessage({ id: "table.Date" }),
                 options: { filter: false, sort: true }
             },
-
         ]
         const options = {
             filterType: 'dropdown',
@@ -196,7 +195,7 @@ class ListMarginWalletLedger extends Component {
                     <MUIDataTable
                         data={walletLedgerList.map((wallet, key) => {
                             return [
-                                key++,
+                                key + 1,
                                 wallet.Amount.toFixed(8),
                                 wallet.CrAmount.toFixed(8),
                                 wallet.DrAmount.toFixed(8),

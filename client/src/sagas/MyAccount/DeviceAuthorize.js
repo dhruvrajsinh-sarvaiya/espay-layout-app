@@ -10,30 +10,14 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { DEVICE_AUTHORIZE } from 'Actions/types';
 //Action methods..
 import { deviceAuthorizeSuccess, deviceAuthorizeFailure } from 'Actions/MyAccount';
-import {  swaggerGetAPI } from 'Helpers/helpers';
-
+import { swaggerGetAPI } from 'Helpers/helpers';
 
 //Function for Email Confirmation
-function* deviceAuthorizeAPI1({payload}) { 
-    const response = yield call(swaggerGetAPI,'api/Signin/DeviceAuthorize?authorizecode='+payload.authorizecode,{});
-    
-    try {
-        //console.log('Email Res',response);
-        if(response.ReturnCode === 0) {
-            yield put(deviceAuthorizeSuccess(response));
-        } else {
-            yield put(deviceAuthorizeFailure(response));
-        }
-    } catch (error) {
-        yield put(deviceAuthorizeFailure(error));
-    }
-}
+function* deviceAuthorizeAPI({ payload }) {
+    const response = yield call(swaggerGetAPI, 'api/Signin/DeviceAuthorizeV1?authorizecode=' + payload.authorizecode, {}, {}, true);
 
-function* deviceAuthorizeAPI({payload}) {
-    const response = yield call(swaggerGetAPI,'api/Signin/DeviceAuthorizeV1?authorizecode='+payload.authorizecode, {}, {}, true);
-    
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(deviceAuthorizeSuccess(response));
         } else {
             yield put(deviceAuthorizeFailure(response));

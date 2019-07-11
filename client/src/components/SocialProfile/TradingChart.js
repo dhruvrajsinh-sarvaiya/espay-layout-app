@@ -5,40 +5,33 @@
  */
 
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
-
-import { Form} from "reactstrap";
-
-import { 
+import {
     AveProfitLossLayout,
     ProfitableCircle,
     TradeDetailBlk,
-    ProgressBarChart 
+    ProgressBarChart
 } from './Widgets';
 
 class TradingChart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            total : '318',
-            profit : '',
-            loss : '',
-            total_profit : '40.88',
-            chartData : [
-                { title : 'data1', value : 73.87 },
-                { title : 'data2', value : 14.77 },
-                { title : 'data3', value : 11.37 },
-                /* { title : 'data4', value : 10.38 },
-                { title : 'data5', value : 4.08 },
-                { title : 'data6', value : 1.89 } */
+            total: '318',
+            profit: '',
+            loss: '',
+            total_profit: '40.88',
+            chartData: [
+                { title: 'data1', value: 73.87 },
+                { title: 'data2', value: 14.77 },
+                { title: 'data3', value: 11.37 },
             ]
         };
-    }    
+    }
 
     render() {
         const { chartData } = this.state;
         return (
-            <Fragment>                
+            <Fragment>
                 <div className="card trade_chart p-25">
                     <h2>Trading</h2>
                     <div className="trade_info row">
@@ -65,20 +58,7 @@ class TradingChart extends Component {
 
 // default props value
 TradingChart.defaultProps = {
-    LeaderId : 0
+    LeaderId: 0
 }
-
-// map state to props
-/* const mapStateToProps = ({ forgotPassRdcer }) => {
-    var response = {
-        data: forgotPassRdcer.data,
-        loading: forgotPassRdcer.loading
-    };
-    return response;
-};
-
-export default withRouter(connect(mapStateToProps, {
-    forgotPassword
-})(TradingChart)); */
 
 export default TradingChart;

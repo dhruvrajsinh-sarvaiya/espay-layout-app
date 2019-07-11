@@ -43,7 +43,7 @@ class SubScribePlan extends React.Component {
     constructor(props) {
         super(props)
 
-        var balance = 0,coin=""
+        var balance = 0, coin = ""
         if (this.props.wallets) {
             this.props.wallets.map((item, key) => {
                 if (item.CoinName == this.props.selectedData.Coin && item.IsDefaultWallet == 1) {
@@ -59,7 +59,7 @@ class SubScribePlan extends React.Component {
             modal: false, // Defines Whether Modal Is displayed Or Not    
             subscribe: false,
             currentBalance: balance !== 0 ? balance : 0,
-            currentCoin:coin !== "" ? coin : ""
+            currentCoin: coin !== "" ? coin : ""
         }
     }
 
@@ -94,7 +94,7 @@ class SubScribePlan extends React.Component {
     }
 
     //used for close modal
-    handleCloseModal = () => {
+    handleCloseModal = (event) => {
         event.preventDefault();
         this.setState({
             modal: false
@@ -136,7 +136,7 @@ class SubScribePlan extends React.Component {
                 this.props.subScribeApiPlan(data)
             }
 
-        } else if (this.state.SubscribeID == 0) {
+        } else {
 
             if (this.state.currentBalance < this.state.planList.Price) {
 
@@ -168,7 +168,7 @@ class SubScribePlan extends React.Component {
 
     // render the component
     render() {
-        
+
         return (
             <Fragment>
 
@@ -179,11 +179,11 @@ class SubScribePlan extends React.Component {
 
                 {this.state.subscribe == false &&
 
-                    <Card className="m-20 p-10">                        
+                    <Card className="m-20 p-10">
                         <div className="font-weight-bold text-primary text-center" style={{ fontSize: "24px" }}>
-                            {this.state.planList.PlanName}                            
+                            {this.state.planList.PlanName}
                         </div>
-                        <div className="m-5 text-right"><IntlMessages id="wallet.AGAvailableBalance" /> {":"} {this.state.currentBalance.toFixed(8) } {" "} {this.state.currentCoin}</div>
+                        <div className="m-5 text-right"><IntlMessages id="wallet.AGAvailableBalance" /> {":"} {this.state.currentBalance.toFixed(8)} {" "} {this.state.currentCoin}</div>
                         <div className="m-0 row">
 
                             <Col md={4} sm={12}>
@@ -410,7 +410,7 @@ class SubScribePlan extends React.Component {
                         </Button>
                         <Button
                             variant="raised"
-                            onClick={() => this.handleCloseModal()}
+                            onClick={(event) => this.handleCloseModal(event)}
                             className="btn-danger text-white"
                         >
                             <span>

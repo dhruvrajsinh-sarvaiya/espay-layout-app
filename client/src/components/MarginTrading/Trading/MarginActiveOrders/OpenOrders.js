@@ -34,7 +34,7 @@ const orderTypes = [
   { "type": "STOP_Limit", "ID": "4" },
 ]
 class OpenOrder extends React.Component {
-  
+
   constructor(props) {
     super(props);
     this.state = {
@@ -48,12 +48,11 @@ class OpenOrder extends React.Component {
       socketData: [],
       cancelOrderSuccess: false,
       displayOtherPairs: this.props.hasOwnProperty('displayOtherPairs') ? this.props.displayOtherPairs : false,
-      listUpdated: 0,      
+      listUpdated: 0,
       cancelOrderBit: ''
 
     };
     this.openModal = this.openModal.bind(this);
-    this.openCancelAllModal = this.openCancelAllModal.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.cancelOrder = this.cancelOrder.bind(this);
   }
@@ -79,6 +78,7 @@ class OpenOrder extends React.Component {
                   isOrderType = true
                 }
               }
+              return [];
             })
 
           })
@@ -128,7 +128,7 @@ class OpenOrder extends React.Component {
       sectionReload: false,
       cancelAllModal: false,
       sectionReloadCancelAll: false,
-      cancelOrderBit:''
+      cancelOrderBit: ''
     });
   }
 
@@ -153,12 +153,12 @@ class OpenOrder extends React.Component {
 
     // call action for cancel order
     // handle margin trading cancellation process (added by devang parekh 23-2-2019)
-    if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-      this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0, IsMargin:1 });
+    if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+      this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0, IsMargin: 1 });
     } else {
       this.props.doCancelOrder({ TranNo: currrentOrder.Id, CancelAll: 0, OrderType: 0 });
     }
-    
+
   }
 
   handleChangeCancelOrder = (e) => {
@@ -168,26 +168,26 @@ class OpenOrder extends React.Component {
       this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
       // call action for cancel order
       // handle margin trading cancellation process (added by devang parekh 23-2-2019)
-      if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-        this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0 , IsMargin:1 });
+      if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+        this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0, IsMargin: 1 });
       } else {
         this.props.doCancelOrder({ TranNo: 0, CancelAll: 1, OrderType: 0 });
       }
       //end
-      
+
     }
 
     if (this.state.cancelOrderBit > 0) {
 
       this.setState({ sectionReloadCancelAll: true, cancelOrderBit: '' });
       // handle margin trading cancellation process (added by devang parekh 23-2-2019)
-      if(this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-        this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit , IsMargin:1 });
+      if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+        this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit, IsMargin: 1 });
       } else {
         this.props.doCancelOrder({ TranNo: 0, CancelAll: 2, OrderType: this.state.cancelOrderBit });
       }
       //end
-      
+
     }
 
   }
@@ -195,8 +195,8 @@ class OpenOrder extends React.Component {
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
 
-    if(nextprops.hasOwnProperty('displayOtherPairs') && (nextprops.displayOtherPairs === false || nextprops.displayOtherPairs === true)) {
-      this.setState({displayOtherPairs:nextprops.displayOtherPairs})
+    if (nextprops.hasOwnProperty('displayOtherPairs') && (nextprops.displayOtherPairs === false || nextprops.displayOtherPairs === true)) {
+      this.setState({ displayOtherPairs: nextprops.displayOtherPairs })
     }
 
     if (nextprops.cancelOrder && (this.state.sectionReload || this.state.sectionReloadCancelAll)) {
@@ -213,7 +213,7 @@ class OpenOrder extends React.Component {
         modalInfo: -1,
         modal: false,
         cancelAllModal: false
-       
+
       });
 
     }
@@ -227,13 +227,12 @@ class OpenOrder extends React.Component {
         showLoader: false
       });
 
-    } 
+    }
     // end
 
   }
 
   render() {
-    //console.log("open orders",this.state.activeMyOpenOrder)
     const activeMyOpenData = [];
     if (this.state.activeMyOpenOrder) {
 

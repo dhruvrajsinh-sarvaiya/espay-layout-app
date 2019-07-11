@@ -36,7 +36,7 @@ export default class TwitterFeedsV2 extends Component {
       return (
          <Fragment>
             <Slider {...settings}>
-               {twitterFeeds && twitterFeeds.map((twitter, key) => (
+               {twitterFeeds.length > 0 && twitterFeeds.map((twitter, key) => (
                   <div className="twitter-content" key={twitter.id}>
                      <div className="avatar-wrap d-flex align-itmes-start justify-content-center">
                         <div className="overlay-wrap">

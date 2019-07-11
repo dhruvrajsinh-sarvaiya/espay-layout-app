@@ -7,7 +7,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import MUIDataTable from "mui-datatables";
-import {  Alert } from 'reactstrap';
+import { Alert } from 'reactstrap';
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 //Import Referral Friends Actions...
@@ -20,7 +20,7 @@ import AppConfig from 'Constants/AppConfig';
 //Table Object...
 const columns = [
 	{
-        name: <IntlMessages id="sidebar.colHash" />,
+		name: <IntlMessages id="sidebar.colHash" />,
 		options: {
 			filter: false,
 			sort: false
@@ -46,7 +46,7 @@ const columns = [
 			filter: false,
 			sort: true
 		}
-    },
+	},
 	{
 		name: <IntlMessages id="sidebar.colTradePercentage" />,
 		options: {
@@ -57,11 +57,11 @@ const columns = [
 
 ];
 const options = {
-    filterType: "select",
+	filterType: "select",
 	responsive: "scroll",
 	selectableRows: false,
-    resizableColumns: false,
-    viewColumns: false,
+	resizableColumns: false,
+	viewColumns: false,
 	filter: false,
 	download: false,
 	textLabels: {
@@ -70,23 +70,23 @@ const options = {
 			toolTip: <IntlMessages id="wallet.sort" />,
 		}
 	},
-	downloadOptions : {
-		filename: 'FOLLOWER_LIST_'+changeDateFormat(new Date(),'YYYY-MM-DD')+'.csv'
+	downloadOptions: {
+		filename: 'FOLLOWER_LIST_' + changeDateFormat(new Date(), 'YYYY-MM-DD') + '.csv'
 	}
 };
 
 class FollowerListDataTbl extends Component {
-    constructor(props) {
+	constructor(props) {
 		super(props);
 		this.state = {
-			list : [],
+			list: [],
 			err_msg: '',
 			err_alert: true,
 			success_msg: '',
 			success_alert: true,
-			loading : false,
-			PageIndex : 0,
-			Page_Size : AppConfig.totalRecordDisplayInList
+			loading: false,
+			PageIndex: 0,
+			Page_Size: AppConfig.totalRecordDisplayInList
 		};
 
 		this.onDismiss = this.onDismiss.bind(this);
@@ -98,29 +98,29 @@ class FollowerListDataTbl extends Component {
 
 	followerList() {
 		const reqObj = {
-			PageIndex : this.state.PageIndex,
-			Page_Size : this.state.Page_Size
-        }
+			PageIndex: this.state.PageIndex,
+			Page_Size: this.state.Page_Size
+		}
 		this.props.getFollowerList(reqObj);
 	}
 
 	componentWillMount() {
-        this.followerList();
+		this.followerList();
 	}
-    
-    componentWillReceiveProps(nextProps) {
+
+	componentWillReceiveProps(nextProps) {
 		this.setState({ loading: nextProps.loading, err_msg: '', err_alert: false, success_msg: '', success_alert: false });
-		
-        if (nextProps.data.ReturnCode === 1 || nextProps.data.ReturnCode===9) {
-            var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
-            this.setState({ err_alert: true, err_msg: errMsg });
-		} else if(Object.keys(nextProps.data).length > 0 && (typeof(nextProps.data.FollowerList) !== 'undefined' || nextProps.data.FollowerList.length > 0)) {
-            this.setState({ 
-                success_msg: nextProps.data.ReturnMsg, 
-                success_alert: true,
-				list : nextProps.data.FollowerList
+
+		if (nextProps.data.ReturnCode === 1 || nextProps.data.ReturnCode === 9) {
+			var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
+			this.setState({ err_alert: true, err_msg: errMsg });
+		} else if (Object.keys(nextProps.data).length > 0 && nextProps.data.FollowerList !== undefined && nextProps.data.FollowerList.length > 0) {
+			this.setState({
+				success_msg: nextProps.data.ReturnMsg,
+				success_alert: true,
+				list: nextProps.data.FollowerList
 			});
-        }
+		}
 	}
 
 	render() {
@@ -128,39 +128,39 @@ class FollowerListDataTbl extends Component {
 		return (
 			<Fragment>
 				<div className="StackingHistory statusbtn-comm">
-                {err_msg && <div className="alert_area">
-                    <Alert color="danger" isOpen={err_alert} toggle={this.onDismiss}>{err_msg}</Alert>
-                </div>}
-                {loading && <JbsSectionLoader />}
-                <MUIDataTable title={<IntlMessages id="sidebar.followerList" />} columns={columns} options={options}
-                    data={list.map((item, key) => {
-                        return [                            
-                            key + 1,
-                            item.UserName,
-                            item.Mobile,
-                            <Fragment>
-                                {item.ConfigKey === 'Can_Copy_Trade' ? <IntlMessages id="sidebar.copy" /> : <IntlMessages id="sidebar.mirror" /> }
-                            </Fragment>,
-                            item.TradePercentage                            
-                        ];
-                    })}
-                />
+					{err_msg && <div className="alert_area">
+						<Alert color="danger" isOpen={err_alert} toggle={this.onDismiss}>{err_msg}</Alert>
+					</div>}
+					{loading && <JbsSectionLoader />}
+					<MUIDataTable title={<IntlMessages id="sidebar.followerList" />} columns={columns} options={options}
+						data={list.map((item, key) => {
+							return [
+								key + 1,
+								item.UserName,
+								item.Mobile,
+								<Fragment>
+									{item.ConfigKey === 'Can_Copy_Trade' ? <IntlMessages id="sidebar.copy" /> : <IntlMessages id="sidebar.mirror" />}
+								</Fragment>,
+								item.TradePercentage
+							];
+						})}
+					/>
 				</div>
-            </Fragment>
+			</Fragment>
 		);
 	}
 }
 
-const mapStateToProps = ({ socialProfileRdcer , settings}) => {
+const mapStateToProps = ({ socialProfileRdcer, settings }) => {
 	var response = {
-		darkMode : settings.darkMode,
-		data : socialProfileRdcer.getFollowerList,
-		loading : socialProfileRdcer.loading
+		darkMode: settings.darkMode,
+		data: socialProfileRdcer.getFollowerList,
+		loading: socialProfileRdcer.loading
 	}
 
 	return response;
 }
 
-export default connect(mapStateToProps,{
+export default connect(mapStateToProps, {
 	getFollowerList
-}) (FollowerListDataTbl);
+})(FollowerListDataTbl);

@@ -6,12 +6,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-
 const ProgressBarChart = ({ tData }) => (
     <Fragment>
         <div className="progress_bar clearfix mt-15">
-            {tData.map((item,index) => (
-                <span style={{ width : item.value+"%"}}></span>
+            {tData.map((item, index) => (
+                <span key={index} style={{ width: item.value + "%" }}></span>
             ))}
         </div>
     </Fragment>
@@ -24,7 +23,7 @@ ProgressBarChart.propTypes = {
 
 // Default props value
 ProgressBarChart.defaultProps = {
-    tData : []
+    tData: []
 }
 
 export { ProgressBarChart };

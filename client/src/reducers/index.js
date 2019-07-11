@@ -12,7 +12,6 @@ import pageContentAppReducuer from "./PageContentAppReducer";
 //Parthbhai....
 import loginHistoryReducer from "./MyAccount/LoginHistory";
 import ipHistoryReducer from "./MyAccount/IPHistory";
-import deviceManagementReducer from "./MyAccount/DeviceManagement";
 import editProfileReducer from "./MyAccount/EditProfile";
 import antiPhishingCodeReducer from "./MyAccount/AntiPhishingCode";
 
@@ -57,7 +56,6 @@ import signinMobileWithOTPReducer from "./MyAccount/SigninMobileWithOTP";
 import authorizationTokenReducer from "./MyAccount/AuthorizationToken";
 import signupBlockchainReducer from "./MyAccount/SignupWithBlockchain";
 import emailConfirmationReducer from "./MyAccount/EmailConfirmation";
-import unlockUserReducer from "./MyAccount/UnlockUser";
 import deviceAuthorizeReducer from "./MyAccount/DeviceAuthorize";
 import socialTradingPolicyReducer from "./SocialProfile/SocialTradingPolicy";
 import historicalPerformanceReducer from "./SocialProfile/HistoricalPerformance";
@@ -207,7 +205,6 @@ const reducers = combineReducers({
   //Parthbhai...
   loginHistoryRdcer: loginHistoryReducer,
   ipHistoryRdcer: ipHistoryReducer,
-  deviceManagementRdcer: deviceManagementReducer,
   editProfileRdcer: editProfileReducer,
   antiPhishingCodeRdcer: antiPhishingCodeReducer,
 
@@ -253,7 +250,6 @@ const reducers = combineReducers({
   authTokenRdcer: authorizationTokenReducer,
   sgnUpBlkchnRdcer: signupBlockchainReducer,
   emailConfirmRdcer: emailConfirmationReducer,
-  unlockUserRdcer: unlockUserReducer,
   devAuthRdcer: deviceAuthorizeReducer,
   socialTradePolicyRdcer: socialTradingPolicyReducer,
   historicalPerformanceRdcer: historicalPerformanceReducer,

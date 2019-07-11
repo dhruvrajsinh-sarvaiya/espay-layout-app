@@ -9,43 +9,31 @@ import MaringTrading from "Routes/margin-trading";
 //added by devang parekh
 import transactionHistory from "Routes/transaction-history";
 import openOrders from "Routes/open-orders";
-
 import Trading from "Routes/dashboard/trading";
 import BasicTrading from "Routes/dashboard/Trading2";
-
 // Added By Tejas
 import TransactionChargeReport from "Routes/TransactionChargeReport";
-
 // Added By TradeSummary
 import TradeSummary from "Routes/trade-summary";
-
 // Added By Nirmit
 import TradeLedger from "Routes/trading-report";
-
 // Added By Nirmit
 import Ledger from "Routes/ledger";
-
 //Added By Kevin
 import SocialProfile from "Routes/social-profile";
-
 /* Withdraw confirmation route - added by Nishant */
 import WithdrawConfirmation from "Routes/withdraw-confirmation";
-
 /* Leader Board - added by Salim dt:07/02/2019 */
 import LeaderBoard from "Routes/leader-board";
-
 // import for Site TokenReport 
 import SiteTokenReport from "Routes/SiteTokenReport";
 import SiteTokenConversion from "Components/SiteTokenConversion";
-
 //Added By Salim
 import Affiliate from "Routes/affiliate";
-
 // added By Tejas date : 16/2/2019
 import ApiPlanComponent from "Routes/ApiPlan";
 import SubScribePlan from "Components/ApiPlan/SubscribePlan";
 import ApiKeyView from "Components/ApiKey/ViewApiKeys";
-
 
 // async component
 import {
@@ -57,7 +45,6 @@ import {
     AsyncConfigurationComponent,
     AsyncTransferInComponent,
     AsyncTransferOutComponent,
-    AsyncDecentAddgenComponent,
     AsyncAddressWhitelistComponent,
     AsyncBalanceComponent,
     AsyncIncomingTransactionsComponent,
@@ -141,10 +128,6 @@ export default [
     {
         path: "transfer-out",
         component: AsyncTransferOutComponent
-    },
-    {
-        path: "decent-addgen",
-        component: AsyncDecentAddgenComponent
     },
     {
         path: "address-whitelist",

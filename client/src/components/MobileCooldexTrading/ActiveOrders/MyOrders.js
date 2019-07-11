@@ -96,10 +96,6 @@ class MyOrder extends React.Component {
 
   }
 
-  componentWillUnmount() {
-    this.setState({ isComponentActive: 0 });
-  }
-
   // Used To Set State Data From Props
   componentWillReceiveProps(nextprops) {
 

@@ -35,7 +35,7 @@ function* addContactusServer({ payload }) {
     try {
         const response = yield call(addNEWContact, payload);
         //validate if data found in response 
-        if (typeof response.data != undefined && response.data.responseCode == 0) {
+        if (response.data !== undefined && response.data.responseCode === 0) {
             yield put(addContactusSuccess(response.data));
         } else {
             yield put(addContactusFailure(response.data));

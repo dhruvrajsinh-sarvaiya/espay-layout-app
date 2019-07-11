@@ -296,7 +296,7 @@ class SignupForm extends Component {
                                 </div>
                                 <div className="col-md-6 col-sm-12">
                                     <FormGroup className="has-wrapper">
-                                        <Input style={{ backgroundColor: '#fff !important' }} type="select" tabIndex="9" value={SchemeType} name="SchemeType" id="SchemeType" className="has-input input-lg cstm_sel" style={{ "height": "3.100rem" }} onChange={this.onChange}>
+                                        <Input style={{ backgroundColor: '#fff !important', height: "3.100rem" }} type="select" tabIndex="9" value={SchemeType} name="SchemeType" id="SchemeType" className="has-input input-lg cstm_sel" onChange={this.onChange}>
                                             <IntlMessages id="myaccount.selSchemeType">{(selectType) => <option value="">{selectType}</option>}</IntlMessages>
                                             {schemeTypeList.length > 0 && schemeTypeList.map((sList, index) => (
                                                 <option key={index} value={sList.Id}>{sList.Value}</option>

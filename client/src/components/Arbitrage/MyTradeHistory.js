@@ -14,7 +14,6 @@ import { injectIntl } from 'react-intl';
 import { withRouter } from 'react-router-dom';
 
 class MyTradeHistory extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -27,7 +26,6 @@ class MyTradeHistory extends Component {
     }
 
     render() {
-
         // for dynamic tabs
         const uniqueTags = [];
         // for count no. of records in tab
@@ -55,7 +53,6 @@ class MyTradeHistory extends Component {
         return (
             <Fragment>
                 {this.props.isShowTitle && <h2> <IntlMessages id="trading.newTrading.markettrade.text" /> </h2>}
-
                 <div className="row">
                     <div className="col-md-10">
                         {<Tabs className="arbitrage_tabs_try">
@@ -72,7 +69,6 @@ class MyTradeHistory extends Component {
                             </TabList>
                         </Tabs>}
                     </div>
-
                     <div className="col-md-2 text-right arbitrage-btnmore">
                         <a href="javascript:void(0)"
                             onClick={() => { this.props.history.push('/app/arbitrage/transaction-history') }}
@@ -81,7 +77,6 @@ class MyTradeHistory extends Component {
                         </a>
                     </div>
                 </div>
-
                 <Scrollbars
                     className="jbs-scroll"
                     autoHeight
@@ -104,11 +99,10 @@ class MyTradeHistory extends Component {
                         </thead>
                         <tbody>
                             {
-                                this.props.MyTradeHistory && this.props.MyTradeHistory.length > 0
+                                this.props.MyTradeHistory.length > 0
                                     ? this.props.MyTradeHistory.map((list, index) => {
                                         { var status = list.IsCancel == 1 ? intl.formatMessage({ id: 'myorders.response.status.2' }) : intl.formatMessage({ id: `myorders.response.status.${list.Status}` }) }
                                         if (this.state.exchangeName === 'all' || this.state.exchangeName === list.ExchangeName) {
-
                                             return (
                                                 <tr key={index}>
                                                     <td>{list.PairName.split("_")[0] + " / " + list.PairName.split("_")[1]}</td>

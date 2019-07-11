@@ -3,22 +3,16 @@
 import React from "react";
 // import Component For table
 import { Col, Row, Table } from "reactstrap";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import Action
 import { getRecentOrderList } from "Actions/Trade";
-
 //import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 //import section loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // function for connect store
 import { connect } from "react-redux";
-
 import $ from 'jquery';
 
 class OpenOrder extends React.Component {
@@ -35,83 +29,55 @@ class OpenOrder extends React.Component {
     }
 
     componentWillMount() {
-
         // Invoke When Get Response From Socket/SignalR
         this.props.hubConnection.on('RecieveRecentOrder', (openOrderDetail) => {
-
             if (this.state.isComponentActive === 1 && openOrderDetail !== null) {
-
                 try {
-
                     const openOrderDetailData = JSON.parse(openOrderDetail);
-
                     if ((openOrderDetailData.EventTime && this.state.socketData.length === 0) ||
                         (this.state.socketData.length !== 0 && openOrderDetailData.EventTime >= this.state.socketData.EventTime)) {
-
                         const newData = openOrderDetailData.Data
-
                         if (parseFloat(newData.TrnNo) > 0) {
-
                             var recentOrders = $.extend(true, [], this.state.activeOpenOrder);
                             var findIndexOrderId = recentOrders.findIndex(recentOrdersNo => parseFloat(recentOrdersNo.TrnNo) === parseFloat(newData.TrnNo));
                             if (findIndexOrderId === -1) {
-
                                 if (parseFloat(newData.Qty) > 0) {
                                     recentOrders.unshift(newData)
                                 }
-
                             } else {
-
                                 if (parseFloat(newData.Qty) > 0) {
                                     recentOrders[findIndexOrderId] = newData
                                 }
-
                             }
-
                             this.setState({ activeOpenOrder: recentOrders, socketData: openOrderDetailData });
-
                         }
-
                     }
-
-                } catch (error) {
-
-                }
-
+                } catch (error) {}
             }
-
         });
-
         this.props.getRecentOrderList({});
-
     }
 
     componentWillUnmount() {
-        this.setState({ isComponentActive: 0 });
+        this.isComponentActive = 0;
     }
 
     // Used To Set State Data From Props
     componentWillReceiveProps(nextprops) {
-
         if (nextprops.activeOpenOrder.length !== 0 && this.state.recentOrderBit !== nextprops.recentOrderBit) {
-
             // set Active My Open Order list if gets from API only
             this.setState({
                 activeOpenOrder: nextprops.activeOpenOrder,
                 showLoader: false,
                 recentOrderBit: nextprops.recentOrderBit
             });
-
         } else if (nextprops.activeOpenOrder.length === 0 && this.state.recentOrderBit !== nextprops.recentOrderBit) {
-
             this.setState({
                 activeOpenOrder: [],
                 showLoader: false,
                 recentOrderBit: nextprops.recentOrderBit
             });
-
         }
-
     }
 
     // Render Component for Active Open Order
@@ -346,7 +312,6 @@ class OpenOrder extends React.Component {
                                                         <br />
                                                     </span>
                                                 </Col>
-
                                                 <Col
                                                     className="text-center text-danger m-0 fs-32"
                                                     sm={12}
@@ -362,7 +327,6 @@ class OpenOrder extends React.Component {
                     </Table>
                 </Scrollbars>
             </div>
-
         );
     }
 }
@@ -375,9 +339,6 @@ const mapStateToProps = state => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {
-        getRecentOrderList
-    }
-)(OpenOrder);
+export default connect(mapStateToProps,{
+    getRecentOrderList
+})(OpenOrder);

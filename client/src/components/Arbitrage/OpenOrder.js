@@ -5,33 +5,25 @@
  * update by : devang parekh (11-6-2019)
  * Reason: for handling signalr & api data from parent component because of unmount issue
  * 
- * * changes by Tejas 12/6/2019
+ * changes by Tejas 12/6/2019
 */
 
 import React, { Component, Fragment } from "react";
 // used for connect store
 import { connect } from "react-redux";
-
 // import for design 
 import { Table, Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-
 // import For Display notification
 import { NotificationManager } from "react-notifications";
-
 import { Tabs, Tab, TabList } from "react-web-tabs";
-
 // intl messages for language conversion
 import IntlMessages from "Util/IntlMessages";
-
 // import scrollbar
 import { Scrollbars } from "react-custom-scrollbars";
-
 //added by Tejas 14/6/2019
-import JbsLoader from "Components/JbsPageLoader/JbsLoader"
-
+import JbsLoader from "Components/JbsPageLoader/JbsLoader";
 // method for cancel order process
 import { doCancelOrderArbitrage } from 'Actions/Arbitrage';
-
 import { withRouter } from 'react-router-dom';
 
 const orderTypes = [
@@ -41,14 +33,10 @@ const orderTypes = [
     { "type": "STOP_Limit", "ID": "4" },
 ]
 
-
-
 //class for Open order
 class OpenOrder extends Component {
-
     constructor(props) {
         super(props);
-
         this.state = {
             modal: false,
             cancelAllModal: false,
@@ -69,19 +57,15 @@ class OpenOrder extends Component {
 
     //Open Modal add new Schedule dailog
     openModal = (key) => {
-
         this.setState({ modalInfo: key, modal: true });
     }
 
     // cancel All Modal and open new dialog
     openCancelAllModal = (e) => {
-
         if (e.target.value !== '') {
-
             if (e.target.value > 0) {
                 var isOrderType = false;
                 if (this.state.OpenOrderList.length > 0) {
-
                     this.state.OpenOrderList && this.state.OpenOrderList.map((value) => {
                         orderTypes.map((item) => {
                             if (item.ID === e.target.value) {
@@ -101,9 +85,7 @@ class OpenOrder extends Component {
                         cancelOrderBit: e.target.value
                     });
                 } else {
-                    NotificationManager.error(
-                        <IntlMessages id="openorder.ordernotavailable" />
-                    );
+                    NotificationManager.error(<IntlMessages id="openorder.ordernotavailable" />);
                     this.setState({
                         cancelAllModal: false,
                         cancelOrderBit: "",
@@ -126,10 +108,8 @@ class OpenOrder extends Component {
                         cancelOrderBit: "",
                     })
                 }
-
             }
         }
-
     }
 
     // handle close add new Schedule dailog
@@ -147,9 +127,7 @@ class OpenOrder extends Component {
 
     // function for cancel order
     cancelOrder = (total) => {
-
         this.setState({ sectionReload: true });
-
         var currrentOrder = {};
         // itrerate object and get particular order
         if (this.props.OpenOrderList && this.props.OpenOrderList.length) {
@@ -161,7 +139,6 @@ class OpenOrder extends Component {
         }
 
         // call action for cancel order
-
         this.props.doCancelOrderArbitrage({
             TranNo: currrentOrder.Id,
             CancelAll: 0,
@@ -196,15 +173,12 @@ class OpenOrder extends Component {
 
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
-
         if (nextprops.cancelAll === 1) {
             this.openCancelAllModal(nextprops.cancelAllValue);
         }
 
         if (nextprops.cancelOrder && (this.state.sectionReload || this.state.sectionReloadCancelAll)) {
-
-            if (nextprops.cancelOrder && nextprops.cancelOrder.statusCode === 200 && nextprops.cancelOrder.ErrorCode === 4643) {
-
+            if (nextprops.hasOwnProperty('cancelOrder') && nextprops.cancelOrder.statusCode === 200 && nextprops.cancelOrder.ErrorCode === 4643) {
                 NotificationManager.success(
                     <IntlMessages
                         id={`openorder.cancelorder.message.${
@@ -212,7 +186,6 @@ class OpenOrder extends Component {
                             }`}
                     />
                 );
-
             }
 
             this.setState({
@@ -225,7 +198,6 @@ class OpenOrder extends Component {
                 cancelAllModal: false,
                 //cancelOrderSuccess:true
             });
-
         }
     }
 
@@ -234,7 +206,6 @@ class OpenOrder extends Component {
     }
 
     render() {
-
         // for dynamic tabs
         const uniqueTags = [];
         // for count no. of records in tab
@@ -259,7 +230,6 @@ class OpenOrder extends Component {
 
         return (
             <Fragment>
-
                 <div className="row">
                     <div className="col-md-10">
                         {<Tabs className="arbitrage_tabs_try">
@@ -277,7 +247,6 @@ class OpenOrder extends Component {
                             </TabList>
                         </Tabs>}
                     </div>
-
                     <div className="col-md-2 text-right arbitrage-btnmore">
                         <a href="javascript:void(0)"
                             onClick={() => { this.props.history.push('/app/arbitrage/open-order') }}
@@ -304,42 +273,33 @@ class OpenOrder extends Component {
                                 <th>
                                     <IntlMessages id="trading.currencypair.label.pair" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="trading.history.label.Side" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="tradesummary.tradeSummaryColumn.orderType" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="myaccount.tradeSummaryColumn.exchange" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="trading.orders.label.amount" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="trading.orders.label.price" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="trading.activeorders.label.date" />
                                 </th>
-
                                 <th>
                                     <IntlMessages id="my_account.deviceWhitelisting.colAction" />
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.OpenOrderList && this.props.OpenOrderList.length > 0 ?
+                            {this.props.OpenOrderList.length > 0 ?
                                 this.props.OpenOrderList.map((list, key) => {
-
                                     if (list.ExchangeName === this.state.exchangeName || this.state.exchangeName === 'all') {
-
                                         return (
                                             <tr key={key}>
                                                 <td>{list.PairName.split("_")[0] + " / " + list.PairName.split("_")[1]}</td>
@@ -355,13 +315,9 @@ class OpenOrder extends Component {
                                                 </td>
                                             </tr>
                                         )
-
                                     }
-
                                 })
-                                :
-
-                                <tr><td colSpan="8"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>
+                                : <tr><td colSpan="8"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>
                             }
                         </tbody>
                     </table>
@@ -370,13 +326,9 @@ class OpenOrder extends Component {
                         className="myorderviewcancelall"
                     >
                         <h1 className="text-center mt-10">
-                            {
-                                <IntlMessages id="trading.activeorders.cancelorder.title" />
-                            }
+                            {<IntlMessages id="trading.activeorders.cancelorder.title" />}
                         </h1>
-
                         {this.props.cancelOrderLoader && <JbsLoader />}
-
                         <ModalBody>
                             {this.state.cancelOrderBit !== "" && (
                                 <h3>
@@ -389,7 +341,6 @@ class OpenOrder extends Component {
                                 </h3>
                             )}
                         </ModalBody>
-
                         <ModalFooter>
                             <Button
                                 variant="raised"
@@ -414,13 +365,9 @@ class OpenOrder extends Component {
                     </Modal>
                     <Modal isOpen={this.state.modal} className="myorderview">
                         <h1 className="text-center mt-10">
-                            {
-                                <IntlMessages id="trading.activeorders.cancelorder.title" />
-                            }
+                            {<IntlMessages id="trading.activeorders.cancelorder.title" />}
                         </h1>
-
                         {this.props.cancelOrderLoader && <JbsLoader />}
-
                         <ModalBody>
                             <div className="table-responsive">
                                 <Table className="table m-0 p-0 hover bordered striped">
@@ -432,7 +379,6 @@ class OpenOrder extends Component {
                                             <th>
                                                 <IntlMessages id="trading.history.label.Side" />
                                             </th>
-
                                             <th>
                                                 <IntlMessages id="tradesummary.tradeSummaryColumn.orderType" />
                                             </th>
@@ -442,18 +388,16 @@ class OpenOrder extends Component {
                                             <th>
                                                 <IntlMessages id="trading.orders.label.amount" />
                                             </th>
-
                                             <th>
                                                 <IntlMessages id="trading.orders.label.price" />
                                             </th>
-
                                             <th>
                                                 <IntlMessages id="trading.activeorders.label.date" />
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {this.props.OpenOrderList && this.props.OpenOrderList.length ? (
+                                        {this.props.OpenOrderList.length ? (
                                             this.props.OpenOrderList.map((value, key) =>
                                                 key === this.state.modalInfo && (
                                                     <tr key={key}>
@@ -468,16 +412,11 @@ class OpenOrder extends Component {
                                                     </tr>
                                                 )
                                             )
-                                        ) : (
-
-                                                <tr><td colSpan="7"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>
-
-                                            )}
+                                        ) : (<tr><td colSpan="7"><IntlMessages id="trading.activeorders.label.nodata" /></td></tr>)}
                                     </tbody>
                                 </Table>
                             </div>
                         </ModalBody>
-
                         <ModalFooter>
                             <Button
                                 variant="raised"
@@ -500,7 +439,6 @@ class OpenOrder extends Component {
                             </Button>
                         </ModalFooter>
                     </Modal>
-
                 </Scrollbars>
             </Fragment>
         );
@@ -508,10 +446,11 @@ class OpenOrder extends Component {
 }
 
 OpenOrder.defaultProps = {
-    isShowTitle: true
+    isShowTitle: true,
+    OpenOrderList : []
 }
-const mapStateToProps = ({ arbitrageReports }) => {
 
+const mapStateToProps = ({ arbitrageReports }) => {
     const {
         openOrderListLoading,
         cancelOrderLoader,

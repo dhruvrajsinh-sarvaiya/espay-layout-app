@@ -2,24 +2,17 @@
 
 import React, { Fragment } from "react";
 import { Table } from "reactstrap";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import Action
 import { getActiveMyOpenOrderList, doCancelOrder } from "Actions/Trade";
-
 // import Component For Scroll
 import { Scrollbars } from "react-custom-scrollbars";
-
 // import loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // import  Modal For Place Orders
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap";
-
 import { Alert } from 'reactstrap';
-
 // import connect function
 import { connect } from "react-redux";
 
@@ -54,7 +47,6 @@ class My24HOrder extends React.Component {
   cancelOrder(total) {
     // Set State for Section reload or not
     this.setState({ sectionReload: true });
-
     const currrentOrder = [];
 
     // Iterate Active my OPen ordes and add to current Order
@@ -77,7 +69,7 @@ class My24HOrder extends React.Component {
 
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
-    if (nextprops.activeMyOpenOrder && nextprops.activeMyOpenOrder !== null) {
+    if (nextprops.activeMyOpenOrder.length > 0) {
       // set Active My Open Order list if gets from API only
       this.setState({
         activeMyOpenOrder: nextprops.activeMyOpenOrder,
@@ -87,8 +79,7 @@ class My24HOrder extends React.Component {
   }
 
   // Render Component for Active My Open Order
-  render() {
-    
+  render() {    
     // Iterate Array and store in a variable
     const activeMyOpenData = [];
     if (this.state.activeMyOpenOrder) {
@@ -141,7 +132,6 @@ class My24HOrder extends React.Component {
                   </th>
                 </tr>
               </thead>
-
               <tbody>
                 {activeMyOpenData.length ? (
                   activeMyOpenData.map((value, key) => (
@@ -174,7 +164,6 @@ class My24HOrder extends React.Component {
                   )}
               </tbody>
             </Table>
-
             {/*Display Modal/Dialog if User press for cancel Orders request*/}
             <Modal isOpen={this.state.modal}>
               <ModalHeader>
@@ -254,10 +243,7 @@ const mapStateToProps = state => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    getActiveMyOpenOrderList,
-    doCancelOrder
-  }
-)(My24HOrder);
+export default connect(mapStateToProps, {
+  getActiveMyOpenOrderList,
+  doCancelOrder
+})(My24HOrder);

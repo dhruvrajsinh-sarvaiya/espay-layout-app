@@ -64,9 +64,9 @@ class TopLeaderList extends Component {
 								<tbody>
 									{
 										list.length > 0
-											? list.map((item, key) => (
-												<tr>
-													<td>{key + 1}</td>
+											? list.map((item, index) => (
+												<tr key={index}>
+													<td>{index + 1}</td>
 													<td>{item.LeaderName}</td>
 													<td>{item.NoOfFollowers}</td>
 													<td><Link className="text-primary" to={{ pathname: "/app/social-profile/leader-board", state: { LeaderId: item.LeaderId } }}><i className="zmdi zmdi-eye zmdi-hc-2x"></i></Link></td>

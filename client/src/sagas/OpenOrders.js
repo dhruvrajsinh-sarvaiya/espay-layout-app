@@ -5,7 +5,7 @@
  */
 // import neccessary saga effects from sagas/effects
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
+
 
 // import actions methods for handle response
 import {
@@ -13,11 +13,9 @@ import {
     openOrdersFailure,
 } from 'Actions';
 
-// for call api with params
-import api from 'Api';
 
 import AppConfig from 'Constants/AppConfig';
-const socketUrl = AppConfig.socketAPIUrl;
+
 import { swaggerPostAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
@@ -29,26 +27,7 @@ import {
     OPEN_ORDERS_REFRESH
 } from 'Actions/types';
 
-// call api for getting open orders with params
-// Input (open orders request)
-const getOpenOrdersRequest = async (openOrdersRequest) =>
-    await api.get('openOrders.js')
-        .then(response => response)
-        .catch(error => error);
 
-//WebSocket Call...
-const watchMessages = (socket, request) => eventChannel((emit) => {
-    socket.onopen = () => {
-        socket.send(JSON.stringify(request)) // Send data to server
-    };
-    socket.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
-        emit(msg);
-    };
-    return () => {
-        socket.close();
-    };
-});
 
 // Function for Open Oders
 function* openOrdersAPI({ payload }) {

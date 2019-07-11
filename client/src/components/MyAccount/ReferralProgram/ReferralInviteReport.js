@@ -223,7 +223,7 @@ class ReferralInviteReport extends Component {
         let today = new Date();
         today = today.getFullYear() + '-' + ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1) + '-' + (today.getDate() < 10 ? '0' : '') + today.getDate();
         const options = {
-            search:false,
+            search: false,
             filterType: "select",
             responsive: "scroll",
             selectableRows: false,
@@ -251,8 +251,8 @@ class ReferralInviteReport extends Component {
                 );
             },
             onTableChange: (action, tableState) => {
-                if (action === 'changeRowsPerPage' && action === 'changePage') {
-					this.setState({
+                if (action === 'changeRowsPerPage' || action === 'changePage') {
+                    this.setState({
                         GetData: {
                             ...this.state.Getdata,
                             PageIndex: tableState.page,
@@ -264,7 +264,7 @@ class ReferralInviteReport extends Component {
                         PageIndex: tableState.page,
                         Page_Size: tableState.rowsPerPage
                     });
-				}
+                }
             }
         };
 

@@ -11,7 +11,7 @@ const TradeDetailBlk = ({ tData }) => (
     <Fragment>
         <div className="trd_detail clearfix mt-15">
             {tData.map((item,index) => (
-                <div className={"t_item ti_"+tData.length}>
+                <div key={index} className={"t_item ti_"+tData.length}>
                     <span className="tlt">{item.title}</span>
                     <span className="amnt">{item.value}%</span>
                 </div>

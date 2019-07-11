@@ -24,7 +24,7 @@ module.exports = function validateChangePassword(data) {
     } else if (typeof (data.newPassword) != 'undefined' && !validator.isLength(data.newPassword, { min: 6, max: 30 })) {
         errors.newPassword = "my_account.err.passwordLength";
     }
-    if (isScriptTag(data.newPassword)) {
+  else  if (isScriptTag(data.newPassword)) {
         errors.newPassword = "my_account.err.scriptTag";
     }
     else if (isHtmlTag(data.newPassword)) {

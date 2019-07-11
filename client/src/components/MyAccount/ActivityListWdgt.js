@@ -136,9 +136,7 @@ class ActivityListWdgt extends Component {
     getActivityList = (pageIndex, pageSize) => {
         var newObj = Object.assign({}, this.state.datalist);
         newObj['pageIndex'] = pageIndex > 0 ? pageIndex : this.state.datalist.pageIndex;
-        if (pageSize > 0) {
-            newObj['pageSize'] = pageSize > 0 ? pageSize : this.state.datalist.pageSize;
-        }
+        newObj['pageSize'] = pageSize > 0 ? pageSize : this.state.data.pageSize;
         this.setState({ datalist: newObj });
 
         //For Action API...
@@ -149,7 +147,7 @@ class ActivityListWdgt extends Component {
     }
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.loading });
-        
+
         if (nextProps.list.ReturnCode === 1 || nextProps.list.ReturnCode === 9) {
             this.setState({ getList: [], totalCount: 0 });
         } else if (nextProps.list.hasOwnProperty('ActivityLogHistoryList') && nextProps.list.ActivityLogHistoryList.length > 0) {

@@ -14,11 +14,6 @@ const MobileNewsTicker = Loadable({
 });
 
 
-const MobileBasePairList = Loadable({
-  loader: () => import("./dashboard/BasePairList"),
-  loading: MyLoadingComponent
-});
-
 // Components For Display Market Cap By Tejas Date:12/9/2018
 const MobileCurrentMarket = Loadable({
   loader: () => import("./MarketCap/CurrentMarket"),
@@ -142,19 +137,18 @@ const MobileTopLoser = Loadable({
 // Export components
 export {
   MobileNewsTicker,
-  MobileBasePairList,
   MobileCurrentMarket,
   MobileHoldings,
   MobileTickers,
   MobilePairList,
   MobileBuyTrade,
   MobileSellTrade,
-  MobilePlaceOrder,  
+  MobilePlaceOrder,
   MobileOpenOrders,
   MobileMyOpenOrder,
-  MobileMarketTrade,  
+  MobileMarketTrade,
   MobileActiveOrders,
-  MobileBuySellTrade,  
+  MobileBuySellTrade,
   MobileTradingChart,
   MobileCoinBasicList,
   MobileMarketDepth,

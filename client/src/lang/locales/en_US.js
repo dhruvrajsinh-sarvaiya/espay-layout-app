@@ -956,6 +956,7 @@ module.exports = {
     "my_account.err.requireDecimalField": "Required Decimal value",
     "my_account.err.invalidPercentage": "Invalid Percentage",
     //API Error Code for Myaccount
+    // "apiErrCode.0": "Record Not Found.",
     "apiErrCode.503": "Please try after sometime.",
     "apiErrCode.500": "Please try after sometime.",
     "apiErrCode.404": "Please try after sometime.",

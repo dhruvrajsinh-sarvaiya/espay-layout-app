@@ -34,7 +34,6 @@ class AddEducation extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-
     const eduData = {
       school: this.state.school,
       degree: this.state.degree,
@@ -44,7 +43,6 @@ class AddEducation extends Component {
       current: this.state.current,
       description: this.state.description
     };
-
     this.props.addEducation(eduData, this.props.history);
   }
 
@@ -53,9 +51,12 @@ class AddEducation extends Component {
   }
 
   onCheck(e) {
-    this.setState({
-      disabled: !this.state.disabled,
-      current: !this.state.current
+    this.setState((prevState) => {
+        return { 
+            ...prevState,
+            disabled: !prevState.disabled,
+        current: !prevState.current
+        };
     });
   }
 
@@ -152,7 +153,6 @@ class AddEducation extends Component {
 
 AddEducation.propTypes = {
   addEducation: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 
@@ -161,6 +161,6 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { addEducation })(
-  withRouter(AddEducation)
-);
+export default connect(mapStateToProps, { 
+  addEducation
+})(withRouter(AddEducation));

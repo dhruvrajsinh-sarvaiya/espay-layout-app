@@ -5,7 +5,6 @@
  */
 // import neccessary saga effects from sagas/effects
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { eventChannel } from 'redux-saga';
 
 // import actions methods for handle response
 import {
@@ -14,42 +13,16 @@ import {
 } from 'Actions';
 
 import AppConfig from 'Constants/AppConfig';
-const socketUrl = AppConfig.socketAPIUrl;
-
 import { swaggerPostAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
-const statusErrCode = statusErrCodeList();
-
-// for call api with params
-import api from 'Api';
 
 // import action types which is neccessary
 import {
     TRANSACTION_HISTORY,
     TRANSACTION_HISTORY_REFRESH
 } from 'Actions/types';
+const lgnErrCode = loginErrCode();
+const statusErrCode = statusErrCodeList();
 
-// call api for getting transaction history with params
-// Input (transaction request)
-const getTransactionHistoryRequest = async (transactionHistoryRequest) =>
-    await api.get('transHistory.js')
-        //.then(console.log('API',transactionHistoryRequest))
-        .then(response => response)
-        .catch(error => error);
-
-//WebSocket Call...
-const watchMessages = (socket, request) => eventChannel((emit) => {
-    socket.onopen = () => {
-        socket.send(JSON.stringify(request)) // Send data to server
-    };
-    socket.onmessage = (event) => {
-        const msg = JSON.parse(event.data);
-        emit(msg);
-    };
-    return () => {
-        socket.close();
-    };
-});
 
 // Function for PAIR LIST DATA
 function* transactionHistoryAPI({ payload }) {

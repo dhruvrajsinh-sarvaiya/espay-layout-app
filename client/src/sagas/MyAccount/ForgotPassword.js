@@ -14,16 +14,14 @@ import {
     forgotPasswordFailure
 } from 'Actions/MyAccount';
 
-import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
 //Get function form helper for Swagger API Call
 import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for Forgot Password API
 function* forgotPasswordAPI({payload}) {
-    //console.log("Request",payload);
+    
     const response = yield call(swaggerPostAPI,'api/Signin/ForgotPassword',payload);
-    //console.log("Response",response);
+    
     try {
         
         if(response.ReturnCode === 0) {

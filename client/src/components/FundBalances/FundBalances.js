@@ -31,7 +31,6 @@ const BalanceWidget = ({ coin, balance, getDetails, wallets, loading }) => (
     <div className={classNames("social-card my-10 mx-5 balancecard")}>
         <span className={`social-icon`}>
             <img
-                // src={getImage}
                 src={AppConfig.coinlistImageurl + '/' + coin + '.png'}
                 style={{ width: "65px" }}
                 alt={coin}
@@ -156,16 +155,13 @@ class FundBalances extends Component {
         this.props.getAllBalance();
         //refresh balance on update
         this.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
-            // console.log("response from signalr RecieveWalletBal", walletBalance);
             try {
                 walletBalance = JSON.parse(walletBalance);
                 //refresh balance call 
                 if (walletBalance.Data.hasOwnProperty('CoinName')) {
                     this.setState({ filterList: [] }, () => this.props.getAllBalance());
                 }
-            } catch (error) {
-                // console.log("response from signalr RecieveWalletBal", error);
-            }
+            } catch (error) { }
         });
     }
     //will recieve props update states...
@@ -232,7 +228,7 @@ class FundBalances extends Component {
                                     coin.Balance != 0 && <BalanceWidget
                                         coin={coin.WalletType}
                                         balance={coin.Balance}
-                                        
+
                                         getDetails={(e) => this.props.getWalletsBalance(coin.WalletType)}
                                         wallets={this.props.wallets}
                                         loading={this.props.subLoading}
@@ -241,7 +237,7 @@ class FundBalances extends Component {
                                     <BalanceWidget
                                         coin={coin.WalletType}
                                         balance={coin.Balance}
-                                        
+
                                         getDetails={(e) => this.props.getWalletsBalance(coin.WalletType)}
                                         wallets={this.props.wallets}
                                         loading={this.props.subLoading}

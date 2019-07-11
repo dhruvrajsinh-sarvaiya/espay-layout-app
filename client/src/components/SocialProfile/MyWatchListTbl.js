@@ -23,12 +23,6 @@ class MyWatchListTbl extends Component {
 			Page_Size: AppConfig.totalRecordDisplayInList,
 			GroupId: 0
 		};
-
-		this.onDismiss = this.onDismiss.bind(this);
-	}
-
-	onDismiss() {
-		this.setState({ err_alert: false, success_alert: false });
 	}
 
 	componentWillMount() {
@@ -76,9 +70,9 @@ class MyWatchListTbl extends Component {
 					<tbody>
 						{
 							list.length > 0
-								? list.map((item, key) => (
-									<tr>
-										<td>{key + 1}</td>
+								? list.map((item, index) => (
+									<tr key={index}>
+										<td>{index + 1}</td>
 										<td>{item.LeaderName}</td>
 										<td>{item.GroupName}</td>
 										<td><Link className="text-primary" to={{ pathname: "/app/social-profile/leader-board", state: { LeaderId: item.LeaderId } }}><i className="zmdi zmdi-eye zmdi-hc-2x"></i></Link></td>

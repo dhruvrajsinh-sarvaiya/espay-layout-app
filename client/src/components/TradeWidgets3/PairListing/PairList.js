@@ -1,19 +1,14 @@
 // Component for displaying Currency Pair  Data By:Tejas Date : 13/9/2018
 
 import React from "react";
-
 // import for navigation bar Card
 import { Table, Input, Nav, NavItem, NavLink, Row, Col } from "reactstrap";
-
 // import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 //import for use multiple classes in component
 import classnames from "classnames";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import action
 import {
     getPairList,
@@ -22,13 +17,10 @@ import {
     addToFavouritePairList,
     removeFromFavouritePairList,
 } from "Actions/Trade";
-
 // import section loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // import connect function for store
 import { connect } from "react-redux";
-
 import $ from "jquery";
 
 class PairList extends React.Component {
@@ -66,12 +58,8 @@ class PairList extends React.Component {
 
     componentWillMount() {
         this.isComponentActive = 1;
-
         // code changed by devang parekh for handling margin trading process
-        if (
-            this.props.hasOwnProperty("marginTrading") &&
-            this.props.marginTrading === 1
-        ) {
+        if (this.props.hasOwnProperty("marginTrading") && this.props.marginTrading === 1) {
             // Call Actions For Get pair List
             this.props.getFavouritePairList({ marginTrading: 1 });
             this.processForMarginTrading(); // call for intialize socket listners for margin trading
@@ -80,23 +68,18 @@ class PairList extends React.Component {
             this.props.getFavouritePairList({});
             this.processForNormalTrading(); // call for intialize socket listners for normal trading
         }
-
         // code end (21-2-2019)
-
     }
 
     // code for handle signalr listners for normal trading
     processForNormalTrading() {
-
         this.props.hubConnection.on("RecievePairData", (pairListData) => {
-            //console.log("Get Data from signalR RecievePairData", pairListData);
             if (this.isComponentActive === 1 && pairListData !== null) {
                 var pairList = this.state.pairList;
                 var oldPairLists = [];
 
                 try {
                     const pairListDataDetail = JSON.parse(pairListData);
-
                     const newVolumeData = pairListDataDetail.Data;
 
                     if (
@@ -119,21 +102,15 @@ class PairList extends React.Component {
                                     oldPairLists = value.PairList;
                                     value.PairList.map(
                                         (newPairItem, indexValue) => {
-                                            // if(newPairItem.PairId == newVolumeData.PairId){
                                             if (
                                                 newPairItem.PairName ===
                                                 newVolumeData.PairName
                                             ) {
-                                                newPairItem.CurrentRate =
-                                                    newVolumeData.CurrentRate;
-                                                newPairItem.ChangePer =
-                                                    newVolumeData.ChangePer;
-                                                newPairItem.Volume =
-                                                    newVolumeData.Volume24;
-                                                newPairItem.UpDownBit =
-                                                    newVolumeData.UpDownBit;
-                                                newPairItem.changeBit =
-                                                    newVolumeData.UpDownBit;
+                                                newPairItem.CurrentRate = newVolumeData.CurrentRate;
+                                                newPairItem.ChangePer = newVolumeData.ChangePer;
+                                                newPairItem.Volume = newVolumeData.Volume24;
+                                                newPairItem.UpDownBit = newVolumeData.UpDownBit;
+                                                newPairItem.changeBit = newVolumeData.UpDownBit;
                                             }
                                         }
                                     );
@@ -154,17 +131,13 @@ class PairList extends React.Component {
 
     // code for handle signalr listners for margin trading
     processForMarginTrading() {
-
         this.props.hubConnection.on("RecievePairData", (pairListData) => {
-
-            //console.log("margin Get Data from signalR RecievePairData", pairListData);
             if (this.isComponentActive === 1 && pairListData !== null) {
                 var pairList = this.state.pairList;
                 var oldPairLists = [];
 
                 try {
                     const pairListDataDetail = JSON.parse(pairListData);
-
                     const newVolumeData = pairListDataDetail.Data;
 
                     if (
@@ -187,21 +160,15 @@ class PairList extends React.Component {
                                     oldPairLists = value.PairList;
                                     value.PairList.map(
                                         (newPairItem, indexValue) => {
-                                            // if(newPairItem.PairId == newVolumeData.PairId){
                                             if (
                                                 newPairItem.PairName ===
                                                 newVolumeData.PairName
                                             ) {
-                                                newPairItem.CurrentRate =
-                                                    newVolumeData.CurrentRate;
-                                                newPairItem.ChangePer =
-                                                    newVolumeData.ChangePer;
-                                                newPairItem.Volume =
-                                                    newVolumeData.Volume24;
-                                                newPairItem.UpDownBit =
-                                                    newVolumeData.UpDownBit;
-                                                newPairItem.changeBit =
-                                                    newVolumeData.UpDownBit;
+                                                newPairItem.CurrentRate = newVolumeData.CurrentRate;
+                                                newPairItem.ChangePer = newVolumeData.ChangePer;
+                                                newPairItem.Volume = newVolumeData.Volume24;
+                                                newPairItem.UpDownBit = newVolumeData.UpDownBit;
+                                                newPairItem.changeBit = newVolumeData.UpDownBit;
                                             }
                                         }
                                     );
@@ -215,9 +182,7 @@ class PairList extends React.Component {
                             });
                         }
                     }
-                } catch (error) {
-                    //console.log("pair data ",error)
-                }
+                } catch (error) { }
             }
         });
     }
@@ -228,26 +193,31 @@ class PairList extends React.Component {
 
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
-        if (nextprops.pairData.length !== 0 && nextprops.pairData !== null) {
+        if (nextprops.pairData !== null && (nextprops.pairData.length !== 0 || nextprops.pairData.length === 0)) {
             // set pair list if gets from API only
-            this.setState({
-                oldState: this.state.pairList,
-                pairList: nextprops.pairData,
+            this.setState((previousState) => {
+                return { 
+                    ...previousState,
+                    oldState: previousState.pairList,
+                    pairList: nextprops.pairData,
+                    showLoader : false
+                };
             });
         }
 
         if (nextprops.firstCurrency !== this.state.firstCurrency) {
-            this.setState({
-                firstCurrency: nextprops.firstCurrency,
-            });
+            this.setState({ firstCurrency: nextprops.firstCurrency });
         }
 
         if (nextprops.secondCurrency !== this.state.secondCurrency) {
-            this.setState({
-                secondCurrency: nextprops.secondCurrency,
-                volumeData: [],
-                oldVolumeData: [],
-                pairList: this.state.pairList,
+            this.setState((previousState) => {
+                return { 
+                    ...previousState,
+                    secondCurrency: nextprops.secondCurrency,
+                    volumeData: [],
+                    oldVolumeData: [],
+                    pairList: previousState.pairList
+                };
             });
         }
 
@@ -283,52 +253,25 @@ class PairList extends React.Component {
     // Function for Add Data in Favoourite List By Tejas : Date : 21/9/2018
     addToFavourite = (event, value) => {
         event.stopPropagation();
-        if (this.state.favouritesPairList) {
-            var isAvailable = this.state.favouritesPairList.findIndex(
-                (fav) => fav.pair === value.PairId
-            );
-            //console.log("isAvailable",isAvailable);
-            if (isAvailable !== -1) {
-                var PairData = this.state.favouritesPairList[isAvailable];
-                this.state.favouritesPairList.splice(isAvailable, 1);
-                this.setState({
-                    favouritesPairList: this.state.favouritesPairList,
-                });
-                // code changed by devang parekh for handling margin trading process
-                if (
-                    this.props.hasOwnProperty("marginTrading") &&
-                    this.props.marginTrading === 1
-                ) {
-                    PairData.marginTrading = 1;
-                    this.props.removeFromFavouritePairList(PairData);
-                } else {
-                    this.props.removeFromFavouritePairList(PairData);
-                }
-                //end
+        var isAvailable = this.state.favouritesPairList.length > 0 ? this.state.favouritesPairList.findIndex((fav) => fav.pair === value.PairId) : -1;
+        if (isAvailable !== -1) {
+            var PairData = this.state.favouritesPairList[isAvailable];
+            this.state.favouritesPairList.splice(isAvailable, 1);
+            this.setState({ favouritesPairList: this.state.favouritesPairList });
+            // code changed by devang parekh for handling margin trading process
+            if (
+                this.props.hasOwnProperty("marginTrading") &&
+                this.props.marginTrading === 1
+            ) {
+                PairData.marginTrading = 1;
+                this.props.removeFromFavouritePairList(PairData);
             } else {
-                this.state.favouritesPairList.push({ pair: value.PairId });
-                this.setState({
-                    favouritesPairList: this.state.favouritesPairList,
-                });
-                // code changed by devang parekh for handling margin trading process
-                if (
-                    this.props.hasOwnProperty("marginTrading") &&
-                    this.props.marginTrading === 1
-                ) {
-                    value.marginTrading = 1;
-                    this.props.addToFavouritePairList(value);
-                } else {
-                    this.props.addToFavouritePairList(value);
-                }
-                //end
-
+                this.props.removeFromFavouritePairList(PairData);
             }
-
+            //end
         } else {
             this.state.favouritesPairList.push({ pair: value.PairId });
-            this.setState({
-                favouritesPairList: this.state.favouritesPairList,
-            });
+            this.setState({ favouritesPairList: this.state.favouritesPairList });
             // code changed by devang parekh for handling margin trading process
             if (
                 this.props.hasOwnProperty("marginTrading") &&
@@ -340,7 +283,6 @@ class PairList extends React.Component {
                 this.props.addToFavouritePairList(value);
             }
             //end
-
         }
     };
 
@@ -372,10 +314,7 @@ class PairList extends React.Component {
             });
 
             favouriteList.map((value, indexValue) => {
-                var pair =
-                    value.PairName.split("_")[0] +
-                    "/" +
-                    value.PairName.split("_")[1];
+                var pair = value.PairName.split("_")[0] + "/" + value.PairName.split("_")[1];
                 var findIndexValuePrice = oldPairLists.findIndex(
                     (oldPairItem) =>
                         oldPairItem.CurrentRate === value.CurrentRate
@@ -438,7 +377,6 @@ class PairList extends React.Component {
             var isAvailable = null;
             this.state.pairList.map((value, key) => {
                 if (value.Abbrevation === this.props.secondCurrency) {
-                    // oldPairLists = value.PairList;
                     value.PairList.map((newPairItem, indexValue) => {
                         //  Display Record when Search Pair
                         if (this.state.searchText !== "") {
@@ -451,9 +389,7 @@ class PairList extends React.Component {
                                 ) !== -1
                             ) {
                                 var findIndexValuePrice = oldPairLists.findIndex(
-                                    (oldPairItem) =>
-                                        oldPairItem.CurrentRate ===
-                                        newPairItem.CurrentRate
+                                    (oldPairItem) => oldPairItem.CurrentRate === newPairItem.CurrentRate
                                 );
                                 var lastPrice = 0;
 
@@ -465,28 +401,20 @@ class PairList extends React.Component {
                                 var lastChange = 0;
 
                                 var findIndexValueVolume = oldPairLists.findIndex(
-                                    (oldPairItem) =>
-                                        oldPairItem.Volume ===
-                                        newPairItem.Volume
+                                    (oldPairItem) => oldPairItem.Volume === newPairItem.Volume
                                 );
                                 var lastVolume = 0;
 
                                 if (findIndexValuePrice !== -1) {
-                                    lastPrice =
-                                        oldPairLists[findIndexValuePrice]
-                                            .CurrentRate;
+                                    lastPrice = oldPairLists[findIndexValuePrice].CurrentRate;
                                 }
 
                                 if (findIndexValuePer !== -1) {
-                                    lastChange =
-                                        oldPairLists[findIndexValuePer]
-                                            .ChangePer;
+                                    lastChange = oldPairLists[findIndexValuePer].ChangePer;
                                 }
 
                                 if (findIndexValueVolume !== -1) {
-                                    lastVolume =
-                                        oldPairLists[findIndexValueVolume]
-                                            .Volume;
+                                    lastVolume = oldPairLists[findIndexValueVolume].Volume;
                                 }
 
                                 searchPair.push(
@@ -494,11 +422,7 @@ class PairList extends React.Component {
                                         key={indexValue}
                                         index={indexValue}
                                         upDownBit={newPairItem.UpDownBit}
-                                        pair={
-                                            newPairItem.Abbrevation +
-                                            "/" +
-                                            this.props.secondCurrency
-                                        }
+                                        pair={newPairItem.Abbrevation+"/"+this.props.secondCurrency}
                                         newPrice={newPairItem.CurrentRate}
                                         oldPrice={lastPrice}
                                         newChange={newPairItem.ChangePer}
@@ -525,50 +449,37 @@ class PairList extends React.Component {
                             }
                             // Actual Display Data  without search
                             findIndexValuePrice = oldPairLists.findIndex(
-                                (oldPairItem) =>
-                                    oldPairItem.CurrentRate ===
-                                    newPairItem.CurrentRate
+                                (oldPairItem) => oldPairItem.CurrentRate === newPairItem.CurrentRate
                             );
                             lastPrice = 0;
 
                             findIndexValuePer = oldPairLists.findIndex(
-                                (oldPairItem) =>
-                                    oldPairItem.ChangePer ===
-                                    newPairItem.ChangePer
+                                (oldPairItem) => oldPairItem.ChangePer === newPairItem.ChangePer
                             );
                             lastChange = 0;
 
                             findIndexValueVolume = oldPairLists.findIndex(
-                                (oldPairItem) =>
-                                    oldPairItem.Volume === newPairItem.Volume
+                                (oldPairItem) => oldPairItem.Volume === newPairItem.Volume
                             );
                             lastVolume = 0;
 
                             if (findIndexValuePrice !== -1) {
-                                lastPrice =
-                                    oldPairLists[findIndexValuePrice]
-                                        .CurrentRate;
+                                lastPrice = oldPairLists[findIndexValuePrice].CurrentRate;
                             }
 
                             if (findIndexValuePer !== -1) {
-                                lastChange =
-                                    oldPairLists[findIndexValuePer].ChangePer;
+                                lastChange = oldPairLists[findIndexValuePer].ChangePer;
                             }
 
                             if (findIndexValueVolume !== -1) {
-                                lastVolume =
-                                    oldPairLists[findIndexValueVolume].Volume;
+                                lastVolume = oldPairLists[findIndexValueVolume].Volume;
                             }
 
                             pairsRow.push(
                                 <PairListRow
                                     key={indexValue}
                                     index={indexValue}
-                                    pair={
-                                        newPairItem.Abbrevation +
-                                        "/" +
-                                        this.props.secondCurrency
-                                    }
+                                    pair={newPairItem.Abbrevation+"/"+this.props.secondCurrency}
                                     newPrice={newPairItem.CurrentRate}
                                     oldPrice={lastPrice}
                                     newChange={newPairItem.ChangePer}
@@ -583,11 +494,7 @@ class PairList extends React.Component {
                                     value={newPairItem}
                                     pairsInfo={this.state.pairsInfo}
                                     upDownBit={newPairItem.UpDownBit}
-                                    changeBit={
-                                        newPairItem.changeBit
-                                            ? newPairItem.changeBit
-                                            : 0
-                                    }
+                                    changeBit={newPairItem.changeBit ? newPairItem.changeBit : 0}
                                 />
                             );
                         }
@@ -595,11 +502,7 @@ class PairList extends React.Component {
                 }
             });
         }
-        //}
-
-        if (pairsRow.length !== 0) {
-            this.state.showLoader = false;
-        }
+        //}        
         return (
             <div className="d-sm-full p-0">
                 <div>
@@ -676,11 +579,7 @@ class PairList extends React.Component {
                         </Col>
                     </Row>
                 </div>
-
-                {this.state.showLoader &&
-                    <JbsSectionLoader />
-                }
-
+                {this.state.showLoader && <JbsSectionLoader /> }
                 <div className="table-responsive-design p-5">
                     <div
                         className={
@@ -782,30 +681,24 @@ const mapStateToProps = (state) => ({
     volumeData: state.tradePairList.volumeData,
     favouritePairList: state.tradePairList.favouritePairList,
     favouritePairData: state.tradePairList.favouritePairData,
-    // volumeData: state.tradePairList.volumeData,
     darkMode: state.settings.darkMode,
 });
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {
-        getPairList,
-        getVolumeData,
-        getFavouritePairList,
-        addToFavouritePairList,
-        removeFromFavouritePairList,
-    }
-)(PairList);
+export default connect(mapStateToProps, {
+    getPairList,
+    getVolumeData,
+    getFavouritePairList,
+    addToFavouritePairList,
+    removeFromFavouritePairList,
+})(PairList);
 
 class PairListRow extends React.Component {
     render() {
         var changeClass = "";
-
         if (this.props.changeBit === 1) {
             changeClass = "blink_me";
         }
-
         $(".sellOrderClass").removeClass("sellOrderClass");
 
         return (
@@ -816,22 +709,16 @@ class PairListRow extends React.Component {
                         ? changeClass + " sellOrderClass"
                         : ""
                 }
-                onClick={() => {
-                    this.props.changePairs(this.props.value);
-                }}
+                onClick={() => {this.props.changePairs(this.props.value);}}
                 key={this.props.index}
             >
                 <td>
                     <a
                         href="javascript:;"
-                        onClick={(event) => {
-                            this.props.addToFavourite(event, this.props.value);
-                        }}
+                        onClick={(event) => { this.props.addToFavourite(event, this.props.value); }}
                     >
                         {this.props.isAvailable === -1 ||
                             this.props.isAvailable === null ? (
-                                // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.fillstar" />}</i> :
-                                // <i className="material-icons">{<IntlMessages id="trading.currencypair.icon.star" />}</i>}</a>
                                 <i className="material-icons">star_border</i>
                             ) : (
                                 <i className="material-icons">star</i>
@@ -839,7 +726,6 @@ class PairListRow extends React.Component {
                     </a>
                     {this.props.pair}
                 </td>
-                {/* <td> {this.props.pair}</td> */}
                 <td
                     className={classnames({
                         blink_success:
@@ -849,20 +735,15 @@ class PairListRow extends React.Component {
                 >
                     {parseFloat(this.props.newPrice).toFixed(8)}
                 </td>
-
-                {/* <td className={this.props.upDownBit ? 'text-success':'text-danger'}>                     */}
                 <td
                     className={
                         this.props.newChange === 0
                             ? "text-default"
-                            : this.props.newChange > 0
-                                ? "text-success"
-                                : "text-danger"
+                            : this.props.newChange > 0 ? "text-success" : "text-danger"
                     }
                 >
                     {parseFloat(this.props.newChange).toFixed(2)} %
                 </td>
-
                 <td>{parseFloat(this.props.newVolume).toFixed(2)}</td>
             </tr>
         );

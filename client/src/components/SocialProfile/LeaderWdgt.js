@@ -18,7 +18,7 @@ class LeaderWdgt extends Component {
         super(props);
         this.state = {
             loading: false,
-            leaderSetting : {
+            leaderSetting: {
                 ProfileId: '',
                 ProfileType: 'Leader',
                 Price: 0,
@@ -41,8 +41,7 @@ class LeaderWdgt extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('Leader Props:',nextProps);
-        this.setState({ loading : nextProps.loading });
+        this.setState({ loading: nextProps.loading });
     }
 
     onSubscribe(ProfileId) {
@@ -54,8 +53,7 @@ class LeaderWdgt extends Component {
     }
 
     render() {
-        const { ProfileId, Price, Subscribe, Profile_Visiblity, Can_Have_Followers, Can_Follow_Leaders, Can_Copy_Trade, Can_Mirror_Trade, Minimum_Trade_Volume} = this.state.leaderSetting;
-        console.log('Subscribe :',Subscribe, Subscribe === false);
+        const { ProfileId, Price, Subscribe, Profile_Visiblity, Can_Have_Followers, Can_Follow_Leaders, Can_Copy_Trade, Can_Mirror_Trade, Minimum_Trade_Volume } = this.state.leaderSetting;
         return (
             <Fragment>
                 <JbsCollapsibleCard customClasses="text-center border border-solid border-dark">

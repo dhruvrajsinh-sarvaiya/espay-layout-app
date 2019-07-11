@@ -66,9 +66,9 @@ class TopLooserList extends Component {
 								<tbody>
 									{
 										list.length > 0
-											? list.map((item, key) => (
-												<tr>
-													<td>{key + 1}</td>
+											? list.map((item, index) => (
+												<tr key={index}>
+													<td>{index + 1}</td>
 													<td>{item.LeaderName}</td>
 													<td>{item.Email}</td>
 													<td>{item.Profit}</td>

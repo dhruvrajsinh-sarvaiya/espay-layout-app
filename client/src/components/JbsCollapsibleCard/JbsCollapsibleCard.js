@@ -4,7 +4,6 @@
 import React, { Component } from "react";
 import { Collapse, Badge } from "reactstrap";
 import classnames from "classnames";
-
 // jbs section loader
 import JbsSectionLoader from "../JbsSectionLoader/JbsSectionLoader";
 
@@ -16,7 +15,7 @@ class JbsCollapsibleCard extends Component {
   };
 
   onCollapse() {
-    this.setState({ collapse: !this.state.collapse });
+    this.setState({ collapse: this.state.collapse ? false : true });
   }
 
   onReload() {

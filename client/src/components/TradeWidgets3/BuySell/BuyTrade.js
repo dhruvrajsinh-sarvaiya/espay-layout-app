@@ -2,10 +2,8 @@
 
 // import scrollbar
 import { Scrollbars } from "react-custom-scrollbars";
-
 import React, { Fragment, Component } from "react";
 import { Table } from "reactstrap";
-
 import $ from "jquery";
 
 // intl messages
@@ -13,12 +11,10 @@ import IntlMessages from "Util/IntlMessages";
 
 // import for display Loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 import classnames from "classnames";
 
 // function for connect store
 import { connect } from "react-redux";
-
 import AppConfig from "Constants/AppConfig";
 var buyOrderDepth = AppConfig.totalOrders;
 const buySellRecordCount = 6; //AppConfig.buySellRecordCount;
@@ -39,9 +35,7 @@ class BuyOrderRow extends Component {
 
         const highDepth =
             this.props.Price !== "-"
-                ? parseFloat((this.props.Amount * 100) / buyOrderDepth).toFixed(
-                    2
-                )
+                ? parseFloat((this.props.Amount * 100) / buyOrderDepth).toFixed(2)
                 : 0;
 
         return (
@@ -54,7 +48,7 @@ class BuyOrderRow extends Component {
                         "linear-gradient(rgba(18,184,134,.15),rgba(18,184,134,.15)) 0% 100%",
                     backgroundRepeat: "no-repeat",
                     backgroundSize:
-                        highDepth >= 100 && highDepth
+                        highDepth && highDepth >= 100
                             ? "100%"
                             : highDepth + "%",
                 }}
@@ -136,13 +130,9 @@ class BuyTrade extends Component {
         this.props.setData(price, amount);
     };
 
-    componentDidMount() { }
-
     componentWillUnmount() {
         this.isComponentActive = 0;
     }
-    // This will Invoke when component will recieve Props or when props changed
-    componentWillReceiveProps(nextprops) { }
 
     // Render Component for Buyer Order
     render() {
@@ -227,21 +217,18 @@ class BuyTrade extends Component {
                         <thead>
                             <tr className="text-dark">
                                 <th>
-                                    {
-                                        <IntlMessages id="trading.orders.label.price" />
-                                    }{" "}
+                                    {<IntlMessages id="trading.orders.label.price" />}
+                                    {" "}
                                     ({this.props.secondCurrency})
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.orders.label.amount" />
-                                    }{" "}
+                                    {<IntlMessages id="trading.orders.label.amount" />}
+                                    {" "}
                                     ({this.props.firstCurrency})
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.orders.label.total" />
-                                    }{" "}
+                                    {<IntlMessages id="trading.orders.label.total" />}
+                                    {" "}
                                     ({this.props.secondCurrency})
                                 </th>
                             </tr>
@@ -262,21 +249,15 @@ class BuyTrade extends Component {
                         >
                             {this.props.UpDownBit === 1 ? (
                                 <i className="ti-arrow-up text-success" />
-                            ) : (
-                                    <i className="ti-arrow-down text-danger" />
-                                )}{" "}
+                            ) : (<i className="ti-arrow-down text-danger" />)}
+                            {" "}
                             &nbsp;
-                            {this.props.lastPrice !== 0 &&
-                                parseFloat(this.props.lastPrice).toFixed(8)}
+                            {parseFloat(this.props.lastPrice).toFixed(8)}
                             {this.props.UpDownBit === 1 ? (
                                 <i className="material-icons text-success float-right">
                                     network_cell
                                 </i>
-                            ) : (
-                                    <i className="material-icons text-danger float-right">
-                                        network_cell
-                                </i>
-                                )}
+                            ) : (<i className="material-icons text-danger float-right"> network_cell </i>)}
                         </div>
                     </div>
                 )}
@@ -330,7 +311,4 @@ const mapStateToProps = ({ buyerOrder, currentMarketCap, settings }) => {
 };
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {}
-)(BuyTrade);
+export default connect(mapStateToProps, {})(BuyTrade);

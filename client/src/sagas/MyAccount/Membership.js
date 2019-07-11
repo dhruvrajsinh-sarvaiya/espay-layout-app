@@ -22,7 +22,7 @@ function* membershipLevelAPI({ payload }) {
 	var staticRes = '';
 	
 	try {
-		//console.log('Memeber Res', response);
+		
 		if (lgnErrCode.includes(response.statusCode)) {
 			redirectToLogin();
 		} else if (statusErrCode.includes(response.statusCode)) {

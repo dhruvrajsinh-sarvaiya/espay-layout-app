@@ -3,13 +3,11 @@
  */
 import React, { Component, Fragment } from "react";
 import { Row, Col, Card } from "reactstrap";
-
 import {
     getCurrencyList,
     getCurrentPrice,
     getMarketCapList,
     getActiveMyOpenOrderList,
-    getActiveOpenOrderList,
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,
@@ -22,16 +20,11 @@ import {
     changeMarketTradeSocketConnection,
     getVolumeData
 } from "Actions/Trade";
-
 import { getWallets } from "Actions/Withdraw";
-
 // import connect for redux store
 import { connect } from "react-redux";
-
 import AppConfig from "Constants/AppConfig";
-
 import { DropdownToggle, DropdownMenu, Dropdown } from "reactstrap";
-
 import {
     CurrentMarket,
     PairList,
@@ -42,7 +35,6 @@ import {
     TradingChart
 } from "Components/TradeWidgets3";
 import $ from "jquery";
-
 //Tab Menu Start
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
@@ -59,12 +51,6 @@ function TabContainer({ children }) {
 
 // Component for trading dashboard
 class tradingDashbaord extends Component {
-    //Tab Menu
-    handleChange(value) {
-        this.setState({ activeIndex: value });
-    }
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -102,9 +88,11 @@ class tradingDashbaord extends Component {
         };
         this.changeCurrencyPair = this.changeCurrencyPair.bind(this);
         this.changeSecondCurrency = this.changeSecondCurrency.bind(this);
-        this.toggle = this.toggle.bind(this);
-        this.setBuyOrders = this.setBuyOrders.bind(this);
-        this.setSellOrders = this.setSellOrders.bind(this);
+    }
+    
+    //Tab Menu
+    handleChange(value) {
+        this.setState({ activeIndex: value });
     }
 
     // invoke before Compoent render
@@ -114,12 +102,7 @@ class tradingDashbaord extends Component {
         self.isComponentActive = 1;
         //load Currency List
         this.props.getPairList({});
-
-        self.state.hubConnection.on(
-            "RecieveTradeHistory",
-            (tradeHistoryDetail) => {
-            }
-        );
+        self.state.hubConnection.on("RecieveTradeHistory",(tradeHistoryDetail) => {});
 
         self.state.hubConnection.onclose((e) => {
             setTimeout(function () {
@@ -159,8 +142,7 @@ class tradingDashbaord extends Component {
                                     value.AccWalletID ===
                                     walletCoinDetail.AccWalletID
                                 ) {
-                                    walletList[key].Balance =
-                                        walletCoinDetail.Balance;
+                                    walletList[key].Balance = walletCoinDetail.Balance;
                                 }
                                 if (
                                     value.CoinName ===
@@ -168,8 +150,7 @@ class tradingDashbaord extends Component {
                                     value.AccWalletID ===
                                     walletCoinDetail.AccWalletID
                                 ) {
-                                    walletList[key].Balance =
-                                        walletCoinDetail.Balance;
+                                    walletList[key].Balance = walletCoinDetail.Balance;
                                 }
                             });
 
@@ -180,7 +161,8 @@ class tradingDashbaord extends Component {
                         }
                     }
                 }
-            } catch (error) { }
+                this.updateStateForDynamicData();
+            } catch (error) {}
         });
     }
 
@@ -196,21 +178,18 @@ class tradingDashbaord extends Component {
     }
 
     toggle = () => {
-        this.setState({
-            langDropdownOpen: !this.state.langDropdownOpen,
-        });
+        this.setState({ langDropdownOpen: !this.state.langDropdownOpen });
     };
 
     handleWindowSizeChange = () => {
         this.setState({ width: window.innerWidth });
     };
 
-
     // invoke when component recive props
     componentWillReceiveProps(nextprops) {
         if (
-            nextprops.pairList.length &&
             nextprops.pairList !== null &&
+            nextprops.pairList.length &&
             nextprops.pairList !== this.state.pairList
         ) {
             // set Currency list if gets from API only
@@ -225,13 +204,12 @@ class tradingDashbaord extends Component {
                 takersValue: nextprops.pairList[0].PairList[0].SellFees,
                 makersValue: nextprops.pairList[0].PairList[0].BuyFees,
             });
+            this.updateStateForDynamicData();
         } else {
-            this.setState({
-                showLoader: false,
-            });
+            this.setState({ showLoader: false });
         }
 
-        if (nextprops.wallet && nextprops.wallet !== null) {
+        if (nextprops.hasOwnProperty('wallet')) {
             if (nextprops.wallet.length !== 0) {
                 nextprops.wallet.map((value) => {
                     if (this.state.secondCurrency === value.CoinName) {
@@ -250,9 +228,8 @@ class tradingDashbaord extends Component {
                 });
             }
 
-            this.setState({
-                Wallet: nextprops.wallet,
-            });
+            this.setState({ Wallet: nextprops.wallet });
+            this.updateStateForDynamicData();
         }
     }
 
@@ -271,10 +248,7 @@ class tradingDashbaord extends Component {
             bulkBuyOrder.Amount = amount;
             bulkBuyOrder.Total = total;
         }
-
-        this.setState({
-            bulkBuyOrder: bulkBuyOrder,
-        });
+        this.setState({ bulkBuyOrder: bulkBuyOrder });
     };
 
     setSellOrders = (price, amount) => {
@@ -288,14 +262,11 @@ class tradingDashbaord extends Component {
             bulkSellOrder.Total = total;
         }
 
-        this.setState({
-            bulkSellOrder: bulkSellOrder,
-        });
+        this.setState({ bulkSellOrder: bulkSellOrder });
     };
 
     // function for change second currency
     changeSecondCurrency(value) {
-
         if (
             this.state.secondCurrency !== value.Abbrevation ||
             (this.state.displayFavourite &&
@@ -307,7 +278,6 @@ class tradingDashbaord extends Component {
             const UpDownBit = value.PairList[0].UpDownBit;
             const takers = value.PairList[0].SellFees;
             const makers = value.PairList[0].BuyFees;
-
             const OldBaseCurrency = this.state.secondCurrency;
             const oldPair = this.state.currencyPair;
             this.setState({
@@ -332,7 +302,6 @@ class tradingDashbaord extends Component {
                     OldBaseCurrency
                 )
                 .catch((err) => console.error("AddMarketSubscription", err));
-
             // call All methods that are use in child components
             this.props.getMarketCapList({ Pair: pair });
             this.props.getBuyerOrderList({ Pair: pair });
@@ -340,7 +309,6 @@ class tradingDashbaord extends Component {
             this.props.getChartData({ Pair: pair, Interval: "1m" });
             this.props.getMarketTradeHistory({ Pair: pair });
         }
-
     }
 
     // function for change selected currency pair
@@ -395,13 +363,13 @@ class tradingDashbaord extends Component {
         this.props.getMarketTradeHistory({ Pair: pairs });
     }
 
-    render() {
-        const { activeIndex } = this.state;
-        const { width } = this.state;
-        const isMobile = width < 768;
-
+    updateStateForDynamicData = () => {
         var firstCurrencyWalletId = 0;
         var secondCurrencyWalletId = 0;
+        let firstCurrencyBalance = 0;
+        let secondCurrencyBalance = 0;
+        let currentBuyPrice = this.state.currentBuyPrice;
+        let currentSellPrice = this.state.currentSellPrice;
 
         if (this.state.Wallet.length !== 0) {
             var secondCurrencyBal = this.state.Wallet.findIndex(
@@ -416,35 +384,47 @@ class tradingDashbaord extends Component {
             );
 
             if (secondCurrencyBal !== -1) {
-                this.state.secondCurrencyBalance = this.state.Wallet[
+                secondCurrencyBalance = this.state.Wallet[
                     secondCurrencyBal
                 ].Balance;
                 secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal]
                     .AccWalletID;
-            } else {
-                this.state.secondCurrencyBalance = 0;
             }
 
             if (firstCurrencyBal !== -1) {
-                this.state.firstCurrencyBalance = this.state.Wallet[
+                firstCurrencyBalance = this.state.Wallet[
                     firstCurrencyBal
                 ].Balance;
                 firstCurrencyWalletId = this.state.Wallet[firstCurrencyBal]
                     .AccWalletID;
-            } else {
-                this.state.firstCurrencyBalance = 0;
             }
         }
 
         if (this.state.currentMarket) {
             this.state.currentMarket.map((value) => {
                 if (value.firstCurrency === this.state.firstCurrency) {
-                    this.state.currentBuyPrice = value.BuyPrice;
-                    this.state.currentSellPrice = value.SellPrice;
+                    currentBuyPrice = value.BuyPrice;
+                    currentSellPrice = value.SellPrice;
                 }
             });
         }
 
+        //setTimeout( () => {
+            this.setState({ 
+                firstCurrencyWalletId : firstCurrencyWalletId,
+                secondCurrencyWalletId : secondCurrencyWalletId,
+                secondCurrencyBalance : secondCurrencyBalance,
+                firstCurrencyBalance : firstCurrencyBalance,
+                currentBuyPrice : currentBuyPrice,
+                currentSellPrice : currentSellPrice
+            });
+        //},200);
+    }
+
+    render() {
+        const { activeIndex } = this.state;
+        const { width } = this.state;
+        const isMobile = width < 768;
         return (
             <Fragment>
                 {
@@ -488,48 +468,24 @@ class tradingDashbaord extends Component {
                                                         {...this.props}
                                                         state={this.state}
                                                         pairData={this.state.pairList}
-                                                        firstCurrency={
-                                                            this.state.firstCurrency
-                                                        }
-                                                        secondCurrency={
-                                                            this.state.secondCurrency
-                                                        }
-                                                        currencyPair={
-                                                            this.state.currencyPair
-                                                        }
-                                                        displayFavouritePair={
-                                                            this.openFavourite
-                                                        }
-                                                        displayFavourite={
-                                                            this.state.displayFavourite
-                                                        }
-                                                        changePairs={
-                                                            this.changeCurrencyPair
-                                                        }
-                                                        changeSecondCurrency={
-                                                            this.changeSecondCurrency
-                                                        }
-                                                        hubConnection={
-                                                            this.state.hubConnection
-                                                        }
+                                                        firstCurrency={this.state.firstCurrency}
+                                                        secondCurrency={this.state.secondCurrency}
+                                                        currencyPair={this.state.currencyPair}
+                                                        displayFavouritePair={this.openFavourite}
+                                                        displayFavourite={this.state.displayFavourite}
+                                                        changePairs={this.changeCurrencyPair}
+                                                        changeSecondCurrency={this.changeSecondCurrency}
+                                                        hubConnection={this.state.hubConnection}
                                                     />
                                                 </div>
                                             </DropdownMenu>
                                             <Col md={10}>
                                                 <CurrentMarket
                                                     {...this.props}
-                                                    firstCurrency={
-                                                        this.state.firstCurrency
-                                                    }
-                                                    secondCurrency={
-                                                        this.state.secondCurrency
-                                                    }
-                                                    currencyPair={
-                                                        this.state.currencyPair
-                                                    }
-                                                    hubConnection={
-                                                        this.state.hubConnection
-                                                    }
+                                                    firstCurrency={this.state.firstCurrency}
+                                                    secondCurrency={this.state.secondCurrency}
+                                                    currencyPair={this.state.currencyPair}
+                                                    hubConnection={this.state.hubConnection}
                                                 />
                                             </Col>
                                         </Row>
@@ -562,48 +518,20 @@ class tradingDashbaord extends Component {
                                 <Card>
                                     <PlaceOrder
                                         {...this.props}
-                                        firstCurrency={
-                                            this.state.firstCurrency
-                                        }
-                                        secondCurrency={
-                                            this.state.secondCurrency
-                                        }
-                                        currencyPair={
-                                            this.state.currencyPair
-                                        }
-                                        currencyPairID={
-                                            this.state.currencyPairID
-                                        }
+                                        firstCurrency={this.state.firstCurrency}
+                                        secondCurrency={this.state.secondCurrency}
+                                        currencyPair={this.state.currencyPair}
+                                        currencyPairID={this.state.currencyPairID}
                                         state={this.state}
-                                        buyPrice={
-                                            this.state.currentBuyPrice
-                                        }
-                                        sellPrice={
-                                            this.state.currentSellPrice
-                                        }
-                                        firstCurrencyBalance={
-                                            this.state
-                                                .firstCurrencyBalance
-                                        }
-                                        secondCurrencyBalance={
-                                            this.state
-                                                .secondCurrencyBalance
-                                        }
-                                        bulkBuyOrder={
-                                            this.state.bulkBuyOrder
-                                        }
-                                        bulkSellOrder={
-                                            this.state.bulkSellOrder
-                                        }
-                                        hubConnection={
-                                            this.state.hubConnection
-                                        }
-                                        firstCurrencyWalletId={
-                                            firstCurrencyWalletId
-                                        }
-                                        secondCurrencyWalletId={
-                                            secondCurrencyWalletId
-                                        }
+                                        buyPrice={this.state.currentBuyPrice}
+                                        sellPrice={this.state.currentSellPrice}
+                                        firstCurrencyBalance={this.state.firstCurrencyBalance}
+                                        secondCurrencyBalance={this.state.secondCurrencyBalance}
+                                        bulkBuyOrder={this.state.bulkBuyOrder}
+                                        bulkSellOrder={this.state.bulkSellOrder}
+                                        hubConnection={this.state.hubConnection}
+                                        firstCurrencyWalletId={firstCurrencyWalletId}
+                                        secondCurrencyWalletId={secondCurrencyWalletId}
                                         takers={this.state.takersValue}
                                         makers={this.state.makersValue}
                                     />
@@ -612,16 +540,10 @@ class tradingDashbaord extends Component {
                                     <BuySellTrade
                                         {...this.props}
                                         firstCurrency={this.state.firstCurrency}
-                                        secondCurrency={
-                                            this.state.secondCurrency
-                                        }
+                                        secondCurrency={this.state.secondCurrency}
                                         currencyPair={this.state.currencyPair}
-                                        firstCurrencyBalance={
-                                            this.state.firstCurrencyBalance
-                                        }
-                                        secondCurrencyBalance={
-                                            this.state.secondCurrencyBalance
-                                        }
+                                        firstCurrencyBalance={this.state.firstCurrencyBalance}
+                                        secondCurrencyBalance={this.state.secondCurrencyBalance}
                                         autoHeightMin={253}
                                         autoHeightMax={253}
                                         UpDownBit={this.state.UpDownBit}
@@ -671,48 +593,24 @@ class tradingDashbaord extends Component {
                                                             {...this.props}
                                                             state={this.state}
                                                             pairData={this.state.pairList}
-                                                            firstCurrency={
-                                                                this.state.firstCurrency
-                                                            }
-                                                            secondCurrency={
-                                                                this.state.secondCurrency
-                                                            }
-                                                            currencyPair={
-                                                                this.state.currencyPair
-                                                            }
-                                                            displayFavouritePair={
-                                                                this.openFavourite
-                                                            }
-                                                            displayFavourite={
-                                                                this.state.displayFavourite
-                                                            }
-                                                            changePairs={
-                                                                this.changeCurrencyPair
-                                                            }
-                                                            changeSecondCurrency={
-                                                                this.changeSecondCurrency
-                                                            }
-                                                            hubConnection={
-                                                                this.state.hubConnection
-                                                            }
+                                                            firstCurrency={this.state.firstCurrency}
+                                                            secondCurrency={this.state.secondCurrency}
+                                                            currencyPair={this.state.currencyPair}
+                                                            displayFavouritePair={this.openFavourite}
+                                                            displayFavourite={this.state.displayFavourite}
+                                                            changePairs={this.changeCurrencyPair}
+                                                            changeSecondCurrency={this.changeSecondCurrency}
+                                                            hubConnection={this.state.hubConnection}
                                                         />
                                                     </div>
                                                 </DropdownMenu>
                                                 <Col md={10}>
                                                     <CurrentMarket
                                                         {...this.props}
-                                                        firstCurrency={
-                                                            this.state.firstCurrency
-                                                        }
-                                                        secondCurrency={
-                                                            this.state.secondCurrency
-                                                        }
-                                                        currencyPair={
-                                                            this.state.currencyPair
-                                                        }
-                                                        hubConnection={
-                                                            this.state.hubConnection
-                                                        }
+                                                        firstCurrency={this.state.firstCurrency}
+                                                        secondCurrency={this.state.secondCurrency}
+                                                        currencyPair={this.state.currencyPair}
+                                                        hubConnection={this.state.hubConnection}
                                                     />
                                                 </Col>
                                             </Row>
@@ -750,16 +648,10 @@ class tradingDashbaord extends Component {
                                                 <BuySellTrade
                                                     {...this.props}
                                                     firstCurrency={this.state.firstCurrency}
-                                                    secondCurrency={
-                                                        this.state.secondCurrency
-                                                    }
+                                                    secondCurrency={this.state.secondCurrency}
                                                     currencyPair={this.state.currencyPair}
-                                                    firstCurrencyBalance={
-                                                        this.state.firstCurrencyBalance
-                                                    }
-                                                    secondCurrencyBalance={
-                                                        this.state.secondCurrencyBalance
-                                                    }
+                                                    firstCurrencyBalance={this.state.firstCurrencyBalance}
+                                                    secondCurrencyBalance={this.state.secondCurrencyBalance}
                                                     autoHeightMin={253}
                                                     autoHeightMax={253}
                                                     UpDownBit={this.state.UpDownBit}
@@ -787,48 +679,20 @@ class tradingDashbaord extends Component {
                                                     <Card>
                                                         <PlaceOrder
                                                             {...this.props}
-                                                            firstCurrency={
-                                                                this.state.firstCurrency
-                                                            }
-                                                            secondCurrency={
-                                                                this.state.secondCurrency
-                                                            }
-                                                            currencyPair={
-                                                                this.state.currencyPair
-                                                            }
-                                                            currencyPairID={
-                                                                this.state.currencyPairID
-                                                            }
+                                                            firstCurrency={this.state.firstCurrency}
+                                                            secondCurrency={this.state.secondCurrency}
+                                                            currencyPair={this.state.currencyPair}
+                                                            currencyPairID={this.state.currencyPairID}
                                                             state={this.state}
-                                                            buyPrice={
-                                                                this.state.currentBuyPrice
-                                                            }
-                                                            sellPrice={
-                                                                this.state.currentSellPrice
-                                                            }
-                                                            firstCurrencyBalance={
-                                                                this.state
-                                                                    .firstCurrencyBalance
-                                                            }
-                                                            secondCurrencyBalance={
-                                                                this.state
-                                                                    .secondCurrencyBalance
-                                                            }
-                                                            bulkBuyOrder={
-                                                                this.state.bulkBuyOrder
-                                                            }
-                                                            bulkSellOrder={
-                                                                this.state.bulkSellOrder
-                                                            }
-                                                            hubConnection={
-                                                                this.state.hubConnection
-                                                            }
-                                                            firstCurrencyWalletId={
-                                                                firstCurrencyWalletId
-                                                            }
-                                                            secondCurrencyWalletId={
-                                                                secondCurrencyWalletId
-                                                            }
+                                                            buyPrice={this.state.currentBuyPrice}
+                                                            sellPrice={this.state.currentSellPrice}
+                                                            firstCurrencyBalance={this.state.firstCurrencyBalance}
+                                                            secondCurrencyBalance={this.state.secondCurrencyBalance}
+                                                            bulkBuyOrder={this.state.bulkBuyOrder}
+                                                            bulkSellOrder={this.state.bulkSellOrder}
+                                                            hubConnection={this.state.hubConnection}
+                                                            firstCurrencyWalletId={firstCurrencyWalletId}
+                                                            secondCurrencyWalletId={secondCurrencyWalletId}
                                                             takers={this.state.takersValue}
                                                             makers={this.state.makersValue}
                                                         />
@@ -854,25 +718,21 @@ const mapStateToProps = (state) => ({
     darkMode: state.settings.darkMode,
 });
 
-export default connect(
-    mapStateToProps,
-    {
-        getCurrencyList,
-        getMarketCapList,
-        getActiveMyOpenOrderList,
-        getActiveOpenOrderList,
-        getBuyerOrderList,
-        getSellerOrderList,
-        getChartData,
-        getHoldingList,
-        getTickersList,
-        getMarketTradeHistory,
-        getPairList,
-        changeBuyPairSocket,
-        changeSellPairSocket,
-        changeMarketTradeSocketConnection,
-        getVolumeData,
-        getWallets,
-        getCurrentPrice,
-    }
-)(tradingDashbaord);
+export default connect(mapStateToProps,{
+    getCurrencyList,
+    getMarketCapList,
+    getActiveMyOpenOrderList,
+    getBuyerOrderList,
+    getSellerOrderList,
+    getChartData,
+    getHoldingList,
+    getTickersList,
+    getMarketTradeHistory,
+    getPairList,
+    changeBuyPairSocket,
+    changeSellPairSocket,
+    changeMarketTradeSocketConnection,
+    getVolumeData,
+    getWallets,
+    getCurrentPrice
+})(tradingDashbaord);

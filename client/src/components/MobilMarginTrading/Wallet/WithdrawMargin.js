@@ -24,6 +24,7 @@ class WithdrawMargin extends Component {
 			flag: false,
 		};
 	}
+
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.confirmDetail.hasOwnProperty('ReturnCode') && this.state.notificationFlag) {
 			this.setState({ notificationFlag: false });
@@ -49,31 +50,33 @@ class WithdrawMargin extends Component {
 			}
 		}
 	}
+
 	/**
 	 * Toggle Modal
 	 */
 	toggleShowModal = () => {
 		this.setState({
-			showModal: !this.state.showModal,
+			showModal: this.state.showModal ? false : true,
 			notificationFlag: false,
 		});
 	};
+
 	/**
 	 * Toggle Confirmation Modal
 	 */
 	toggleShowConfirmModal = () => {
 		this.setState({
-			showConfirmModal: !this.state.showConfirmModal,
-			showModal: !this.state.showModal,
+			showConfirmModal: this.state.showConfirmModal ? false : true,
+			showModal: this.state.showModal ? false : true,
 			flag: false,
 		});
 	};
+
 	getPreconfirm = () => {
-		this.setState({
-			flag: true,
-		});
+		this.setState({ flag: true });
 		this.props.getPreConfirmations(this.state.Currency);
 	};
+
 	// getConfirm
 	getConfirm = () => {
 		this.setState({
@@ -82,6 +85,7 @@ class WithdrawMargin extends Component {
 		});
 		this.props.delavrageConfirm(this.state.Currency);
 	};
+
 	render() {
 		const { showModal } = this.state;
 		const intl = this.props.intl;
@@ -204,11 +208,8 @@ const mapStateToProps = ({ WalletManagementReducer }) => {
 	return { loading, preConfirmationDetails, confirmDetail };
 };
 
-export default connect(
-	mapStateToProps,
-	{
-		getPreConfirmations,
-		delavrageConfirm,
-		getMaringWalletList
-	}
-)(injectIntl(WithdrawMargin));
+export default connect(mapStateToProps, {
+	getPreConfirmations,
+	delavrageConfirm,
+	getMaringWalletList
+})(injectIntl(WithdrawMargin));

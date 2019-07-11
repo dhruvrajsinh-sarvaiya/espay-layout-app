@@ -23,7 +23,7 @@ const topLosersData = [
 
 function* topLosersMethod() {
   try {
-    if (topLosersData !== "") {
+    if (topLosersData != "") {
       yield put(listTopLosersSuccess(topLosersData));
     } else {
       yield put(listTopLosersFailure(error));

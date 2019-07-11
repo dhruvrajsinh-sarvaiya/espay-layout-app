@@ -81,7 +81,7 @@ class IPHistoryDataTable extends Component {
 		var newObj = Object.assign({}, this.state.datalist);
 		newObj['PageIndex'] = PageIndex > 0 ? PageIndex : this.state.datalist.PageIndex;
 		if (Page_Size > 0) {
-			newObj['Page_Size'] = Page_Size > 0 ? Page_Size : this.state.datalist.Page_Size;
+			newObj['Page_Size'] = Page_Size;
 		}
 		this.setState({ datalist: newObj });
 

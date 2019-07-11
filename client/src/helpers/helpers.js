@@ -2,9 +2,7 @@
  * Helpers Functions
  */
 import moment from 'moment';
-
 import deviceParser from 'ua-parser-js';
-
 import api from '../api';
 
 //Added by salim
@@ -15,18 +13,7 @@ import { formatPhoneNumber } from 'react-phone-number-input';
 import $ from "jquery";
 import validator from 'validator';
 const qs = require('querystring');
-var ip = require('ip');
 
-var ipAddress = '';
-/*
-import {
-    isMobileOnly    
-  } from "react-device-detect"; 
-  */
-
-/**
- * Function to convert hex to rgba
- */
 export function hexToRgbA(hex, alpha) {
     var c;
     if (validator.matches(hex, /^#([A-Fa-f0-9]{3}){1,2}$/)) {
@@ -63,7 +50,6 @@ export function textTruncate(str, length, ending) {
 export function getTheDate(timestmp, format, addBit) {
     var timestamp = timestmp * 1000;
     let formatDate = format ? format : 'MM-DD-YYYY';
-    // return moment(time).format(formatDate);
     if (addBit) {
         return moment(timestamp).add(330, 'minutes').format(formatDate);
     } else {
@@ -112,7 +98,7 @@ export function getCookie(cname) {
  */
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
-    if(exdays !== '') {
+    if (exdays !== '') {
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
@@ -128,11 +114,9 @@ export function setCookie(cname, cvalue, exdays) {
 export function getDeviceInfo() {
     var myParser = new deviceParser.UAParser();
     var deviceInfo = myParser.getResult();
-
     var strDevice = deviceInfo.browser.name + '_' + deviceInfo.browser.version;
     strDevice = strDevice + '|' + deviceInfo.os.name + '_' + deviceInfo.os.version;
     strDevice = strDevice + '|' + deviceInfo.cpu.architecture;
-  
 
     return strDevice;
 }
@@ -147,7 +131,7 @@ function getDeviceInfo2(callback) {
     device.pixelDepth = screen.pixelDepth;
     device.width = screen.width;
     device.height = screen.height;
-   
+
     callback(device);
 }
 
@@ -155,17 +139,15 @@ function getDeviceInfo2(callback) {
 * get security token from api and stored in localstorage
 */
 export function setSessionToken() {
-   
+    var ipAddress = "";
+
     getDeviceInfo2(function (deviceInfo) {
-        
         api.post('/public/generateToken', { data: deviceInfo })
             .then(function (response) {
-                
                 //Added by Devangbhai..
                 localStorage.setItem('front_access_token', response.data.tokenData.token);
                 localStorage.setItem('front_refresh_token', response.data.tokenData.refreshToken);
-                
-                ipAddress = response.data.ipAddress;
+                // ipAddress = response.data.ipAddress;
             })
             .catch(error => error, {});
     })
@@ -177,7 +159,7 @@ export function setSessionToken() {
  * Function to Alpha with space
  */
 export function isAlphaWithSpace(string) {
-    let check = validator.matches(string,/^[a-zA-Z ]*$/g);
+    let check = validator.matches(string, /^[a-zA-Z ]*$/g);
     return check
 }
 
@@ -233,7 +215,7 @@ async function nodeIPAddress() {
     } else {
         if (window.location.hostname === 'localhost' || ValidateIPaddress(window.location.hostname)) {
             _ipAddress = '45.116.123.43';
-            
+
         } else {
             await api.get('/api/private/v1/sitesetting/getIpAddress')
                 .then(function (response) {
@@ -242,9 +224,8 @@ async function nodeIPAddress() {
                     }
                 })
                 .catch(error => error, {});
-        } 
+        }
     }
-
     return _ipAddress;
 }
 
@@ -253,7 +234,6 @@ async function nodeIPAddress() {
  * Function to get IP Address
  */
 export function getIPAddress() {
-    
     return nodeIPAddress();
 }
 
@@ -262,7 +242,7 @@ export function getIPAddress() {
  * Function to check host name as local ip address
  */
 function ValidateIPaddress(ipaddress) {
-    if (validator.matches(ipaddress,/^172\.20\.65\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)) {
+    if (validator.matches(ipaddress, /^172\.20\.65\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)) {
         return (true)
     }
     return (false)
@@ -273,7 +253,6 @@ function ValidateIPaddress(ipaddress) {
  * Function to get hostname
  */
 export function getHostName() {
-    
     return window.location.hostname === 'localhost' ? AppConfig.brandName : window.location.hostname;
 }
 
@@ -290,7 +269,6 @@ export function getMode() {
  * Function to 401 Error Token Expire
  */
 export function redirectToLogin() {
-       
     localStorage.removeItem('gen_access_token');
     localStorage.removeItem('gen_id_token');
     localStorage.removeItem('gen_refresh_token');
@@ -305,15 +283,14 @@ export function redirectToLogin() {
  * Function to refresh token
  */
 export function autoRefreshToken() {
-    
-    let store = configureStore();
 
+    let store = configureStore();
     var now = new Date();
     let diffTime = localStorage.getItem('timestamp') - now.getTime();
 
     (function callRefreshFunction(NewTime) {
         setTimeout(function () {
-             
+
             localStorage.setItem('timestamp', now.getTime() + AppConfig.refreshTokenInterval);
             store.dispatch({ type: 'REFRESH_TOKEN', payload: {} });
             callRefreshFunction(AppConfig.refreshTokenInterval);
@@ -352,7 +329,7 @@ export function changeDateFormat(date, format, addBit = true) {
  * Function to After login generate localstorage variable
  */
 export function generateLocalStorageVariable(access_token, id_token, refresh_token = '') {
-    
+
     localStorage.setItem('gen_access_token', access_token);
     localStorage.setItem('gen_id_token', id_token);
     if (refresh_token !== '') {
@@ -372,15 +349,15 @@ export const swaggerPostAPI = async (methodName, request, headers = {}) => {
 
     //added by salim dt:06/02/2019
     //Check internet connection.
-    if(!checkInternet() && isCheckInternet) {
-        
+    if (!checkInternet() && isCheckInternet) {
+
         isCheckInternet = false;
         var closeInterval = setInterval(() => {
-            if(checkInternet()) {
+            if (checkInternet()) {
                 clearIntervalForInternet(closeInterval);
             }
-        },1000);
-    } else if(!isCheckInternet) {
+        }, 1000);
+    } else if (!isCheckInternet) {
         return false;
     } else {
         // code by devang parekh for getting latest token value in request
@@ -455,19 +432,19 @@ export const swaggerGetAPI = async (methodName, request, headers = {}, isPassCoo
 
     //added by salim dt:06/02/2019
     //Check internet connection.
-    if(!checkInternet() && isCheckInternet) {
-        
+    if (!checkInternet() && isCheckInternet) {
+
         isCheckInternet = false;
         var closeInterval = setInterval(() => {
-            if(checkInternet()) {
+            if (checkInternet()) {
                 clearIntervalForInternet(closeInterval);
             }
-        },1000);
-    } else if(!isCheckInternet) {
+        }, 1000);
+    } else if (!isCheckInternet) {
         return false;
     } else {
         //Added by salim dt:19/06/2019
-        if(isPassCookie) {
+        if (isPassCookie) {
             axios.defaults.withCredentials = true;
             headers.AuthTokenID = getCookie('SL_AuthTokenID');
         }
@@ -534,7 +511,6 @@ function staticResponseObj(statusCode) {
         ReturnMsg: "Please try after sometime.",
         statusCode: statusCode,
     };
-
     return response;
 }
 
@@ -546,19 +522,18 @@ export function staticResponse(statusCode) {
  * Added by Tejas (dt:9/10/2018)
  * Function to Swagger Delete API
  */
-var isCheckInternet = true;
 export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
 
     //Check internet connection.
-    if(!checkInternet() && isCheckInternet) {
-        
+    if (!checkInternet() && isCheckInternet) {
+
         isCheckInternet = false;
         var closeInterval = setInterval(() => {
-            if(checkInternet()) {
+            if (checkInternet()) {
                 clearIntervalForInternet(closeInterval);
             }
-        },1000);
-    } else if(!isCheckInternet) {
+        }, 1000);
+    } else if (!isCheckInternet) {
         return false;
     } else {
         // code by devang parekh for getting latest token value in request
@@ -570,12 +545,12 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
         var responseData = await axios.delete(AppConfig.myAccountSwaggerUrl + methodName, request)
             .then(res => JSON.parse(JSON.stringify(res)))
             .catch(error => JSON.parse(JSON.stringify(error.res)));
-        
+
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
         var response = {};
         try {
-            
+
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
             } else if (errCode.includes(responseData.status)) {
@@ -585,10 +560,9 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
             }
 
         } catch (error) {
-            
             response = staticResponseObj(responseData.status);
         }
-        response.statusCode = responseData.status;        
+        response.statusCode = responseData.status;
         return response;
     }
 }
@@ -690,6 +664,8 @@ export function getExplorerLink(coin, trn) {
         case 'tusd':
             link = 'https://etherscan.io/tx/' + trn;
             break;
+        default:
+            break;
     }
     return link;
 }
@@ -712,7 +688,6 @@ export function setSitesetting() {
 
                 //Add by Jayesh on 26-12-2018
                 localStorage.setItem('chat', btoa(JSON.stringify(setting.chatscript)));
-                
 
                 // Added by Jayesh for google analytics on 28-12-2018 updated on 23-01-2019
                 /* <!-- Global site tag (gtag.js) - Google Analytics --> */
@@ -762,11 +737,9 @@ export function getMobileNoWithCountryCode(str_mobile) {
     var countryCode = validMobile.substr(1, validMobile.indexOf(' ')).trim();
     validMobile = validMobile.substring(validMobile.indexOf(" ") + 1);
     validMobile = validMobile.replace(/\s/g, '');
-
     var mobObj = {};
     mobObj.mobile = validMobile;
     mobObj.country_code = countryCode;
-
     return mobObj;
 }
 
@@ -788,7 +761,7 @@ export function convertObjToFormData(ObjData) {
  * Function to <Script> validation
  */
 export function isScriptTag(string) {
-    let check = validator.matches(string,/<script.*?>([\s\S]*?)<\/script>/);
+    let check = validator.matches(string, /<script.*?>([\s\S]*?)<\/script>/);
     return check
 }
 
@@ -798,7 +771,7 @@ export function isScriptTag(string) {
  * Function to Convert Object to string with seprated value
  */
 export function convertObjectToString(obj, sepration = ',') {
-    
+
     return Object.values(obj).join(sepration);
 }
 
@@ -821,7 +794,7 @@ export function checkInternetByExptFun() {
 
 export function splitString(str, tag, accessElement = '') {
     var response = str.split(tag);
-    if(accessElement >= 0) {
+    if (accessElement >= 0) {
         response = response[accessElement];
     }
     return response;
@@ -829,98 +802,98 @@ export function splitString(str, tag, accessElement = '') {
 
 export function languageArray(lanKey = '') {
     var languages = {
-        'en' : {
+        'en': {
             languageId: "english",
             locale: "en",
             name: "English",
             icon: "en",
             rtlLayout: 0
         },
-        'zh' : {
+        'zh': {
             languageId: "chinese",
             locale: "zh",
             name: "Chinese",
             icon: "zh",
             rtlLayout: 0
         },
-        'ru' : {
+        'ru': {
             languageId: "russian",
             locale: "ru",
             name: "Russian",
             icon: "ru",
             rtlLayout: 0
         },
-        'he' : {
+        'he': {
             languageId: "hebrew",
             locale: "he",
             name: "Hebrew",
             icon: "he",
             rtlLayout: 1
         },
-        'fr' : {
+        'fr': {
             languageId: "french",
             locale: "fr",
             name: "French",
             icon: "fr",
             rtlLayout: 0
         },
-        'ar' : {
+        'ar': {
             languageId: "saudi-arabia",
             locale: "ar",
             name: "Arabic",
             icon: "ar",
             rtlLayout: 1
         },
-        'de' : {
+        'de': {
             languageId: "german",
             locale: "de",
             name: "German",
             icon: "de",
             rtlLayout: 0
         },
-        'es' : {
+        'es': {
             languageId: "spanish",
             locale: "es",
             name: "Spanish",
             icon: "es",
             rtlLayout: 0
         },
-        'ja' : {
+        'ja': {
             languageId: "japanese",
             locale: "ja",
             name: "Japanese",
             icon: "ja",
             rtlLayout: 0
         },
-        'ko' : {
+        'ko': {
             languageId: "korean",
             locale: "ko",
             name: "Korean",
             icon: "ko",
             rtlLayout: 0
         },
-        'it' : {
+        'it': {
             languageId: "italian",
             locale: "it",
             name: "Italian",
             icon: "it",
             rtlLayout: 0
         },
-        'hu' : {
+        'hu': {
             languageId: "hungarian",
             locale: "hu",
             name: "Hungarian",
             icon: "hu",
             rtlLayout: 0
         },
-        'nl' : {
+        'nl': {
             languageId: "dutch",
             locale: "nl",
             name: "Dutch",
             icon: "du",
             rtlLayout: 0
         },
-        'pt' : {
+        'pt': {
             languageId: "portuguese",
             locale: "pt",
             name: "Portuguese",
@@ -929,11 +902,11 @@ export function languageArray(lanKey = '') {
         }
     }
 
-    if(lanKey !== '') {
-        languages =  languages[lanKey];
+    if (lanKey !== '') {
+        languages = languages[lanKey];
     }
-    
-    return languages;   
+
+    return languages;
 }
 
 // Url Encription
@@ -959,58 +932,41 @@ export function setServiceManager() {
     let applicationKey = "BM0yH9JtGnmzF8Mm3Tn_ua36PA9FZzufsmFYF2Ul8MZOoXW13hvZo9NYVeIPDZCaG_gBrdE20QwoYetxpo0wuh8";
     // Installing service worker
     if ('serviceWorker' in navigator && 'PushManager' in window) {
-        
+
         navigator.serviceWorker.register('sw.js')
             .then(function (swReg) {
-                
 
                 swRegistration = swReg;
 
                 swRegistration.pushManager.getSubscription()
                     .then(function (subscription) {
-                        
-                        isSubscribed = !(subscription === null);
 
-                        if (isSubscribed) {
-                            
-                        } else {
+                        isSubscribed = (subscription !== null);
+
+                        if (!isSubscribed) {
                             swRegistration.pushManager.subscribe({
                                 userVisibleOnly: true,
                                 applicationServerKey: urlB64ToUint8Array(applicationKey)
                             })
-                                .then(function (subscription) {
-                                  
-
-                                    saveSubscription(subscription);
-
+                                .then(function (subscriptions) {
+                                    saveSubscription(subscriptions);
                                     isSubscribed = true;
                                 })
-                                .catch(function (err) {
-                                    
-                                })
+                                .catch(function (err) { })
                         }
                     })
             })
-            .catch(function (error) {
-                
-            });
-    } else {
-        
+            .catch(function (error) { });
     }
 }
 
 // Send request to database for add new subscriber
 function saveSubscription(subscription) {
-    
+
     let jsondata = JSON.stringify(subscription);
     api.post('/api/private/v1/subscribe', { jsondata })
-
-        .then(function (response) {
-            
-           
-        })
+        .then(function (response) { })
         .catch(error => error, {});
-
 }
 
 /**
@@ -1018,6 +974,6 @@ function saveSubscription(subscription) {
  * Function to Strip and HTML Tags validation
  */
 export function isHtmlTag(string) {
-    let check = validator.matches(string,/(<([^>]+)>)/ig);
+    let check = validator.matches(string, /(<([^>]+)>)/ig);
     return check
 }

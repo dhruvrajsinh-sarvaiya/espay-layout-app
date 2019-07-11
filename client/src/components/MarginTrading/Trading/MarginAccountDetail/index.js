@@ -73,7 +73,7 @@ class MarginAccountDetail extends Component {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails style={{ "display": "block" }}>
 
-              {(typeof this.state.leverageDetail.SecondCurrency === "undefined" || this.state.leverageDetail.SecondCurrency === null || (this.state.leverageDetail.SecondCurrency.IsLeverageTaken && this.state.leverageDetail.SecondCurrency.IsLeverageTaken === 0)) ?
+              {(this.state.leverageDetail.SecondCurrency === undefined || this.state.leverageDetail.SecondCurrency === null || (this.state.leverageDetail.SecondCurrency.IsLeverageTaken && this.state.leverageDetail.SecondCurrency.IsLeverageTaken === 0)) ?
                 <div className="text-center">
                   {<AddMarginBalance
                     widgetType={4}
@@ -97,15 +97,15 @@ class MarginAccountDetail extends Component {
                   </div>
                   <div className="row">
                     <div className="col-sm-6 font-weight-bold"><IntlMessages id="marginTrading.leverage" /></div>
-                    <div className="col-sm-6">: {typeof this.state.leverageDetail.SecondCurrency !== "undefined" ? this.state.leverageDetail.SecondCurrency.Leverage + 'X' : "0X"}</div>
+                    <div className="col-sm-6">: {this.state.leverageDetail.SecondCurrency.Leverage + 'X'}</div>
                   </div>
                   <div className="row">
                     <div className="col-sm-6 font-weight-bold"><IntlMessages id="marginTrading.leverageCharge" /></div>
-                    <div className="col-sm-6">: {typeof this.state.leverageDetail.SecondCurrency !== "undefined" ? this.state.leverageDetail.SecondCurrency.LeverageCharge + '%' : "0%"}</div>
+                    <div className="col-sm-6">: {this.state.leverageDetail.SecondCurrency.LeverageCharge + '%'}</div>
                   </div>
                   <div className="row">
                     <div className="col-sm-6 font-weight-bold"><IntlMessages id="marginTrading.lastLeverageTime" /></div>
-                    <div className="col-sm-6">: {typeof this.state.leverageDetail.SecondCurrency !== "undefined" ? this.state.leverageDetail.SecondCurrency.LastLeverageTime ? changeDateFormat(this.state.leverageDetail.SecondCurrency.LastLeverageTime, 'YYYY-MM-DD HH:mm:ss', false) : '-' : "-"}</div>
+                    <div className="col-sm-6">: {this.state.leverageDetail.SecondCurrency.LastLeverageTime ? changeDateFormat(this.state.leverageDetail.SecondCurrency.LastLeverageTime, 'YYYY-MM-DD HH:mm:ss', false) : '-'}</div>
                   </div>
                 </div>
               }
@@ -117,7 +117,7 @@ class MarginAccountDetail extends Component {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails style={{ "display": "block" }}>
 
-              {(typeof this.state.leverageDetail.FirstCurrency === "undefined" || this.state.leverageDetail.FirstCurrency === null || (this.state.leverageDetail.FirstCurrency.IsLeverageTaken && this.state.leverageDetail.FirstCurrency.IsLeverageTaken === 0)) ?
+              {(this.state.leverageDetail.FirstCurrency === undefined || this.state.leverageDetail.FirstCurrency === null || (this.state.leverageDetail.FirstCurrency.IsLeverageTaken && this.state.leverageDetail.FirstCurrency.IsLeverageTaken === 0)) ?
                 <div className="text-center">
                   {<AddMarginBalance
                     widgetType={4}
@@ -141,15 +141,15 @@ class MarginAccountDetail extends Component {
                   </div>
                   <div className="row">
                     <div className="col-sm-6 font-weight-bold"><IntlMessages id="marginTrading.leverage" /></div>
-                    <div className="col-sm-6">: {typeof this.state.leverageDetail.FirstCurrency !== "undefined" ? this.state.leverageDetail.FirstCurrency.Leverage + 'X' : "0X"}</div>
+                    <div className="col-sm-6">: {this.state.leverageDetail.FirstCurrency.Leverage + 'X'}</div>
                   </div>
                   <div className="row">
                     <div className="col-sm-6 font-weight-bold"><IntlMessages id="marginTrading.leverageCharge" /></div>
-                    <div className="col-sm-6">: {typeof this.state.leverageDetail.FirstCurrency !== "undefined" ? this.state.leverageDetail.FirstCurrency.LeverageCharge + '%' : "0%"}</div>
+                    <div className="col-sm-6">: {this.state.leverageDetail.FirstCurrency.LeverageCharge + '%'}</div>
                   </div>
                   <div className="row">
                     <div className="col-sm-6 font-weight-bold"><IntlMessages id="marginTrading.lastLeverageTime" /></div>
-                    <div className="col-sm-6">: {typeof this.state.leverageDetail.FirstCurrency !== "undefined" ? this.state.leverageDetail.FirstCurrency.LastLeverageTime ? (this.state.leverageDetail.FirstCurrency.LastLeverageTime.split('T')[0] + ' ' + this.state.leverageDetail.FirstCurrency.LastLeverageTime.split('T')[1].split('.')[0]) : '-' : "-"}</div>
+                    <div className="col-sm-6">: {this.state.leverageDetail.FirstCurrency.LastLeverageTime ? (this.state.leverageDetail.FirstCurrency.LastLeverageTime.split('T')[0] + ' ' + this.state.leverageDetail.FirstCurrency.LastLeverageTime.split('T')[1].split('.')[0]) : '-'}</div>
                   </div>
                 </div>
               }
@@ -168,7 +168,6 @@ const mapStateToProps = ({ leverageDetail }) => {
   };
 
   return response
-
 }
 
 export default connect(mapStateToProps, {

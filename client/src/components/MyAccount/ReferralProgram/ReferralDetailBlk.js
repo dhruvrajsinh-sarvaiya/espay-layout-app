@@ -9,21 +9,20 @@ import SocialShare from './SocialShare';
 import { NotificationManager } from "react-notifications";
 //Copy to Clipborad..
 import { CopyToClipboard } from "react-copy-to-clipboard";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
-
 //Action Call 
 import { getReferralCode, getReferralURL, getReferralService } from "Actions/MyAccount";
 import AppConfig from 'Constants/AppConfig';
+
+const referralLink = AppConfig.referral_link;
 
 class ReferralDetailBlk extends Component {
   constructor(props) {
     super(props);
     this.state = {
       my_referral_id: "",
-      referral_link: AppConfig.referral_link,
       Description: "",
       copied: false,
       smsLink: '',
@@ -51,27 +50,25 @@ class ReferralDetailBlk extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.referralCode.ReturnCode === 0 && typeof nextProps.referralCode !== "undefined") {
-      this.setState({
-        my_referral_id: nextProps.referralCode.UserReferralCode
-      })
+    if (nextProps.referralCode !== undefined && nextProps.referralCode.ReturnCode === 0) {
+      this.setState({ my_referral_id: nextProps.referralCode.UserReferralCode });
     }
-    if (nextProps.getReferralServiceData.ReturnCode === 0 && typeof nextProps.getReferralServiceData !== "undefined") {
-      this.setState({
-        Description: nextProps.getReferralServiceData.ReferralServiceObj.Description,
-      })
+
+    if (nextProps.getReferralServiceData !== undefined && nextProps.getReferralServiceData.ReturnCode === 0) {
+      this.setState({ Description: nextProps.getReferralServiceData.ReferralServiceObj.Description });
     }
-    if (nextProps.referralUrl.ReturnCode === 0 && typeof nextProps.referralUrl !== "undefined" && this.state.flag) {
+
+    if (nextProps.referralUrl !== undefined && nextProps.referralUrl.ReturnCode === 0 && this.state.flag) {
       this.setState({
-        referral_link: this.state.referral_link + nextProps.referralUrl.ShareURL.EmailURL,
-        smsLink: this.state.referral_link + nextProps.referralUrl.ShareURL.SMSURL,
-        twitterLink: this.state.referral_link + nextProps.referralUrl.ShareURL.TwitterURL,
-        facebookLink: this.state.referral_link + nextProps.referralUrl.ShareURL.FacebookURL,
-        messenger: this.state.referral_link + nextProps.referralUrl.ShareURL.MessengerURL,
-        whatsAppLink: this.state.referral_link + nextProps.referralUrl.ShareURL.WhatsAppURL,
-        pinterestLink: this.state.referral_link + nextProps.referralUrl.ShareURL.PintrestURL,
-        linkedinLink: this.state.referral_link + nextProps.referralUrl.ShareURL.LinkedInURL,
-        telegramLink: this.state.referral_link + nextProps.referralUrl.ShareURL.TelegramURL,
+        referral_link: referralLink + nextProps.referralUrl.ShareURL.EmailURL,
+        smsLink: referralLink + nextProps.referralUrl.ShareURL.SMSURL,
+        twitterLink: referralLink + nextProps.referralUrl.ShareURL.TwitterURL,
+        facebookLink: referralLink + nextProps.referralUrl.ShareURL.FacebookURL,
+        messenger: referralLink + nextProps.referralUrl.ShareURL.MessengerURL,
+        whatsAppLink: referralLink + nextProps.referralUrl.ShareURL.WhatsAppURL,
+        pinterestLink: referralLink + nextProps.referralUrl.ShareURL.PintrestURL,
+        linkedinLink: referralLink + nextProps.referralUrl.ShareURL.LinkedInURL,
+        telegramLink: referralLink + nextProps.referralUrl.ShareURL.TelegramURL,
         flag: false
       })
     }
@@ -93,6 +90,7 @@ class ReferralDetailBlk extends Component {
     } = this.state;
     var cursor = { cursor: "pointer" };
     var QRCodeLink = "https://chart.googleapis.com/chart?cht=qr&chl=" + referral_link + "&chs=270x270&chld=L|0"
+
     return (
       <Fragment>
         {this.props.Loading && <JbsSectionLoader />}

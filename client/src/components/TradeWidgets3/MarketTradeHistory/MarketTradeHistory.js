@@ -3,30 +3,21 @@
 import React from "react";
 import { Table, Row, Col } from "reactstrap";
 import { Card } from "reactstrap";
-
 //import section loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 //import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 // import Action
-import {
-    getMarketTradeHistory,
-} from "Actions/Trade";
-
+import { getMarketTradeHistory } from "Actions/Trade";
 // import connect function for store
 import { connect } from "react-redux";
-
 import $ from "jquery";
 
 class MarketTradeRow extends React.Component {
     render() {
         var lastClass = "";
-
         if (this.props.Type === "BUY") {
             lastClass = "text-success";
         } else if (this.props.Type === "SELL") {
@@ -41,17 +32,13 @@ class MarketTradeRow extends React.Component {
             >
                 <td>{this.props.tradetime.split("T")[1].split(".")[0]}</td>
                 <td>
-                    {this.props.price === 0
-                        ? parseFloat(this.props.lastPrice).toFixed(8)
-                        : parseFloat(this.props.price).toFixed(8)}
+                    {this.props.price === 0 ? parseFloat(this.props.lastPrice).toFixed(8) : parseFloat(this.props.price).toFixed(8)}
                 </td>
                 <td className={lastClass}>
                     {parseFloat(this.props.SettledQty).toFixed(8)}
                 </td>
                 <td>
-                    {parseFloat(this.props.SettledQty * this.props.price).toFixed(
-                        8
-                    )}
+                    {parseFloat(this.props.SettledQty * this.props.price).toFixed(8)}
                 </td>
             </tr>
         );
@@ -74,41 +61,29 @@ class MarketTrade extends React.Component {
 
     // This will invoke After component render
     componentWillMount() {
-
         this.isComponentActive = 1;
-
         // code changed by devang parekh for handling margin trading process
-        if (
-            this.props.hasOwnProperty("marginTrading") &&
-            this.props.marginTrading === 1
-        ) {
+        if (this.props.hasOwnProperty("marginTrading") && this.props.marginTrading === 1) {
             // Call Actions For Get Market history List
             this.props.getMarketTradeHistory({
                 Pair: this.props.currencyPair,
                 marginTrading: 1,
             });
             this.processForMarginTrading(); // call for intialize socket listners for margin trading
-
         } else {
-
             // Call Actions For Get Market history List
             this.props.getMarketTradeHistory({ Pair: this.props.currencyPair });
             this.processForNormalTrading();// call for intialize socket listners for normal trading
-
         }
-
         // code end (21-2-2019)
-
     }
 
     // code for handle signalr listners for normal trading
     processForNormalTrading() {
-
         this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
-
                     if (
                         (marketCap.EventTime &&
                             this.state.socketLastPriceData.length === 0) ||
@@ -131,13 +106,10 @@ class MarketTrade extends React.Component {
             }
         });
 
-        this.props.hubConnection.on(
-            "RecieveOrderHistory",
-            (receivedMessage) => {
+        this.props.hubConnection.on("RecieveOrderHistory",(receivedMessage) => {
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const receivedMessageData = JSON.parse(receivedMessage);
-
                         if (
                             (receivedMessageData.EventTime &&
                                 this.state.socketData.length === 0) ||
@@ -166,19 +138,17 @@ class MarketTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) { }
+                    } catch (error) {}
                 }
             }
         );
     }
 
     // code for handle signalr listners for margin trading
-    processForMarginTrading() {
-        this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
+    processForMarginTrading() {this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
-
                     if (
                         (marketCap.EventTime &&
                             this.state.socketLastPriceData.length === 0) ||
@@ -197,13 +167,11 @@ class MarketTrade extends React.Component {
                             });
                         }
                     }
-                } catch (error) { }
+                } catch (error) {}
             }
         });
 
-        this.props.hubConnection.on(
-            "RecieveOrderHistory",
-            (receivedMessage) => {
+        this.props.hubConnection.on("RecieveOrderHistory",(receivedMessage) => {
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const receivedMessageData = JSON.parse(receivedMessage);
@@ -226,9 +194,7 @@ class MarketTrade extends React.Component {
                                     [],
                                     this.state.marketTradeHistory
                                 );
-
                                 orderHistory.unshift(receivedMessageData.Data);
-
                                 this.setState({
                                     marketTradeHistory: orderHistory,
                                     socketData: receivedMessageData,
@@ -246,10 +212,7 @@ class MarketTrade extends React.Component {
     }
 
     componentWillReceiveProps(nextprops) {
-        if (
-            nextprops.marketTradeHistory &&
-            nextprops.marketTradeHistory !== null
-        ) {
+        if (nextprops.marketTradeHistory.length > 0) {
             // set Market Trade History list if gets from API only
             this.setState({
                 marketTradeHistory: nextprops.marketTradeHistory,
@@ -257,11 +220,7 @@ class MarketTrade extends React.Component {
             });
         }
 
-        if (
-            nextprops.currentMarketCap &&
-            nextprops.currentMarketCap.LastPrice &&
-            nextprops.currentMarketCap.LastPrice > 0
-        ) {
+        if (nextprops.currentMarketCap && nextprops.currentMarketCap.LastPrice && nextprops.currentMarketCap.LastPrice > 0) {
             this.setState({ lastPrice: nextprops.currentMarketCap.LastPrice });
         }
     }
@@ -273,7 +232,6 @@ class MarketTrade extends React.Component {
         var marketTradeHistoryList = [];
         if (this.state.marketTradeHistory.length !== 0) {
             MarketTradeData.map((newBuyOrder, key) => {
-
                 if (newBuyOrder.IsCancel === 0) { // code add by devang parekh (8-4-2019), as per discuss with ritaben for handle partial cancel order settle date issue (because of this issue order comes with first which is already settled priviously)
                     marketTradeHistoryList.push(
                         <MarketTradeRow
@@ -290,7 +248,6 @@ class MarketTrade extends React.Component {
                     );
                     indexValue++;
                 }
-
             });
         }
 
@@ -350,7 +307,6 @@ class MarketTrade extends React.Component {
                                 <Table className="m-0 p-0">
                                     <tbody>{marketTradeHistoryList}</tbody>
                                 </Table>
-
                                 {this.state.marketTradeHistory.length === 0 && (
                                     <Row className="justify-content-center m-0">
                                         <Col
@@ -371,11 +327,7 @@ class MarketTrade extends React.Component {
     }
 }
 
-const mapStateToProps = ({
-    marketTradeHistory,
-    currentMarketCap,
-    settings,
-}) => {
+const mapStateToProps = ({ marketTradeHistory, currentMarketCap, settings }) => {
     return {
         marketTradeHistory: marketTradeHistory.marketHistory,
         loading: marketTradeHistory.loading,
@@ -385,9 +337,6 @@ const mapStateToProps = ({
 };
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {
-        getMarketTradeHistory,
-    }
-)(MarketTrade);
+export default connect(mapStateToProps,{
+    getMarketTradeHistory
+})(MarketTrade);

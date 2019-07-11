@@ -583,7 +583,7 @@ class Withdraw extends Component {
                                                                     <option value="">{optionValue}</option>
                                                                 }
                                                             </IntlMessages>
-                                                            {this.props.addresses.length && this.props.addresses.map((address, key) =>
+                                                            {this.props.addresses.length > 0 && this.props.addresses.map((address, key) =>
                                                                 <option value={key} key={key}>{address.Name} - {address.Address}</option>
                                                             )}
                                                             <IntlMessages id="wallet.WDUseNewAddress">

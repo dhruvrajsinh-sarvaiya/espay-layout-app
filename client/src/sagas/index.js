@@ -10,9 +10,7 @@ import pageContentSagas from "./PageContent";
 //Parthbhai....
 import loginHistorySagas from "./MyAccount/LoginHistory";
 import ipHistorySagas from "./MyAccount/IPHistory";
-import deviceManagementSagas from "./MyAccount/DeviceManagement";
 import editProfileSagas from "./MyAccount/EditProfile";
-import antiPhishingCodeSagas from "./MyAccount/AntiPhishingCode";
 
 //Kevinbhai....
 import userauthSagas from "./MyAccount/UserAuth";
@@ -32,7 +30,6 @@ import ipWhitelistSagas from "./MyAccount/IPWhitelist";
 import deviceListSagas from "./MyAccount/DeviceWhitelisting";
 import themeConfigSagas from "./MyAccount/ThemeConfiguration";
 import forgotConfirmationSagas from "./MyAccount/ForgotConfirmation";
-
 import socialProfileSagas from "./SocialProfile/SocialProfile";
 
 //Salimbhai....
@@ -40,7 +37,6 @@ import twoFAAuthenticationSagas from "./MyAccount/2FAAuthentication";
 import forgotPasswordSagas from "./MyAccount/ForgotPassword";
 import personalVerificationFormSagas from "./MyAccount/PersonalVerificationForm";
 import enterpriseVerificationFormSagas from "./MyAccount/EnterpriseVerificationForm";
-import referralFriendsSagas from "./MyAccount/ReferralFriends";
 import referralLatestCommissionHisorySagas from "./MyAccount/ReferralLatestCommissionHisory";
 import activityListSagas from "./MyAccount/ActivityList";
 import apiSettingSagas from "./MyAccount/APISetting";
@@ -78,15 +74,12 @@ import affiliateReportSagas from "./MyAccount/AffiliateReport";
 // added by Tejas
 import tradeSagas from "./Trade/Pair";
 import pairListSagas from "./Trade/PairList";
-import holdingsSaga from "./Trade/HoldingsSaga";
 import openOrderSaga from "./Trade/OpenOrdersSaga";
 import recentOrderSaga from "./Trade/RecentOrdersSaga";
 import currentMarketCapSaga from "./Trade/CurrentMarketCapSaga";
-import newsTickerSaga from "./Trade/NewsTickerSaga";
 import currencySaga from "./Trade/CurrencyDetailsSaga";
 import placeOrderSaga from "./Trade/PlaceOrderSaga";
 import chartData from "./Trade/TradeChartDataSaga";
-import transactionCharge from "./TransactionCharge/TransactionChargeSaga";
 import topGainerLoserSaga from './Trade/TopGainerLoserSaga';
 
 // added by devang parekh
@@ -142,7 +135,6 @@ import tradeSummaryReport from './TradingReport/TradeSummarySaga';
 //Added by Jayesh Pathak 09-01-2019
 import helpcenterSagas from "./HelpCenter/HelpCenter";
 import coinListRequestSaga from "./Coinlist/CoinListRequest"; //Dhara gajera 4/1/2019
-
 import modeChangeSaga from './modeChangeSaga';
 
 //Added By Tejas 6/2/2019 for charges type
@@ -210,9 +202,7 @@ export default function* rootSaga(getState) {
     //Parthbhai...
     loginHistorySagas(),
     ipHistorySagas(),
-    deviceManagementSagas(),
     editProfileSagas(),
-    antiPhishingCodeSagas(),
 
     //Kevinbhai....
     userauthSagas(),
@@ -240,7 +230,6 @@ export default function* rootSaga(getState) {
     forgotPasswordSagas(),
     personalVerificationFormSagas(),
     enterpriseVerificationFormSagas(),
-    referralFriendsSagas(),
     referralLatestCommissionHisorySagas(),
     activityListSagas(),
     apiSettingSagas(),
@@ -277,15 +266,12 @@ export default function* rootSaga(getState) {
     // added by tejas
     pairListSagas(),
     tradeSagas(),
-    holdingsSaga(),
     openOrderSaga(),
     recentOrderSaga(),
     currentMarketCapSaga(),
-    newsTickerSaga(),
     currencySaga(),
     placeOrderSaga(),
     chartData(),
-    transactionCharge(),
 
     // added by devang parekh
     transactionHistory(),

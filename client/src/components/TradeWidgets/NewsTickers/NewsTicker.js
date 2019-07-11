@@ -1,9 +1,7 @@
 // Component for displaying Marquee  Data By:Tejas Date : 13/9/2018
 import React from "react";
-
 // import action
 import { getNewsTickerList } from "Actions/Trade";
-
 // import connect function for store
 import { connect } from "react-redux";
 
@@ -18,13 +16,12 @@ class NewsTicker extends React.Component {
   // This will invoke After component render
   componentDidMount() {
     // Call Actions For Get News Ticker For MArquee
-
     this.props.getNewsTickerList();
   }
 
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
-    if (nextprops.newsText && nextprops.newsText !== null) {
+    if (nextprops.newsText.length > 0) {
       // set pair list if gets from API only
       this.setState({ newsText: nextprops.newsText });
     }
@@ -64,9 +61,6 @@ const mapStateToProps = state => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    getNewsTickerList
-  }
-)(NewsTicker);
+export default connect(mapStateToProps, {
+  getNewsTickerList
+})(NewsTicker);

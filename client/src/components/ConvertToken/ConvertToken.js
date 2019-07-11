@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import IntlMessages from "Util/IntlMessages";
 // import component for Card Design
 import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard";
-import Slide from "@material-ui/core/Slide";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 
 import {
@@ -12,9 +11,6 @@ import {
   submitConvertTokenRequest
 } from "Actions/ConvertToken";
 
-function Transition(props) {
-  return <Slide direction="up" {...props} />;
-}
 // add validation
 const validateConvertTokenRequest = require("../../validation/ConvertToken/ConvertToken");
 

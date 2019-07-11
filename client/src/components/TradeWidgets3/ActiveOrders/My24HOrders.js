@@ -79,10 +79,7 @@ class My24HOrder extends React.Component {
 
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
-        if (
-            nextprops.activeMyOpenOrder &&
-            nextprops.activeMyOpenOrder !== null
-        ) {
+        if (nextprops.activeMyOpenOrder !== null) {
             // set Active My Open Order list if gets from API only
             this.setState({
                 activeMyOpenOrder: nextprops.activeMyOpenOrder,
@@ -157,7 +154,7 @@ class My24HOrder extends React.Component {
                             </thead>
 
                             <tbody>
-                                {activeMyOpenData.length ? (
+                                {activeMyOpenData.length > 0 ? (
                                     activeMyOpenData.map((value, key) => (
                                         <tr
                                             style={{ cursor: "pointer" }}
@@ -199,17 +196,17 @@ class My24HOrder extends React.Component {
                                         </tr>
                                     ))
                                 ) : (
-                                    <tr>
-                                        <td colSpan="5">
-                                            <Alert
-                                                color="danger"
-                                                className="text-center fs-32"
-                                            >
-                                                <IntlMessages id="trading.activeorders.label.nodata" />
-                                            </Alert>
-                                        </td>
-                                    </tr>
-                                )}
+                                        <tr>
+                                            <td colSpan="5">
+                                                <Alert
+                                                    color="danger"
+                                                    className="text-center fs-32"
+                                                >
+                                                    <IntlMessages id="trading.activeorders.label.nodata" />
+                                                </Alert>
+                                            </td>
+                                        </tr>
+                                    )}
                             </tbody>
                         </Table>
 
@@ -225,7 +222,7 @@ class My24HOrder extends React.Component {
                             <ModalBody>
                                 <Table className="table m-0 p-0">
                                     <tbody>
-                                        {activeMyOpenData.length ? (
+                                        {activeMyOpenData.length > 0 ? (
                                             activeMyOpenData.map((value, key) =>
                                                 key === this.state.modalInfo ? (
                                                     <tr key={key}>
@@ -239,7 +236,7 @@ class My24HOrder extends React.Component {
                                                         <td
                                                             className={
                                                                 value.type ===
-                                                                "Buy"
+                                                                    "Buy"
                                                                     ? "text-success"
                                                                     : "text-danger"
                                                             }
@@ -270,21 +267,21 @@ class My24HOrder extends React.Component {
                                                         </td>
                                                     </tr>
                                                 ) : (
-                                                    ""
-                                                )
+                                                        ""
+                                                    )
                                             )
                                         ) : (
-                                            <tr>
-                                                <td colSpan="5">
-                                                    <Alert
-                                                        color="danger"
-                                                        className="text-center fs-32"
-                                                    >
-                                                        <IntlMessages id="trading.activeorders.label.nodata" />
-                                                    </Alert>
-                                                </td>
-                                            </tr>
-                                        )}
+                                                <tr>
+                                                    <td colSpan="5">
+                                                        <Alert
+                                                            color="danger"
+                                                            className="text-center fs-32"
+                                                        >
+                                                            <IntlMessages id="trading.activeorders.label.nodata" />
+                                                        </Alert>
+                                                    </td>
+                                                </tr>
+                                            )}
                                     </tbody>
                                 </Table>
                             </ModalBody>

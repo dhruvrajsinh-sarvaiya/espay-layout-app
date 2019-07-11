@@ -4,7 +4,6 @@
  * Top Gainer
  */
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Button } from "reactstrap";
 import Divider from '@material-ui/core/Divider';

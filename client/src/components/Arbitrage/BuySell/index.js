@@ -5,17 +5,14 @@
 */
 
 import React from "react";
-
 // used fro connect store
 import { connect } from "react-redux";
 // components for display 
 import BuyTrade from "./BuyTrade";
 import SellTrade from "./SellTrade";
 import BuySellForm from "../BuySellForm";
-
 //actions 
 import { atbitrageBuyerBook, atbitrageSellerBook } from 'Actions/Arbitrage';
-
 // used for jquery
 import $ from 'jquery';
 
@@ -43,7 +40,6 @@ class BuySellTrade extends React.Component {
 			LPSellerBook: [],
 			socketLPSellData: [],
 		};
-
 	}
 
 	// This will invoke After component render
@@ -61,13 +57,13 @@ class BuySellTrade extends React.Component {
 	}
 
 	componentWillMount() {
-
 		// code changed by devang parekh 22-2-2019
 		if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
 			this.processForMarginTrading();
 		} else {
 			this.processForNormalTrading();
 		}
+		this.updateStateForDynamicData();
 		//end
 	}
 
@@ -75,93 +71,64 @@ class BuySellTrade extends React.Component {
 	processForNormalTrading() {
 		// code added and change by devang parekh for handling Signalr listners
 		this.isComponentActive = 1;
-
 		// ========== process for buyer book order updation from signalr ===========
 		// RecieveBuyerBook and store into state and update
 		this.props.hubConnection.on('RecieveBuyerBookArbitrage', (receivedMessage) => {
-
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
 				try {
 					const receivedMessageData = JSON.parse(receivedMessage);
-
 					if ((receivedMessageData.EventTime && this.state.socketBuyData.length === 0) ||
 						(this.state.socketBuyData.length !== 0 && receivedMessageData.EventTime >= this.state.socketBuyData.EventTime)) {
-
 						if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
 							const newData = receivedMessageData.Data;
-
 							if (parseFloat(newData.LTP) !== 0) {
-
 								var latestBuyOrders = $.extend(true, [], this.state.buyerOrder);
 								latestBuyOrders.forEach(function (buyOrder, index) { latestBuyOrders[index].UpDownBit = 0 });
 								var findIndexPrice = latestBuyOrders.findIndex(buyerOrder => parseFloat(buyerOrder.LPType) === parseFloat(newData.LPType));
-
 								if (findIndexPrice === -1) {
 									//to do if want to add new exchange into it 
 								} else {
-
 									if (latestBuyOrders[findIndexPrice].LTP !== newData.LTP) {
 										latestBuyOrders[findIndexPrice].OldLTP = latestBuyOrders[findIndexPrice].LTP;
 										latestBuyOrders[findIndexPrice].LTP = newData.LTP;
 										this.setState({ buyerOrder: latestBuyOrders, socketBuyData: receivedMessageData });
 									}
-
 								}
-
 							}
-
 						}
 					}
-
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 
 		// ============== start code for recieve seller book from signalr ===============
 		// get seller book on transaction update and store into state
 		this.props.hubConnection.on('RecieveSellerBookArbitrage', (receivedMessage) => {
-
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
-
 				try {
-
 					const receivedMessageData = JSON.parse(receivedMessage);
 					if ((receivedMessageData.EventTime && this.state.socketSellData.length === 0) ||
 						(this.state.socketSellData.length !== 0 && receivedMessageData.EventTime >= this.state.socketSellData.EventTime)) {
-
 						if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
-
 							const newData = receivedMessageData.Data;
 							if (parseFloat(newData.LTP) !== 0) {
 								var latestSellOrders = $.extend(true, [], this.state.sellerOrder);
 								var findIndexPrice = latestSellOrders.findIndex(sellerOrder => parseFloat(sellerOrder.LPType) === parseFloat(newData.LPType));
-
 								if (findIndexPrice === -1) {
 									//to do if want to add new exchange into it 
 								} else {
-
 									if (latestSellOrders[findIndexPrice].LTP !== newData.LTP) {
 										latestSellOrders[findIndexPrice].OldLTP = latestSellOrders[findIndexPrice].LTP;
 										latestSellOrders[findIndexPrice].LTP = newData.LTP;
 										this.setState({ sellerOrder: latestSellOrders, socketBuyData: receivedMessageData });
 									}
-
 								}
-
 							}
-
 						}
-
 					}
-
-				} catch (error) {
-				}
-
+				} catch (error) {}
 			}
-
 		});
-
 		// ================ end code for seller order book process ==============================
 	}
 
@@ -169,7 +136,6 @@ class BuySellTrade extends React.Component {
 	processForMarginTrading() {
 		// code added and change by devang parekh for handling Signalr listners
 		this.isComponentActive = 1;
-
 		// handling and store last price data
 		this.props.hubConnection.on('RecieveLastPriceArbitrage', (receivedMessage) => {
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
@@ -186,11 +152,11 @@ class BuySellTrade extends React.Component {
 							});
 						}
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 		// ========== process for buyer book order updation from signalr ===========
+
 		// RecieveBuyerBook and store into state and update
 		this.props.hubConnection.on('RecieveSellerBookArbitrage', (receivedMessage) => {
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
@@ -223,8 +189,7 @@ class BuySellTrade extends React.Component {
 							}
 						}
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 
@@ -235,13 +200,11 @@ class BuySellTrade extends React.Component {
 					const stopLimitBuyerBook = JSON.parse(receivedMessage);
 					if ((stopLimitBuyerBook.EventTime && this.state.stopLimitBuyerBook.length === 0) ||
 						(this.state.stopLimitBuyerBook.length !== 0 && stopLimitBuyerBook.EventTime > this.state.stopLimitBuyerBook.EventTime)) {
-
 						if (this.props.currencyPair === stopLimitBuyerBook.Parameter && typeof stopLimitBuyerBook.IsMargin !== 'undefined' && stopLimitBuyerBook.IsMargin === 1) {
 							this.setState({ stopLimitBuyerBook: stopLimitBuyerBook });
 						}
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 		// ====================== end code ================================
@@ -249,13 +212,11 @@ class BuySellTrade extends React.Component {
 		// ============== start code for recieve seller book from signalr ===============
 		// get seller book on transaction update and store into state
 		this.props.hubConnection.on('RecieveSellerBookArbitrage', (receivedMessage) => {
-
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
 				try {
 					const receivedMessageData = JSON.parse(receivedMessage);
 					if ((receivedMessageData.EventTime && this.state.socketSellData.length === 0) ||
 						(this.state.socketSellData.length !== 0 && receivedMessageData.EventTime >= this.state.socketSellData.EventTime)) {
-
 						if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
 							const newData = receivedMessageData.Data;
 							if (parseFloat(newData.Price) !== 0) {
@@ -278,8 +239,7 @@ class BuySellTrade extends React.Component {
 							}
 						}
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 
@@ -288,37 +248,30 @@ class BuySellTrade extends React.Component {
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
 				try {
 					const stopLimitSellerBook = JSON.parse(receivedMessage);
-
 					if ((stopLimitSellerBook.EventTime && this.state.stopLimitSellerBook.length === 0) ||
 						(this.state.stopLimitSellerBook.length !== 0 && stopLimitSellerBook.EventTime > this.state.stopLimitSellerBook.EventTime)) {
-
 						if (this.props.currencyPair === stopLimitSellerBook.Parameter && typeof stopLimitSellerBook.IsMargin !== 'undefined' && stopLimitSellerBook.IsMargin === 1) {
 							this.setState({ stopLimitSellerBook: stopLimitSellerBook });
 						}
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 
 		// get lp seller book and store into state and process
 		this.props.hubConnection.on('ReceiveBulkSellerBook', (receivedMessage) => {
-
 			if (this.isComponentActive === 1 && receivedMessage !== null) {
 				try {
 					const receivedMessageData = JSON.parse(receivedMessage);
-
 					if ((receivedMessageData.EventTime && this.state.socketLPSellData.length === 0) ||
 						(this.state.socketLPSellData.length !== 0 && receivedMessageData.EventTime >= this.state.socketLPSellData.EventTime)) {
-
 						if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
 							var LPSellerBook = $.extend(true, [], this.state.LPSellerBook);
 							LPSellerBook[receivedMessageData.LP] = receivedMessageData.Data
 							this.setState({ LPSellerBook: LPSellerBook, socketLPSellData: receivedMessageData });
 						}
 					}
-				} catch (error) {
-				}
+				} catch (error) {}
 			}
 		});
 		// ================ end code for seller order book process ==============================
@@ -330,8 +283,7 @@ class BuySellTrade extends React.Component {
 	}
 
 	componentWillReceiveProps(nextprops) {
-
-		if (nextprops.arbitrageBuyerOrder && nextprops.arbitrageBuyerOrder !== null && this.state.buyOrderBit !== nextprops.arbitrageBuyerOrderBit) {
+		if (nextprops.arbitrageBuyerOrder !== null && this.state.buyOrderBit !== nextprops.arbitrageBuyerOrderBit) {
 			var lastPriceBuyRecord = {};
 			var newBuyerOrderDetail = [];
 			var stopLimitBuyerBook = [];
@@ -355,7 +307,7 @@ class BuySellTrade extends React.Component {
 				lastPriceBuyRecord: lastPriceBuyRecord,
 				stopLimitBuyerBook: stopLimitBuyerBook
 			});
-		} else if (((nextprops.arbitrageBuyerOrder === null || typeof nextprops.arbitrageBuyerOrder === 'undefined')||(nextprops.arbitrageBuyerOrder && nextprops.arbitrageBuyerOrder.length === 0)) && this.state.buyOrderBit !== nextprops.arbitrageBuyerOrderBit) {
+		} else if (((nextprops.arbitrageBuyerOrder === null || typeof nextprops.arbitrageBuyerOrder === 'undefined') || (nextprops.arbitrageBuyerOrder && nextprops.arbitrageBuyerOrder.length === 0)) && this.state.buyOrderBit !== nextprops.arbitrageBuyerOrderBit) {
 			this.setState({
 				buyerOrder: [],
 				buyOrderBit: nextprops.arbitrageBuyerOrderBit,
@@ -363,7 +315,7 @@ class BuySellTrade extends React.Component {
 				stopLimitBuyerBook: []
 			});
 		}
-		if (nextprops.arbitrageSellerOrder && nextprops.arbitrageSellerOrder !== null && this.state.sellOrderBit !== nextprops.arbitrageSellerOrderBit) {
+		if (nextprops.arbitrageSellerOrder !== null && this.state.sellOrderBit !== nextprops.arbitrageSellerOrderBit) {
 			var sellerData = [];
 			var lastPriceSellRecord = {};
 			var stopLimitSellerBook = [];
@@ -393,7 +345,7 @@ class BuySellTrade extends React.Component {
 				LPSellerBook: [],
 				socketLPSellData: []
 			});
-		} else if (((nextprops.arbitrageSellerOrder === null || typeof nextprops.arbitrageSellerOrder === 'undefined')||(nextprops.arbitrageSellerOrder && nextprops.arbitrageSellerOrder.length === 0)) && this.state.sellOrderBit !== nextprops.arbitrageSellerOrderBit) {
+		} else if (((nextprops.arbitrageSellerOrder === null || typeof nextprops.arbitrageSellerOrder === 'undefined') || (nextprops.arbitrageSellerOrder && nextprops.arbitrageSellerOrder.length === 0)) && this.state.sellOrderBit !== nextprops.arbitrageSellerOrderBit) {
 			this.setState({
 				sellerOrder: [],
 				sellOrderBit: nextprops.arbitrageSellerOrderBit,
@@ -403,93 +355,61 @@ class BuySellTrade extends React.Component {
 				socketLPSellData: []
 			});
 		}
-
-
 		if (nextprops.currentMarketCap && nextprops.currentMarketCap.LastPrice && nextprops.currentMarketCap.LastPrice > 0) {
 			this.setState({ lastPrice: nextprops.currentMarketCap.LastPrice });
 		}
+		this.updateStateForDynamicData();
 	}
 
 	// set sell order 
 	setSellOrders = (price, amount, isMultiple, OrderId, total, selectedValue) => {
-
 		if (total !== "" && total !== undefined) {
 			if (isMultiple === true) {
-
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
-
 					let buyOrderData = [];
-
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrderData.push(buyOrder)
-						if (buyOrder.LPType == OrderId
-							&& (buyOrder.isMultiSelect === 'undefined' ||
-								buyOrder.isMultiSelect === false)) {
-
+						if (buyOrder.LPType == OrderId && (buyOrder.isMultiSelect === undefined || buyOrder.isMultiSelect === false)) {
 							buyOrderData[index].isMultiSelect = true
-							buyOrderData[index].checkedBtn = selectedValue
-
-						} else if (buyOrder.LPType == OrderId
-							&& buyOrder.isMultiSelect !== undefined &&
-							buyOrder.isMultiSelect === true) {
-
-							buyOrderData[index].checkedBtn = selectedValue
+							buyOrderData[index].checkedBtn = selectedValue;
+						} else if (buyOrder.LPType == OrderId && buyOrder.isMultiSelect !== undefined && buyOrder.isMultiSelect === true) {
+							buyOrderData[index].checkedBtn = selectedValue;
 						}
 					})
-
 					this.setState({ buyerOrder: buyOrderData })
 				}
-
 				this.props.setSellOrders(price, amount, isMultiple, total, OrderId)
 			} else if (isMultiple === false) {
-
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
-
 					let buyOrderData = [];
-
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrderData.push(buyOrder)
-						if (buyOrder.LPType == OrderId
-							&& (buyOrder.isMultiSelect === 'undefined' ||
-								buyOrder.isMultiSelect === false)) {
-
+						if (buyOrder.LPType == OrderId && (buyOrder.isMultiSelect === undefined || buyOrder.isMultiSelect === false)) {
 							buyOrderData[index].isMultiSelect = true
 							buyOrderData[index].checkedBtn = 25
-
-						} else if (buyOrder.LPType == OrderId
-							&& buyOrder.isMultiSelect !== undefined &&
-							buyOrder.isMultiSelect === true) {
-
+						} else if (buyOrder.LPType == OrderId && buyOrder.isMultiSelect !== undefined && buyOrder.isMultiSelect === true) {
 							buyOrderData[index].isMultiSelect = false
 							buyOrderData[index].checkedBtn = 25
 						}
 					})
-
 					this.setState({ buyerOrder: buyOrderData })
 				}
-
 				this.props.setSellOrders(price, amount, isMultiple, total, OrderId)
 			}
 
 			if (isMultiple === 'undefined') {
-
 				let buyOrderData = [];
 				let sellOrderData = [];
 
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
-
 						buyOrderData.push(buyOrder);
 					})
 				}
 
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
 					this.state.sellerOrder.map((sellOrder, index) => {
-
 						sellOrder.isMultiSelect !== undefined ? sellOrder.isMultiSelect = false : sellOrder.isMultiSelect = undefined
 						sellOrderData.push(sellOrder);
 					})
@@ -499,89 +419,55 @@ class BuySellTrade extends React.Component {
 					buyerOrder: buyOrderData,
 					sellerOrder: sellOrderData
 				})
-
 				this.props.setSellOrders(price, amount, isMultiple, total, OrderId)
 			}
-
 		} else {
-
 			if (isMultiple === true) {
-
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
-
 					let buyOrderData = [];
-
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrderData.push(buyOrder)
-						if (buyOrder.LPType == OrderId
-							&& (buyOrder.isMultiSelect === 'undefined' ||
-								buyOrder.isMultiSelect === false)) {
-
+						if (buyOrder.LPType == OrderId && (buyOrder.isMultiSelect === undefined || buyOrder.isMultiSelect === false)) {
 							buyOrderData[index].isMultiSelect = true
 							buyOrderData[index].checkedBtn = 25
-
-						} else if (buyOrder.LPType == OrderId
-							&& buyOrder.isMultiSelect !== undefined &&
-							buyOrder.isMultiSelect === true) {
-
+						} else if (buyOrder.LPType == OrderId && buyOrder.isMultiSelect !== undefined && buyOrder.isMultiSelect === true) {
 							buyOrderData[index].isMultiSelect = false
 							buyOrderData[index].checkedBtn = 25
 						}
 					})
-
 					this.setState({ buyerOrder: buyOrderData })
 				}
-
 				this.props.setSellOrders(price, amount, isMultiple, total, OrderId)
 			} else if (isMultiple === false) {
-
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
-
 					let buyOrderData = [];
-
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrderData.push(buyOrder)
-						if (buyOrder.LPType == OrderId
-							&& (buyOrder.isMultiSelect === 'undefined' ||
-								buyOrder.isMultiSelect === false)) {
-
+						if (buyOrder.LPType == OrderId && (buyOrder.isMultiSelect === undefined || buyOrder.isMultiSelect === false)) {
 							buyOrderData[index].isMultiSelect = true
 							buyOrderData[index].checkedBtn = 25
-
-						} else if (buyOrder.LPType == OrderId
-							&& buyOrder.isMultiSelect !== undefined &&
-							buyOrder.isMultiSelect === true) {
-
+						} else if (buyOrder.LPType == OrderId && buyOrder.isMultiSelect !== undefined && buyOrder.isMultiSelect === true) {
 							buyOrderData[index].isMultiSelect = false
 							buyOrderData[index].checkedBtn = 25
 						}
 					})
-
 					this.setState({ buyerOrder: buyOrderData })
 				}
-
 				this.props.setSellOrders(price, amount, isMultiple, total, OrderId)
 			}
 
 			if (isMultiple === 'undefined') {
-
 				let buyOrderData = [];
 				let sellOrderData = [];
-
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
-
 						buyOrderData.push(buyOrder);
 					})
 				}
 
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
 					this.state.sellerOrder.map((sellOrder, index) => {
-
 						sellOrder.isMultiSelect !== undefined ? sellOrder.isMultiSelect = false : sellOrder.isMultiSelect = undefined
 						sellOrderData.push(sellOrder);
 					})
@@ -591,94 +477,59 @@ class BuySellTrade extends React.Component {
 					buyerOrder: buyOrderData,
 					sellerOrder: sellOrderData
 				})
-
 				this.props.setSellOrders(price, amount, isMultiple, total, OrderId)
 			}
 		}
-
 	}
 
 	//set buy orders
 	setBuyOrders = (price, amount, isMultiple, OrderId, total, selectedValue) => {
-
 		if (total !== "" && total !== undefined) {
 			if (isMultiple === true) {
-
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
-
 					let sellOrderData = [];
-
 					this.state.sellerOrder.map((sellOrder, index) => {
-
 						sellOrderData.push(sellOrder)
-						if (sellOrder.LPType == OrderId
-							&& (sellOrder.isMultiSelect === 'undefined' ||
-								sellOrder.isMultiSelect === false)) {
-
+						if (sellOrder.LPType == OrderId && (sellOrder.isMultiSelect === undefined || sellOrder.isMultiSelect === false)) {
 							sellOrderData[index].isMultiSelect = true
 							sellOrderData[index].checkedBtn = selectedValue
-
-						} else if (sellOrder.LPType == OrderId
-							&& sellOrder.isMultiSelect !== undefined &&
-							sellOrder.isMultiSelect === true) {
-
+						} else if (sellOrder.LPType == OrderId && sellOrder.isMultiSelect !== undefined && sellOrder.isMultiSelect === true) {
 							sellOrderData[index].checkedBtn = selectedValue
 						}
 					})
-
 					this.setState({ sellerOrder: sellOrderData })
 				}
-
 				this.props.setBuyOrders(price, amount, isMultiple, total, OrderId)
 			} else if (isMultiple === false) {
-
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
-
 					let sellOrderData = [];
-
 					this.state.sellerOrder.map((sellOrder, index) => {
-
 						sellOrderData.push(sellOrder)
-						if (sellOrder.LPType == OrderId
-							&& (sellOrder.isMultiSelect === 'undefined' ||
-								sellOrder.isMultiSelect === false)) {
-
+						if (sellOrder.LPType == OrderId && (sellOrder.isMultiSelect === undefined || sellOrder.isMultiSelect === false)) {
 							sellOrderData[index].isMultiSelect = true
 							sellOrderData[index].checkedBtn = 25
-
-						} else if (sellOrder.LPType == OrderId
-							&& sellOrder.isMultiSelect !== undefined &&
-							sellOrder.isMultiSelect === true) {
-
+						} else if (sellOrder.LPType == OrderId && sellOrder.isMultiSelect !== undefined && sellOrder.isMultiSelect === true) {
 							sellOrderData[index].isMultiSelect = false
 							sellOrderData[index].checkedBtn = 25
 						}
 					})
-
 					this.setState({ sellerOrder: sellOrderData })
 				}
-
 				this.props.setBuyOrders(price, amount, isMultiple, total, OrderId)
 			}
 
-
 			if (isMultiple === 'undefined') {
-
 				let buyOrderData = [];
 				let sellOrderData = [];
-
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
-
 						buyOrderData.push(buyOrder);
 					})
 				}
 
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
 					this.state.sellerOrder.map((buyOrder, index) => {
-
 						buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
 						sellOrderData.push(buyOrder);
 					})
@@ -688,89 +539,56 @@ class BuySellTrade extends React.Component {
 					buyerOrder: buyOrderData,
 					sellerOrder: sellOrderData
 				})
-
 				this.props.setBuyOrders(price, amount, isMultiple, total, OrderId)
 			}
 		} else {
 			if (isMultiple === true) {
-
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
-
 					let sellOrderData = [];
-
 					this.state.sellerOrder.map((sellOrder, index) => {
-
 						sellOrderData.push(sellOrder)
-						if (sellOrder.LPType == OrderId
-							&& (sellOrder.isMultiSelect === 'undefined' ||
-								sellOrder.isMultiSelect === false)) {
-
+						if (sellOrder.LPType == OrderId && (sellOrder.isMultiSelect === undefined || sellOrder.isMultiSelect === false)) {
 							sellOrderData[index].isMultiSelect = true
 							sellOrderData[index].checkedBtn = 25
-
-						} else if (sellOrder.LPType == OrderId
-							&& sellOrder.isMultiSelect !== undefined &&
-							sellOrder.isMultiSelect === true) {
-
+						} else if (sellOrder.LPType == OrderId && sellOrder.isMultiSelect !== undefined && sellOrder.isMultiSelect === true) {
 							sellOrderData[index].isMultiSelect = false
 							sellOrderData[index].checkedBtn = 25
 						}
 					})
-
 					this.setState({ sellerOrder: sellOrderData })
 				}
-
 				this.props.setBuyOrders(price, amount, isMultiple, total, OrderId)
-
 			} else if (isMultiple === false) {
-
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
-
 					let sellOrderData = [];
-
 					this.state.sellerOrder.map((sellOrder, index) => {
-
 						sellOrderData.push(sellOrder)
-						if (sellOrder.LPType == OrderId
-							&& (sellOrder.isMultiSelect === 'undefined' ||
-								sellOrder.isMultiSelect === false)) {
-
+						if (sellOrder.LPType == OrderId && (sellOrder.isMultiSelect === 'undefined' || sellOrder.isMultiSelect === false)) {
 							sellOrderData[index].isMultiSelect = true
 							sellOrderData[index].checkedBtn = 25
-
-						} else if (sellOrder.LPType == OrderId
-							&& sellOrder.isMultiSelect !== undefined &&
-							sellOrder.isMultiSelect === true) {
-
+						} else if (sellOrder.LPType == OrderId && sellOrder.isMultiSelect !== undefined && sellOrder.isMultiSelect === true) {
 							sellOrderData[index].isMultiSelect = false
 							sellOrderData[index].checkedBtn = 25
 						}
 					})
-
 					this.setState({ sellerOrder: sellOrderData })
 				}
-
 				this.props.setBuyOrders(price, amount, isMultiple, total, OrderId)
 			}
 
-
 			if (isMultiple === 'undefined') {
-
 				let buyOrderData = [];
 				let sellOrderData = [];
 
 				if (this.state.buyerOrder && this.state.buyerOrder.length) {
 					this.state.buyerOrder.map((buyOrder, index) => {
-
 						buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
-
 						buyOrderData.push(buyOrder);
 					})
 				}
 
 				if (this.state.sellerOrder && this.state.sellerOrder.length) {
 					this.state.sellerOrder.map((buyOrder, index) => {
-
 						buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
 						sellOrderData.push(buyOrder);
 					})
@@ -780,32 +598,23 @@ class BuySellTrade extends React.Component {
 					buyerOrder: buyOrderData,
 					sellerOrder: sellOrderData
 				})
-
 				this.props.setBuyOrders(price, amount, isMultiple, total, OrderId)
 			}
 		}
-
-
-
 	}
 
 	ClearAllFields = () => {
-
 		let buyOrderData = [];
 		let sellOrderData = [];
-
 		if (this.state.buyerOrder && this.state.buyerOrder.length) {
 			this.state.buyerOrder.map((buyOrder, index) => {
-
 				buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
-
 				buyOrderData.push(buyOrder);
 			})
 		}
 
 		if (this.state.sellerOrder && this.state.sellerOrder.length) {
 			this.state.sellerOrder.map((buyOrder, index) => {
-
 				buyOrder.isMultiSelect !== undefined ? buyOrder.isMultiSelect = false : buyOrder.isMultiSelect = undefined
 				sellOrderData.push(buyOrder);
 			})
@@ -816,13 +625,10 @@ class BuySellTrade extends React.Component {
 			sellerOrder: sellOrderData,
 
 		})
-
 		this.props.ClearAllFields()
 	}
 
-	// Render Component for Buy Sell Tables
-	render() {
-
+	updateStateForDynamicData = () => {
 		const { buyerOrder, sellerOrder, lastPriceBuyRecord, lastPriceSellRecord, lastPrice, stopLimitBuyerBook, stopLimitSellerBook, LPSellerBook } = this.state;
 		var buyOrderDetail = $.extend(true, [], buyerOrder);
 		var lastPriceBuyRecordDetail = $.extend(true, [], lastPriceBuyRecord);
@@ -830,7 +636,6 @@ class BuySellTrade extends React.Component {
 
 		if (lastPrice > 0 && lastPriceBuyRecordDetail && lastPriceBuyRecordDetail.Amount > 0) {
 			var findLastPriceIndex = buyOrderDetail.findIndex(buyerOrder => parseFloat(buyerOrder.Price) === parseFloat(lastPrice));
-
 			if (findLastPriceIndex === -1) {
 				lastPriceBuyRecordDetail.UpDownBit = 1;
 				lastPriceBuyRecordDetail.Price = lastPrice;
@@ -845,7 +650,6 @@ class BuySellTrade extends React.Component {
 			stopLimitBuyerBookList.map((stopLimitOrder, indexValue) => {
 				if (stopLimitOrder.IsAdd && stopLimitOrder.IsAdd === 1) {
 					var findStopLimitIndex = buyOrderDetail.findIndex(buyerOrder => parseFloat(buyerOrder.Price) === parseFloat(stopLimitOrder.Price));
-
 					if (findStopLimitIndex === -1) {
 						stopLimitOrder.UpDownBit = 1;
 						buyOrderDetail.push(stopLimitOrder)
@@ -857,22 +661,20 @@ class BuySellTrade extends React.Component {
 			});
 		}
 
-		this.state.tempBuyOrders = buyOrderDetail
-
 		var lastPriceSellRecordDetail = $.extend(true, [], lastPriceSellRecord);
 		var sellOrderDetail = $.extend(true, [], sellerOrder);
 		var stopLimitSellerBookList = $.extend(true, [], stopLimitSellerBook.Data);
 		var LPSellerBookList = $.extend(true, [], LPSellerBook);
 
 		if (lastPrice > 0 && lastPriceSellRecordDetail && lastPriceSellRecordDetail.Amount > 0) {
-			var findLastPriceIndex = sellOrderDetail.findIndex(sellerOrder => parseFloat(sellerOrder.Price) === parseFloat(lastPrice));
-			if (findLastPriceIndex === -1) {
+			var findLastPriceIndexVar = sellOrderDetail.findIndex(sellerOrder => parseFloat(sellerOrder.Price) === parseFloat(lastPrice));
+			if (findLastPriceIndexVar === -1) {
 				lastPriceSellRecordDetail.UpDownBit = 1;
 				lastPriceSellRecordDetail.Price = lastPrice;
 				sellOrderDetail.push(lastPriceSellRecordDetail)
 			} else {
-				sellOrderDetail[findLastPriceIndex].UpDownBit = 1
-				sellOrderDetail[findLastPriceIndex].Amount = sellOrderDetail[findLastPriceIndex].Amount + lastPriceSellRecordDetail.Amount;
+				sellOrderDetail[findLastPriceIndexVar].UpDownBit = 1
+				sellOrderDetail[findLastPriceIndexVar].Amount = sellOrderDetail[findLastPriceIndexVar].Amount + lastPriceSellRecordDetail.Amount;
 			}
 		}
 
@@ -906,14 +708,12 @@ class BuySellTrade extends React.Component {
 				});
 			});
 		}
-		this.state.tempSellOrders = sellOrderDetail;
+		
+		this.setState({ tempBuyOrders : buyOrderDetail, tempSellOrders : sellOrderDetail });
+	}
 
-		if (this.state.lastPrice !== 'undefined' && this.state.lastPrice !== 0) {
-			var firstPrice = parseFloat(this.state.lastPrice).toFixed(8);
-		} else {
-			var firstPrice = parseFloat(0).toFixed(8);
-		}
-
+	// Render Component for Buy Sell Tables
+	render() {
 		return (
 			<div className="buy_sell_area_inner align-items-start">
 				<div className="w-40 sell_book pr-0 pl-0">

@@ -85,7 +85,6 @@ class AddressGeneration extends Component {
 	constructor() {
 		super()
 		this.selectWallet = this.selectWallet.bind(this);
-		this.updateBitGoAddress = this.updateBitGoAddress.bind(this);
 	}
 	componentWillReceiveProps(nextProps) {
 		// load first currency on page load
@@ -185,22 +184,17 @@ class AddressGeneration extends Component {
 		try {
 			var decoded = p2sh.address.fromBase58Check(Address);
 			var version = decoded['version'];
-			var message = '';
 			switch (version) {
 				case 5:
-					message = "Mainnet p2sh address: ";
 					version = 50;
 					break;
 				case 50:
-					message = "Mainnet p2sh address (deprecated): ";
 					version = 5;
 					break;
 				case 196:
-					message = "Testnet p2sh address: ";
 					version = 58;
 					break;
 				case 58:
-					message = "Testnet p2sh address (deprecated): ";
 					version = 196;
 					break;
 				default:

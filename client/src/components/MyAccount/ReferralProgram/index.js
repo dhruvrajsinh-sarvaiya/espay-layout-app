@@ -34,12 +34,6 @@ const ReferralDetailBlk = Loadable({
 });
 
 //Referral Friends Table Widget...
-const ReferralFriendsTableWdgt = Loadable({
-    loader: () => import("./ReferralFriendsTableWdgt"),
-    loading: MyLoadingComponent
-});
-
-//Referral Friends Table Widget...
 const ReferralLatestCommissionHistoryTableWdgt = Loadable({
     loader: () => import("./LatestCommissionHistoryTableWdgt"),
     loading: MyLoadingComponent
@@ -80,7 +74,6 @@ export {
     ReferralProgramDetailsWdgt,
     ReferralWithoutLoginBlk,
     ReferralDetailBlk,
-    ReferralFriendsTableWdgt,
     ReferralLatestCommissionHistoryTableWdgt,
     ReferralCountCardsWdgt,
     ReferralInviteReport,

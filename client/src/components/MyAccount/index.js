@@ -4,6 +4,12 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 import PreloadWidget from 'Components/PreloadLayout/PreloadWidget';
+import NormalRegistrationWdgt from './NormalRegistrationWdgt';
+import SignupEmailWithOTPWdgt from './SignupEmailWithOTPWdgt';
+import SignupMobileWithOTPWdgt from './SignupMobileWithOTPWdgt';
+import NormalLoginWdgt from './NormalLoginWdgt';
+import SigninEmailWithOTPWdgt from './SigninEmailWithOTPWdgt';
+import SigninMobileWithOTPWdgt from './SigninMobileWithOTPWdgt';
 
 const MyLoadingComponent = () => (
     <PreloadWidget />
@@ -115,45 +121,45 @@ const DisableGoogleAuthWdgt = Loadable({
 const MembershipLevelWdgt = Loadable({
     loader: () => import("./MembershipLevelWdgt"),
     loading: MyLoadingComponent
-  });
+});
 
-  //Trade Summary
+//Trade Summary
 const TradeSummaryWdgt = Loadable({
     loader: () => import("./TradeSummaryWdgt"),
     loading: MyLoadingComponent
-  });
+});
 
 //Top Gainers
 const TopGainersWdgt = Loadable({
     loader: () => import("./TopGainersWdgt"),
     loading: MyLoadingComponent
-  });
-  
-  //Top Losers
-  const TopLosersWdgt = Loadable({
+});
+
+//Top Losers
+const TopLosersWdgt = Loadable({
     loader: () => import("./TopLosersWdgt"),
     loading: MyLoadingComponent
-  });
-  
+});
+
 //IPWhitelistWdgt
 const IPWhitelistWdgt = Loadable({
     loader: () => import("./IPWhitelistWdgt"),
     loading: MyLoadingComponent
-  });
-  
-  //Add AddIPWhitelist
-  const AddIPWhitelistWdgt = Loadable({
+});
+
+//Add AddIPWhitelist
+const AddIPWhitelistWdgt = Loadable({
     loader: () => import("./AddIPWhitelistWdgt"),
     loading: MyLoadingComponent
-  });
+});
 
-  //Edit IPWhitelist
-  const EditIPWhitelistDialogWdgt = Loadable({
+//Edit IPWhitelist
+const EditIPWhitelistDialogWdgt = Loadable({
     loader: () => import("./EditIPWhitelistDialogWdgt"),
     loading: MyLoadingComponent
-  });
+});
 
-  //Forgot Confirmation Widget
+//Forgot Confirmation Widget
 const ForgotConfirmationWdgt = Loadable({
     loader: () => import("./ForgotConfirmationWdgt"),
     loading: MyLoadingComponent
@@ -234,9 +240,6 @@ const ForgotPasswordWdgt = Loadable({
     loader: () => import("./ForgotPassword"),
     loading: MyLoadingComponent
 });
-
-
-
 
 //Referral Banner Programmer Block
 const ReferralBannerBlk = Loadable({
@@ -340,24 +343,6 @@ const DeviceWhitelistingWdgt = Loadable({
     loading: MyLoadingComponent
 });
 
-
-import NormalRegistrationWdgt from './NormalRegistrationWdgt';
-
-
-import SignupEmailWithOTPWdgt from './SignupEmailWithOTPWdgt';
-
-
-import SignupMobileWithOTPWdgt from './SignupMobileWithOTPWdgt';
-
-
-import NormalLoginWdgt from './NormalLoginWdgt';
-
-
-import SigninEmailWithOTPWdgt from './SigninEmailWithOTPWdgt';
-
-
-import SigninMobileWithOTPWdgt from './SigninMobileWithOTPWdgt';
-
 //Email Confirmation Widget
 const EmailConfirmationWdgt = Loadable({
     loader: () => import("./EmailConfirmationWdgt"),
@@ -428,9 +413,8 @@ export {
     AddIPWhitelistWdgt,
     EditIPWhitelistDialogWdgt,
     ForgotConfirmationWdgt,
-    
-    //Salimbhai
 
+    //Salimbhai
     TwoFAGoogleAuthentication,
     TwoFASMSAuthentication,
     LostYourGoogleAuthenticator,

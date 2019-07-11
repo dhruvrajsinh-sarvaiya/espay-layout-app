@@ -10,15 +10,15 @@ import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import AppConfig from 'Constants/AppConfig';
 import { NotificationManager } from 'react-notifications';
 import Button from '@material-ui/core/Button';
-//initial state
-const initState = {
-    walletActivity: []
-}
 //my wallets methods...
 import {
     walletRequestAction,
     listWalletRequests
 } from 'Actions/MyWallets';
+//initial state
+const initState = {
+    walletActivity: []
+}
 
 class WalletActivityList extends Component {
     state = initState;
@@ -27,7 +27,6 @@ class WalletActivityList extends Component {
         this.props.listWalletRequests();
         if (this.props.location.state.hasOwnProperty("hubConnection")) {
             this.props.location.state.hubConnection.on('RecieveWalletActivity', (newsData) => {
-                console.log('newsData');
                 newsData = JSON.parse(newsData);
                 this.setState({ walletActivity: newsData.Data.Data });
                 this.props.setCount(newsData.Data.Data.length);

@@ -10,24 +10,19 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
-
 // page title bar
 import PageTitleBar from 'Components/PageTitleBar/PageTitleBar';
-
 // jbs card
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import { getFaqcategories, getFaqquestions } from 'Actions/Faq';
 import { connect } from 'react-redux';
 import ReactHtmlParser from 'react-html-parser';
-
 //Components
 import SearchFaqs from './components/SearchFaq';
 
 class Faq extends Component {
-
 	constructor(props) {
 		super(props);
 		// default ui local state
@@ -49,7 +44,6 @@ class Faq extends Component {
 			faqs: nextProps.faqs,
 			faqloading: false
 		});
-
 	}
 
 	render() {
@@ -62,27 +56,23 @@ class Faq extends Component {
 					{faqloading &&
 						<div className="d-flex justify-content-center loader-overlay">
 							<CircularProgress />
-						</div>
-					}
-
+						</div>}
 					{faq_categories && faq_categories.map((category, index) => {
-
-						if (category.locale && typeof category.locale[localStorage.getItem('locale')] != 'undefined') {
+						if (category.locale !== null && category.locale[localStorage.getItem('locale')] !== undefined) {
 							return (
-								<JbsCollapsibleCard key={index} heading={category != null && category.locale && category.locale[localStorage.getItem('locale')] && category.locale[localStorage.getItem('locale')].category_name ? category.locale[localStorage.getItem('locale')].category_name : ''}>
-
+								<JbsCollapsibleCard key={index} heading={category.locale[localStorage.getItem('locale')].category_name ? category.locale[localStorage.getItem('locale')].category_name : ''}>
 									{faqs && faqs.map((faq, i) => {
-										if (faq.category_id != undefined && faq.category_id == category._id && faq && faq.locale && typeof faq.locale[localStorage.getItem('locale')] != 'undefined') {
+										if (faq && faq.category_id != undefined && faq.category_id === category._id && faq.locale && typeof faq.locale[localStorage.getItem('locale')] != 'undefined') {
 											return (
 												<ExpansionPanel key={i} className="mb-15 panel">
 													<ExpansionPanelSummary expandIcon={<i className="zmdi zmdi-chevron-down"></i>} className="m-0 panel-heading demo">
 														<h4>
-															{faq && faq.locale && faq.locale[localStorage.getItem('locale')] && faq.locale[localStorage.getItem('locale')].question}
+															{faq.locale[localStorage.getItem('locale')] && faq.locale[localStorage.getItem('locale')].question}
 														</h4>
 													</ExpansionPanelSummary>
 													<ExpansionPanelDetails>
 														<div>
-															{ReactHtmlParser(faq && faq.locale && faq.locale[localStorage.getItem('locale')] && faq.locale[localStorage.getItem('locale')].answer)}
+															{ReactHtmlParser(faq.locale[localStorage.getItem('locale')] && faq.locale[localStorage.getItem('locale')].answer)}
 														</div>
 													</ExpansionPanelDetails>
 												</ExpansionPanel>

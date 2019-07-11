@@ -54,7 +54,6 @@ class MyOrder extends React.Component {
 
         };
         this.openModal = this.openModal.bind(this);
-        this.openCancelAllModal = this.openCancelAllModal.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.cancelOrder = this.cancelOrder.bind(this);
     }
@@ -80,6 +79,7 @@ class MyOrder extends React.Component {
                                     isOrderType = true
                                 }
                             }
+                            return [];
                         })
 
                     })
@@ -303,38 +303,26 @@ class MyOrder extends React.Component {
                             <tr className="bg-light">
                                 <th className="text-center">
                                     {" "}
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.pair" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.pair" />}
                                 </th>
                                 <th className="numeric text-center">
                                     {" "}
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.type" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.type" />}
                                 </th>
                                 <th className="text-center">
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.orderType" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.orderType" />}
                                 </th>
                                 <th className="numeric text-center">
                                     {" "}
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.price" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.price" />}
                                 </th>
                                 <th className="numeric text-center">
                                     {" "}
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.amount" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.amount" />}
                                 </th>
                                 <th className="numeric text-center">
                                     {" "}
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.date" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.date" />}
                                 </th>
                                 <th className="numeric">
                                     {" "}
@@ -515,27 +503,19 @@ class MyOrder extends React.Component {
                                         <tr className="bg-primary text-white">
                                             <th className="text-center">
                                                 {" "}
-                                                {
-                                                    <IntlMessages id="trading.activeorders.label.pair" />
-                                                }
+                                                {<IntlMessages id="trading.activeorders.label.pair" />}
                                             </th>
                                             <th className="numeric text-center">
                                                 {" "}
-                                                {
-                                                    <IntlMessages id="trading.activeorders.label.type" />
-                                                }
+                                                {<IntlMessages id="trading.activeorders.label.type" />}
                                             </th>
                                             <th className="numeric text-center">
                                                 {" "}
-                                                {
-                                                    <IntlMessages id="trading.activeorders.label.price" />
-                                                }
+                                                {<IntlMessages id="trading.activeorders.label.price" />}
                                             </th>
                                             <th className="numeric text-center">
                                                 {" "}
-                                                {
-                                                    <IntlMessages id="trading.activeorders.label.amount" />
-                                                }
+                                                {<IntlMessages id="trading.activeorders.label.amount" />}
                                             </th>
                                             <th className="numeric text-center">
                                                 {" "}

@@ -65,7 +65,6 @@ class TradingChartthree extends Component {
   processForNormalTrading() {
 
     this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
-      //console.log("Get Data from signalR RecieveChartData", receivedMessage);
 
       if (this.isComponentActive === 1 && receivedMessage !== null) {
 
@@ -80,18 +79,7 @@ class TradingChartthree extends Component {
 
             if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
 
-              // for static data array process if want to test
-              //var chartArray = [receivedMessageData.Data.DataDate,receivedMessageData.Data.Open,receivedMessageData.Data.High,receivedMessageData.Data.Low,receivedMessageData.Data.Close,receivedMessageData.Data.Volume];
-              //charData.push(chartArray);
-
               charData.push(receivedMessageData.Data)
-              /*receivedMessageData.Data.map((info,key) =>{
-                data.push(info)
-              })*/
-
-              /*this.state.chartData.map((value, key) => {
-                data.push(value)
-              })*/
               this.setState({ chartData: charData, socketData: receivedMessageData });
 
             }
@@ -112,7 +100,6 @@ class TradingChartthree extends Component {
   processForMarginTrading() {
 
     this.props.hubConnection.on('RecieveChartData', (receivedMessage) => {
-      //console.log("margin Get Data from signalR RecieveChartData", receivedMessage);
 
       if (this.isComponentActive === 1 && receivedMessage !== null) {
 
@@ -127,27 +114,14 @@ class TradingChartthree extends Component {
 
             if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
 
-              // for static data array process if want to test
-              //var chartArray = [receivedMessageData.Data.DataDate,receivedMessageData.Data.Open,receivedMessageData.Data.High,receivedMessageData.Data.Low,receivedMessageData.Data.Close,receivedMessageData.Data.Volume];
-              //charData.push(chartArray);
-
               charData.push(receivedMessageData.Data)
-              /*receivedMessageData.Data.map((info,key) =>{
-                data.push(info)
-              })*/
-
-              /*this.state.chartData.map((value, key) => {
-                data.push(value)
-              })*/
               this.setState({ chartData: charData, socketData: receivedMessageData });
 
             }
 
           }
 
-        } catch (error) {
-          //console.log("charte ",error)
-        }
+        } catch (error) { }
 
       }
 
@@ -342,8 +316,6 @@ class TradingChartthree extends Component {
           dataGrouping: {
             units: groupingUnits
           },
-          //color: theme ? 'white': '#000000',
-          //color: 'green',
           downColor: 'red',
           color: '#000000',
         },

@@ -39,21 +39,13 @@ function* myLedgerData({ payload }) {
                     // success
                      yield put(myLedgerSuccess(responseFromSocket.WalletLedgers));
             } 
-        else if (responseFromSocket.statusCode == 200 && typeof responseFromSocket.BizResponseObj !== 'undefined' && responseFromSocket.BizResponseObj.ReturnCode == 1){
-                // failure
-            yield put(myLedgerFailure(responseFromSocket));
-        } 
-        else if (responseFromSocket.statusCode != 200 && typeof responseFromSocket.BizResponseObj !== 'undefined'){
-                // other then 200 statuscode
-                yield put(myLedgerFailure(responseFromSocket));
-        } 
             else {
                 yield put(myLedgerFailure(responseFromSocket));
             }
         }
 
     } catch (error) {
-        console.log(error);
+        
         yield put(myLedgerFailure(error));
     }
 

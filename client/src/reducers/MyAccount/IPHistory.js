@@ -4,7 +4,7 @@
 import {
     IP_HISTORY_LIST,
     IP_HISTORY_LIST_SUCCESS,
-    IP_HISTORY_LIST_FAIL,
+    IP_HISTORY_LIST_FAILURE,
 } from 'Actions/types';
 
 /**
@@ -27,7 +27,7 @@ export default (state, action) => {
         case IP_HISTORY_LIST_SUCCESS:
             return { ...state, loading: false, data: action.payload };
 
-        case IP_HISTORY_LIST_FAIL:
+        case IP_HISTORY_LIST_FAILURE:
             return { ...state, loading: false, data : action.payload };
             
         default: 

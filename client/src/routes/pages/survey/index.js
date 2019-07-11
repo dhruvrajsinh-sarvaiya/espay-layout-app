@@ -27,7 +27,6 @@ import { getSurvey, addSurveyResult, getSurveyResultsById } from "Actions/Survey
 import Page from "Components/page";
 import * as Survey from "survey-react";
 import "survey-react/survey.css";
-import $ from "jquery";
 // app config
 import AppConfig from "Constants/AppConfig";
 //Validation for Faq Category Form
@@ -65,7 +64,7 @@ class SurveyPage extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (typeof nextProps.surveydata != 'undefined' && typeof nextProps.surveydata.json != 'undefined' && this.state.isgetsurveydata == 0) {
+		if (nextProps.surveydata != undefined && nextProps.surveydata.json != undefined && this.state.isgetsurveydata == 0) {
 			this.setState({
 				surveydata: nextProps.surveydata,
 				isgetsurveydata: 1
@@ -81,23 +80,23 @@ class SurveyPage extends Component {
 			this.props.getSurveyResultsById(checkdata);
 		}
 
-		if (typeof nextProps.data != 'undefined' && nextProps.data.responseCode === 0) {
+		if (nextProps.data != undefined && nextProps.data.responseCode === 0) {
 			this.setState({ err_msg: '', err_alert: false, loading: nextProps.loading });
 			this.props.history.goBack();
 		}
 
-		if (typeof nextProps.data != 'undefined' && (nextProps.data.responseCode === 9 || nextProps.data.responseCode === 1)) {
-			if (typeof nextProps.data.errors.message != 'undefined' && nextProps.data.errors.message != '') {
+		if (nextProps.data != undefined && (nextProps.data.responseCode === 9 || nextProps.data.responseCode === 1)) {
+			if (nextProps.data.errors.message != undefined && nextProps.data.errors.message != '') {
 				this.setState({ err_alert: true, loading: nextProps.loading });
 			}
 			this.setState({
 				errors: nextProps.data.errors
 			});
 		}
-		if (typeof nextProps.surveyresultsdetail != 'undefined' && nextProps.surveyresultsdetail.responseCode === 0) {
+		if (nextProps.surveyresultsdetail != undefined && nextProps.surveyresultsdetail.responseCode === 0) {
 			this.setState({
+				displaysurveyform: nextProps.surveyresultsdetail.hasOwnProperty('data') && nextProps.surveyresultsdetail.data.isExist == 1 ? 0 : 1,
 				allresults: nextProps.surveyresultsdetail.data.results,
-				displaysurveyform: nextProps.surveyresultsdetail && nextProps.surveyresultsdetail.data && nextProps.surveyresultsdetail.data.isExist == 1 ? 0 : 1,
 				loading: false
 			});
 		}
@@ -136,7 +135,6 @@ class SurveyPage extends Component {
 		var model = new Survey.Model(json);
 		model.locale = localStorage.getItem('locale');
 
-
 		return (
 			<Page id="Survey" title="Survey" description="This is Survey">
 				<PageTitleBar
@@ -149,7 +147,7 @@ class SurveyPage extends Component {
 						<Alert color="danger" isOpen={err_alert} toggle={this.onDismiss}><IntlMessages id={errors.message} /></Alert>
 					</div>}
 					<div className="row news-content">
-						<JbsCard heading={surveydata && surveydata.locale && surveydata.locale[localStorage.getItem('locale')] && surveydata.locale[localStorage.getItem('locale')].surveyName || ''} colClasses="col-sm-12 col-md-8 col-lg-8" fullBlock>
+						<JbsCard heading={surveydata.locale && surveydata.locale[localStorage.getItem('locale')] && surveydata.locale[localStorage.getItem('locale')].surveyName || ''} colClasses="col-sm-12 col-md-8 col-lg-8" fullBlock>
 
 							<div className="about-wrapper surveyjs">
 								{displaysurveyform == 1 ?
@@ -176,7 +174,7 @@ class SurveyPage extends Component {
 										<TableBody>
 											<Fragment>
 												{allresults && allresults.length > 0 ?
-													allresults && allresults.map((result, key) => {
+													allresults.map((result, key) => {
 														return (
 															<TableRow hover key={key}>
 																<TableCell>{result.answer}</TableCell>

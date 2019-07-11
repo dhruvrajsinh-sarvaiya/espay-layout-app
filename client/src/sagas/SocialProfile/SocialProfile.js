@@ -10,12 +10,12 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 //Action Types..
 import {
-    GET_LEADER_CONFIG,
-    EDIT_LEADER_CONFIG,
-    GET_FOLLOWER_CONFIG,
-    EDIT_FOLLOWER_CONFIG,
-    GET_SOCIAL_PROFILE_SUBSCRIPTION,
-    SOCIAL_PROFILE_SUBSCRIBE,
+	GET_LEADER_CONFIG,
+	EDIT_LEADER_CONFIG,
+	GET_FOLLOWER_CONFIG,
+	EDIT_FOLLOWER_CONFIG,
+	GET_SOCIAL_PROFILE_SUBSCRIPTION,
+	SOCIAL_PROFILE_SUBSCRIBE,
 	SOCIAL_PROFILE_UNSUBSCRIBE,
 	GET_LEADER_LIST,
 	GET_FOLLOWER_LIST,
@@ -24,25 +24,25 @@ import {
 	ADD_WATCHLIST_GROUP,
 	ADD_WATCHLIST,
 	REMOVE_WATCHLIST,
-    GET_WATCHLIST,
+	GET_WATCHLIST,
 	GET_LEADER_WATCH_LIST,
 } from 'Actions/types';
 
 //Action methods..
 import {
-    getLeaderConfigSuccess,
-    getLeaderConfigFailure,
-    editLeaderConfigSuccess,
-    editLeaderConfigFailure,
-    getFollowerConfigSuccess,
-    getFollowerConfigFailure,
-    editFollowerConfigSuccess,
-    editFollowerConfigFailure,
-    getSocialProfileSubscriptionSuccess,
-    getSocialProfileSubscriptionFailure,
-    getSocialProfileSubscribeSuccess,
-    getSocialProfileSubscribeFailure,
-    getSocialProfileUnSubscribeSuccess,
+	getLeaderConfigSuccess,
+	getLeaderConfigFailure,
+	editLeaderConfigSuccess,
+	editLeaderConfigFailure,
+	getFollowerConfigSuccess,
+	getFollowerConfigFailure,
+	editFollowerConfigSuccess,
+	editFollowerConfigFailure,
+	getSocialProfileSubscriptionSuccess,
+	getSocialProfileSubscriptionFailure,
+	getSocialProfileSubscribeSuccess,
+	getSocialProfileSubscribeFailure,
+	getSocialProfileUnSubscribeSuccess,
 	getSocialProfileUnSubscribeFailure,
 	getLeaderListSuccess,
 	getLeaderListFailure,
@@ -69,10 +69,9 @@ import { swaggerGetAPI, swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for Get Leader Configuration API
 function* getLeaderConfigAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    // const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetLeaderFrontProfile', payload, headers);
-    const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetLeaderFrontProfileConfiguration', '', headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetLeaderFrontProfileConfiguration', '', headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getLeaderConfigSuccess(response));
@@ -86,9 +85,9 @@ function* getLeaderConfigAPI({ payload }) {
 
 //Function for Edit Leader Configuration API
 function* editLeaderConfigAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetLeaderFrontProfile', payload, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetLeaderFrontProfile', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(editLeaderConfigSuccess(response));
@@ -102,9 +101,9 @@ function* editLeaderConfigAPI({ payload }) {
 
 //Function for Get Follower Configuration API
 function* getFollowerConfigAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetFollowerFrontProfile', payload, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetFollowerFrontProfile', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getFollowerConfigSuccess(response));
@@ -118,9 +117,9 @@ function* getFollowerConfigAPI({ payload }) {
 
 //Function for Edit Follower Configuration API
 function* editFollowerConfigAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetFollowerFrontProfile', payload, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/SetFollowerFrontProfile', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(editFollowerConfigSuccess(response));
@@ -133,10 +132,10 @@ function* editFollowerConfigAPI({ payload }) {
 }
 
 //Function for Get Social Profile Subscription API
-function* getSocialProfileSubscriptionAPI() {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetSocialProfile', {}, headers);
-    
+function* getSocialProfileSubscriptionAPI({ payload }) {
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetSocialProfile', {}, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getSocialProfileSubscriptionSuccess(response));
@@ -150,9 +149,9 @@ function* getSocialProfileSubscriptionAPI() {
 
 //Function for Get Social Profile Subscribe API
 function* getSocialProfileSubscribeAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/SubscribSocialProfile/'+payload, '', headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/SubscribSocialProfile/' + payload, '', headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getSocialProfileSubscribeSuccess(response));
@@ -166,9 +165,9 @@ function* getSocialProfileSubscribeAPI({ payload }) {
 
 //Function for Get Social Profile UnSubscribe API
 function* getSocialProfileUnSubscribeAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/UnsibscribeSocialProfile/'+payload, '', headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/UnsibscribeSocialProfile/' + payload, '', headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getSocialProfileUnSubscribeSuccess(response));
@@ -182,9 +181,9 @@ function* getSocialProfileUnSubscribeAPI({ payload }) {
 
 //Function for Get Leader List API
 function* getLeaderListAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetLeaderList/'+payload.PageIndex+'/'+payload.Page_Size, {}, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetLeaderList/' + payload.PageIndex + '/' + payload.Page_Size, {}, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getLeaderListSuccess(response));
@@ -198,9 +197,9 @@ function* getLeaderListAPI({ payload }) {
 
 //Function for Get Follower List API
 function* getFollowerListAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetLeaderWiseFollowerConfig/'+payload.PageIndex+'/'+payload.Page_Size, {}, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetLeaderWiseFollowerConfig/' + payload.PageIndex + '/' + payload.Page_Size, {}, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getFollowerListSuccess(response));
@@ -214,9 +213,9 @@ function* getFollowerListAPI({ payload }) {
 
 //Function for Get Leader Follow By ID API
 function* getLeaderFollowByIDAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetFollowerFrontProfileConfiguration/'+payload.LeaderId, {}, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetFollowerFrontProfileConfiguration/' + payload.LeaderId, {}, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getLeaderFollowByIdSuccess(response));
@@ -230,9 +229,9 @@ function* getLeaderFollowByIDAPI({ payload }) {
 
 //Function for Get Leader Follow By ID API
 function* unFollowLeaderAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/UnFollow?LeaderId='+payload.LeaderId, {}, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/UnFollow?LeaderId=' + payload.LeaderId, {}, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(unFollowLeaderSuccess(response));
@@ -246,9 +245,9 @@ function* unFollowLeaderAPI({ payload }) {
 
 //Function for Add Watchlist Group API
 function* addWatchlistGroupAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/AddGroup', payload, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/AddGroup', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(addWatchlistGroupSuccess(response));
@@ -262,9 +261,9 @@ function* addWatchlistGroupAPI({ payload }) {
 
 //Function for Add Watchlist API
 function* addWatchlistAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/AddWatch', payload, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/AddWatch', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(addWatchlistSuccess(response));
@@ -278,9 +277,9 @@ function* addWatchlistAPI({ payload }) {
 
 //Function for Remove Watchlist API
 function* removeWatchlistAPI({ payload }) {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
-    const response = yield call(swaggerPostAPI, 'api/SocialProfile/UnFollowWatch', payload, headers);
-    
+	var headers = { 'Authorization': AppConfig.authorizationToken }
+	const response = yield call(swaggerPostAPI, 'api/SocialProfile/UnFollowWatch', payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(removeWatchlistSuccess(response));
@@ -294,9 +293,9 @@ function* removeWatchlistAPI({ payload }) {
 
 //Function for Get Watchlist API
 function* getWatchlistAPI() {
-    var headers = { 'Authorization': AppConfig.authorizationToken }
+	var headers = { 'Authorization': AppConfig.authorizationToken }
 	const response = yield call(swaggerGetAPI, 'api/SocialProfile/GetGroupList', {}, headers);
-	
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getWatchlistSuccess(response));
@@ -311,9 +310,9 @@ function* getWatchlistAPI() {
 //Function for Get Leader Watchlist API
 function* getLeaderWatchlistAPI({ payload }) {
 	var headers = { 'Authorization': AppConfig.authorizationToken }
-	var swaggerAPIUrl = 'api/SocialProfile/GetWatcherWiseLeaderList/'+payload.PageIndex+'/'+payload.Page_Size+'/'+payload.GroupId;
-    const response = yield call(swaggerGetAPI, swaggerAPIUrl, payload, headers);
-    
+	var swaggerAPIUrl = 'api/SocialProfile/GetWatcherWiseLeaderList/' + payload.PageIndex + '/' + payload.Page_Size + '/' + payload.GroupId;
+	const response = yield call(swaggerGetAPI, swaggerAPIUrl, payload, headers);
+
 	try {
 		if (response.ReturnCode === 0) {
 			yield put(getLeaderWatchlistSuccess(response));
@@ -327,103 +326,103 @@ function* getLeaderWatchlistAPI({ payload }) {
 
 /* Create Sagas method for Get Leader Configuration */
 export function* getLeaderConfigSagas() {
-    yield takeEvery(GET_LEADER_CONFIG, getLeaderConfigAPI);
+	yield takeEvery(GET_LEADER_CONFIG, getLeaderConfigAPI);
 }
 
 /* Create Sagas method for Get Follower Configuration */
 export function* getFollowerConfigSagas() {
-    yield takeEvery(GET_FOLLOWER_CONFIG, getFollowerConfigAPI);
+	yield takeEvery(GET_FOLLOWER_CONFIG, getFollowerConfigAPI);
 }
 
 /* Create Sagas method for Edit Leader Configuration */
 export function* editLeaderConfigSagas() {
-    yield takeEvery(EDIT_LEADER_CONFIG, editLeaderConfigAPI);
+	yield takeEvery(EDIT_LEADER_CONFIG, editLeaderConfigAPI);
 }
 
 /* Create Sagas method for Edit Follower Configuration */
 export function* editFollowerConfigSagas() {
-    yield takeEvery(EDIT_FOLLOWER_CONFIG, editFollowerConfigAPI);
+	yield takeEvery(EDIT_FOLLOWER_CONFIG, editFollowerConfigAPI);
 }
 
 /* Create Sagas method for Get Social Profile Subscription */
 export function* getSocialProfileSubscriptionSagas() {
-    yield takeEvery(GET_SOCIAL_PROFILE_SUBSCRIPTION, getSocialProfileSubscriptionAPI);
+	yield takeEvery(GET_SOCIAL_PROFILE_SUBSCRIPTION, getSocialProfileSubscriptionAPI);
 }
 
 /* Create Sagas method for Social Profile Subscribe */
 export function* getSocialProfileSubscribeSagas() {
-    yield takeEvery(SOCIAL_PROFILE_SUBSCRIBE, getSocialProfileSubscribeAPI);
+	yield takeEvery(SOCIAL_PROFILE_SUBSCRIBE, getSocialProfileSubscribeAPI);
 }
 
 /* Create Sagas method for Social Profile UnSubscribe */
 export function* getSocialProfileUnSubscribeSagas() {
-    yield takeEvery(SOCIAL_PROFILE_UNSUBSCRIBE, getSocialProfileUnSubscribeAPI);
+	yield takeEvery(SOCIAL_PROFILE_UNSUBSCRIBE, getSocialProfileUnSubscribeAPI);
 }
 
 /* Create Sagas method for Leader List */
 export function* getLeaderListSagas() {
-    yield takeEvery(GET_LEADER_LIST, getLeaderListAPI);
+	yield takeEvery(GET_LEADER_LIST, getLeaderListAPI);
 }
 
 /* Create Sagas method for Follower List */
 export function* getFollowerListSagas() {
-    yield takeEvery(GET_FOLLOWER_LIST, getFollowerListAPI);
+	yield takeEvery(GET_FOLLOWER_LIST, getFollowerListAPI);
 }
 
 /* Create Sagas method for Get Leader Follow By ID */
 export function* getLeaderFollowByIDSagas() {
-    yield takeEvery(GET_LEADER_FOLLOW_BY_ID, getLeaderFollowByIDAPI);
+	yield takeEvery(GET_LEADER_FOLLOW_BY_ID, getLeaderFollowByIDAPI);
 }
 
 /* Create Sagas method for Get Leader Follow By ID */
 export function* unFollowLeaderSagas() {
-    yield takeEvery(UNFOLLOW_LEADER, unFollowLeaderAPI);
+	yield takeEvery(UNFOLLOW_LEADER, unFollowLeaderAPI);
 }
 
 /* Create Sagas method for Add Watchlist Group */
 export function* addWatchlistGroupSagas() {
-    yield takeEvery(ADD_WATCHLIST_GROUP, addWatchlistGroupAPI);
+	yield takeEvery(ADD_WATCHLIST_GROUP, addWatchlistGroupAPI);
 }
 
 /* Create Sagas method for Add Watchlist */
 export function* addWatchlistSagas() {
-    yield takeEvery(ADD_WATCHLIST, addWatchlistAPI);
+	yield takeEvery(ADD_WATCHLIST, addWatchlistAPI);
 }
 
 /* Create Sagas method for Remove Watchlist */
 export function* removeWatchlistSagas() {
-    yield takeEvery(REMOVE_WATCHLIST, removeWatchlistAPI);
+	yield takeEvery(REMOVE_WATCHLIST, removeWatchlistAPI);
 }
 
 /* Create Sagas method for Get Watchlist */
 export function* getWatchlistSagas() {
-    yield takeEvery(GET_WATCHLIST, getWatchlistAPI);
+	yield takeEvery(GET_WATCHLIST, getWatchlistAPI);
 }
 
 /* Create Sagas method for Get Leader Watchlist */
 export function* getLeaderWatchlistSagas() {
-    yield takeEvery(GET_LEADER_WATCH_LIST, getLeaderWatchlistAPI);
+	yield takeEvery(GET_LEADER_WATCH_LIST, getLeaderWatchlistAPI);
 }
 
 
 /* Export methods to rootSagas */
 export default function* rootSaga() {
-    yield all([
-        fork(getLeaderConfigSagas),
-        fork(editLeaderConfigSagas),
-        fork(getFollowerConfigSagas),
-        fork(editFollowerConfigSagas),
-        fork(getSocialProfileSubscriptionSagas),
-        fork(getSocialProfileSubscribeSagas),
-        fork(getSocialProfileUnSubscribeSagas),
-        fork(getLeaderListSagas),
-        fork(getFollowerListSagas),
-        fork(getLeaderFollowByIDSagas),
-        fork(unFollowLeaderSagas),
-        fork(addWatchlistGroupSagas),
-        fork(addWatchlistSagas),
-        fork(removeWatchlistSagas),
-        fork(getWatchlistSagas),
-        fork(getLeaderWatchlistSagas),
-    ]);
+	yield all([
+		fork(getLeaderConfigSagas),
+		fork(editLeaderConfigSagas),
+		fork(getFollowerConfigSagas),
+		fork(editFollowerConfigSagas),
+		fork(getSocialProfileSubscriptionSagas),
+		fork(getSocialProfileSubscribeSagas),
+		fork(getSocialProfileUnSubscribeSagas),
+		fork(getLeaderListSagas),
+		fork(getFollowerListSagas),
+		fork(getLeaderFollowByIDSagas),
+		fork(unFollowLeaderSagas),
+		fork(addWatchlistGroupSagas),
+		fork(addWatchlistSagas),
+		fork(removeWatchlistSagas),
+		fork(getWatchlistSagas),
+		fork(getLeaderWatchlistSagas),
+	]);
 }

@@ -38,11 +38,11 @@ class ComplainWdgt extends Component {
                             <div className="innertabpanel ">
                                 <TabList className="myaccountinnerTab">
                                     <Tab className={this.props.darkMode ? 'innertabmenu-darkmode ' : 'innertabmenu'} tabFor="raiseComplain">
-                                        <Tooltip id="tooltip-icon" title={<IntlMessages id="sidebar.raiseComplain" />}><i class="zmdi zmdi-help" /></Tooltip>
+                                        <Tooltip id="tooltip-icon" title={<IntlMessages id="sidebar.raiseComplain" />}><i className="zmdi zmdi-help" /></Tooltip>
                                         <IntlMessages id="sidebar.raiseComplain" />
                                     </Tab>
                                     <Tab className={this.props.darkMode ? 'innertabmenu-darkmode ' : 'innertabmenu'} tabFor="complainList" onClick={this.GetListComplain}>
-                                        <Tooltip id="tooltip-icon" title={<IntlMessages id="sidebar.complain" />}><i class="zmdi zmdi-comment-list" /></Tooltip>
+                                        <Tooltip id="tooltip-icon" title={<IntlMessages id="sidebar.complain" />}><i className="zmdi zmdi-comment-list" /></Tooltip>
                                         <IntlMessages id="sidebar.complain" />
                                     </Tab>
                                 </TabList>

@@ -36,7 +36,7 @@ function* getTopGainersDataDetail({ payload }) {
     const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopGainerPair/' + Data.Type, {});
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getTopGainersSuccess(response));
     } else {
       yield put(getTopGainersFailure(response));
@@ -58,7 +58,7 @@ function* getTopGainersLosersDataDetail({ payload }) {
     const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopLooserGainerPair', {});
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getTopGainersLosersSuccess(response));
     } else {
       yield put(getTopGainersLosersFailure(response));
@@ -81,7 +81,7 @@ function* getTopLosersDataDetail({ payload }) {
     const response = yield call(swaggerGetAPI, '/api/TransactionBackOffice/GetTopLooserPair/' + Data.Type, {});
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getTopLosersSuccess(response));
     } else {
       yield put(getTopLosersFailure(response));

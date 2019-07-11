@@ -107,7 +107,7 @@ function* doWithdrawSocket(payload) {
             redirectToLogin()
         } else if (responseFromSocket.statusCode != 200 && responseFromSocket.hasOwnProperty('ErrorCode')) {
             // error
-            //NotificationManager.error(<IntlMessages id={`apiWalletErrCode.${responseFromSocket.ErrorCode}`} />);
+            
             yield put(doWithdrawFailure(responseFromSocket.ErrorCode));
         } else {
             if (responseFromSocket.statusCode == 200) // success

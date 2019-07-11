@@ -214,11 +214,6 @@ const AsyncTransferOutComponent = Loadable({
     loading: () => <JbsPageLoader />
 });
 
-/* Decentralize Address Generation - added by nishant */
-const AsyncDecentAddgenComponent = Loadable({
-    loader: () => import("Routes/decent-addgen"),
-    loading: () => <JbsPageLoader />
-});
 /* Address whitelist component */
 const AsyncAddressWhitelistComponent = Loadable({
     loader: () => import("Routes/address-whitelist"),
@@ -361,7 +356,6 @@ export {
     AsyncConfigurationComponent,
     AsyncTransferInComponent,
     AsyncTransferOutComponent,
-    AsyncDecentAddgenComponent,
     AsyncAddressWhitelistComponent,
     AsyncBalanceComponent,
     AsyncIncomingTransactionsComponent,

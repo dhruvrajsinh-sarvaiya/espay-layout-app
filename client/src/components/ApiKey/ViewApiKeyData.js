@@ -1,7 +1,6 @@
 //component for View Api Key Data By Tejas 7/3/2019
 
 import React, { Component, Fragment } from "react";
-
 // import for design
 import {
     Row,
@@ -16,29 +15,17 @@ import {
     Form,
     FormGroup,
     Input
-
 } from 'reactstrap';
-
 // used for display notifications
 import { NotificationManager } from 'react-notifications';
-
-//used for display menu icon
-//import MenuIcon from '@material-ui/icons/add';
-
 // used for handle message 
 import IntlMessages from 'Util/IntlMessages';
-
 // import for connect store
 import { connect } from 'react-redux';
-
 // used for validate
 import validator from 'validator';
-
 // used for get IP Address
-import {
-    getIPAddress,
-} from "Helpers/helpers";
-
+import { getIPAddress } from "Helpers/helpers";
 // actions for Call API for get,add and update API key data
 import {
     getIpWhiteListdata,
@@ -47,19 +34,16 @@ import {
     removeIPAddress,
     getApiKeyList
 } from 'Actions/ApiKey';
-
 // import section loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 
 // class for Api Key Data
 class ViewApiKeyData extends Component {
-
     //constructor
     constructor(props) {
-        super(props)
-
+        super(props);
         this.state = {
-            apiKeyData: this.props.selectedData ? this.props.selectedData : {},
+            apiKeyData: this.props.selectedData,
             apiKeyModal: false,
             secretKeyModal: false,
             apiKey: "",
@@ -70,7 +54,7 @@ class ViewApiKeyData extends Component {
             IPCount: 0,
             IPLimit: 0,
             PlanID: props.PlanID ? props.PlanID : 0,
-            APIKeyID: props.selectedData.KeyId ? props.selectedData.KeyId : 0,
+            APIKeyID: props.selectedData.hasOwnProperty('KeyId') ? props.selectedData.KeyId : 0,
             IpAddress: getIPAddress(),
             updateBit: 0,
             addIpBit: 0,
@@ -98,20 +82,15 @@ class ViewApiKeyData extends Component {
             removeData: {},
             aliasName: "",
         })
-
     }
 
     // add IP And MAke request
     addNow = () => {
-
         if (this.state.aliasName === "") {
-
             NotificationManager.error(<IntlMessages id="sidebar.apikey.error.enter.aliasname" />)
         } else if (this.state.IPAddresses === "") {
-
             NotificationManager.error(<IntlMessages id="sidebar.apikey.error.enter.ipaddress" />)
         } else if (this.state.IPAddresses !== "" && !validator.isIP(this.state.IPAddresses)) {
-
             NotificationManager.error(<IntlMessages id="sidebar.apikey.error.enter.validIP" />)
         } else {
             const data = {
@@ -126,20 +105,16 @@ class ViewApiKeyData extends Component {
                 openAddIpModal: false
             })
         }
-
     }
 
     // used for update API Key
     UpdateNow = () => {
-
         const data = {
             PlanID: this.state.PlanID,
             APIKeyID: this.state.APIKeyID,
             IPList: this.state.whitelist
         }
-        this.setState({
-            addIP: 1
-        })
+        this.setState({ addIP: 1 })
         this.props.addIPAddress(data)
     }
 
@@ -152,27 +127,22 @@ class ViewApiKeyData extends Component {
                 aliasName: event.target.value
             })
         }
-
         if (event.target.value === "") {
             this.setState({
                 aliasName: event.target.value
             })
         }
-
     }
 
     //set state for Add Ip Address
     onIPAddress = (event) => {
         event.preventDefault()
-        this.setState({
-            IPAddresses: event.target.value
-        })
+        this.setState({ IPAddresses: event.target.value })
     }
 
     // used for open modal of remove IP
     RemoveIp = (item) => {
         this.setState({
-
             removeData: item,
             IPAddresses: "",
             aliasName: "",
@@ -191,9 +161,7 @@ class ViewApiKeyData extends Component {
                     }
                 })
             }
-            this.setState({
-                removeIP: 1
-            })
+            this.setState({ removeIP: 1 });
             this.props.removeIPAddress({ IPId: IPID })
         } else {
             let dataWhittelist = []
@@ -202,7 +170,6 @@ class ViewApiKeyData extends Component {
                     dataWhittelist.push(item)
                 }
             })
-
 
             this.setState({
                 whitelist: dataWhittelist,
@@ -340,7 +307,6 @@ class ViewApiKeyData extends Component {
         this.setState({
             openAddIpModal: false,
             openRemoveIpModal: false,
-
             IPAddresses: "",
             removeData: {},
             aliasName: "",
@@ -452,9 +418,7 @@ class ViewApiKeyData extends Component {
                                                         disabled={this.state.apiKeyData.IPAccess}
                                                         value={this.state.updateIPAccess}
                                                         checked={this.state.apiAccess}
-                                                        // checked={(this.state.updateIPAccess == true || this.state.apiKeyData.APIAccess) } 
                                                         onChange={this.handleChangeApiPermission}
-                                                    // className={!this.state.isPriceBuyValid ? "error" : ""}
                                                     />{' '}
                                                     {<IntlMessages id="sidebar.apikeys.restrict.access" />}
                                                 </Label>
@@ -494,7 +458,6 @@ class ViewApiKeyData extends Component {
                                             <Col md={12} className="d-flex">
                                                 <Col style={{ background: "#0000FF" }} md={4} sm={4} className="totalapiKeys m-5">
                                                     <p style={{ fontSize: "20px" }}>{typeof this.state.IpAddress === 'string' ? this.state.IpAddress : ""}</p>
-
                                                     <p><IntlMessages id="sidebar.apikeys.current.ipaddress" /></p>
                                                 </Col>
                                                 <Col style={{ background: "#008080" }} md={4} sm={4} className="totalapiKeys  m-5">
@@ -518,7 +481,6 @@ class ViewApiKeyData extends Component {
                                                         </a>
                                                     </div>
                                                 </Col>
-
                                                 <Col md={4} sm={4} className="totalapiKeys">
                                                     <div className="api_key_box" style={{ background: "#0000FF" }}>
                                                         <p style={{ fontSize: "20px" }}>{typeof this.state.IpAddress === 'string' ? this.state.IpAddress : ""}</p>
@@ -531,8 +493,6 @@ class ViewApiKeyData extends Component {
                                                         <p><IntlMessages id="sidebar.apikeys.totalapikeys" /></p>
                                                     </div>
                                                 </Col>
-
-
                                             </div>
                                         }
                                     </Col>
@@ -553,7 +513,6 @@ class ViewApiKeyData extends Component {
                                                 <th className="text-center">{<IntlMessages id="sidebar.view.createdon" />}</th>
                                             </tr>
                                         </thead>
-
                                         <tbody>
                                             {this.state.ipWhitelistData && this.state.ipWhitelistData.length > 0 &&
 
@@ -594,7 +553,6 @@ class ViewApiKeyData extends Component {
                                         </tbody>
                                     </Table>
                                 }
-
                                 {
                                     this.state.updateIPAccess === false ?
                                         <Row className="m-0 p-10">
@@ -613,9 +571,7 @@ class ViewApiKeyData extends Component {
                                             <Row className="m-0 mt-5 font-weight-bold text-warning">
                                                 {<IntlMessages id="sidebar.apikeys.update.note" />}
                                             </Row>
-
                                             <hr />
-
                                             <div className="m-0 text-right">
                                                 <Button
                                                     variant="raised"
@@ -639,27 +595,20 @@ class ViewApiKeyData extends Component {
                                         </Col>
                                 }
                             </Card>
-                            {/* // } */}
                         </div>
                     </Col>
-
                 }
-
                 <Modal isOpen={this.state.apiKeyModal || this.state.secretKeyModal}>
                     <h1 className="text-center mt-5">
                         {this.state.apiKeyModal ? <IntlMessages id="sidebar.ApiKey" /> :
-                            this.state.secretKeyModal ? <IntlMessages id="sidebar.secretKey" /> : ""
-                        }
+                            this.state.secretKeyModal ? <IntlMessages id="sidebar.secretKey" /> : ""}
                     </h1>
                     <ModalBody>
                         <div style={{ wordWrap: "break-word" }}>
-                            {
-                                this.state.apiKeyModal ? this.state.apiKey :
-                                    this.state.secretKeyModal ? this.state.secretKey : ""
-                            }
+                            {this.state.apiKeyModal ? this.state.apiKey :
+                                this.state.secretKeyModal ? this.state.secretKey : ""}
                         </div>
                     </ModalBody>
-
                     <ModalFooter>
                         <Button
                             variant="raised"
@@ -672,12 +621,9 @@ class ViewApiKeyData extends Component {
                         </Button>
                     </ModalFooter>
                 </Modal>
-
                 <Modal isOpen={this.state.openAddIpModal}>
-
                     <ModalBody>
                         <Row className="mt-10 d-contents">
-                            {/* <Col md={6}> */}
                             <div>
                                 <h1 className="text-center mt-10 font-weight-bold">
                                     {<IntlMessages id="sidebar.ApiPlan.whitelist" />}
@@ -690,9 +636,7 @@ class ViewApiKeyData extends Component {
                                     <p>{this.state.IpAddress}</p>
                                 </h1>
                             </div>
-
                             <hr />
-
                             <Form>
                                 <Row className="mb-10 m-5">
                                     <IntlMessages id="sidebar.apikey.title.enter.alias">
@@ -702,7 +646,6 @@ class ViewApiKeyData extends Component {
                                         }
                                     </IntlMessages>
                                 </Row>
-
                                 <Row className="mb-10 m-5">
                                     <IntlMessages id="sidebar.apikey.title.enter.ip">
                                         {(placeholder) =>
@@ -711,7 +654,6 @@ class ViewApiKeyData extends Component {
                                         }
                                     </IntlMessages>
                                 </Row>
-
                                 <Row className="m-5">
                                     <FormGroup check>
                                         <Label check className="m-2">
@@ -733,13 +675,11 @@ class ViewApiKeyData extends Component {
                                                 value={1}
                                                 checked={this.state.IPType === 2 && true}
                                                 onChange={this.handleChangeIPType}
-
                                             />{' '}
                                             {<IntlMessages id="sidebar.apiKey.Ipaddress.type.concurrent" />}
                                         </Label>
                                     </FormGroup>
                                 </Row>
-
                                 <Row className="mb-10 m-5 text-warning font-weight-bold">
                                     <Col md={2}>
                                         {<IntlMessages id="widgets.note.colon" />}
@@ -747,13 +687,9 @@ class ViewApiKeyData extends Component {
                                     <Col md={10}>
                                         {<IntlMessages id="sidebar.apikey.note.whitelistip" />}
                                     </Col>
-
                                 </Row>
-
                             </Form>
-
                             <hr />
-
                             <div className="m-0">
                                 <Button
                                     variant="raised"
@@ -774,16 +710,13 @@ class ViewApiKeyData extends Component {
                                     </span>
                                 </Button>
                             </div>
-
                         </Row>
                     </ModalBody>
                 </Modal>
-
                 <Modal isOpen={this.state.openRemoveIpModal}>
                     {this.props.removeIPLoading && <JbsSectionLoader />}
                     <ModalBody>
                         <Row className="mt-10">
-
                             <div>
                                 <h1 className="text-center mt-10 ml-5">
                                     {<IntlMessages id="sidebar.ApiPlan.removewhitelist" />}
@@ -800,7 +733,6 @@ class ViewApiKeyData extends Component {
                                         {this.state.removeData.AliasName}
                                     </Label>
                                 </FormGroup>
-
                                 <FormGroup row className="mb-10  m-5">
                                     <Label sm={4} for="planName">
                                         {<IntlMessages id="sidebar.ApiPlan.removeip" />}
@@ -810,19 +742,13 @@ class ViewApiKeyData extends Component {
                                         {this.state.removeData.IPAddress}
                                     </Label>
                                 </FormGroup>
-
-
-
                                 <Row className="mb-10 m-5 text-warning font-weight-bold">
                                     <div>
                                         {<IntlMessages id="sidebar.apikey.note.removeip" />}
                                     </div>
                                 </Row>
-
                             </Form>
-
                             <hr />
-
                             <Row className="m-5">
                                 <Button
                                     variant="raised"
@@ -843,13 +769,18 @@ class ViewApiKeyData extends Component {
                                     </span>
                                 </Button>
                             </Row>
-
                         </Row>
                     </ModalBody>
                 </Modal>
-
             </Fragment>
         )
+    }
+}
+
+//Default props...
+ViewApiKeyData.defaultProps = {
+    selectedData : {
+        KeyId : 0
     }
 }
 

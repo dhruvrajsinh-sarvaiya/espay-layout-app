@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 let authLinks = {};
 
-export default (authLinks = (
+(authLinks = (
   <ul className="navbar-nav ml-auto">
     <li className="nav-item">
       <Link className="nav-link" to="/feed">
@@ -17,3 +17,5 @@ export default (authLinks = (
     </li>
   </ul>
 ));
+
+export default authLinks;

@@ -31,7 +31,7 @@ export default class DeviceManagementWdgt extends Component {
   //On collapse project description
   OnCollapseProject() {
     this.setState({
-      collapse: !this.state.collapse
+      collapse: this.state.collapse ? false : true
     });
   }
 

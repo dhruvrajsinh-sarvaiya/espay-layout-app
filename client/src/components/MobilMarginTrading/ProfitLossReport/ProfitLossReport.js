@@ -120,7 +120,7 @@ handlePageChange = pageNumber => {
   OnCollapseProject(item) {
     this.setState({
       DetailedData: item,
-      collapse: !this.state.collapse
+      collapse: this.state.collapse ? false : true
     });
   }
 
@@ -135,11 +135,7 @@ handlePageChange = pageNumber => {
         })
       })
     }
-    if (profitLossList.length === 0) {
-			this.state.start_row = 0;
-		} else {
-			this.state.start_row = 1;
-		}
+    var start_row = profitLossList.length === 0 ? 0 : 1;
     return (
       <div className={this.props.darkMode ? 'DepositWithdrawHistory-darkmode tbl_overflow_auto' : 'DepositWithdrawHistory tbl_overflow_auto'}>
         {loading && <JbsSectionLoader />}
@@ -255,13 +251,13 @@ handlePageChange = pageNumber => {
 								<Col md={3} className="text-right mt-20">
 									<span>
 										{this.state.PageNo > 1
-											? this.state.start_row +
+											? start_row +
 											  this.state.PageSize * (this.state.PageNo - 1) +
 											  ' - ' +
 											  (this.state.PageSize * this.state.PageNo > this.state.TotalCount
 													? this.state.TotalCount
 													: this.state.PageSize * this.state.PageNo)
-											: this.state.start_row +
+											: start_row +
 											  ' - ' +
 											  (this.state.PageSize * this.state.PageNo > this.state.TotalCount
 													? this.state.TotalCount
@@ -288,7 +284,7 @@ class ProfitLossCollaps extends Component {
   //On collapse project description
   OnCollapseProject() {
     this.setState({
-      collapse: !this.state.collapse
+      collapse: this.state.collapse ? false : true
     });
   }
   

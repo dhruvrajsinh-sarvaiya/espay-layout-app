@@ -17,7 +17,6 @@ import { NotificationManager } from "react-notifications";
 // intl messages
 import IntlMessages from 'Util/IntlMessages';
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
-import $ from "jquery";
 //change date formate from the helper.js
 import {
 	getDeviceInfo,
@@ -206,7 +205,7 @@ class LeaderListDataTbl extends Component {
 		this.handleClose();
 	}
 
-	addNewWatchlist() {
+	addNewWatchlist(event) {
 		event.preventDefault();
 		const { errors, isValid } = validateLeaderProfileConfigForm({ groupName: this.state.groupName });
 		this.setState({ errors: errors });
@@ -259,11 +258,9 @@ class LeaderListDataTbl extends Component {
 
 		if (nextProps.data.ReturnCode === 1) {
 			var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
-			// this.setState({ err_alert: true, err_msg: errMsg });
 			NotificationManager.error(errMsg);
 		} else if (nextProps.data.ReturnCode === 0) {
 			NotificationManager.success(nextProps.data.ReturnMsg);
-			// if(watchGrpFlag)
 			if (this.state.refLdrList) {
 				this.setState({ refLdrList: false });
 				this.getLeaderList();
@@ -352,7 +349,7 @@ class LeaderListDataTbl extends Component {
 								{errors.groupName && (<span className="text-danger text-left"><IntlMessages id={errors.groupName} /></span>)}
 							</div>
 						</div>
-						<Button variant="raised" tabIndex="2" type="submit" size="large" className="perverbtn" onClick={() => this.addNewWatchlist()}><IntlMessages id="sidebar.btnCreateNewList" /></Button>
+						<Button variant="raised" tabIndex="2" type="submit" size="large" className="perverbtn" onClick={(event) => this.addNewWatchlist(event)}><IntlMessages id="sidebar.btnCreateNewList" /></Button>
 					</ModalBody>
 				</Modal>
 			</Fragment>

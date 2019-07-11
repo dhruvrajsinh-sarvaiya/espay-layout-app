@@ -16,12 +16,7 @@ import {
   referralLatestCommissionHistoryFailure
 } from "Actions/MyAccount";
 
-//Function check API call for Referral Latest Commission History..
-const getReferralLatestCommissionHistoryAPIRequest = async request =>
-  await api
-    .get("transHistory.js")
-    .then(response => response)
-    .catch(error => error);
+
 
 const data = [
   ["0.00000010 BTC", "abcdefgh@gmail.com", "2018-06-08"],

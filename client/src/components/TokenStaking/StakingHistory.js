@@ -98,9 +98,7 @@ class StakingHistory extends React.Component {
     getListFromServer = (Page, PageSize) => {
         var newObj = Object.assign({}, this.state);
         newObj['Page'] = Page > 0 ? Page : this.state.Page;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.PageSize;
         this.setState(newObj);
         //For Action API...
         var reqObj = newObj;
@@ -148,11 +146,11 @@ class StakingHistory extends React.Component {
     // get history on filter apply...
     getHistoryData(e) {
         e.preventDefault();
-        this.setState({ showReset: true },this.getListFromServer(1, this.state.PageSize));
+        this.setState({ showReset: true }, () => this.getListFromServer(1, this.state.PageSize));
     }
     //clear filter
     clearFilter = () => {
-        this.setState(initState,() => this.getListFromServer(1, this.state.PageSize));
+        this.setState(initState, () => this.getListFromServer(1, this.state.PageSize));
     }
     // view more
     viewMore(row) {
@@ -373,7 +371,7 @@ class StakingHistory extends React.Component {
                                     id="FromDate"
                                     placeholder="dd/mm/yyyy"
                                     value={this.state.FromDate}
-                                    max = {this.state.Today}
+                                    max={this.state.Today}
                                     onChange={e => this.onChangeDate(e, "FromDate")}
                                 />
                             </FormGroup>
@@ -385,7 +383,7 @@ class StakingHistory extends React.Component {
                                     id="ToDate"
                                     placeholder="dd/mm/yyyy"
                                     value={this.state.ToDate}
-                                    max = {this.state.Today}
+                                    max={this.state.Today}
                                     onChange={e => this.onChangeDate(e, "ToDate")}
                                 />
                             </FormGroup>
@@ -443,7 +441,7 @@ class StakingHistory extends React.Component {
                             </FormGroup>
                             {this.state.showReset && <FormGroup className="mb-15 col-md-1">
                                 <Label className="d-block">&nbsp;</Label>
-                                <Button  className="border-0 btn-danger rounded-0" onClick={(e) => this.clearFilter()}>
+                                <Button className="border-0 btn-danger rounded-0" onClick={(e) => this.clearFilter()}>
                                     <IntlMessages id="button.clear" />
                                 </Button>
                             </FormGroup>}
@@ -455,7 +453,7 @@ class StakingHistory extends React.Component {
                     <MUIDataTable
                         data={this.props.stakHistoryList.map((item, key) => {
                             return [
-                                key + 1+ (this.state.Page * this.state.PageSize),
+                                key + 1 + (this.state.Page * this.state.PageSize),
                                 item.StakingType === 1 ? <IntlMessages id="wallet.FixedDeposit" /> : <IntlMessages id="wallet.Charge" />,
                                 item.SlabType === 1 ? <IntlMessages id="wallet.Fixed" /> : <IntlMessages id="wallet.Range" />,
                                 item.StakingCurrency,
@@ -640,7 +638,7 @@ class StakingHistory extends React.Component {
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => this.unstack(this.state.item)}  className={"mr-10 border-0 rounded-0 perverbtn"} autoFocus>
+                        <Button onClick={() => this.unstack(this.state.item)} className={"mr-10 border-0 rounded-0 perverbtn"} autoFocus>
                             <IntlMessages id="button.yes" />
                         </Button>
                         {this.state.item.StakingType === 2 ?

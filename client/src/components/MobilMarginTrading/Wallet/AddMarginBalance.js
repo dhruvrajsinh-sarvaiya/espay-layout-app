@@ -12,7 +12,6 @@ import JbsSectionLoader from 'Components/JbsSectionLoader/JbsSectionLoader';
 import Tooltip from '@material-ui/core/Tooltip';
 import Select from "react-select";
 import ScrollMenu from 'react-horizontal-scrolling-menu';
-import Slide from '@material-ui/core/Slide';
 import validator from "validator";
 import {
     Modal,
@@ -26,26 +25,16 @@ import {
     Button,
     Table
 } from 'reactstrap';
-import {
-    getCurrency,
-    getWallets
-} from "Actions/Withdraw";
+import { getCurrency, getWallets } from "Actions/Withdraw";
 import {
     addLeverageWithWallet,
     confirmAddLeverage,
     getMaringWalletList,
     getMarginCurrency
 } from "Actions/MarginTrading";
-
 //import action for call or get leverage detail for margin trading dashboard Devang parekh 8-3-2019
-import {
-    getLeverageDetail
-} from "Actions/MarginTrading";
+import { getLeverageDetail } from "Actions/MarginTrading";
 //end code
-
-function Transition(props) {
-    return <Slide direction="up" {...props} />;
-}
 
 const BalanceWidget = ({ coin, balance, selectWallet }) => (
     <div className="social-card mb-10 mt-10 p-15" onClick={selectWallet}>
@@ -111,9 +100,11 @@ class AddMarginBalance extends Component {
         };
         this.selectWallet = this.selectWallet.bind(this);
     }
+
     componentWillMount() {
         this.props.getMarginCurrency({});
     }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.addLeverageResponse.hasOwnProperty('ReturnCode') && this.state.flag) {
             if (nextProps.addLeverageResponse.ReturnCode === 0) {
@@ -182,7 +173,7 @@ class AddMarginBalance extends Component {
             }
         }
         this.setState({
-            showModal: !this.state.showModal,
+            showModal: this.state.showModal ? false : true,
             WalletTypeObj: null,
             WalletTypeId: '',
             AccWalletid: '',
@@ -191,6 +182,7 @@ class AddMarginBalance extends Component {
             LeveragePer: ""
         });
     }
+
     /**
      * Toggle Confirmation Modal
      */
@@ -217,6 +209,7 @@ class AddMarginBalance extends Component {
             this.props.addLeverageWithWallet(this.state);
         }
     }
+
     /**
      * Handle confirm wallet leverage
      */
@@ -226,6 +219,7 @@ class AddMarginBalance extends Component {
             this.props.confirmAddLeverage(this.state);
         }
     }
+
     // numberic value only
     validateOnlyNumeric(value) {
         const regexNumeric = /^[0-9.]+$/;
@@ -238,17 +232,20 @@ class AddMarginBalance extends Component {
         ) ? true : false
 
     }
-        /* on chane handler */
+
+    /* on chane handler */
     onChangeHandler(e) {
         if (this.validateOnlyNumeric(e.target.value) || e.target.value == "") {
             this.setState({ [e.target.name]: e.target.value });
         }
     }
+
     /* on chane handler select search */
     onChangeSelectCurrency(e) {
         this.setState({ WalletTypeId: e.value, WalletTypeObj: { label: e.label }, limit: e.LeveragePer, LeveragePer: "1" });
         this.props.getWallets({ Coin: e.label });
     }
+
     /* select wallet  */
     selectWallet(e, wallet) {
         e.preventDefault();

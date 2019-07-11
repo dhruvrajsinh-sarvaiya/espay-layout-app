@@ -313,9 +313,7 @@ class SellTrade extends Component {
                                 <i className="ti-arrow-down text-danger" />
                             )}{" "}
                         &nbsp;
-                    {this.props.lastPrice !== 0
-                            ? parseFloat(this.props.lastPrice).toFixed(8)
-                            : parseFloat(0).toFixed(8)}
+                    {parseFloat(this.props.lastPrice).toFixed(8)}
                         {this.props.UpDownBit === 1 ? (
                             <i className="material-icons text-success float-right">
                                 network_cell

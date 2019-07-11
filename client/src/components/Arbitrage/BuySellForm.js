@@ -4,7 +4,6 @@
  * Created : 4/06/2019
  *  Arbitrage Buy/Sell Form component..
 */
-
 // import For Component
 import React, { Component } from "react";
 
@@ -248,14 +247,16 @@ class BuySellForm extends Component {
 
 
     if (nextprops.isBothOrder) {
-      this.setState({
-        rate: this.state.currentRate,
-        quantity: "",
-        total: "",
-        formType: this.state.formType,
-        lpType: "",
-        bulkOrderData: [],
-        isBulkOrder: false,
+      this.setState((prevstate)=>{
+        return {
+          rate: prevstate.currentRate,
+          quantity: "",
+          total: "",
+          formType: this.state.formType,
+          lpType: "",
+          bulkOrderData: [],
+          isBulkOrder: false,
+        }
       })
     }
     // set response for buyer data

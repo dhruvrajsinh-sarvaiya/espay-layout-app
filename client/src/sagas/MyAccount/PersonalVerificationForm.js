@@ -24,7 +24,7 @@ function* personalVerificationAPI({ payload }) {
 	var formData = convertObjToFormData(payload);
 	var headers =  { 'Authorization': AppConfig.authorizationToken }
 	const response = yield call(swaggerPostAPI,'api/KYC/PersonalVerification',formData,headers);
-	// console.log('Response :',response);
+	
 	
 	try {
 		if (response.ReturnCode === 0) {
@@ -41,7 +41,7 @@ function* personalVerificationAPI({ payload }) {
 function* getKYCStatusAPI() {
 	var headers =  { 'Authorization': AppConfig.authorizationToken }
 	const response = yield call(swaggerGetAPI,'api/KYC/CheckUserKYCStatus',{},headers);
-	// console.log('Response :',response);
+	
 	
 	try {
 		if (response.ReturnCode === 0) {

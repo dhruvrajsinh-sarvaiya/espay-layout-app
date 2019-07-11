@@ -2,28 +2,21 @@
 
 import React from "react";
 import { Table, Row, Col, Card } from 'reactstrap';
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import Action
 import { getRecentOrderList } from "Actions/Trade";
-
 // import check box and labels
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
-
 //import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 //import section loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // function for connect store
 import { connect } from "react-redux";
-
 import $ from 'jquery';
 
 class MyOrder extends React.Component {
@@ -45,53 +38,34 @@ class MyOrder extends React.Component {
   };
 
   componentWillMount() {
-
     // Invoke When Get Response From Socket/SignalR
     this.props.hubConnection.on('RecieveRecentOrder', (openOrderDetail) => {
       if (this.state.isComponentActive === 1 && openOrderDetail !== null) {
         try {
-
           const openOrderDetailData = JSON.parse(openOrderDetail);
-
           if ((openOrderDetailData.EventTime && this.state.socketData.length === 0) ||
             (this.state.socketData.length !== 0 && openOrderDetailData.EventTime >= this.state.socketData.EventTime)) {
-
             const newData = openOrderDetailData.Data
-
             if (parseFloat(newData.TrnNo) > 0) {
-
               var recentOrders = $.extend(true, [], this.state.activeOpenOrder);
               var findIndexOrderId = recentOrders.findIndex(recentOrdersNo => parseFloat(recentOrdersNo.TrnNo) === parseFloat(newData.TrnNo));
               if (findIndexOrderId === -1) {
-
                 if (parseFloat(newData.Qty) > 0) {
                   recentOrders.unshift(newData)
                 }
-
               } else {
-
                 if (parseFloat(newData.Qty) > 0) {
                   recentOrders[findIndexOrderId] = newData
                 }
-
               }
-
               this.setState({ activeOpenOrder: recentOrders, socketData: openOrderDetailData });
-
             }
-
           }
-
-        } catch (error) {
-
-        }
-
+        } catch (error) {}
       }
-
     });
 
     this.props.getRecentOrderList({});
-
   }
 
   componentWillUnmount() {
@@ -101,24 +75,19 @@ class MyOrder extends React.Component {
   // Used To Set State Data From Props
   componentWillReceiveProps(nextprops) {
     if (nextprops.activeOpenOrder.length !== 0 && this.state.recentOrderBit !== nextprops.recentOrderBit) {
-
       // set Active My Open Order list if gets from API only
       this.setState({
         activeOpenOrder: nextprops.activeOpenOrder,
         showLoader: false,
         recentOrderBit: nextprops.recentOrderBit
       });
-
     } else if (nextprops.activeOpenOrder.length === 0 && this.state.recentOrderBit !== nextprops.recentOrderBit) {
-
       this.setState({
         activeOpenOrder: [],
         showLoader: false,
         recentOrderBit: nextprops.recentOrderBit
       });
-
     }
-
   }
 
   // Render Component for Active Open Order
@@ -149,7 +118,6 @@ class MyOrder extends React.Component {
             show / hide title */}
               <h3>{title}</h3>
             </Col>
-
             <Col md={2} xs={5} className="p-0">
               {/* added by salim dt:07/02/2019
             show / hide order pairs */}
@@ -168,7 +136,6 @@ class MyOrder extends React.Component {
               }
             </Col>
           </Row>}
-
         <div className="table-responsive-design">
           {this.props.loading && <JbsSectionLoader />}
           <Table className="m-0 p-0">
@@ -197,7 +164,6 @@ class MyOrder extends React.Component {
               </tr>
             </thead>
           </Table>
-
           <Scrollbars
             className="jbs-scroll"
             autoHeight
@@ -225,7 +191,6 @@ class MyOrder extends React.Component {
                         {value.OrderType === 'STOP_Limit' ? <IntlMessages id="trading.placeorder.label.stoplimit" /> : ""}
                         {value.OrderType === 'SPOT' ? <IntlMessages id="trading.placeorder.label.spot" /> : ""}
                       </td>
-
                       <td className="text-center">{value.Price === 0 ? <IntlMessages id="trading.placeorder.label.market" /> : parseFloat(value.Price).toFixed(8)}</td>
                       <td className="text-center">{value.Qty}</td>
                       <td className="text-center">{value.SettledQty}</td>
@@ -236,7 +201,6 @@ class MyOrder extends React.Component {
                         {value.StatusCode === 3 && <span className="badge badge-danger w-40" style={{ fontSize: '12px' }}>{<IntlMessages id="myorders.response.status.3" />}</span>}
                         {value.StatusCode === 5 && <span className="badge badge-danger w-40" style={{ fontSize: '12px' }}>{<IntlMessages id="myorders.response.status.5" />}</span>}
                         {value.StatusCode === 6 && <span className="badge badge-danger w-40" style={{ fontSize: '12px' }}>{<IntlMessages id="myorders.response.status.6" />}</span>}
-
                       </td>
                       <td className="text-center">{value.DateTime.replace('T', ' ').split('.')[0]}</td>
                     </tr>
@@ -250,7 +214,6 @@ class MyOrder extends React.Component {
                             <i className="zmdi zmdi-view-list-alt" style={{ fontSize: "80px" }}></i><br />
                           </span>
                         </Col>
-
                         <Col className="text-center text-danger m-0 fs-32" sm={12} style={{ fontSize: "18px" }} >
                           <IntlMessages id="trading.activeorders.label.nodata" />
                         </Col>
@@ -263,7 +226,6 @@ class MyOrder extends React.Component {
           </Scrollbars>
         </div>
       </Card>
-
     );
   }
 }
@@ -284,9 +246,6 @@ const mapStateToProps = state => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    getRecentOrderList
-  }
-)(MyOrder);
+export default connect(mapStateToProps,{
+  getRecentOrderList
+})(MyOrder);

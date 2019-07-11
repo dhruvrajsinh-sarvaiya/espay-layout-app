@@ -10,7 +10,6 @@ import { createProfile } from '../../../actions/profileActions';
 
 class CreateProfile extends Component {
   constructor(props) {
-    console.log('callllll');
     super(props);
     this.state = {
       displaySocialInputs: false,
@@ -242,7 +241,6 @@ class CreateProfile extends Component {
 }
 
 CreateProfile.propTypes = {
-  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 

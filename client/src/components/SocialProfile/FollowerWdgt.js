@@ -18,7 +18,7 @@ class FollowerWdgt extends Component {
         super(props);
         this.state = {
             loading: false,
-            followerSetting : {
+            followerSetting: {
                 ProfileId: '',
                 ProfileType: 'Follower',
                 Price: 0,
@@ -38,8 +38,7 @@ class FollowerWdgt extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('Follower Props:',nextProps);
-        this.setState({ loading : nextProps.loading });
+        this.setState({ loading: nextProps.loading });
     }
 
     onSubscribe(ProfileId) {
@@ -51,8 +50,7 @@ class FollowerWdgt extends Component {
     }
 
     render() {
-        const { ProfileId, Price, Subscribe, Profile_Visiblity, Can_Have_Followers, Can_Follow_Leaders, Can_Copy_Trade, Can_Mirror_Trade, Minimum_Trade_Volume} = this.state.followerSetting;
-        console.log('Subscribe :',Subscribe);
+        const { ProfileId, Price, Subscribe, Profile_Visiblity, Can_Have_Followers, Can_Follow_Leaders, Can_Copy_Trade, Can_Mirror_Trade, Minimum_Trade_Volume } = this.state.followerSetting;
         return (
             <Fragment>
                 <JbsCollapsibleCard customClasses="text-center border border-solid border-dark">

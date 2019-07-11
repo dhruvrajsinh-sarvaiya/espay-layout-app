@@ -20,7 +20,7 @@ const TradeSummaryData = [
 
 function* tradeSummaryMethod() {
   try {
-    if (TradeSummaryData !== "") {
+    if (TradeSummaryData != "") {
       yield put(listTradeSummarySuccess(TradeSummaryData));
     } else {
       yield put(listTradeSummaryFailure(error));

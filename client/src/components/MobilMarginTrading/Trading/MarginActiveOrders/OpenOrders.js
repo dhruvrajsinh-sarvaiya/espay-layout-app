@@ -51,7 +51,6 @@ class OpenOrder extends React.Component {
       cancelOrderBit: ''
     };
     this.openModal = this.openModal.bind(this);
-    this.openCancelAllModal = this.openCancelAllModal.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.cancelOrder = this.cancelOrder.bind(this);
   }
@@ -77,6 +76,7 @@ class OpenOrder extends React.Component {
                   isOrderType = true
                 }
               }
+              return [];
             })
 
           })
@@ -484,9 +484,4 @@ const mapStateToProps = state => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    doCancelOrder
-  }
-)(OpenOrder);
+export default connect(mapStateToProps, { doCancelOrder })(OpenOrder);

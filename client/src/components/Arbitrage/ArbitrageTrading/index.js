@@ -1,25 +1,18 @@
 // component for Arbitrage trading Dashboard  by Tejas 11/6/2019
 
 import React from 'react';
-
 //import comopnent for design
 import { Button, Table } from 'reactstrap';
-
 // used for convert messages in different langauages
 import IntlMessages from "Util/IntlMessages";
-
 // handle Conditional classes (multiple classes)
 import classnames from 'classnames';
-
 // add constant to our file
 import AppConfig from 'Constants/AppConfig';
-
 //used for connect store 
 import { connect } from "react-redux";
-
 // used for select box
 import Select from "react-select";
-
 //actions for fetch data
 import {
     getArbitragePairList,
@@ -27,19 +20,15 @@ import {
     listExchangeSmartArbitrage, //added by salim dt:12/06/2019
     arbitrageTradeOrder
 } from "Actions/Arbitrage";
-
 // used for display notifications
 import { NotificationManager } from "react-notifications";
-
 // import for display Loader
-import JbsLoader from "Components/JbsPageLoader/JbsLoader"
-
+import JbsLoader from "Components/JbsPageLoader/JbsLoader";
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
 import $ from 'jquery';
 
 // class for dashboard
 class ArbitrageTradingDashboard extends React.Component {
-
     constructor(props) {
         super(props)
         this.state = {
@@ -71,28 +60,21 @@ class ArbitrageTradingDashboard extends React.Component {
     componentDidMount() {
         //load Currency List        
         this.props.getArbitrageWalletList({});
-
         this.props.getArbitragePairList({});
         //Added by salim dt:12/06/2019
         this.props.listExchangeSmartArbitrage({ Pair: this.state.currencyPair });
-
         var self = this;
+
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
-
             try {
-
                 walletBalance = JSON.parse(walletBalance);
                 if (self.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
-
                     if ((walletBalance.EventTime && self.state.WalletSignalRData.length === 0) ||
                         (self.state.WalletSignalRData.length !== 0 && walletBalance.EventTime >= self.state.WalletSignalRData.EventTime)) {
-
                         const walletCoinDetail = walletBalance.Data;
                         if (walletCoinDetail.CoinName !== '') {
-
                             var walletList = $.extend(true, [], self.state.Wallet);
                             walletList.map((value, key) => {
-
                                 if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID) {
                                     walletList[key].Balance = walletCoinDetail.Balance
                                 }
@@ -100,67 +82,43 @@ class ArbitrageTradingDashboard extends React.Component {
                                 if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID) {
                                     walletList[key].Balance = walletCoinDetail.Balance
                                 }
-
                             });
-
                             self.setState({ Wallet: walletList, WalletSignalRData: walletBalance })
                         }
-
                     }
-
                 }
-
-            } catch (error) {
-            }
-
+            } catch (error) {}
         });
 
         // code added by devang parekh (18-6-2019) for handle signalr response to handle arbitrage trading detail list with all
         self.state.hubConnection.on('RecieveExchangeListSmartArbitrage', (receivedMessage) => {
-
             if (self.isComponentActive === 1 && receivedMessage !== null) {
-
                 try {
                     const receivedMessageData = JSON.parse(receivedMessage);
-
                     if ((receivedMessageData.EventTime && this.state.listExSmartArbitrageSignalRData.length == 0) ||
                         (this.state.listExSmartArbitrageSignalRData.length !== 0 && receivedMessageData.EventTime >= this.state.listExSmartArbitrageSignalRData.EventTime)) {
-
                         if (this.state.currencyPair === receivedMessageData.Parameter) {
                             this.setState({ listExSmartArbitrage: receivedMessageData.Data, listExSmartArbitrageSignalRData: receivedMessageData });
                         }
-
                     }
-
-                } catch (error) {
-
-                }
-
+                } catch (error) {}
             }
-
         });
         //end
-
     }
 
     componentWillUnmount() {
-
         // on unmount set default pair for arbitrage trading (18-6-2019) devang parekh
         this.state.hubConnection.invoke("AddArbitragePairSubscription", AppConfig.defaultArbitragePair, this.state.currencyPair)
-            .catch((err) => { }
-            );
+            .catch((err) => {});
         // end
         this.isComponentActive = 0;
-
     }
 
     //handle onchange event of select box for set pair
     onChangePair(event) {
-
         var value = event.data;
-
         if (value) {
-
             const oldPair = this.state.currencyPair;
             const pair = value.PairName;
             const pairId = value.PairId;
@@ -175,7 +133,6 @@ class ArbitrageTradingDashboard extends React.Component {
             if (this.state.Wallet.length !== 0) {
                 var secondCurrencyBal = this.state.Wallet.findIndex(wallet => wallet.CoinName === tempSecondCurrency && wallet.IsDefaultWallet == 1);
                 var firstCurrencyBal = this.state.Wallet.findIndex(wallet => wallet.CoinName === firstCurrency && wallet.IsDefaultWallet == 1);
-
                 if (secondCurrencyBal !== -1) {
                     secondCurrencyBalance = this.state.Wallet[secondCurrencyBal].Balance
                     secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID
@@ -188,8 +145,7 @@ class ArbitrageTradingDashboard extends React.Component {
 
             // added byd evnag parekh (18-6-2019) for change pair in signalr for getting real time update based on pair change
             this.state.hubConnection.invoke("AddArbitragePairSubscription", pair, oldPair)
-                .catch((err) => { }
-                );
+                .catch((err) => {});
             // end
 
             //Added by salim dt:12/06/2019
@@ -205,10 +161,7 @@ class ArbitrageTradingDashboard extends React.Component {
                 secondCurrencyBalance: secondCurrencyBalance,
                 firstCurrencyBalance: firstCurrencyBalance
             });
-
-
         }
-
     }
 
     // invoke when component recive props
@@ -221,8 +174,7 @@ class ArbitrageTradingDashboard extends React.Component {
         }
 
 
-        if (nextprops.pairList.length && nextprops.pairList !== null && nextprops.pairList !== this.state.pairList) {
-
+        if (nextprops.pairList !== null && nextprops.pairList.length && nextprops.pairList !== this.state.pairList) {
             // set Currency list if gets from API only          
             nextprops.pairList.map((item) => {
                 item.PairList.map((pairItem) => {
@@ -238,10 +190,9 @@ class ArbitrageTradingDashboard extends React.Component {
                     }
                 })
             });
-
         }
 
-        if (nextprops.wallet && nextprops.wallet !== null) {
+        if (nextprops.wallet !== null) {
             if (nextprops.wallet.length !== 0) {
                 nextprops.wallet.map(value => {
                     if (this.state.secondCurrency === value.CoinName) {
@@ -259,16 +210,13 @@ class ArbitrageTradingDashboard extends React.Component {
                     }
                 });
             }
-
             this.setState({ Wallet: nextprops.wallet });
         }
 
         if (this.state.arbitrageTradeOrderBit !== nextprops.arbitrageTradeOrderBit && nextprops.arbitrageTradeOrder) {
             if (nextprops.arbitrageTradeOrder.statusCode == 200 && nextprops.arbitrageTradeOrder.ErrorCode == 4566) {
                 NotificationManager.success(<IntlMessages id={`trading.orders.orders.trnid`} values={nextprops.arbitrageTradeOrder.response} />);
-
             } else if (nextprops.arbitrageTradeOrder.statusCode == 200 && nextprops.arbitrageTradeOrder.ErrorCode == 4568) {
-
                 NotificationManager.error(<IntlMessages id="error.trading.transaction.4568" />)
             }
 
@@ -282,28 +230,16 @@ class ArbitrageTradingDashboard extends React.Component {
     // used for place order
     TradeOrder = (event, record, firstBal) => {
         event.preventDefault();
-
-        var MultipleOrderList = [], checked = 0;
+        var MultipleOrderList = [];
 
         if (record && record.ProviderBuy) {
-
-            if ((checked == 0) && (this.state.currencyPairID == '' || this.state.currencyPairID == undefined || this.state.currencyPairID == 0)) {
-
-                checked = 1
+            if ((this.state.currencyPairID == '' || this.state.currencyPairID == undefined || this.state.currencyPairID == 0)) {
                 NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
-
-            } else if ((checked == 0) && (this.state.secondCurrencyWalletId == '' || this.state.secondCurrencyWalletId == undefined || this.state.secondCurrencyWalletId == 0)) {
-
-                checked = 1
+            } else if ((this.state.secondCurrencyWalletId == '' || this.state.secondCurrencyWalletId == undefined || this.state.secondCurrencyWalletId == 0)) {
                 NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
-
-            } else if ((checked == 0) && (this.state.firstCurrencyWalletId == '' || this.state.firstCurrencyWalletId == undefined || this.state.firstCurrencyWalletId == 0)) {
-
-                checked = 1
+            } else if ((this.state.firstCurrencyWalletId == '' || this.state.firstCurrencyWalletId == undefined || this.state.firstCurrencyWalletId == 0)) {
                 NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
-
-            } else if (checked == 0) {
-
+            } else {
                 const data = {
                     currencyPairID: this.state.currencyPairID,
                     debitWalletID: this.state.secondCurrencyWalletId,
@@ -323,32 +259,18 @@ class ArbitrageTradingDashboard extends React.Component {
                     RouteID: 1,
                     LPType: record.ProviderBuy.LPType
                 }
-
                 MultipleOrderList.push(data)
-
             }
-
         }
 
         if (record && record.ProviderSELL) {
-
-            if ((checked == 0) && (this.state.currencyPairID == '' || this.state.currencyPairID == undefined || this.state.currencyPairID == 0)) {
-
-                checked = 1
+            if (this.state.currencyPairID == '' || this.state.currencyPairID == undefined || this.state.currencyPairID == 0) {
                 NotificationManager.error(<IntlMessages id="error.trading.transaction.4601" />);
-
-            } else if ((checked == 0) && (this.state.secondCurrencyWalletId == '' || this.state.secondCurrencyWalletId == undefined || this.state.secondCurrencyWalletId == 0)) {
-
-                checked = 1
+            } else if (this.state.secondCurrencyWalletId == '' || this.state.secondCurrencyWalletId == undefined || this.state.secondCurrencyWalletId == 0) {
                 NotificationManager.error(<IntlMessages id="error.trading.creditwallet" />);
-
-            } else if ((checked == 0) && (this.state.firstCurrencyWalletId == '' || this.state.firstCurrencyWalletId == undefined || this.state.firstCurrencyWalletId == 0)) {
-
-                checked = 1
+            } else if (this.state.firstCurrencyWalletId == '' || this.state.firstCurrencyWalletId == undefined || this.state.firstCurrencyWalletId == 0) {
                 NotificationManager.error(<IntlMessages id="error.trading.debitwallet" />);
-
-            } else if (checked == 0) {
-
+            } else {
                 const data = {
                     currencyPairID: this.state.currencyPairID,
                     debitWalletID: this.state.firstCurrencyWalletId,
@@ -368,9 +290,7 @@ class ArbitrageTradingDashboard extends React.Component {
                     RouteID: 1,
                     LPType: record.ProviderSELL.LPType
                 }
-
                 MultipleOrderList.push(data)
-
             }
         }
 
@@ -380,30 +300,21 @@ class ArbitrageTradingDashboard extends React.Component {
                 Pair: this.state.firstCurrency + '_' + this.state.secondCurrency
             }
 
-            this.setState({
-                placeOrderBit: 1,
-            })
-
+            this.setState({ placeOrderBit: 1 });
             this.props.arbitrageTradeOrder(payload);
         }
-
     }
 
     changeProfitPer = (value) => {
-
         if (this.state.selectedPer !== value) {
-            this.setState({
-                selectedPer: value
-            })
+            this.setState({ selectedPer: value });
         }
-
     }
+
     //renders the component
     render() {
-
         const { listExSmartArbitrage } = this.state;
         const pairListData = [];
-
         this.state.pairList && this.state.pairList.map((item, key) => {
             item.PairList && item.PairList.map((pair, index) => {
                 pairListData.push(pair)
@@ -412,11 +323,7 @@ class ArbitrageTradingDashboard extends React.Component {
 
         //returns the compontn
         return (
-            <JbsCollapsibleCard
-                colClasses="todo-wrapper"
-                fullBlock
-                customClasses="overflow-hidden"
-            >
+            <JbsCollapsibleCard colClasses="todo-wrapper" fullBlock customClasses="overflow-hidden">
                 <div className="container arbitrage-trading mt-30 mb-30">
                     {(this.props.pairListDataLoading || this.props.loading || this.props.loader) && <JbsLoader />}
                     <div className="row">
@@ -439,9 +346,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                 maxMenuHeight={200}
                                 placeholder={<IntlMessages id="sidebar.searchdot" />}
                             />
-
                         </div>
-
                         <div className="col-md-5 calulcate-trading mt-5">
                             <IntlMessages id="sidebar.arbitrageTradingBalance" />
                             <span>
@@ -454,10 +359,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                     onClick={event => {
                                         this.changeProfitPer(5);
                                     }}
-                                >
-                                    5%
-                    </Button>
-
+                                >5%</Button>
                                 <Button
                                     value="15"
                                     className={classnames(
@@ -467,10 +369,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                     onClick={event => {
                                         this.changeProfitPer(15);
                                     }}
-                                >
-                                    15%
-                    </Button>
-
+                                >15%</Button>
                                 <Button
                                     value="25"
                                     className={classnames(
@@ -480,11 +379,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                     onClick={event => {
                                         this.changeProfitPer(25);
                                     }}
-                                >
-                                    25%
-                    </Button>
-
-
+                                >25%</Button>
                                 <Button
                                     value="50"
                                     className={classnames(
@@ -494,11 +389,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                     onClick={event => {
                                         this.changeProfitPer(50);
                                     }}
-                                >
-                                    50%
-                    </Button>
-
-
+                                >50%</Button>
                                 <Button
                                     value="70"
                                     className={classnames(
@@ -508,11 +399,7 @@ class ArbitrageTradingDashboard extends React.Component {
                                     onClick={event => {
                                         this.changeProfitPer(70);
                                     }}
-                                >
-                                    70%
-                    </Button>
-
-
+                                >70%</Button>
                                 <Button
                                     value="90"
                                     className={classnames(
@@ -522,13 +409,9 @@ class ArbitrageTradingDashboard extends React.Component {
                                     onClick={event => {
                                         this.changeProfitPer(90);
                                     }}
-                                >
-                                    90%
-                    </Button>
-
+                                >90%</Button>
                             </span>
                         </div>
-
                         <div className="col-md-2 mt-20">
                             <span className="text-right">
                                 {this.state.firstCurrencyBalance.toFixed(8) + " " + this.state.firstCurrency}  <i className="zmdi zmdi-balance-wallet ml-10" /><br />
@@ -536,7 +419,6 @@ class ArbitrageTradingDashboard extends React.Component {
                             </span>
                         </div>
                     </div>
-
                     <div className="row trading-table">
                         <Table className="striped">
                             <thead>
@@ -561,7 +443,6 @@ class ArbitrageTradingDashboard extends React.Component {
                                     </th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 {listExSmartArbitrage && listExSmartArbitrage.length
                                     ?
@@ -572,7 +453,6 @@ class ArbitrageTradingDashboard extends React.Component {
                                             firstBal = this.state.firstCurrencyBalance;
                                             secondBal = 0;
                                         }
-
                                         return <tr key={key}>
                                             <td>{item.ProfitPer && item.ProfitPer.toFixed(2)} % {" "}
                                                 {item.Pair.split("_")[1]}
@@ -582,17 +462,14 @@ class ArbitrageTradingDashboard extends React.Component {
                                                     <span className="text-primary">{item.ProviderBuy && item.ProviderBuy.ProviderName}</span>
                                                     <span>{item.ProviderBuy && item.ProviderBuy.LTP.toFixed(8)}</span>
                                                 </div>
-
                                             </td>
                                             <td>{item.Pair.split("_")[0] + " / " + item.Pair.split("_")[1]}</td>
-
                                             <td>
                                                 <div style={{ display: "grid" }}>
                                                     <span className="text-primary">{item.ProviderSELL && item.ProviderSELL.ProviderName}</span>
                                                     <span>{item.ProviderSELL && item.ProviderSELL.LTP.toFixed(8)}</span>
                                                 </div>
                                             </td>
-
                                             {(firstBal != 0 && secondBal != 0 && firstBal <= this.state.firstCurrencyBalance && secondBal <= this.state.secondCurrencyBalance && this.state.firstCurrencyBalance !== 0 && this.state.secondCurrencyBalance !== 0) &&
                                                 <td>
                                                     <Button
@@ -615,13 +492,10 @@ class ArbitrageTradingDashboard extends React.Component {
                                                             {secondBal && secondBal + ' ' + this.state.secondCurrency}
                                                         </span>
                                                     </div>
-
                                                 </td>
                                             }
-
                                             {(firstBal > this.state.firstCurrencyBalance || secondBal > this.state.secondCurrencyBalance || this.state.firstCurrencyBalance === 0 || this.state.secondCurrencyBalance === 0) &&
                                                 <td colSpan="2">
-
                                                     {
                                                         ((!firstBal || firstBal > this.state.firstCurrencyBalance) &&
                                                             (!secondBal || secondBal > this.state.secondCurrencyBalance)) ?
@@ -638,10 +512,8 @@ class ArbitrageTradingDashboard extends React.Component {
                                                                     <IntlMessages id={`sidebar.arbiTragePleaseAdd`} values={{ Param1: item.Pair.split("_")[1] }} />
                                                                     : ''
                                                     }
-
                                                 </td>
                                             }
-
                                         </tr>
                                     })
                                     :
@@ -655,7 +527,6 @@ class ArbitrageTradingDashboard extends React.Component {
         )
     }
 }
-
 
 const mapStateToProps = state => ({
     wallet: state.ArbitrageWalletReducer.walletList,

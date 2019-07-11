@@ -1,4 +1,4 @@
-/**
+ /**
  *   Developer : Parth Andhariya
  *   Date : 05-03-2019
  *   Component: Leverge Report
@@ -144,7 +144,7 @@ class LeverageReport extends Component {
         this.setState({
             disableConfirm: true,
             LoanId: item.Id,
-            showModal: !this.state.showModal,
+            showModal: this.state.showModal ? false : true,
             LeveragePer: item.LeveragePer,
             editdetail: {
                 LeveragePer: item.LeveragePer
@@ -154,7 +154,7 @@ class LeverageReport extends Component {
     // close model...
     toggleShowConfirmModal = () => {
         this.setState({
-            showModal: !this.state.showModal,
+            showModal: this.state.showModal ? false : true,
         });
     }
     /* on chane handler */

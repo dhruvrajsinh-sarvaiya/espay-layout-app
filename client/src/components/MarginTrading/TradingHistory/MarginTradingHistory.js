@@ -120,7 +120,7 @@ class MarginTradingHistory extends Component {
 				getTransactionHistory: 0,
 				transactionList: [],
 			})
-		} else if (this.state.getTransactionHistory && (nextprops.transactionList !== null || nextprops.transactionList.length > 0)) {
+		} else if (this.state.getTransactionHistory && nextprops.transactionList.length > 0) {
 			this.setState({
 				transactionList: nextprops.transactionList,
 				getTransactionHistory: 0

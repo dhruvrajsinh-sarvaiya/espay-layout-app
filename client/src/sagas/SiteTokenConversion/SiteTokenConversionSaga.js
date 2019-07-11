@@ -49,7 +49,7 @@ function* getSiteTokenDetail({ payload }) {
     const response = yield call(swaggerGetAPI, 'api/Transaction/GetAllSiteToken' + isMargin, payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getSiteTokenSuccess(response));
     } else {
       yield put(getSiteTokenFailure(response));
@@ -75,7 +75,7 @@ function* getSiteTokenCalculationDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/Transaction/SiteTokenCalculation', Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getSiteTokenCalculationSuccess(response));
     } else {
       yield put(getSiteTokenCalculationFailure(response));
@@ -100,7 +100,7 @@ function* doSiteTokenConversionDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/Transaction/SiteTokenConversion', Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(doSiteTokenConversionSuccess(response));
     } else {
       yield put(doSiteTokenConversionFailure(response));
@@ -126,7 +126,7 @@ function* getBaseMarketCurrencyApi({ payload }) {
     const response = yield call(swaggerGetAPI, 'api/TransactionConfiguration/GetBaseMarket' + ActiveOnly + isMargin, Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getBaseMarketCurrencySuccess(response));
     } else {
       yield put(getBaseMarketCurrencyFailure(response));

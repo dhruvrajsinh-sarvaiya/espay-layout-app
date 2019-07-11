@@ -14,11 +14,6 @@ const NewsTicker = Loadable({
 });
 
 
-const BasePairList = Loadable({
-  loader: () => import("./dashboard/BasePairList"),
-  loading: MyLoadingComponent
-});
-
 // Components For Display Market Cap By Tejas Date:12/9/2018
 const CurrentMarket = Loadable({
   loader: () => import("./MarketCap/CurrentMarket"),
@@ -118,7 +113,6 @@ const OpenOrders = Loadable({
 // Export components
 export {
   NewsTicker,
-  BasePairList,
   CurrentMarket,
   Holdings,
   Tickers,

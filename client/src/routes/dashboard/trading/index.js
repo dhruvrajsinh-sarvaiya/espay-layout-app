@@ -8,13 +8,11 @@ import {
     getCurrentPrice,
     getMarketCapList,
     getActiveMyOpenOrderList,
-    getActiveOpenOrderList,
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,
     getHoldingList,
     getMarketTradeHistory,
-
     getTickersList,
     getPairList,
     changeBuyPairSocket,
@@ -22,7 +20,6 @@ import {
     changeMarketTradeSocketConnection,
     getVolumeData
 } from 'Actions/Trade';
-
 import { getWallets } from 'Actions/Withdraw';
 // import connect for redux store
 import { connect } from 'react-redux';
@@ -63,14 +60,12 @@ class tradingDashbaord extends Component {
         }
         this.changeCurrencyPair = this.changeCurrencyPair.bind(this)
         this.changeSecondCurrency = this.changeSecondCurrency.bind(this)
-
     }
 
     // invoke before Compoent render
     componentWillMount() {
         //load Currency List
         this.props.getPairList({});
-
     }
 
     // invoke After Compoent render
@@ -81,7 +76,7 @@ class tradingDashbaord extends Component {
 
     // invoke when component recive props
     componentWillReceiveProps(nextprops) {
-        if (nextprops.pairList.length && nextprops.pairList !== null && nextprops.pairList !== this.state.pairList) {
+        if (nextprops.pairList !== null && nextprops.pairList.length && nextprops.pairList !== this.state.pairList) {
             // set Currency list if gets from API only          
             this.setState({
                 pairList: nextprops.pairList,
@@ -92,21 +87,14 @@ class tradingDashbaord extends Component {
                 currencyPairID: nextprops.pairList[0].PairList[0].PairId,
                 UpDownBit: nextprops.pairList[0].PairList[0].UpDownBit
             });
-
         } else {
-            this.setState({
-                showLoader: false
-            })
+            this.setState({ showLoader: false });
         }
 
-        if (nextprops.wallet && nextprops.wallet !== null) {
-            this.setState({
-                Wallet: nextprops.wallet
-            })
+        if (nextprops.hasOwnProperty('wallet')) {
+            this.setState({ Wallet: nextprops.wallet });
         }
-
     }
-
 
     // function for change second currency 
     changeSecondCurrency(value) {
@@ -114,7 +102,6 @@ class tradingDashbaord extends Component {
         const pairID = value.PairList[0].PairId
         const firstCurrency = value.PairList[0].Abbrevation
         const UpDownBit = value.PairList[0].UpDownBit
-
         this.setState({
             secondCurrency: value.Abbrevation,
             currencyPair: pair,
@@ -126,7 +113,6 @@ class tradingDashbaord extends Component {
         // call All methods that are use in child components
         this.props.getMarketCapList({ Pair: pair })
         this.props.getActiveMyOpenOrderList({ Pair: pair, page: 1 })
-        this.props.getActiveOpenOrderList({ Pair: pair })
         this.props.getBuyerOrderList({ Pair: pair })
         this.props.getSellerOrderList({ Pair: pair })
         this.props.getChartData({ Pair: pair })
@@ -139,17 +125,12 @@ class tradingDashbaord extends Component {
 
     // function for change selected currency pair 
     changeCurrencyPair(value) {
-
         var pairs = '';
         if (value) {
-
             const pair = value.PairName
             const pairId = value.PairId
-
             const firstCurrency = value.Abbrevation
             pairs = value.PairName
-
-
 
             this.setState({
                 firstCurrency: firstCurrency,
@@ -157,14 +138,12 @@ class tradingDashbaord extends Component {
                 currencyPairID: pairId
             })
         } else {
-
-            this.setState({ currencyPair: pair })
+            this.setState({ currencyPair: pairs });
         }
 
         // call All methods that are use in child components
         this.props.getMarketCapList({ Pair: pairs })
         this.props.getActiveMyOpenOrderList({ Pair: pairs, page: 1 })
-        this.props.getActiveOpenOrderList({ Pair: pairs })
         this.props.getBuyerOrderList({ Pair: pairs })
         this.props.getSellerOrderList({ Pair: pairs })
         this.props.getChartData({ Pair: pairs })
@@ -175,7 +154,6 @@ class tradingDashbaord extends Component {
     }
 
     render() {
-
         var secondCurrencyBalance = 0;
         var firstCurrencyBalance = 0;
         if (this.state.Wallet.length !== 0) {
@@ -189,6 +167,7 @@ class tradingDashbaord extends Component {
                 }
             })
         }
+
         if (this.state.currentMarket) {
             this.state.currentMarket.map(value => {
                 if (value.firstCurrency == this.state.firstCurrency) {
@@ -209,10 +188,8 @@ class tradingDashbaord extends Component {
                             />
                         </Col>
                     </Row>}
-
                 {this.state.currencyPair !== '' &&
                     <Row>
-
                         <Col sm={8} md={8} lg={8}>
                             <Row>
                                 <Col sm={12} md={12} lg={12}>
@@ -221,9 +198,7 @@ class tradingDashbaord extends Component {
                                     </div>
                                 </Col>
                                 <Col sm={12} md={12} lg={12}>
-
                                     <div className="d-sm-full p-0 placeordermiddle">
-
                                         <PlaceOrder
                                             firstCurrency={this.state.firstCurrency}
                                             secondCurrency={this.state.secondCurrency}
@@ -235,26 +210,20 @@ class tradingDashbaord extends Component {
                                             firstCurrencyBalance={firstCurrencyBalance}
                                             secondCurrencyBalance={secondCurrencyBalance}
                                         />
-
                                     </div>
                                 </Col>
                             </Row>
                         </Col>
-
                         <Col sm={4} md={4} lg={4}>
                             <div className="d-sm-full">
-
                                 <PairList state={this.state}
                                     pairData={this.state.pairList}
                                     firstCurrency={this.state.firstCurrency}
                                     secondCurrency={this.state.secondCurrency}
                                     currencyPair={this.state.currencyPair}
-
                                     changePairs={this.changeCurrencyPair}
                                     changeSecondCurrency={this.changeSecondCurrency} />
-
                             </div>
-
                             <div className="d-sm-full mt-10">
                                 <BuySellTrade
                                     firstCurrency={this.state.firstCurrency}
@@ -268,7 +237,6 @@ class tradingDashbaord extends Component {
                                 />
                             </div>
                         </Col>
-
                     </Row>
                 }
                 {this.state.currencyPair !== '' &&
@@ -302,17 +270,14 @@ const mapStateToProps = state => ({
     error: state.tradePairList.error
 });
 
-
 export default connect(mapStateToProps, {
     getCurrencyList,
     getMarketCapList,
     getActiveMyOpenOrderList,
-    getActiveOpenOrderList,
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,
     getHoldingList,
-
     getTickersList,
     getMarketTradeHistory,
     getPairList,

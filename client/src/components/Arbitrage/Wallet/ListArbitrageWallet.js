@@ -160,7 +160,7 @@ class ListMarginWallets extends Component {
     /* toggle show model */
     toggleShowModal() {
         this.setState({
-            showModal: !this.state.showModal
+            showModal: this.state.showModal ? false : true
         });
     }
     /* select wallet  */

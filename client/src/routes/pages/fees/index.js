@@ -21,11 +21,8 @@ import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard
 // app config
 import AppConfig from 'Constants/AppConfig';
 
-
 // code added by devang parekh (14-3-2019)
 import { getChargeList } from "Actions/Trade";
-
-
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 
 class Fees extends Component {
@@ -37,7 +34,6 @@ class Fees extends Component {
 		//HAVE TO PASS PROPER PAGE ID TO GET RELAVANT PAGE CONTENT
 		this.props.getChargeList({});
 	}
-
 
 	render() {
 		const { chargesList } = this.props;
@@ -103,9 +99,9 @@ class Fees extends Component {
 											</tr>
 										</thead>
 										<tbody>
-											{chargesDetailList.map((item) => {
+											{chargesDetailList.map((item, index) => {
 
-												return (<tr>
+												return (<tr key={index}>
 													<td>
 														<img src={AppConfig.coinlistImageurl + '/' + item.CoinName + '.png'} height="20" width="20" className="mr-15" />
 														{item.CoinName}
@@ -138,9 +134,9 @@ class Fees extends Component {
 											</tr>
 										</thead>
 										<tbody>
-											{chargesDetailList.map((item) => {
+											{chargesDetailList.map((item, i) => {
 
-												return (<tr>
+												return (<tr key={i}>
 													<td>
 														<img src={AppConfig.coinlistImageurl + '/' + item.CoinName + '.png'} height="20" width="20" className="mr-15" />
 														{item.CoinName}

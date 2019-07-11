@@ -2,12 +2,9 @@
  * Pair Sagas
  */
 import { all, call, fork, put, takeEvery } from "redux-saga/effects";
-
 // api
 import api from "Api";
-
 import { GET_PAIR, UPDATE_PAIR, ADD_TASK, GET_TASK } from "Actions/types";
-
 import {
   getPairListSuccess,
   getPairListFailure,
@@ -17,10 +14,7 @@ import {
   addTaskFailure,
   getTaskSuccess,
   getTaskFailure
-} from "Actions";
-
-//import static data from file
-//import { BasePairData } from 'Api/pairData';
+} from "Actions/Trade";
 
 /**
  * Send Todos Request To Server
@@ -36,9 +30,7 @@ const getPairRequest = async () =>
  */
 function* getPairFromServer() {
   try {
-    // const response = yield call(getTodosRequest);
     const response = yield call(getPairRequest);
-    // const response = BasePairData;
 
     //validate if data found in response
     if (response.data !== undefined) yield put(getPairListSuccess(response));
@@ -52,7 +44,6 @@ function* getPairFromServer() {
  * Ger Emails
  */
 export function* getPairList() {
-  // console.log('SAGA', 'getPairList');
   yield takeEvery(GET_PAIR, getPairFromServer);
 }
 /**
@@ -60,9 +51,7 @@ export function* getPairList() {
  */
 function* getUpdatePairFromServer() {
   try {
-    // const response = yield call(getTodosRequest);
     const response = yield call(getPairRequest);
-    // const response = BasePairData;
 
     //validate if data found in response
     if (response.data !== undefined)
@@ -77,7 +66,6 @@ function* getUpdatePairFromServer() {
  * Ger Emails
  */
 export function* getUpdatedPairList() {
-  // console.log('SAGA', 'getUpdatedPairList');
   yield takeEvery(UPDATE_PAIR, getUpdatePairFromServer);
 }
 
@@ -94,9 +82,7 @@ const addNEWtask = async newTask =>
  */
 function* addTaskServer({ payload }) {
   try {
-    // const response = yield call(getTodosRequest);
     const response = yield call(addNEWtask, payload);
-    // const response = BasePairData;
 
     //validate if data found in response
     if (response.data !== undefined) yield put(addTaskSuccess(response));
@@ -126,9 +112,7 @@ const getTaskList = async () =>
  */
 function* getTaskListServer() {
   try {
-    // const response = yield call(getTodosRequest);
     const response = yield call(getTaskList);
-    // const response = BasePairData;
 
     //validate if data found in response
     if (response.data !== undefined) yield put(getTaskSuccess(response));
@@ -153,6 +137,5 @@ export default function* rootSaga() {
     fork(getPairList),
     fork(getUpdatedPairList),
     fork(getTask)
-    // fork(addTask)
   ]);
 }

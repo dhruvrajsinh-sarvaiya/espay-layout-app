@@ -102,9 +102,7 @@ class StopLimitOrder extends React.Component {
         limitSell: parseFloat(nextprops.currentPrice.LastPrice).toFixed(8),
         lastPriceBit: nextprops.lastPriceBit,
         amountBuy: "",
-        //totalBuy:"",
         amountSell: "",
-        //totalSell:""
       })
 
     }
@@ -115,10 +113,6 @@ class StopLimitOrder extends React.Component {
         amountBuy: parseFloat(nextprops.bulkBuyOrder.Amount).toFixed(8),
         totalBuy: nextprops.bulkBuyOrder.Total
       })
-      // this.state.priceBuy = parseFloat(nextprops.bulkBuyOrder.Price).toFixed(8)
-      // this.state.amountBuy = parseFloat(nextprops.bulkBuyOrder.Amount).toFixed(8)
-      // this.state.totalBuy = nextprops.bulkBuyOrder.Total
-
     }
 
     if (nextprops.bulkSellOrder && nextprops.bulkSellOrder.Price && nextprops.bulkSellOrder.Amount && nextprops.bulkSellOrder.Total) {
@@ -127,10 +121,6 @@ class StopLimitOrder extends React.Component {
         amountSell: parseFloat(nextprops.bulkSellOrder.Amount).toFixed(8),
         totalSell: nextprops.bulkSellOrder.Total
       })
-
-      // this.state.priceSell = parseFloat(nextprops.bulkSellOrder.Price).toFixed(8)
-      // this.state.amountSell = parseFloat(nextprops.bulkSellOrder.Amount).toFixed(8)
-      // this.state.totalSell = nextprops.bulkSellOrder.Total
     }
 
     if (nextprops.buyOrder && nextprops.error.length == 0) {
@@ -233,7 +223,6 @@ class StopLimitOrder extends React.Component {
     }
   }
   validateBuyStop = event => {
-    //    console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ stopBuy: event.target.value });
 
@@ -256,7 +245,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateSellLimit = event => {
-    //  console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ limitSell: event.target.value });
 
@@ -289,7 +277,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateSellStop = event => {
-    //  console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ stopSell: event.target.value });
 
@@ -312,7 +299,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateBuyLimit = event => {
-    //  console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ limitBuy: event.target.value });
 
@@ -345,7 +331,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateBuyAmount = event => {
-    //  console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       const { isValid, errors } = validateBuyAmount(event.target.value);
 
@@ -378,7 +363,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateBuyTotal = event => {
-    //   console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ totalBuy: event.target.value });
 
@@ -418,7 +402,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateSellAmount = event => {
-    // console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       const { isValid, errors } = validateSellAmount(event.target.value);
 
@@ -450,7 +433,6 @@ class StopLimitOrder extends React.Component {
   };
 
   validateSellTotal = event => {
-    // console.log(event.target.value);
     if (validateOnlyNumeric(event.target.value)) {
       this.setState({ totalSell: event.target.value });
 
@@ -490,10 +472,7 @@ class StopLimitOrder extends React.Component {
   };
 
   changeSelectedBuyValue = value => {
-    if (this.state.selectedBuyValue === value) {
-      // this.setState({ selectedBuyValue: 0 })
-    } else {
-      //      this.setState({ selectedBuyValue: value })
+    if (this.state.selectedBuyValue !== value) {
       // calculation process of Amount
       if (
         this.state.limitBuy !== "" &&
@@ -501,7 +480,6 @@ class StopLimitOrder extends React.Component {
         this.state.totalBuy !== 0 &&
         this.state.amountBuy !== 0
       ) {
-        //total = (this.props.info.secondCurrencyBalance*25)/100
         var total = parseFloat(
           parseFloat(
             parseFloat(this.props.secondCurrencyBalance) *
@@ -528,10 +506,7 @@ class StopLimitOrder extends React.Component {
   };
 
   changeSelectedSellValue = value => {
-    if (this.state.selectedSellValue === value) {
-      // this.setState({ selectedSellValue: 0 })
-    } else {
-      // this.setState({ selectedSellValue: value })
+    if (this.state.selectedSellValue !== value) {
       // calculation process of Amount
       if (
         this.state.limitSell !== "" &&
@@ -539,7 +514,6 @@ class StopLimitOrder extends React.Component {
         this.state.totalSell !== 0 &&
         this.state.amountSell !== 0
       ) {
-        //total = (this.props.info.secondCurrencyBalance*25)/100
         var amount = parseFloat(
           parseFloat(
             parseFloat(this.props.firstCurrencyBalance) * parseFloat(value)
@@ -571,7 +545,6 @@ class StopLimitOrder extends React.Component {
     if (this.state.stopSell == '' || typeof this.state.stopSell === 'undefined' || this.state.stopSell == 0) {
 
       this.setState({ showLoader: false, sellStopOrderBit: 0 });
-      // NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
       NotificationManager.error(<IntlMessages id="trading.stoplimit.entersellstop" />);
 
     } else if (this.state.limitSell == '' || typeof this.state.limitSell === 'undefined' || this.state.limitSell == 0) {
@@ -651,7 +624,6 @@ class StopLimitOrder extends React.Component {
             buyStopOrderBit: 0,
             sellStopOrderBit: 1
           });
-          // this.props.doSellOrder(data);
           if (this.state.amountSell <= this.props.firstCurrencyBalance) {
             this.props.doSellOrder(data);
           } else {
@@ -678,7 +650,6 @@ class StopLimitOrder extends React.Component {
     if (this.state.stopBuy == '' || typeof this.state.stopBuy === 'undefined' || this.state.stopBuy == 0) {
 
       this.setState({ showLoader: false, buyStopOrderBit: 0 });
-      // NotificationManager.error(<IntlMessages id="error.trading.transaction.4607" />);
       NotificationManager.error(<IntlMessages id="trading.stoplimit.enterbuystop" />);
 
     } else if (this.state.limitBuy == '' || typeof this.state.limitBuy === 'undefined' || this.state.limitBuy == 0) {
@@ -780,24 +751,9 @@ class StopLimitOrder extends React.Component {
 
   render() {
 
-    // if(this.props.bulkBuyOrder && this.props.bulkBuyOrder.Price && this.props.bulkBuyOrder.Amount && this.props.bulkBuyOrder.Total) {
-
-    //   this.state.priceBuy = parseFloat(this.props.bulkBuyOrder.Price).toFixed(8)
-    //   this.state.amountBuy = parseFloat(this.props.bulkBuyOrder.Amount).toFixed(8)
-    //   this.state.totalBuy = this.props.bulkBuyOrder.Total
-
-    // }
-
-    // if(this.props.bulkSellOrder && this.props.bulkSellOrder.Price && this.props.bulkSellOrder.Amount && this.props.bulkSellOrder.Total) {
-    //   this.state.priceSell = parseFloat(this.props.bulkSellOrder.Price).toFixed(8)
-    //   this.state.amountSell = parseFloat(this.props.bulkSellOrder.Amount).toFixed(8)
-    //   this.state.totalSell = this.props.bulkSellOrder.Total
-    // }
-
     const data = this.props.info;
     return (
       <Row>
-        {/* {this.props.loading && <JbsSectionLoader />} */}
         <Col sm={6} xs={6} className="">
           <div className="p-0 d-flex">
             <h4>
@@ -832,7 +788,6 @@ class StopLimitOrder extends React.Component {
                 <Col sm={8}>
                   <Input
                     type="text"
-                    // onBlur={this.validateBuyStop}
                     name="stop"
                     id="stop"
                     placeholder={data.secondCurrency}
@@ -862,7 +817,6 @@ class StopLimitOrder extends React.Component {
                     name="limit"
                     id="limit"
                     placeholder={data.secondCurrency}
-                    // onBlur={this.validateBuyLimit}
                     value={this.state.limitBuy}
                     onChange={this.validateBuyLimit}
                     className={!this.state.isLimitBuyValid ? "error" : ""}
@@ -884,7 +838,6 @@ class StopLimitOrder extends React.Component {
                 <Col sm={8}>
                   <Input
                     type="text"
-                    //onBlur={this.validateBuyAmount}
                     disabled={
                       this.state.selectedBuyValue !== 0 ? true : false
                     }
@@ -1248,7 +1201,6 @@ const mapStateToProps = state => ({
   buyOrderLoading: state.placeOrder.buyOrderLoading,
   sellOrderLoading: state.placeOrder.sellOrderLoading,
   error: state.placeOrder.error,
-  //currentPrice:state.currency.currentPrice,  
   currentPrice: state.currentMarketCap.currentMarketCap,
   lastPriceBit: state.currentMarketCap.lastPriceBit,
 });

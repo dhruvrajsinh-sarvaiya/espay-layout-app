@@ -47,7 +47,6 @@ export * from './SigninMobileWithOTP';
 export * from './AuthorizationToken';
 export * from './SignupWithBlockchain';
 export * from './EmailConfirmation';
-export * from './UnlockUser';
 export * from './DeviceAuthorize';
 export * from './Affiliate';
 

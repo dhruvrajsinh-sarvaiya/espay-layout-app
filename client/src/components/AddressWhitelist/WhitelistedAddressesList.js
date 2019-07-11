@@ -100,7 +100,6 @@ class WhitelistedAddressesList extends Component {
             updatedList = updatedList.filter(function (address) {
                 return address.IsWhiteListed === 1;
             });
-        else updatedList = this.state.addressList;
         this.setState({
             filterList: updatedList,
             showWhitelistedOnly: !this.state.showWhitelistedOnly

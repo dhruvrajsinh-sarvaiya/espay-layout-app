@@ -94,7 +94,6 @@ class ApiPlanComponent extends Component {
         // set plan list in state or display error if data not found
         if (this.state.getApiPlanList && nextprops.apiPlanList && nextprops.apiPlanList.length !== 0) {
             nextprops.apiPlanList.map((value, key) => {
-
                 if (value.IsSubscribePlan == 1) {
                     this.setState({
                         SubscribeID: value.ID,
@@ -120,8 +119,7 @@ class ApiPlanComponent extends Component {
             })
         }
 
-        if (nextprops.wallets && nextprops.wallets !== null) {
-
+        if (nextprops.wallets !== null) {
             this.setState({
                 wallets: nextprops.wallets
             })
@@ -136,17 +134,13 @@ class ApiPlanComponent extends Component {
         return (
             <Fragment>
 
-                {this.props.loading &&
-                    this.props.userPlanLoading &&
-                    <JbsSectionLoader />
-                }
+                {this.props.loading && this.props.userPlanLoading && <JbsSectionLoader />}
 
                 <div className="charts-widgets-wrapper">
                     <PageTitleBar title={<IntlMessages id="sidebar.ApiPlan" />} match={this.props.match} />
 
                     {(this.state.apiPlanList.length > 0 && this.state.UserActivePlanList == 0 && this.state.getApiPlanList == 0
-                        && this.state.SubscribeData !== {}
-                    ) &&
+                        && Object.keys(this.state.SubscribeData).length > 0) &&
                         <ViewApiPlan
                             data={this.state.apiPlanList}
                             history={this.props.history}
@@ -159,12 +153,9 @@ class ApiPlanComponent extends Component {
 
                     }
 
-                    {
-                        (this.state.apiPlanList.length == 0 && this.state.UserActivePlanList == 0 && this.state.getApiPlanList == 0
-                            && this.state.SubscribeData !== {}
-                        ) &&
-                        <NotAvailable />
-                    }
+                    {(this.state.apiPlanList.length == 0 && this.state.UserActivePlanList == 0 && this.state.getApiPlanList == 0
+                        && Object.keys(this.state.SubscribeData).length > 0) &&
+                        <NotAvailable />}
 
                 </div>
             </Fragment>
@@ -199,5 +190,4 @@ const mapStateToProps = ({ apiPlan, currency }) => {
 }
 
 // export this component with action methods and props
-export default connect(mapStateToProps, { getApiPlanList, getUserActivePlan, getCurrencyList })
-    (injectIntl(ApiPlanComponent));
+export default connect(mapStateToProps, { getApiPlanList, getUserActivePlan, getCurrencyList })(injectIntl(ApiPlanComponent));

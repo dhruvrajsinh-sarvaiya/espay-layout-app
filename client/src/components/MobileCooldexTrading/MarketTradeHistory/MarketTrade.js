@@ -85,7 +85,7 @@ class MarketTradeHistory extends React.Component {
   }
 
   componentWillReceiveProps(nextprops) {
-    if (nextprops.marketTradeHistory && nextprops.marketTradeHistory !== null) {
+    if (nextprops.marketTradeHistory !== null) {
       // set Market Trade History list if gets from API only
       this.setState({
         marketTradeHistory: nextprops.marketTradeHistory,

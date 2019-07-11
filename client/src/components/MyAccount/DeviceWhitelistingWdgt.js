@@ -152,7 +152,7 @@ class DeviceWhitelistingWdgt extends Component {
 		var newObj = Object.assign({}, this.state.datalist);
 		newObj['PageIndex'] = PageIndex > 0 ? PageIndex : this.state.datalist.PageIndex;
 		if (Page_Size > 0) {
-			newObj['Page_Size'] = Page_Size > 0 ? Page_Size : this.state.datalist.Page_Size;
+			newObj['Page_Size'] = Page_Size;
 		}
 		this.setState({ datalist: newObj });
 
@@ -173,7 +173,7 @@ class DeviceWhitelistingWdgt extends Component {
 				this.setState({ loading: true });
 				setTimeout(() => this.props.deviceWhiteList(this.state.datalist), 2000);
 			}
-		} else if (Object.keys(nextProps.data).length > 0 && (typeof (nextProps.data.DeviceList) !== 'undefined' || nextProps.data.DeviceList.length > 0)) {
+		} else if (Object.keys(nextProps.data).length > 0 && (nextProps.data.DeviceList) !== undefined && nextProps.data.DeviceList.length > 0) {
 			this.setState({ list: nextProps.data.DeviceList, totalCount: nextProps.data.TotalCount });
 		}
 	}

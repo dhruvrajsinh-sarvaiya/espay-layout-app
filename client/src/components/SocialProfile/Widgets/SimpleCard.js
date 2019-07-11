@@ -19,7 +19,7 @@ const SimpleCard = ({ title, icon, data }) => (
                     {data.length > 0 &&
                         <Fragment>
                             {data.map((list, index) => (
-                                <div className="row">
+                                <div key={index} className="row">
                                     <div className="col-md-4"><IntlMessages id={list.key} /></div>
                                     <div className="col-md-4">{list.value}</div>
                                 </div>

@@ -7,36 +7,34 @@ import {
     REFERRAL_FRIENDS_LIST,
     REFERRAL_FRIENDS_SUCCESS,
     REFERRAL_FRIENDS_FAILURE
- } from 'Actions/types';
- 
- 
- /*
- * Initial State
- */
+} from 'Actions/types';
+
+
+/*
+* Initial State
+*/
 const INIT_STATE = {
-    loading : true,
-    list : []
+    loading: true,
+    list: []
 }
 
 //Check Action for Referral Friends...
-export default (state,action) => {
-	if (typeof state === 'undefined') {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
         return INIT_STATE
     }
-    //console.log('Reducers:',action.type);
 
-    switch(action.type) 
-    {
+    switch (action.type) {
         case REFERRAL_FRIENDS_LIST:
-            return { ...state, loading : true };
+            return { ...state, loading: true };
 
         case REFERRAL_FRIENDS_SUCCESS:
-            return { ...state, loading : false, list : action.payload };
+            return { ...state, loading: false, list: action.payload };
 
         case REFERRAL_FRIENDS_FAILURE:
-            return { ...state, loading : false, error : action.payload };
+            return { ...state, loading: false, error: action.payload };
 
-        default : 
+        default:
             return { ...state };
     }
 }

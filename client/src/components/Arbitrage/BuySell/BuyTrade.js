@@ -29,7 +29,6 @@ const buySellRecordCount = 13//AppConfig.buySellRecordCount;
 
 // class fro set row
 class BuyOrderRow extends Component {
-
 	//set record for place order
 	SetPlaceOrder = (key, isMultiple) => {
 		if (key < 999) {
@@ -39,9 +38,7 @@ class BuyOrderRow extends Component {
 
 	//renders the component
 	render() {
-
 		var lastClass = "text-success price-data";
-
 		return (
 			<tr
 				key={(this.props.indexValue * Math.random()).toString()}
@@ -50,8 +47,6 @@ class BuyOrderRow extends Component {
 				}}
 				className={(this.props.OldLTP !== undefined && this.props.Price !== this.props.OldLTP) ? "blink_me buyOrderClass" : 'buyOrderClass'}
 			>
-
-
 				<td className="askBidbtn">
 					{this.props.Price !== '-' ?
 						<a href="javascript:void(0)" onClick={() => this.SetPlaceOrder(this.props.indexValue, undefined)}>
@@ -129,7 +124,6 @@ class BuyOrderRow extends Component {
 						"-"
 					}
 				</td>
-
 				<td className="exchange-name">{this.props.exchangeName ? this.props.exchangeName : "-"}</td>
 				{<td className="lbl-data askBidbtn" style={{ width: "10% !important" }}>
 					{this.props.Price !== '-' ?
@@ -149,7 +143,6 @@ class BuyOrderRow extends Component {
 						"-"
 					}
 				</td>}
-
 			</tr>
 		);
 	}
@@ -168,13 +161,11 @@ class BuyTrade extends Component {
 
 	//set selected buy Value
 	changeSelectedBuyValue = (value, data, isMultiSelect) => {
-
 		var total = "", amount = "";
 		var LpType = data.LPType;
 		if ((this.state.selectedBuyValue !== value)) {
 			// calculation process of Amount
 			if (data.LTP !== "") {
-
 				amount = parseFloat(
 					parseFloat(
 						parseFloat(this.props.firstCurrencyBalance) * parseFloat(value)
@@ -185,32 +176,24 @@ class BuyTrade extends Component {
 						parseFloat(data.LTP) * parseFloat(amount)
 					) / 100
 				).toFixed(8);
-
 				this.props.setSellOrders(data.LTP, amount, isMultiSelect, LpType, total, value, data)
 			}
 		}
-
-
 	};
 
 	//Open Modal add new Schedule dailog
 	setOrders = (index, isMultiple) => {
-
 		var amount = 0;
 		var price = 0;
 		var LpType = "";
-
 		if (this.props.buyerOrderList.length !== 0) {
 			this.props.buyerOrderList.map((value, key) => {
-
 				if (index === key) {
 					price = value.LTP;
 					LpType = value.LPType;
 				}
-
 			});
 		}
-
 		this.props.setSellOrders(price, amount, isMultiple, LpType)
 	}
 
@@ -220,38 +203,30 @@ class BuyTrade extends Component {
 
 	// change background color of row as per records
 	LightenDarkenColor = (col, amt) => {
-
 		var usePound = false;
-
 		if (col[0] === "#") {
 			col = col.slice(1);
 			usePound = true;
 		}
 
 		var num = parseInt(col, 16);
-
 		var r = (num >> 16) + amt;
-
 		if (r > 255) r = 255;
 		else if (r < 0) r = 0;
 
 		var b = ((num >> 8) & 0x00FF) + amt;
-
 		if (b > 255) b = 255;
 		else if (b < 0) b = 0;
 
 		var g = (num & 0x0000FF) + amt;
-
 		if (g > 255) g = 255;
 		else if (g < 0) g = 0;
 
 		return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
-
 	}
 
 	// Render Component for Buyer Order
 	render() {
-
 		this.props.buyerOrderList.sort(function (a, b) {
 			return parseFloat(b.LTP) - parseFloat(a.LTP)
 		})
@@ -261,9 +236,7 @@ class BuyTrade extends Component {
 		const diffLimit = buySellRecordCount - this.props.buyerOrderList.length;
 		var buyOrderList = [];
 		var keyIndex = 0;
-
 		this.props.buyerOrderList.map((newBuyOrder, indexValue) => {
-
 			buyOrderList.push(
 				keyIndex <= 8 ?
 					<BuyOrderRow
@@ -308,7 +281,6 @@ class BuyTrade extends Component {
 		if (diffLimit <= buySellRecordCount) {
 			for (var lastIndex = this.props.buyerOrderList.length; lastIndex < buySellRecordCount; lastIndex++) {
 				keyIndex <= 8 ?
-
 					buyOrderList.push(<BuyOrderRow
 						exchangeName=""
 						key={lastIndex}
@@ -320,7 +292,6 @@ class BuyTrade extends Component {
 						bgColorData={colData !== "" ? colData = this.LightenDarkenColor(colData, 20)
 							: colData = this.LightenDarkenColor("#FF0000", 20)
 						}
-
 					/>)
 					:
 					buyOrderList.push(<BuyOrderRow
@@ -334,20 +305,16 @@ class BuyTrade extends Component {
 						bgColorData={colData !== "" ? colData = this.LightenDarkenColor(colData, -20)
 							: colData = this.LightenDarkenColor("#FF0000", -20)
 						}
-
 					/>)
 				keyIndex = keyIndex + 1;
 			}
 		}
 
 		return (
-			<Fragment >
-
+			<Fragment>
 				<Table className="table m-0 p-0 buy-table">
-
 					<thead>
 						<tr className="text-light">
-
 							<th className="numeric askBidbtn">
 								<IntlMessages id="sidebar.arbitrageBid" />
 							</th>
@@ -367,8 +334,6 @@ class BuyTrade extends Component {
 						</tr>
 					</thead>
 				</Table>
-
-
 				<Scrollbars
 					className="jbs-scroll"
 					autoHeight
@@ -378,11 +343,9 @@ class BuyTrade extends Component {
 				>
 					{this.props.buyerOrderLoading && <JbsLoader />}
 					<Table className="table m-0 p-0 buy-table">
-						{buyOrderList && buyOrderList.length ?
+						{buyOrderList.length ?
 							<tbody>
-
 								{buyOrderList}
-
 							</tbody>
 							:
 							<tbody>
@@ -395,18 +358,13 @@ class BuyTrade extends Component {
 						}
 					</Table>
 				</Scrollbars>
-
 			</Fragment>
 		);
 	}
 }
 
 const mapStateToProps = ({ arbitrageOrderBook }) => {
-
-	return {
-		buyerOrderLoading: arbitrageOrderBook.buyerOrderLoading,
-	};
-
+	return { buyerOrderLoading: arbitrageOrderBook.buyerOrderLoading };
 }
 
 // connect action with store for dispatch

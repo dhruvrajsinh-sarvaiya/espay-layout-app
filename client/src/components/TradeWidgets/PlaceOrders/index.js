@@ -8,27 +8,18 @@ import classnames from "classnames";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
 // function for connect store
 import { connect } from "react-redux";
-
-
-
 //import  Limit Order type Component
 import LimitOrder from "./LimitOrders";
-
 //import Market Order type Component
 import MarketOrder from "./MarketOrder";
-
 //import Stop Limit Order type Component
 import StopLimitOrder from "./StopLimitOrder";
-
 // import spot Limit Order
 import SpotOrder from "./SpotOrder";
-
 // import for internationalization
 import IntlMessages from "Util/IntlMessages";
-
 import { findDOMNode } from 'react-dom';
 import { Link } from 'react-router-dom';
 
@@ -53,13 +44,7 @@ class PlaceOrder extends Component {
     };
   }
 
- // invoke before Compoent render
- componentDidMount() {
-  
-}
-
-  componentWillMount() {    
-
+  componentWillMount() {
     this.setState({
       firstCurrencyBalance: this.props.firstCurrencyBalance,
       secondCurrencyBalance: this.props.secondCurrencyBalance
@@ -67,15 +52,12 @@ class PlaceOrder extends Component {
   }
 
   handleChange = (event, value) => {
-    this.setState({
-      value: value
-    });
+    this.setState({ value: value });
   };
+
   componentWillReceiveProps(nextprops) {
     if(nextprops.currencyPair !== this.props.currencyPair){
-      this.setState({
-        value:0
-      })
+      this.setState({ value:0 });
     }    
   }
 
@@ -86,9 +68,7 @@ class PlaceOrder extends Component {
   };
   
   handleClose = () => {
-    this.setState({
-      open: false,
-    });
+    this.setState({ open: false });
   };
   
   handleClickButton = () => {
@@ -99,19 +79,12 @@ class PlaceOrder extends Component {
   };
 
   render() {
-    const darkMode = this.props.darkMode;
-    if (this.state.firstCurrencyBalance === 0 && this.state.secondCurrencyBalance === 0 ) {
-      this.state.firstCurrencyBalance = this.props.firstCurrencyBalance;
-      this.state.secondCurrencyBalance = this.props.secondCurrencyBalance;
-    }
-    
+    const darkMode = this.props.darkMode;    
     return (
-      <Fragment>
-       
+      <Fragment>       
         <div className="commnplaceorder">
           <Row className="pl-0 pr-15">
-            <Col md={9} className="placeorderheader pr-0">
-             
+            <Col md={9} className="placeorderheader pr-0">             
               <AppBar
                 position="static"
                 className={classnames(
@@ -121,11 +94,9 @@ class PlaceOrder extends Component {
               >
                 <Tabs
                   value={this.state.value}
-                  onChange={this.handleChange}
-                  
+                  onChange={this.handleChange}                  
                   textColor="primary"
-                  fullWidth
-                                  >
+                  fullWidth>
                   {<Tab
                     label={<IntlMessages id="trading.placeorder.label.limit" />}
                     className={classnames(
@@ -133,7 +104,6 @@ class PlaceOrder extends Component {
                       ""
                     )}
                   />}
-
                   { <Tab
                     label={
                       <IntlMessages id="trading.placeorder.label.market" />
@@ -143,7 +113,6 @@ class PlaceOrder extends Component {
                       ""
                     )}
                   />}
-
                   { <Tab
                     label={
                       <IntlMessages id="trading.placeorder.label.spot" />
@@ -153,7 +122,6 @@ class PlaceOrder extends Component {
                       ""
                     )}
                   />}
-
               {<Tab
                     label={
                       <IntlMessages id="trading.placeorder.label.stoplimit" />
@@ -163,20 +131,17 @@ class PlaceOrder extends Component {
                       ""
                     )}
                   />}
-
                 </Tabs>
               </AppBar>
             </Col>
             <Col md={3} className="text-right p-0 Freelink">
               {" "}
               <div  className="mt-10 mr-10 freelinktitle">
-              <Link to="/app/pages/fees" className="float-right"><IntlMessages id="sidebar.fees" /></Link>
-              
+              <Link to="/app/pages/fees" className="float-right"><IntlMessages id="sidebar.fees" /></Link>              
               </div>              
             </Col>
           </Row>
         </div>
-
         {this.state.value === 0 && (
           <TabPane tabId={this.state.value}>
             <LimitOrder
@@ -229,7 +194,6 @@ class PlaceOrder extends Component {
             />
           </TabPane>
         )}
-
       {this.state.value === 3 && (
           <TabPane tabId={this.state.value}>
             <StopLimitOrder
@@ -246,27 +210,20 @@ class PlaceOrder extends Component {
               makers={this.props.makersValue}
             />
           </TabPane>
-         )}
-        
+         )}        
       </Fragment>
     );
   }
 }
 
-const mapStateToProps = ({ settings, currency, currentMarketCap/* ,chargeList */ }) => {
-
+const mapStateToProps = ({ settings, currency, currentMarketCap }) => {
   const { darkMode } = settings;
   const { loading, buyOrderLoading, sellOrderLoading } = currency;
   const currentPrice = currentMarketCap.currentMarketCap;
-  const lastPriceBit = currentMarketCap.lastPriceBit;
+  const lastPriceBit = currentMarketCap.lastPriceBit;  
   
-  
-  return { darkMode, currentPrice, loading, buyOrderLoading, sellOrderLoading,lastPriceBit /* ,chargesList */ };
+  return { darkMode, currentPrice, loading, buyOrderLoading, sellOrderLoading,lastPriceBit };
 };
+
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    
-  }
-)(PlaceOrder);
+export default connect(mapStateToProps,{})(PlaceOrder);

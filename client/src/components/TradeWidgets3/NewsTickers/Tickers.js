@@ -27,7 +27,7 @@ class Tickers extends React.Component {
 
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
-        if (nextprops.tickers && nextprops.tickers !== null) {
+        if (nextprops.tickers.length > 0) {
             // set pair list if gets from API only
             this.setState({ tickers: nextprops.tickers });
         }
@@ -36,7 +36,6 @@ class Tickers extends React.Component {
     // Render Component for Ticker
     render() {
         const data = this.state.tickers;
-
         return (
             <div>
                 {data.length
@@ -118,4 +117,6 @@ const mapStateToProps = (state) => ({
 });
 
 // connect action with store for dispatch
-export default connect(mapStateToProps, { getTickersList, })(Tickers);
+export default connect(mapStateToProps, {
+    getTickersList
+})(Tickers);

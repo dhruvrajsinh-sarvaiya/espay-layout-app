@@ -7,13 +7,12 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import JbsCollapsibleCard from 'Components/JbsCollapsibleCard/JbsCollapsibleCard';
-// import  CustomFooter  from 'Components/MyAccount/Widgets';
 import { CustomFooter } from './../Widgets';
 import { FormGroup, Label, Input, Button, Badge } from 'reactstrap';
 import MUIDataTable from "mui-datatables";
 import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";
-import { affiliateCommissionReport, getAffiliateSchemeTypeMappingList, affiliateAllUser, getUserDataList, } from "Actions/MyAccount";
+import { affiliateCommissionReport, getAffiliateSchemeTypeMappingList, affiliateAllUser } from "Actions/MyAccount";
 import { changeDateFormat } from "Helpers/helpers";
 import AppConfig from 'Constants/AppConfig';
 import validateAffiliateReport from '../../../validation/MyAccount/affiliate_report';
@@ -202,9 +201,7 @@ class CommissionReport extends Component {
     getCommissionList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState({ data: newObj });
 
         //For Action API...
@@ -302,7 +299,6 @@ class CommissionReport extends Component {
                 </JbsCollapsibleCard>
                 <div className="StackingHistory">
                     <MUIDataTable
-                        // title={<IntlMessages id="sidebar.commissionReport" />}
                         columns={columns}
                         options={options}
                         data={list.map((item, key) => {
@@ -346,5 +342,4 @@ export default connect(mapStateToProps, {
     affiliateCommissionReport,
     getAffiliateSchemeTypeMappingList,
     affiliateAllUser,
-    getUserDataList,
 })(CommissionReport);

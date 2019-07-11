@@ -36,20 +36,10 @@ class ViewCustomLimitList extends Component {
     constructor(props) {
         super(props)
 
-        var readOnly = [], fullAccess = [];
-
-        if (props.customLimits.ReadOnlyAPI) {
-            readOnly = Object.entries(props.customLimits.ReadOnlyAPI).map(([key, value]) => ({ key, value }));
-        }
-
-        if (props.customLimits.FullAccessAPI) {
-            fullAccess = Object.entries(props.customLimits.FullAccessAPI).map(([key, value]) => ({ key, value }));
-        }
-
         this.state = {
-            customLimitsData: props.customLimits ? props.customLimits : {},
-            ReadOnlyAPI: readOnly,
-            fullAccessApi: fullAccess,
+            customLimitsData: props.customLimits,
+            ReadOnlyAPI: props.customLimits.ReadOnlyAPI ? Object.entries(props.customLimits.ReadOnlyAPI).map(([key, value]) => ({ key, value })) : [],
+            fullAccessApi: props.customLimits.FullAccessAPI ? Object.entries(props.customLimits.FullAccessAPI).map(([key, value]) => ({ key, value })) : [],
             limitID: props.customLimits.LimitID ? props.customLimits.LimitID : 0,
             isSetDefault: 0
         }

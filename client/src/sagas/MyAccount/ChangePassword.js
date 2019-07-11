@@ -22,7 +22,7 @@ import AppConfig from 'Constants/AppConfig';
 import { swaggerPostAPI, redirectToLogin, loginErrCode, staticResponse, statusErrCodeList } from 'Helpers/helpers';
 const lgnErrCode = loginErrCode();
 const statusErrCode = statusErrCodeList();
-const socketApiUrl = AppConfig.socketAPIUrl;
+
 
 //Function for Change Password
 function* changePasswordAPI({ payload }) {

@@ -50,7 +50,6 @@ class MyOrder extends React.Component {
 
     // Render Component for Active Open Order
     render() {
-        //console.log("recent orders ",this.state.activeOpenOrder)
         const activeOpenOrder = [];
         if (this.state.activeOpenOrder) {
             this.state.activeOpenOrder.map((value) => {
@@ -71,44 +70,28 @@ class MyOrder extends React.Component {
                         <thead>
                             <tr className="bg-light">
                                 <th>
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.pair" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.pair" />}
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.type" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.type" />}
                                 </th>
                                 <th>
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.orderType" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.orderType" />}
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.price" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.price" />}
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.quantity" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.quantity" />}
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.settleqty" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.settleqty" />}
                                 </th>
                                 <th className="numeric">
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.status" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.status" />}
                                 </th>
                                 <th>
-                                    {
-                                        <IntlMessages id="trading.activeorders.label.date" />
-                                    }
+                                    {<IntlMessages id="trading.activeorders.label.date" />}
                                 </th>
                             </tr>
                         </thead>
@@ -131,9 +114,9 @@ class MyOrder extends React.Component {
                                                 <td className="text-center">
                                                     {value.PairName !== null
                                                         ? value.PairName.replace(
-                                                              "_",
-                                                              "/"
-                                                          )
+                                                            "_",
+                                                            "/"
+                                                        )
                                                         : ""}
                                                 </td>
                                                 <td
@@ -146,44 +129,44 @@ class MyOrder extends React.Component {
                                                     {value.Type === "BUY" ? (
                                                         <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" />
                                                     ) : (
-                                                        <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
-                                                    )}
+                                                            <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />
+                                                        )}
                                                 </td>
                                                 <td className="text-center">
                                                     {value.OrderType ===
-                                                    "LIMIT" ? (
-                                                        <IntlMessages id="trading.placeorder.label.limit" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "LIMIT" ? (
+                                                            <IntlMessages id="trading.placeorder.label.limit" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     {value.OrderType ===
-                                                    "MARKET" ? (
-                                                        <IntlMessages id="trading.placeorder.label.market" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "MARKET" ? (
+                                                            <IntlMessages id="trading.placeorder.label.market" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     {value.OrderType ===
-                                                    "STOP_Limit" ? (
-                                                        <IntlMessages id="trading.placeorder.label.stoplimit" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "STOP_Limit" ? (
+                                                            <IntlMessages id="trading.placeorder.label.stoplimit" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                     {value.OrderType ===
-                                                    "SPOT" ? (
-                                                        <IntlMessages id="trading.placeorder.label.spot" />
-                                                    ) : (
-                                                        ""
-                                                    )}
+                                                        "SPOT" ? (
+                                                            <IntlMessages id="trading.placeorder.label.spot" />
+                                                        ) : (
+                                                            ""
+                                                        )}
                                                 </td>
 
                                                 <td className="text-center">
                                                     {value.Price === 0 ? (
                                                         <IntlMessages id="trading.placeorder.label.market" />
                                                     ) : (
-                                                        parseFloat(
-                                                            value.Price
-                                                        ).toFixed(8)
-                                                    )}
+                                                            parseFloat(
+                                                                value.Price
+                                                            ).toFixed(8)
+                                                        )}
                                                 </td>
                                                 <td className="text-center">
                                                     {value.Qty}
@@ -191,7 +174,7 @@ class MyOrder extends React.Component {
                                                 <td className="text-center">
                                                     {value.SettledQty}
                                                 </td>
-                                                
+
                                                 <td className="text-center">
                                                     {value.StatusCode === 1 && (
                                                         <span
@@ -201,9 +184,7 @@ class MyOrder extends React.Component {
                                                                     "12px",
                                                             }}
                                                         >
-                                                            {
-                                                                <IntlMessages id="myorders.response.status.1" />
-                                                            }
+                                                            {<IntlMessages id="myorders.response.status.1" />}
                                                         </span>
                                                     )}
                                                     {value.StatusCode === 4 && (
@@ -214,9 +195,7 @@ class MyOrder extends React.Component {
                                                                     "12px",
                                                             }}
                                                         >
-                                                            {
-                                                                <IntlMessages id="myorders.response.status.4" />
-                                                            }
+                                                            {<IntlMessages id="myorders.response.status.4" />}
                                                         </span>
                                                     )}
                                                     {value.StatusCode === 2 && (
@@ -227,9 +206,7 @@ class MyOrder extends React.Component {
                                                                     "12px",
                                                             }}
                                                         >
-                                                            {
-                                                                <IntlMessages id="myorders.response.status.2" />
-                                                            }
+                                                            {<IntlMessages id="myorders.response.status.2" />}
                                                         </span>
                                                     )}
                                                     {value.StatusCode === 3 && (
@@ -240,9 +217,7 @@ class MyOrder extends React.Component {
                                                                     "12px",
                                                             }}
                                                         >
-                                                            {
-                                                                <IntlMessages id="myorders.response.status.3" />
-                                                            }
+                                                            {<IntlMessages id="myorders.response.status.3" />}
                                                         </span>
                                                     )}
                                                     {value.StatusCode === 5 && (
@@ -253,9 +228,7 @@ class MyOrder extends React.Component {
                                                                     "12px",
                                                             }}
                                                         >
-                                                            {
-                                                                <IntlMessages id="myorders.response.status.5" />
-                                                            }
+                                                            {<IntlMessages id="myorders.response.status.5" />}
                                                         </span>
                                                     )}
                                                     {value.StatusCode === 6 && (
@@ -266,9 +239,7 @@ class MyOrder extends React.Component {
                                                                     "12px",
                                                             }}
                                                         >
-                                                            {
-                                                                <IntlMessages id="myorders.response.status.6" />
-                                                            }
+                                                            {<IntlMessages id="myorders.response.status.6" />}
                                                         </span>
                                                     )}
                                                 </td>
@@ -284,36 +255,36 @@ class MyOrder extends React.Component {
                                         );
                                     })
                                 ) : (
-                                    <tr>
-                                        <td>
-                                            <Row className="justify-content-center m-0">
-                                                <Col
-                                                    className="text-center m-0"
-                                                    sm={12}
-                                                >
-                                                    <span>
-                                                        <i
-                                                            className="zmdi zmdi-view-list-alt"
-                                                            style={{
-                                                                fontSize:
-                                                                    "80px",
-                                                            }}
-                                                        />
-                                                        <br />
-                                                    </span>
-                                                </Col>
+                                        <tr>
+                                            <td>
+                                                <Row className="justify-content-center m-0">
+                                                    <Col
+                                                        className="text-center m-0"
+                                                        sm={12}
+                                                    >
+                                                        <span>
+                                                            <i
+                                                                className="zmdi zmdi-view-list-alt"
+                                                                style={{
+                                                                    fontSize:
+                                                                        "80px",
+                                                                }}
+                                                            />
+                                                            <br />
+                                                        </span>
+                                                    </Col>
 
-                                                <Col
-                                                    className="text-center text-danger m-0 fs-32"
-                                                    sm={12}
-                                                    style={{ fontSize: "18px" }}
-                                                >
-                                                    <IntlMessages id="trading.activeorders.label.nodata" />
-                                                </Col>
-                                            </Row>
-                                        </td>
-                                    </tr>
-                                )}
+                                                    <Col
+                                                        className="text-center text-danger m-0 fs-32"
+                                                        sm={12}
+                                                        style={{ fontSize: "18px" }}
+                                                    >
+                                                        <IntlMessages id="trading.activeorders.label.nodata" />
+                                                    </Col>
+                                                </Row>
+                                            </td>
+                                        </tr>
+                                    )}
                             </tbody>
                         </Table>
                     </Scrollbars>

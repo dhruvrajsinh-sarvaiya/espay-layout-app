@@ -94,9 +94,7 @@ class LeverageReport extends Component {
     getListFromServer = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState(newObj);
         //For Action API...
         var reqObj = newObj;
@@ -132,7 +130,7 @@ class LeverageReport extends Component {
     /* apply filter */
     applyFilter() {
         if (this.state.Status !== '' || this.state.WalletTypeId !== '' || (this.state.FromDate != "" && this.state.ToDate != "" && this.state.FromDate <= this.state.today && this.state.ToDate <= this.state.today) && (this.state.ToDate >= this.state.FromDate)) {
-            this.setState({ showReset: true }, this.getListFromServer(1, this.state.PageSize));
+            this.setState({ showReset: true }, () =>  this.getListFromServer(1, this.state.PageSize));
         }
     }
     /* reset filter options */
@@ -156,7 +154,7 @@ class LeverageReport extends Component {
         this.setState({
             disableConfirm: true,
             LoanId: item.Id,
-            showModal: !this.state.showModal,
+            showModal: this.state.showModal ? false : true,
             LeveragePer: item.LeveragePer,
             editdetail: {
                 LeveragePer: item.LeveragePer
@@ -166,7 +164,7 @@ class LeverageReport extends Component {
     // close model...
     toggleShowConfirmModal = () => {
         this.setState({
-            showModal: !this.state.showModal,
+            showModal: this.state.showModal ? false : true,
         });
     }
     /* on chane handler */

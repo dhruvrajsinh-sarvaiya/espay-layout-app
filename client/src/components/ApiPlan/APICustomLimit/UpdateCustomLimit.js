@@ -145,7 +145,7 @@ class UpdateCustomLimits extends Component {
         if (nextprops.customLimits) {
 
             this.setState({
-                customLimits: nextprops.customLimits ? nextprops.customLimits : {},
+                customLimits: nextprops.customLimits,
                 SubscribeID: nextprops.SubscribeID !== 0 ? nextprops.SubscribeID : 0,
                 LimitID: nextprops.customLimits.LimitID !== "" ? nextprops.customLimits.LimitID : "",
                 maxCallPerDay: nextprops.customLimits.maxCallPerDay !== "" ? nextprops.customLimits.maxCallPerDay : "",

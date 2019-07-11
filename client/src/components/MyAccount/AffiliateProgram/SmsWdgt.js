@@ -21,19 +21,18 @@ class SmsWdgt extends Component {
             errors: {},
             smsloading: false,
             MobileNumberList: '',
-            mobiledata:"",
+            mobiledata: "",
 
         };
         this.onChange = this.onChange.bind(this);
         this.resetData = this.resetData.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onSubmit = (event) => {
         event.preventDefault();
         var newObj = Object.assign({}, this.state.MobileNumberList);
-        const { errors, isValid,mobiledata } = mobilenovalidate(this.state.MobileNumberList);
-        this.setState({ errors: errors,mobiledata:mobiledata });
+        const { errors, isValid, mobiledata } = mobilenovalidate(this.state.MobileNumberList);
+        this.setState({ errors: errors, mobiledata: mobiledata });
 
         if (isValid) {
             var myString = newObj.MobileNumberList;
@@ -69,7 +68,7 @@ class SmsWdgt extends Component {
     }
 
     render() {
-        const { errors ,mobiledata} = this.state;
+        const { errors, mobiledata } = this.state;
         const { MobileNumberList } = this.state.MobileNumberList;
         return (
             <Fragment>
@@ -82,10 +81,10 @@ class SmsWdgt extends Component {
                             }
                         </IntlMessages>
                         <h5 className="sml_notes mt-2"><IntlMessages id="sidebar.multiplMobileNote" /></h5>
-                        {errors.MobileNumberList && <div className="text-danger text-left"><IntlMessages id={errors.MobileNumberList} values={{ mobiledata:mobiledata}}/></div>}
+                        {errors.MobileNumberList && <div className="text-danger text-left"><IntlMessages id={errors.MobileNumberList} values={{ mobiledata: mobiledata }} /></div>}
                     </FormGroup>
                     <FormGroup className=" text-left">
-                        <Button onClick={this.onSubmit}  className="mr-10 perverbtn"><IntlMessages id="sidebar.btnSend" /></Button>
+                        <Button onClick={this.onSubmit} className="mr-10 perverbtn"><IntlMessages id="sidebar.btnSend" /></Button>
                         <Button onClick={this.resetData} color="danger"><IntlMessages id="button.cancel" /></Button>
                     </FormGroup>
                 </Form>

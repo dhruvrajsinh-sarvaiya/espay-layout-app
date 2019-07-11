@@ -8,7 +8,6 @@ import { Redirect, Route, Switch } from "react-router-dom";
 
 import AffiliateDashboard from './dashboard';
 import AffiliateCmsPtrn from './commission-pattern';
-import AffiliatePromotion from './promotion';
 import AffiliateSendMailReport from './reports/AffiliateSendMailReport';
 import AffiliateSendSMSReport from './reports/AffiliateSendSMSReport';
 import AffiliateFacebookShareReport from './reports/AffiliateFacebookShareReport';
@@ -24,7 +23,6 @@ const Affiliate = ({ match }) => (
             <Redirect exact from={`${match.url}`} to={`${match.url}/dashboard`} />
             <Route path={`${match.url}/dashboard`} component={AffiliateDashboard} />
             <Route path={`${match.url}/commission-pattern`} component={AffiliateCmsPtrn} />
-            <Route path={`${match.url}/promotion`} component={AffiliatePromotion} />
             <Route path={`${match.url}/send-mail-report`} component={AffiliateSendMailReport} />
             <Route path={`${match.url}/send-sms-report`} component={AffiliateSendSMSReport} />
             <Route path={`${match.url}/facebook-share-report`} component={AffiliateFacebookShareReport} />

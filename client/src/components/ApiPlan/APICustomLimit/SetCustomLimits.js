@@ -44,13 +44,6 @@ class SetCustomLimits extends Component {
     // construcrtor
     constructor(props) {
         super(props)
-        var readOnlyMethods = [], fullAccessMethods = []
-        if (props.IsUpdate) {
-
-            readOnlyMethods = Object.keys(props.customLimits.ReadOnlyAPI)
-            fullAccessMethods = Object.keys(props.customLimits.FullAccessAPI)
-        }
-
 
         this.state = {
             customLimits: props.customLimits ? props.customLimits : {},
@@ -68,8 +61,8 @@ class SetCustomLimits extends Component {
             maxReqSize: props.IsUpdate && props.customLimits.MaxReqSize !== "" ? props.customLimits.MaxReqSize : "",
             maxResSize: props.IsUpdate && props.customLimits.MaxResSize !== "" ? props.customLimits.MaxResSize : "",
             historicalData: props.IsUpdate && props.customLimits.HistoricalDataMonth !== "" ? props.customLimits.HistoricalDataMonth : "",
-            readOnlyAPI: props.IsUpdate && readOnlyMethods ? readOnlyMethods : [],
-            fullAccessAPI: props.IsUpdate && fullAccessMethods ? fullAccessMethods : [],
+            readOnlyAPI: props.IsUpdate ? Object.keys(props.customLimits.ReadOnlyAPI) : [],
+            fullAccessAPI: props.IsUpdate ? Object.keys(props.customLimits.FullAccessAPI) : [],
             limitID: props.IsUpdate && props.customLimits.LimitID !== "" ? props.customLimits.LimitID : 0,
             isUpdateCustomLimit: 0,
             isSetCustomLimit: 0,
@@ -241,7 +234,7 @@ class SetCustomLimits extends Component {
         const regexNumeric = /^[0-9]+$/;
 
         if (this.props.IsUpdate) {
-            if ((event.target.value === "")||(validator.matches(event.target.value, regexNumeric))) {
+            if ((event.target.value === "") || (validator.matches(event.target.value, regexNumeric))) {
 
                 this.setState({
                     [event.target.name]: event.target.value,
@@ -250,7 +243,7 @@ class SetCustomLimits extends Component {
 
             }
         } else {
-            if ((event.target.value === "")|| (validator.matches(event.target.value, regexNumeric))) {
+            if ((event.target.value === "") || (validator.matches(event.target.value, regexNumeric))) {
 
                 this.setState({
                     [event.target.name]: event.target.value

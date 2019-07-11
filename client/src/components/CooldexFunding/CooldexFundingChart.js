@@ -7,12 +7,12 @@ import HighchartsReact from "highcharts-react-official";
 import { getChartData } from "Actions/Trade";
 // import connect function for store
 import { connect } from "react-redux";
-import { chartDataConst } from "./ChartData";
+import { chartData } from "./ChartData";
 
 // component For trading chart
 class CooldexFundingChart extends Component {
   state = {
-    chartData: chartDataConst,
+    chartData: chartData,
     socketData: []
   };
   // render component

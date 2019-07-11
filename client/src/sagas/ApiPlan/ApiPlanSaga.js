@@ -53,7 +53,7 @@ function* getApiPlanListDetail({ payload }) {
     const response = yield call(swaggerGetAPI, 'api/APIConfiguration/ViewAPIPlanDetail', {}, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getApiPlanListSuccess(response));
     } else {
       yield put(getApiPlanListFailure(response));
@@ -78,7 +78,7 @@ function* subScribeApiPlanDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/SubscribeAPIPlan', payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(subScribeApiPlanSuccess(response));
     } else {
       yield put(subScribeApiPlanFailure(response));
@@ -102,7 +102,7 @@ function* getUserActivePlanDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/ViewUserActivePlan', payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getUserActivePlanSuccess(response));
     } else {
       yield put(getUserActivePlanFailure(response));
@@ -126,7 +126,7 @@ function* setAutoRenewalDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/AutoRenewAPIPlan', payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(setAutoRenewalSuccess(response));
     } else {
       yield put(setAutoRenewalFailure(response));
@@ -149,7 +149,7 @@ function* stopAutoRenewalDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/StopAutoRenewPlan', payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(stopAutoRenewalSuccess(response));
     } else {
       yield put(stopAutoRenewalFailure(response));
@@ -173,7 +173,7 @@ function* getAutoRenewalPlanDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/GetAutoRenewPlanDetail', payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getAutoRenewalPlanSuccess(response));
     } else {
       yield put(getAutoRenewalPlanFailure(response));
@@ -197,7 +197,7 @@ function* manualRenewPlanDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/ManualRenewAPIPlan', payload.Data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(manualRenewPlanSuccess(response));
     } else {
       yield put(manualRenewPlanFailure(response));

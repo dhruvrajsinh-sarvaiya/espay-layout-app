@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 import IntlMessages from "Util/IntlMessages";
 
 const ReferralBannerBlk = () => {
-  console.log('ReferralBannerBlk');
   return (
     <Fragment>
       <div className="card p-15 mb-15 text-center">

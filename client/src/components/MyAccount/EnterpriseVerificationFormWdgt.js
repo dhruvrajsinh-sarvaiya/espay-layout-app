@@ -3,7 +3,7 @@
  */
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Form, FormGroup, Input, Button, } from "reactstrap";
+import { FormGroup, Input, Button, } from "reactstrap";
 import JbsSectionLoader from "Components/JbsSectionLoader/JbsSectionLoader";
 import { NotificationManager } from "react-notifications";
 import IntlMessages from "Util/IntlMessages";
@@ -54,25 +54,24 @@ class EnterpriseVerificationFormWdgt extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		// console.log('Nextprops :',nextProps);
-        this.setState({ loading : nextProps.loading });
-		
+		this.setState({ loading: nextProps.loading });
+
 		if (nextProps.data.ReturnCode === 1) {
 			var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
 			NotificationManager.error(errMsg);
 		} else if (nextProps.data.ReturnCode === 0) {
 			NotificationManager.success(nextProps.data.ReturnMsg);
-        }
-    }
+		}
+	}
 
-    onChange(event) {
+	onChange(event) {
 		let newObj = Object.assign({}, this.state.data);
-		if(event.target.type === 'file') {
-			newObj[event.target.name] =  event.target.files[0];
+		if (event.target.type === 'file') {
+			newObj[event.target.name] = event.target.files[0];
 		} else {
 			newObj[event.target.name] = event.target.value;
 		}
-		this.setState({ data : newObj });
+		this.setState({ data: newObj });
 	}
 
 	onSubmit(event) {
@@ -82,11 +81,11 @@ class EnterpriseVerificationFormWdgt extends Component {
 
 		if (isValid) {
 			let self = this;
-			var reqObj = Object.assign({},this.state.data);
-            getIPAddress().then(function (ipAddress) {
-                reqObj.IPAddress = ipAddress;
-                self.props.enterpriseVerification(reqObj);
-            });
+			var reqObj = Object.assign({}, this.state.data);
+			getIPAddress().then(function (ipAddress) {
+				reqObj.IPAddress = ipAddress;
+				self.props.enterpriseVerification(reqObj);
+			});
 		}
 	}
 
@@ -114,12 +113,11 @@ class EnterpriseVerificationFormWdgt extends Component {
 							<label className="col-form-label"><IntlMessages id="sidebar.registeredCountry" /></label>
 							<Input type="select" name="registered_country" className="w-50" id="registered_country" value={registered_country} onChange={this.onChange}>
 								<option value="">-- Select Country --</option>
-								{country_list &&
-									country_list.map((list, index) => (
-										<option key={index} value={list.id}>
-											{list.name}
-										</option>
-									))
+								{country_list.map((list, index) => (
+									<option key={index} value={list.id}>
+										{list.name}
+									</option>
+								))
 								}
 							</Input>
 							{errors.registered_country && <span className="text-danger"><IntlMessages id={errors.registered_country} /></span>}
@@ -157,7 +155,7 @@ class EnterpriseVerificationFormWdgt extends Component {
 						<FormGroup>
 							<label className="col-form-label"><IntlMessages id="my_account.certificateOfIncumbencyInfo" /></label>
 							<Input type="file" name="crtf_of_incumbency" id="crtf_of_incumbency" onChange={this.onChange} />
-							{errors.crtf_of_incumbency &&  <span className="text-danger"><IntlMessages id={errors.crtf_of_incumbency} /></span>}
+							{errors.crtf_of_incumbency && <span className="text-danger"><IntlMessages id={errors.crtf_of_incumbency} /></span>}
 						</FormGroup>
 						<FormGroup>
 							<label className="col-form-label"><IntlMessages id="my_account.applicationFullNameInfo" /></label>
@@ -168,12 +166,11 @@ class EnterpriseVerificationFormWdgt extends Component {
 							<label className="col-form-label"><IntlMessages id="sidebar.applicationsCountry" /></label>
 							<Input type="select" name="applicant_country" className="w-50" id="applicant_country" value={applicant_country} onChange={this.onChange}>
 								<option value="">-- Select Country --</option>
-								{country_list &&
-									country_list.map((list, index) => (
-										<option key={index} value={list.id}>
-											{list.name}
-										</option>
-									))
+								{country_list.map((list, index) => (
+									<option key={index} value={list.id}>
+										{list.name}
+									</option>
+								))
 								}
 							</Input>
 							{errors.applicant_country && <span className="text-danger"><IntlMessages id={errors.applicant_country} /></span>}
@@ -223,6 +220,4 @@ const mapStateToProps = ({ entpriseVerifyFrmRdcer }) => {
 	return { data, loading };
 };
 
-export default connect(mapStateToProps,{ 
-	enterpriseVerification 
-})(EnterpriseVerificationFormWdgt);
+export default connect(mapStateToProps, { enterpriseVerification })(EnterpriseVerificationFormWdgt);

@@ -22,16 +22,11 @@ import {
   Input,
   Button
 } from "reactstrap";
-import {
-  getProgitLossList
-} from 'Actions/MarginTrading';
-import {
-  getCurrency,
-} from "Actions/Withdraw";
+import { getProgitLossList } from 'Actions/MarginTrading';
+import { getCurrency } from "Actions/Withdraw";
 import { getPairList } from "Actions/Trade";
-const transtyle = {
-  fontSize: "14px"
-}
+const transtyle = { fontSize: "14px" }
+
 // initial state
 const initState = {
   PageNo: 1,
@@ -47,19 +42,22 @@ const initState = {
   DetailedData: {},
   start_row: 1,
 }
+
 class ProfitLossReport extends Component {
   constructor(props) {
     super(props);
     this.state = initState;
     this.handleChange = this.handleChange.bind(this);
   }
-// pagination handle change event
-handlePageChange = pageNumber => {
-  ProfitLossReport.PageNo = pageNumber - 1;
-  ProfitLossReport.PageSize = this.state.PageSize;
-  this.setState({ PageNo: pageNumber });
-  this.props.getProgitLossList(ProfitLossReport);
-};
+
+  // pagination handle change event
+  handlePageChange = pageNumber => {
+    ProfitLossReport.PageNo = pageNumber - 1;
+    ProfitLossReport.PageSize = this.state.PageSize;
+    this.setState({ PageNo: pageNumber });
+    this.props.getProgitLossList(ProfitLossReport);
+  };
+
   // apply filter
   applyFilter = () => {
     if (this.state.WalletTypeId !== '' || this.state.PairID !== '') {
@@ -87,13 +85,16 @@ handlePageChange = pageNumber => {
       pairList: [],
     });
   }
+
   /* on chane handler select search */
   onChangeSelectCurrency(e) {
     this.setState({ WalletTypeId: e.label, WalletTypeObj: { label: e.label } });
   }
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
   componentWillMount() {
     this.setState({ PageNo: 1 });
     this.props.getCurrency();
@@ -102,32 +103,25 @@ handlePageChange = pageNumber => {
       PageSize: this.state.PageSize,
     });
   }
+
   componentDidMount() {
-    this.props.getPairList({})
-    
+    this.props.getPairList({});    
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.pairList.length) {
-      this.setState({
-        pairList: nextProps.pairList
-      })
+      this.setState({ pairList: nextProps.pairList });
     }
     if (this.state.TotalCount != nextProps.TotalCount) {
       this.setState({ TotalCount: nextProps.TotalCount });
     }
   }
-  //On collapse project description
-  OnCollapseProject(item) {
-    this.setState({
-      DetailedData: item,
-      collapse: !this.state.collapse
-    });
-  }
 
   render() {
     const { intl, loading } = this.props;
     const { profitLossList } = this.props;
-    var pairs = []
+    var pairs = [];
+    let start_row = profitLossList.length > 0 ? 1 : 0;
     if (this.state.pairList.length) {
       this.state.pairList.map(value => {
         value.PairList.map(info => {
@@ -135,11 +129,7 @@ handlePageChange = pageNumber => {
         })
       })
     }
-    if (profitLossList.length === 0) {
-			this.state.start_row = 0;
-		} else {
-			this.state.start_row = 1;
-		}
+
     return (
       <div className={this.props.darkMode ? 'DepositWithdrawHistory-darkmode tbl_overflow_auto' : 'DepositWithdrawHistory tbl_overflow_auto'}>
         {loading && <JbsSectionLoader />}
@@ -166,11 +156,9 @@ handlePageChange = pageNumber => {
                       <option value="">{labelSelect}</option>
                     }
                   </IntlMessages>
-
                   {pairs.map((currency, key) =>
                     <option key={key} value={currency.PairId}>{currency.PairName}</option>
                   )}
-
                 </Input>
               </div>
             </FormGroup>
@@ -182,7 +170,6 @@ handlePageChange = pageNumber => {
             </FormGroup>
           </div>
         </JbsCollapsibleCard>
-
         {this.props.loading && <JbsSectionLoader />}
         <JbsCollapsibleCard>
         <Card>
@@ -191,23 +178,18 @@ handlePageChange = pageNumber => {
               <tr>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.Id" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.ProfitAmount" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.AvgLandingBuy" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.AvgLandingSell" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "wallet.SettledQty" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.CreatedDate" })}
@@ -255,24 +237,20 @@ handlePageChange = pageNumber => {
 								<Col md={3} className="text-right mt-20">
 									<span>
 										{this.state.PageNo > 1
-											? this.state.start_row +
-											  this.state.PageSize * (this.state.PageNo - 1) +
-											  ' - ' +
-											  (this.state.PageSize * this.state.PageNo > this.state.TotalCount
-													? this.state.TotalCount
-													: this.state.PageSize * this.state.PageNo)
-											: this.state.start_row +
-											  ' - ' +
-											  (this.state.PageSize * this.state.PageNo > this.state.TotalCount
-													? this.state.TotalCount
-													: this.state.PageSize * this.state.PageNo)}{' '}
+                      ? 
+                      start_row + this.state.PageSize * (this.state.PageNo - 1) + ' - ' + (this.state.PageSize * this.state.PageNo > this.state.TotalCount
+                        ? this.state.TotalCount
+												: this.state.PageSize * this.state.PageNo)
+                      : 
+                      start_row + ' - ' + (this.state.PageSize * this.state.PageNo > this.state.TotalCount
+                        ? this.state.TotalCount
+                        : this.state.PageSize * this.state.PageNo)}{' '}
 										of {this.state.TotalCount} Records
 									</span>
 								</Col>
 							</Row>
 						  )}
-      </div>
-      
+      </div>      
     )
   }
 }
@@ -287,16 +265,13 @@ class ProfitLossCollaps extends Component {
 
   //On collapse project description
   OnCollapseProject() {
-    this.setState({
-      collapse: !this.state.collapse
-    });
+    this.setState({ collapse: this.state.collapse ? false : true });
   }
   
   componentWillUnmount() {
-    this.setState({
-      collapse: false
-    })
+    this.setState({ collapse: false });
   }
+
   //redner for collapsible data
   render() {
     const { profitLossList, intl } = this.props;
@@ -311,10 +286,7 @@ class ProfitLossCollaps extends Component {
           <td align="middle" style={transtyle}>{profitLossList.SettledQty}</td>
           <td align="middle" style={transtyle}>{changeDateFormat(profitLossList.CreatedDate, 'YYYY-MM-DD HH:mm:ss', false)}</td>
           <td align="middle" style={transtyle}><div className="list-action">
-            <a
-              href="javascript:void(0)"
-              onClick={() => this.OnCollapseProject()}
-            >
+            <a href="javascript:void(0)" onClick={() => this.OnCollapseProject()}>
               {collapse ? <i className="zmdi zmdi-chevron-up dropdown-icon mx-4" /> : <i className="zmdi zmdi-chevron-down dropdown-icon mx-4" />}
             </a>
           </div>
@@ -381,6 +353,7 @@ const mapStateToProps = ({ ProfitLossReducer, withdrawApp, tradePairList }) => {
   const { pairList } = tradePairList;
   return { profitLossList, loading, TotalCount, currencies, pairList };
 };
+
 export default connect(mapStateToProps, {
   getCurrency,
   getProgitLossList,

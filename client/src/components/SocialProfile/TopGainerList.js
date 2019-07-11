@@ -17,41 +17,41 @@ class TopGainerList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-            list : [],
-			loading : false,
-			curDate : new Date().toISOString().slice(0, 10),
-			limit : 5
+			list: [],
+			loading: false,
+			curDate: new Date().toISOString().slice(0, 10),
+			limit: 5
 		};
 	}
 
 	componentWillMount() {
 		var newObj = {
-			curDate : this.state.curDate,
-			limit : this.state.limit
+			curDate: this.state.curDate,
+			limit: this.state.limit
 		}
 		this.props.getTopGainerList(newObj);
-    }
-    
-    componentWillReceiveProps(nextProps) {
-		this.setState({ loading: nextProps.loading });		
-        if (nextProps.data.ReturnCode === 1) {
-            var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
-            NotificationManager.error(errMsg);
-        } else if (nextProps.data.ReturnCode === 0) {
-            if(nextProps.data.hasOwnProperty('Response') && nextProps.data.Response.length > 0) {
-                this.setState({ list : nextProps.data.Response });
-            }
-        }
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({ loading: nextProps.loading });
+		if (nextProps.data.ReturnCode === 1) {
+			var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
+			NotificationManager.error(errMsg);
+		} else if (nextProps.data.ReturnCode === 0) {
+			if (nextProps.data.hasOwnProperty('Response') && nextProps.data.Response.length > 0) {
+				this.setState({ list: nextProps.data.Response });
+			}
+		}
 	}
 
 	render() {
-        const { list, loading } = this.state;
-	    return (
+		const { list, loading } = this.state;
+		return (
 			<Fragment>
-                {loading && <JbsSectionLoader />}
-                <Fragment>
-                    <div className="mt-20 top-gainer-list">
-                        <div className="list_layout_area">
+				{loading && <JbsSectionLoader />}
+				<Fragment>
+					<div className="mt-20 top-gainer-list">
+						<div className="list_layout_area">
 							<table className="cstm_tbl table table-hover table-responsive">
 								<thead>
 									<tr>
@@ -64,28 +64,28 @@ class TopGainerList extends Component {
 									</tr>
 								</thead>
 								<tbody>
-								{	
-									list.length > 0 
-									? list.map((item, key) => (
-										<tr>
-											<td>{key+1}</td>
-											<td>{item.LeaderName}</td>
-											<td>{item.Email}</td>
-											<td>{item.Profit}</td>
-											<td>{item.ProfitPer}</td>
-											<td><Link className="text-primary" to={{pathname: "/app/social-profile/leader-board", state : { LeaderId : item.LeaderId }}}><i className="zmdi zmdi-eye zmdi-hc-2x"></i></Link></td>
-										</tr>
-									))
-									:
-									<tr>
-										<td colSpan="6" className="text-center">{<IntlMessages id="wallet.emptyTable" />}</td>
-									</tr>
-								}
+									{
+										list.length > 0
+											? list.map((item, index) => (
+												<tr key={index}>
+													<td>{index + 1}</td>
+													<td>{item.LeaderName}</td>
+													<td>{item.Email}</td>
+													<td>{item.Profit}</td>
+													<td>{item.ProfitPer}</td>
+													<td><Link className="text-primary" to={{ pathname: "/app/social-profile/leader-board", state: { LeaderId: item.LeaderId } }}><i className="zmdi zmdi-eye zmdi-hc-2x"></i></Link></td>
+												</tr>
+											))
+											:
+											<tr>
+												<td colSpan="6" className="text-center">{<IntlMessages id="wallet.emptyTable" />}</td>
+											</tr>
+									}
 								</tbody>
 							</table>
-                        </div>
-                    </div>
-                </Fragment>
+						</div>
+					</div>
+				</Fragment>
 			</Fragment>
 		);
 	}
@@ -93,12 +93,12 @@ class TopGainerList extends Component {
 
 //MapStateToProps
 const mapStateToProps = ({ topGainerRdcer, settings }) => {
-    const response = {
-		darkMode : settings.darkMode,
-        data: topGainerRdcer.topGainer,
+	const response = {
+		darkMode: settings.darkMode,
+		data: topGainerRdcer.topGainer,
 		loading: topGainerRdcer.loading
-    }
-    return response;
+	}
+	return response;
 };
 
 export default connect(mapStateToProps, {

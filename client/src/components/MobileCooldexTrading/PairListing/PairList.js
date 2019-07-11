@@ -204,12 +204,15 @@ class PairList extends React.Component {
     // This will Invoke when component will recieve Props or when props changed
     componentWillReceiveProps(nextprops) {
 
-        if (nextprops.pairData.length !== 0 && nextprops.pairData !== null) {
-
-            // set pair list if gets from API only                     
-            this.setState({
-                oldState: this.state.pairList,
-                pairList: nextprops.pairData,
+        if (nextprops.pairData !== null && (nextprops.pairData.length !== 0 || nextprops.pairData.length === 0)) {
+            // set pair list if gets from API only
+            this.setState((previousState) => {
+                return { 
+                    ...previousState,
+                    oldState: previousState.pairList,
+                    pairList: nextprops.pairData,
+                    showLoader : false
+                };
             });
         }
 
@@ -220,12 +223,15 @@ class PairList extends React.Component {
         }
 
         if (nextprops.secondCurrency !== this.state.secondCurrency) {
-            this.setState({
-                secondCurrency: nextprops.secondCurrency,
-                volumeData: [],
-                oldVolumeData: [],
-                pairList: this.state.pairList
-            })
+            this.setState((previousState) => {
+                return { 
+                    ...previousState,
+                    secondCurrency: nextprops.secondCurrency,
+                    volumeData: [],
+                    oldVolumeData: [],
+                    pairList: previousState.pairList
+                };
+            });
         }
 
         if (nextprops.favouritePairList && this.state.favouriteListBit && Array.isArray(nextprops.favouritePairList) && nextprops.favouritePairList.length && this.state.favouritesPairList.length === 0) {
@@ -254,39 +260,20 @@ class PairList extends React.Component {
 
     // Function for Add Data in Favoourite List By Tejas : Date : 21/9/2018
     addToFavourite = (event, value) => {
-
         event.stopPropagation();
-        if (this.state.favouritesPairList) {
-            var isAvailable = this.state.favouritesPairList.findIndex(fav => fav.pair === value.PairId);
-            if (isAvailable !== -1) {
-
-                var PairData = this.state.favouritesPairList[isAvailable];
-                this.state.favouritesPairList.splice(isAvailable, 1);
-                this.setState({ favouritesPairList: this.state.favouritesPairList });
-                // code changed by devang parekh for handling margin trading process
-                if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-                    PairData.marginTrading = 1;
-                    this.props.removeFromFavouritePairList(PairData);
-                } else {
-                    this.props.removeFromFavouritePairList(PairData);
-                }
-                //end
-
+        var isAvailable = this.state.favouritesPairList.length > 0 ? this.state.favouritesPairList.findIndex(fav => fav.pair === value.PairId) : -1;
+        if (isAvailable !== -1) {
+            var PairData = this.state.favouritesPairList[isAvailable];
+            this.state.favouritesPairList.splice(isAvailable, 1);
+            this.setState({ favouritesPairList: this.state.favouritesPairList });
+            // code changed by devang parekh for handling margin trading process
+            if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
+                PairData.marginTrading = 1;
+                this.props.removeFromFavouritePairList(PairData);
             } else {
-
-                this.state.favouritesPairList.push({ pair: value.PairId })
-                this.setState({ favouritesPairList: this.state.favouritesPairList });
-                // code changed by devang parekh for handling margin trading process
-                if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-                    value.marginTrading = 1;
-                    this.props.addToFavouritePairList(value);
-                } else {
-                    this.props.addToFavouritePairList(value);
-                }
-                //end
-
+                this.props.removeFromFavouritePairList(PairData);
             }
-
+            //end
         } else {
 
             this.state.favouritesPairList.push({ pair: value.PairId })
@@ -490,11 +477,7 @@ class PairList extends React.Component {
                 }
             })
         }
-        //}
-
-        if (pairsRow.length !== 0) {
-            this.state.showLoader = false
-        }
+             
 
         return (
             <div className="d-sm-full marketpairlist">
@@ -529,9 +512,7 @@ class PairList extends React.Component {
                     </Row>
                 </div>
 
-                {this.state.showLoader &&
-                    <JbsSectionLoader />
-                }
+                {this.state.showLoader && <JbsSectionLoader /> }
 
                 <div className="table-responsive-design mobilepairlist">
                     {this.state.displayPair ?

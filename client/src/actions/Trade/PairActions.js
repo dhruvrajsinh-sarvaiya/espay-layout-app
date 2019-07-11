@@ -19,7 +19,7 @@ import {
 /**
  * Redux Action Get Pair List
  */
-export const getPairList1 = () => /* (console.log('ACTION', 'getPairList')), */ ({
+export const getPairList1 = () => ({
   type: GET_PAIR
 });
 
@@ -42,7 +42,7 @@ export const getPairListFailure1 = error => ({
 /**
  * Redux Action Get Update Pair List
  */
-export const getUpdatedPairList = () => /* (console.log('ACTION', 'getUpdatedPairList')),  */ ({
+export const getUpdatedPairList = () => ({
   type: UPDATE_PAIR
 });
 
@@ -65,7 +65,7 @@ export const getUpdatedPairListFailure = error => ({
 /**
  * Redux Action Get Update Pair List
  */
-export const addTask = newTask => /* (console.log('ACTION', 'getUpdatedPairList')),  */ ({
+export const addTask = newTask => ({
   type: ADD_TASK,
   payload: newTask
 });
@@ -85,10 +85,11 @@ export const addTaskFailure = error => ({
   type: ADD_TASK_FAILURE,
   payload: error
 });
+
 /**
  * Redux Action Get Update Pair List
  */
-export const getTask = () => /* (console.log('ACTION', 'getUpdatedPairList')),  */ ({
+export const getTask = () => ({
   type: GET_TASK
 });
 

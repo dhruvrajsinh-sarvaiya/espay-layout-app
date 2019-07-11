@@ -1,6 +1,5 @@
 // Component for displaying Currency For Favourite Pair List  Data By:Tejas Date : 21/9/2018
 import React from "react";
-
 //import table and input type nav dat  for navigation Card
 import {
   Table,
@@ -9,27 +8,20 @@ import {
   NavItem,
   NavLink,
 } from "reactstrap";
-
 // import radio button
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-
 //import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 //import for use multiple claases in component
 import classnames from "classnames";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import action
 import { getPairList } from "Actions/Trade";
-
 //impor tsection loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // import connect function for store
 import { connect } from "react-redux";
 
@@ -74,21 +66,20 @@ class FavouriteList extends React.Component {
 
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
-    if (nextprops.pairList && nextprops.pairList !== null) {
+    if (nextprops.pairList.length > 0) {
       // set pair list if gets from API only
-      this.setState({
-        classNamed: "blink_me",
-        oldState: this.state.pairList,
-        pairList: nextprops.pairList,
-        showLoader: false
+      this.setState((prevState) => {
+          return { 
+            ...prevState,
+            classNamed: "blink_me",
+            oldState: prevState.pairList,
+            pairList: nextprops.pairList,
+            showLoader: false
+          };
       });
     }
 
-    if (
-      nextprops.firstCurrency &&
-      nextprops.secondCurrency &&
-      nextprops.currencyPair
-    ) {
+    if (nextprops.firstCurrency && nextprops.secondCurrency && nextprops.currencyPair) {
       this.setState({
         firstCurrency: nextprops.firstCurrency,
         secondCurrency: nextprops.secondCurrency,
@@ -110,12 +101,7 @@ class FavouriteList extends React.Component {
         val.currency.map(data => {
           var isAvailable = favourites.findIndex(fav => fav.pair === data.pair);
           if (isAvailable !== -1) {
-            if (
-              data.pair
-                .split("/")[0]
-                .toLowerCase()
-                .indexOf(searchText) != -1
-            ) {
+            if (data.pair.split("/")[0].toLowerCase().indexOf(searchText) != -1) {
               list.push(data);
             }
           }
@@ -156,28 +142,8 @@ class FavouriteList extends React.Component {
 
   // Render Component for Pair List
   render() {
-    const pairs = [];
     const oldPairs = [];
     const info = this.props.state;
-
-    // iterate object and stores into array
-    if (this.state.pairList && this.state.oldState) {
-      this.state.pairList.map((value, key) => {
-        this.state.oldState.map(data => {
-          
-          if (
-            value.symbol === info.secondCurrency &&
-            data.symbol === info.secondCurrency
-          ) {
-            if (value.currency) {
-              value.currency.map(currency => {
-                pairs.push(currency);
-              });
-            }
-          }
-        });
-      });
-    }
 
     //iterate old state data
     if (this.state.oldState) {
@@ -199,9 +165,7 @@ class FavouriteList extends React.Component {
       this.state.pairList.map((value, key) => {
         if (value.currency) {
           value.currency.map(data => {
-            var isAvailable = favourites.findIndex(
-              fav => fav.pair === data.pair
-            );
+            var isAvailable = favourites.findIndex(fav => fav.pair === data.pair);
             if (isAvailable !== -1) {
               list.push(data);
             }
@@ -212,12 +176,8 @@ class FavouriteList extends React.Component {
       // create rows for table
       var rows = list.map((value, key) => {
         var isAvailable = favourites.findIndex(fav => fav.pair === value.pair);
-        var isChangedprice = oldPairs.findIndex(
-          old => old.price <= value.price
-        );
-        var isChangedvolume = oldPairs.findIndex(
-          old => old.volume <= value.volume
-        );
+        var isChangedprice = oldPairs.findIndex(old => old.price <= value.price);
+        var isChangedvolume = oldPairs.findIndex(old => old.volume <= value.volume);
 
         return (
           <tr
@@ -239,10 +199,10 @@ class FavouriteList extends React.Component {
                     {<IntlMessages id="trading.currencypair.icon.fillstar" />}
                   </i>
                 ) : (
-                  <i className="material-icons">
-                    {<IntlMessages id="trading.currencypair.icon.star" />}
-                  </i>
-                )}
+                    <i className="material-icons">
+                      {<IntlMessages id="trading.currencypair.icon.star" />}
+                    </i>
+                  )}
               </a>
               {value.pair}
             </td>
@@ -254,15 +214,15 @@ class FavouriteList extends React.Component {
                 {value.change}%
               </td>
             ) : (
-              <td className={isChangedvolume === -1 ? "" : "blink_me"}>
-                {value.volume}%
+                <td className={isChangedvolume === -1 ? "" : "blink_me"}>
+                  {value.volume}%
               </td>
-            )}
+              )}
           </tr>
         );
       });
     } else {
-       rows = (
+      rows = (
         <tr>
           <td colSpan="2">
             {<IntlMessages id="trading.orders.label.nodata" />}
@@ -288,13 +248,11 @@ class FavouriteList extends React.Component {
                 {value.change}%
               </td>
             ) : (
-              <td>{value.volume}%</td>
-            )}
+                <td>{value.volume}%</td>
+              )}
           </tr>
         );
       });
-    } else {
-      this.clearSearchPair();
     }
 
     return (
@@ -327,7 +285,6 @@ class FavouriteList extends React.Component {
             />
           </RadioGroup>
         </div>
-
         <div>
           <Nav tabs className="nav-pills p-5">
             <NavItem>
@@ -349,7 +306,6 @@ class FavouriteList extends React.Component {
                 </i>{" "}
               </NavLink>
             </NavItem>
-
             <NavItem>
               <NavLink
                 value="BTC"
@@ -410,7 +366,6 @@ class FavouriteList extends React.Component {
             </NavItem>
           </Nav>
         </div>
-
         {this.state.showLoader && <JbsSectionLoader />}
         <div className="table-responsive-design p-5" style={{ width: "100%" }}>
           {this.state.displayPair ? (
@@ -428,52 +383,50 @@ class FavouriteList extends React.Component {
                       {<IntlMessages id="trading.currencypair.label.change" />}
                     </th>
                   ) : (
-                    <th className="numeric">
-                      {<IntlMessages id="trading.currencypair.label.volume" />}
-                    </th>
-                  )}
+                      <th className="numeric">
+                        {<IntlMessages id="trading.currencypair.label.volume" />}
+                      </th>
+                    )}
                 </tr>
               </thead>
-
               <tbody>{searchPair}</tbody>
             </Table>
           ) : (
-            <Scrollbars
-              className="jbs-scroll"
-              autoHeight
-              autoHeightMin={383}
-              autoHeightMax={383}
-              autoHide
-            >
-              <Table className="table m-0 p-15">
-                <thead>
-                  <tr className="bg-light">
-                    <th>
-                      {<IntlMessages id="trading.currencypair.label.pair" />}
-                    </th>
-                    <th>
-                      {<IntlMessages id="trading.currencypair.label.price" />}
-                    </th>
-                    {this.state.pairsInfo === "change" ? (
-                      <th className="numeric">
-                        {
-                          <IntlMessages id="trading.currencypair.label.change" />
-                        }
+              <Scrollbars
+                className="jbs-scroll"
+                autoHeight
+                autoHeightMin={383}
+                autoHeightMax={383}
+                autoHide
+              >
+                <Table className="table m-0 p-15">
+                  <thead>
+                    <tr className="bg-light">
+                      <th>
+                        {<IntlMessages id="trading.currencypair.label.pair" />}
                       </th>
-                    ) : (
-                      <th className="numeric">
-                        {
-                          <IntlMessages id="trading.currencypair.label.volume" />
-                        }
+                      <th>
+                        {<IntlMessages id="trading.currencypair.label.price" />}
                       </th>
-                    )}
-                  </tr>
-                </thead>
-
-                <tbody>{rows}</tbody>
-              </Table>
-            </Scrollbars>
-          )}
+                      {this.state.pairsInfo === "change" ? (
+                        <th className="numeric">
+                          {
+                            <IntlMessages id="trading.currencypair.label.change" />
+                          }
+                        </th>
+                      ) : (
+                          <th className="numeric">
+                            {
+                              <IntlMessages id="trading.currencypair.label.volume" />
+                            }
+                          </th>
+                        )}
+                    </tr>
+                  </thead>
+                  <tbody>{rows}</tbody>
+                </Table>
+              </Scrollbars>
+            )}
         </div>
       </div>
     );
@@ -486,9 +439,6 @@ const mapStateToProps = state => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    getPairList
-  }
-)(FavouriteList);
+export default connect(mapStateToProps,{
+  getPairList
+})(FavouriteList);

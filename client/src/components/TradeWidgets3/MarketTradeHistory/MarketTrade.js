@@ -2,38 +2,30 @@
 
 import React from "react";
 import { Table } from "reactstrap";
-
 //import sectionloader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // import card
 import { Card, CardBody } from "reactstrap";
-
 //import navigations menu
 import { Nav, NavItem, NavLink } from "reactstrap";
-
 // import class names for use multiple classes in component
 import classnames from "classnames";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 // import Action
 import {
     getMarketTradeHistory,
     closeMarketHistorySocketConnection,
 } from "Actions/Trade";
-
 // import connect function for store
 import { connect } from "react-redux";
 
 class MarketTradeRow extends React.Component {
     render() {
-        var lastClass = "",
-            changeClass = "";
+        let lastClass = "";
+        let changeClass = "";
 
         if (this.props.indexValue === -1) {
             changeClass = "blink_me_basic";
@@ -56,9 +48,7 @@ class MarketTradeRow extends React.Component {
                     {parseFloat(this.props.Amount).toFixed(8)}
                 </td>
                 <td>
-                    {parseFloat(this.props.Amount * this.props.price).toFixed(
-                        8
-                    )}
+                    {parseFloat(this.props.Amount * this.props.price).toFixed(8)}
                 </td>
             </tr>
         );
@@ -86,10 +76,7 @@ class MarketTradeHistory extends React.Component {
     }
 
     componentWillReceiveProps(nextprops) {
-        if (
-            nextprops.marketTradeHistory &&
-            nextprops.marketTradeHistory !== null
-        ) {
+        if (nextprops.marketTradeHistory.length > 0) {
             this.setState({
                 marketTradeHistory: nextprops.marketTradeHistory,
                 showLoader: false,
@@ -105,9 +92,7 @@ class MarketTradeHistory extends React.Component {
 
         var marketTradeHistoryList = [];
         MarketTradeData.map((newBuyOrder, key) => {
-            var findIndexValue = oldMarketTradeHistory.findIndex(
-                (oldOrder) => oldOrder.Price === newBuyOrder.Price
-            );
+            var findIndexValue = oldMarketTradeHistory.findIndex((oldOrder) => oldOrder.Price === newBuyOrder.Price);
             marketTradeHistoryList.push(
                 <MarketTradeRow
                     price={newBuyOrder.Price}
@@ -131,7 +116,6 @@ class MarketTradeHistory extends React.Component {
                             <IntlMessages id="trading.orders.label.tradehistory" />
                         }
                     </h1>
-
                     <Nav tabs className="nav-pills p-5">
                         <NavItem>
                             <NavLink
@@ -163,7 +147,6 @@ class MarketTradeHistory extends React.Component {
                         </NavItem>
                     </Nav>
                 </CardBody>
-
                 <Scrollbars
                     className="jbs-scroll"
                     autoHeight
@@ -212,10 +195,7 @@ const mapStateToProps = (state) => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {
-        getMarketTradeHistory,
-        closeMarketHistorySocketConnection,
-    }
-)(MarketTradeHistory);
+export default connect(mapStateToProps,{
+    getMarketTradeHistory,
+    closeMarketHistorySocketConnection,
+})(MarketTradeHistory);

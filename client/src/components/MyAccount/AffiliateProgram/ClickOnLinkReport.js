@@ -69,9 +69,7 @@ class ClickOnLinkReport extends Component {
     getClickOnLinkList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState({ data: newObj });
 
         //For Action API...
@@ -172,7 +170,7 @@ class ClickOnLinkReport extends Component {
                 }
             },
             customFooter: (count, page, rowsPerPage) => {
-              var tblPage = page > 0 ? page + 1 : 1;
+                var tblPage = page > 0 ? page + 1 : 1;
                 return (
                     <CustomFooter count={count} page={tblPage} rowsPerPage={rowsPerPage} handlePageChange={this.handlePageChange} onChangeRowsPerPage={this.onChangeRowsPerPage} />
                 );

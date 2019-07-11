@@ -164,10 +164,8 @@ class ViewAPIKeyList extends Component {
 
         // set state for user plans
         if (
-            this.state.getUserList &&
-            nextprops.UserPlanList != undefined &&
-            nextprops.UserPlanList != null &&
-            nextprops.UserPlanList &&
+            nextprops.UserPlanList !== undefined &&
+            nextprops.UserPlanList !== null &&
             this.state.userBit !== nextprops.userPlanBit
         ) {
 
@@ -409,7 +407,7 @@ class ViewAPIKeyList extends Component {
                 <div className="charts-widgets-wrapper">
                     <PageTitleBar title={<IntlMessages id="sidebar.view.public.ApiKey" />} match={this.props.match} />
 
-                    {this.state.userActivePlan && this.state.userActivePlan !== null && this.state.userActivePlan !== {} &&
+                    {this.state.userActivePlan !== null && Object.keys(this.state.userActivePlan).length > 0 &&
                         this.state.UserActivePlanList === 0 &&
                         this.state.viewData === false &&
                         this.state.addNewData === false &&
@@ -545,39 +543,34 @@ class ViewAPIKeyList extends Component {
                                                     </thead>
 
                                                     <tbody>
-                                                        {this.state.apiKeyList && this.state.apiKeyList.length > 0 ?
-                                                            this.state.apiKeyList.map((apiKey, key) => {
-                                                                return <tr key={key}>
-                                                                    <td>{apiKey.AliasName}</td>
-                                                                    <td>{apiKey.APIKey.substring(apiKey.APIKey.length - 10, apiKey.APIKey.length)}
-                                                                        <a href="javascript:void(0)" onClick={() =>
-                                                                            this.ViewApiKey(apiKey.KeyId)}><i
-                                                                                className="fa fa-eye pl-5" style={{ fontSize: "16px" }}></i>
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>{apiKey.SecretKey.substring(apiKey.SecretKey.length - 10, apiKey.SecretKey.length)}
-                                                                        <a href="javascript:void(0)" onClick={() =>
-                                                                            this.ViewSecretKey(apiKey.KeyId)}><i
-                                                                                className="fa fa-eye pl-5" style={{ fontSize: "16px" }}></i>
-                                                                        </a>
-                                                                    </td>
-                                                                    <td>{apiKey.CreatedDate.replace('T', ' ').split('.')[0]}</td>
-                                                                    <td>{apiKey.APIAccess === 1 ? <IntlMessages id="sidebar.view.adminrights" />
-                                                                        : <IntlMessages id="sidebar.view.viewrights" />}</td>
-                                                                    <td>{apiKey.IPAccess === 1 ? <IntlMessages id="sidebar.view.restrictedaccess" />
-                                                                        : <IntlMessages id="sidebar.view.unrestrictedaccess" />}</td>
-                                                                    <td>
-                                                                        <div>
-                                                                            <a href="javascript:void(0)" onClick={() => this.DeleteKey(apiKey)}><i className="fa fa-trash pl-5" style={{ fontSize: "16px" }}></i></a>
-                                                                            <a href="javascript:void(0)" onClick={() => this.ViewData(apiKey)}><i className="fa fa-eye pl-5" style={{ fontSize: "16px" }}></i></a>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            })
-
-                                                            :
-
-                                                            ""
+                                                        {this.state.apiKeyList.map((apiKey, key) => {
+                                                            return <tr key={key}>
+                                                                <td>{apiKey.AliasName}</td>
+                                                                <td>{apiKey.APIKey.substring(apiKey.APIKey.length - 10, apiKey.APIKey.length)}
+                                                                    <a href="javascript:void(0)" onClick={() =>
+                                                                        this.ViewApiKey(apiKey.KeyId)}><i
+                                                                            className="fa fa-eye pl-5" style={{ fontSize: "16px" }}></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td>{apiKey.SecretKey.substring(apiKey.SecretKey.length - 10, apiKey.SecretKey.length)}
+                                                                    <a href="javascript:void(0)" onClick={() =>
+                                                                        this.ViewSecretKey(apiKey.KeyId)}><i
+                                                                            className="fa fa-eye pl-5" style={{ fontSize: "16px" }}></i>
+                                                                    </a>
+                                                                </td>
+                                                                <td>{apiKey.CreatedDate.replace('T', ' ').split('.')[0]}</td>
+                                                                <td>{apiKey.APIAccess === 1 ? <IntlMessages id="sidebar.view.adminrights" />
+                                                                    : <IntlMessages id="sidebar.view.viewrights" />}</td>
+                                                                <td>{apiKey.IPAccess === 1 ? <IntlMessages id="sidebar.view.restrictedaccess" />
+                                                                    : <IntlMessages id="sidebar.view.unrestrictedaccess" />}</td>
+                                                                <td>
+                                                                    <div>
+                                                                        <a href="javascript:void(0)" onClick={() => this.DeleteKey(apiKey)}><i className="fa fa-trash pl-5" style={{ fontSize: "16px" }}></i></a>
+                                                                        <a href="javascript:void(0)" onClick={() => this.ViewData(apiKey)}><i className="fa fa-eye pl-5" style={{ fontSize: "16px" }}></i></a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        })
                                                         }
 
                                                     </tbody>

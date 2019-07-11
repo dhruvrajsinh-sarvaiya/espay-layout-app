@@ -6,7 +6,6 @@
 import validator from 'validator';
 import { isScriptTag, isHtmlTag } from '../../helpers/helpers';
 
-
 module.exports = function validateAffiliateReport(data) {
     let errors = {};
 
@@ -19,11 +18,11 @@ module.exports = function validateAffiliateReport(data) {
     }
 
     if (typeof (data.TrnRefNo) !== 'undefined' && !validator.isEmpty(data.TrnRefNo + '')) {
-        if (typeof (data.TrnRefNo) !== 'undefined' && isScriptTag(data.TrnRefNo)) {
+        if (isScriptTag(data.TrnRefNo)) {
             errors.TrnRefNo = "my_account.err.scriptTag";
-        } else if (typeof (data.TrnRefNo) !== 'undefined' && isHtmlTag(data.TrnRefNo)) {
+        } else if (isHtmlTag(data.TrnRefNo)) {
             errors.TrnRefNo = "my_account.err.htmlTag";
-        } else if (typeof (data.TrnRefNo) !== 'undefined' && !validator.isNumeric(data.TrnRefNo)) {
+        } else if (!validator.isNumeric(data.TrnRefNo)) {
             errors.TrnRefNo = "my_account.err.fieldNum";
         }
     }

@@ -48,7 +48,7 @@ class BuyOrderRow extends Component {
         style={{
           cursor: "pointer", background: "linear-gradient(rgba(18,184,134,.15),rgba(18,184,134,.15)) 100% 0%",
           backgroundRepeat: "no-repeat",
-          backgroundSize: (highDepth >= 100 && highDepth ? '100%' : highDepth + "%")
+          backgroundSize: (highDepth >= 100 ? '100%' : highDepth + "%")
         }}
         className={(this.props.UpDownBit === 1) ? changeClass + " buyOrderClass" : ''}
       >

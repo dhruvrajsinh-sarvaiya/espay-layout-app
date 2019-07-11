@@ -5,10 +5,7 @@
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
-import { swaggerGetAPI, redirectToLogin, loginErrCode, statusErrCodeList } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
-const statusErrCode = statusErrCodeList();
+import { swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
 // import types for dispatch puropse
 import {
     GET_ALL_BALANCE,
@@ -22,6 +19,7 @@ import {
     getWalletsBalanceSuccess,
     getWalletsBalanceFailure
 } from 'Actions/FundBalances';
+const lgnErrCode = loginErrCode();
 
 // get all balance method
 function* getAllBalanceSocket(payload) {

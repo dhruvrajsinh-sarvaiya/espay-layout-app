@@ -74,6 +74,7 @@ class TradeHistory extends Component {
             if (uniqueTags.indexOf(item.exchange) === -1) {
                 uniqueTags.push(item.exchange)
             }
+            return [];
         });
         for (i = 0; i <= uniqueTags.length; i++) {
             k = 1;
@@ -81,6 +82,7 @@ class TradeHistory extends Component {
                 if (uniqueTags[i] === item.exchange) {
                     countTags[i] = k++;
                 }
+                return [];
             });
         }
         return (

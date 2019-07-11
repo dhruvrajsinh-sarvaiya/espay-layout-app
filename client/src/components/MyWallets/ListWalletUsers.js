@@ -16,6 +16,11 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+//my wallets methods...
+import {
+    getWalletUserList,
+    addWalletUser
+} from 'Actions/MyWallets';
 //add wallet user request validator
 const validateAddUserRequest = require('../../validation/MyWallets/AddUserRequestValidator');
 //initial state
@@ -34,17 +39,7 @@ const initState = {
     errors: {},
     showConfirmation: false,
 }
-//my wallets methods...
-import {
-    getWalletUserList,
-    addWalletUser
-} from 'Actions/MyWallets';
-//button size
-const buttonSizeSmall = {
-    maxHeight: "28px",
-    minHeight: "28px",
-    maxWidth: "28px",
-};
+
 class ListWalletUsers extends Component {
     state = initState;
     //will mount fetch data

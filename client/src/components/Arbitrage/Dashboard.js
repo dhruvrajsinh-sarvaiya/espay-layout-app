@@ -5,10 +5,8 @@
  * changed by Tejas 
 */
 import React, { Component, Fragment } from 'react';
-
 // used for connect to store
 import { connect } from "react-redux";
-
 // import components
 import {
     BuySellTrade,
@@ -16,7 +14,6 @@ import {
     OrderTabList,
     PairSelection,
 } from "Components/Arbitrage";
-
 //import actions
 import {
     getArbitragePairList,
@@ -27,17 +24,11 @@ import {
     arbitrageMarketTradeHistory,
     arbitrageGetExchangeList
 } from "Actions/Arbitrage";
-
 // used for constants
 import AppConfig from 'Constants/AppConfig';
-
 // import for used jquery
 import $ from 'jquery';
-
-import {
-    getCurrencyList,
-} from 'Actions/Trade';
-
+import { getCurrencyList } from 'Actions/Trade';
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from "reactstrap"; // added by devang parekh (19-6-2019) for display modal
@@ -83,7 +74,6 @@ class Dashboard extends Component {
 
     // invoke before Compoent render
     componentWillMount() {
-
         // added by devang parekh (19-6-2019) check bit if priviously agree or not
         var accessPer = localStorage.getItem("_SmartTrading");
         if (accessPer === 'undefined' || accessPer === null || !accessPer) {
@@ -94,7 +84,6 @@ class Dashboard extends Component {
         const self = this;
         //load Currency List
         this.props.getArbitragePairList({});
-
         self.state.hubConnection.on("RecieveTradeHistoryArbitrage", (tradeHistoryDetail) => {
         });
 
@@ -126,6 +115,7 @@ class Dashboard extends Component {
                         }
                     }
                 }
+                this.updateStateForDynamicData();
             } catch (error) {
             }
         });
@@ -137,8 +127,7 @@ class Dashboard extends Component {
 
     // invoke when component recive props
     componentWillReceiveProps(nextprops) {
-        if (nextprops.pairList.length && nextprops.pairList !== null && nextprops.pairList !== this.state.pairList) {
-
+        if (nextprops.pairList !== null && nextprops.pairList.length && nextprops.pairList !== this.state.pairList) {
             // set Currency list if gets from API only     
             nextprops.pairList.map((item) => {
                 item.PairList.map((pairItem) => {
@@ -158,12 +147,12 @@ class Dashboard extends Component {
                     }
                 })
             });
-
+            this.updateStateForDynamicData();
         } else {
             this.setState({ showLoader: false });
         }
 
-        if (nextprops.wallet && nextprops.wallet !== null) {
+        if (nextprops.hasOwnProperty('wallet')) {
             if (nextprops.wallet.length !== 0) {
                 nextprops.wallet.map(value => {
                     if (this.state.secondCurrency === value.CoinName) {
@@ -181,25 +170,19 @@ class Dashboard extends Component {
                     }
                 });
             }
-
             this.setState({ Wallet: nextprops.wallet });
+            this.updateStateForDynamicData();
         }
     }
 
     // set buy orders for multiple or single record
     setBuyOrders = (price, amount, isMultiple, totalData, LpType) => {
-
         var bulkBuyOrder = []
         if (isMultiple === true) {
-
             bulkBuyOrder = this.state.bulkBuyOrder;
             if (typeof price !== 'undefined' && price != 0) {
-
                 if (totalData !== "" && totalData !== undefined && bulkBuyOrder && bulkBuyOrder.length) {
-
-                    bulkBuyOrder = this.state.bulkBuyOrder;
                     var isAvailable = bulkBuyOrder.findIndex(fav => fav.LpType === LpType);
-
                     if (isAvailable !== -1) {
                         let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                         bulkBuyOrder[isAvailable].rate = price;
@@ -216,9 +199,7 @@ class Dashboard extends Component {
                         })
                         bulkBuyOrder.formType = 1
                     }
-
                     bulkBuyOrder.bulkPercentage = (totalData != "" && totalData !== 'undefined') ? true : false
-
                 } else {
                     let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                     bulkBuyOrder.push({
@@ -230,7 +211,6 @@ class Dashboard extends Component {
                     bulkBuyOrder.formType = 1
                     bulkBuyOrder.bulkPercentage = (totalData != "" && totalData !== 'undefined') ? true : false
                 }
-
             }
             bulkBuyOrder.formType = 1
             this.setState({
@@ -243,7 +223,6 @@ class Dashboard extends Component {
         } else if (isMultiple === false) {
             if (this.state.bulkBuyOrder && this.state.bulkBuyOrder.length) {
                 if (price && price != 0) {
-
                     this.state.bulkBuyOrder.map((item, index) => {
                         if (item.LpType === LpType) {
                             if (this.state.bulkBuyOrder.length === 1) {
@@ -255,7 +234,6 @@ class Dashboard extends Component {
                         }
                         //return null
                     })
-
                     if (bulkBuyOrder && bulkBuyOrder.length) {
                         bulkBuyOrder.formType = 1
                         this.setState({
@@ -266,7 +244,6 @@ class Dashboard extends Component {
                             isBothOrder: false,
                         });
                     } else {
-
                         this.setState({
                             isBulkBuyOrder: false,
                             bulkBuyOrder: bulkBuyOrder,
@@ -275,10 +252,8 @@ class Dashboard extends Component {
                             bulkSellOrder: []
                         });
                     }
-
                 }
             } else {
-
                 this.setState({
                     isBulkBuyOrder: false,
                     bulkBuyOrder: bulkBuyOrder,
@@ -305,25 +280,16 @@ class Dashboard extends Component {
                 isBothOrder: false,
             });
         }
-
     }
 
     // set Sell orders for multiple or single record
     setSellOrders = (price, amount, isMultiple, totalData, LpType) => {
-
-        var bulkSellOrder = []
-
+        var bulkSellOrder = [];
         if (isMultiple === true) {
-
             bulkSellOrder = this.state.bulkSellOrder;
-
             if (price && price != 0) {
-
                 if (totalData !== "" && totalData !== undefined && bulkSellOrder && bulkSellOrder.length) {
-
-                    bulkSellOrder = this.state.bulkSellOrder;
                     var isAvailable = bulkSellOrder.findIndex(fav => fav.LpType === LpType);
-
                     if (isAvailable !== -1) {
                         let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                         bulkSellOrder[isAvailable].rate = price;
@@ -338,11 +304,9 @@ class Dashboard extends Component {
                             "total": (totalData != "" && totalData != undefined) ? totalData : total,
                             "LpType": LpType
                         })
-                        bulkSellOrder.formType = 2
+                        bulkSellOrder.formType = 2;
                     }
-
                     bulkSellOrder.bulkPercentage = (totalData != "" && totalData != undefined) ? true : false
-
                 } else {
                     let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
                     bulkSellOrder.push({
@@ -354,7 +318,6 @@ class Dashboard extends Component {
                     bulkSellOrder.formType = 2
                     bulkSellOrder.bulkPercentage = (totalData != "" && totalData !== undefined) ? true : false
                 }
-
             }
 
             this.setState({
@@ -364,14 +327,10 @@ class Dashboard extends Component {
                 bulkBuyOrder: [],
                 isBothOrder: false,
             })
-
         } else if (isMultiple === false) {
-
             if (this.state.bulkSellOrder && this.state.bulkSellOrder.length) {
                 if (price && price != 0) {
-
                     this.state.bulkSellOrder.map((item, index) => {
-
                         if (item.LpType === LpType) {
                             if (this.state.bulkSellOrder.length === 1) {
                                 bulkSellOrder = []
@@ -394,7 +353,6 @@ class Dashboard extends Component {
 
                     });
                 } else {
-
                     bulkSellOrder.formType = 2
                     this.setState({
                         isBulkBuyOrder: false,
@@ -404,7 +362,6 @@ class Dashboard extends Component {
                         bulkSellOrder: bulkSellOrder
                     });
                 }
-
             } else {
                 bulkSellOrder.formType = 2
                 this.setState({
@@ -416,6 +373,7 @@ class Dashboard extends Component {
                 });
             }
         }
+
         if (isMultiple === 'undefined') {
             if (price && price != 0) {
                 let total = parseFloat(parseFloat(price) * parseFloat(amount)).toFixed(8);
@@ -424,7 +382,6 @@ class Dashboard extends Component {
                 bulkSellOrder.total = total;
                 bulkSellOrder.formType = 2
                 bulkSellOrder.LpType = LpType
-
             }
 
             this.setState({
@@ -435,11 +392,9 @@ class Dashboard extends Component {
                 isBothOrder: false,
             });
         }
-
     }
 
     ClearAllFields = () => {
-
         this.setState({
             bulkBuyOrder: [],
             bulkSellOrder: [],
@@ -451,7 +406,6 @@ class Dashboard extends Component {
 
     // function for change selected currency pair
     changeCurrencyPair = (value) => {
-
         var pairs = "";
         if (value) {
             const oldPair = this.state.currencyPair;
@@ -471,20 +425,14 @@ class Dashboard extends Component {
                 bulkBuyOrder: [],
             });
             this.state.hubConnection.invoke("AddArbitragePairSubscription", pair, oldPair)
-                .catch((err) => { }
-                );
+                .catch((err) => {});
 
             const tempSecondCurrency = value.PairName.split("_")[1];
             if (this.state.secondCurrency !== tempSecondCurrency) {
-
                 this.state.hubConnection.invoke("AddArbitrageMarketSubscription", tempSecondCurrency, this.state.secondCurrency)
-                    .catch((err) => { }
-                    );
-                this.setState({
-                    secondCurrency: tempSecondCurrency,
-                });
+                    .catch((err) => {});
+                this.setState({ secondCurrency: tempSecondCurrency });
             }
-
         }
 
         // call All methods that are use in child components
@@ -493,7 +441,6 @@ class Dashboard extends Component {
         this.props.atbitrageSellerBook({ Pair: pairs });
         this.props.arbitrageMarketTradeHistory({ Pair: pairs });
         this.props.arbitrageGetExchangeList({ Pair: pairs });
-
     }
 
     // code added by devang parekh for handle modal (19-6-2019)
@@ -507,28 +454,26 @@ class Dashboard extends Component {
     }
     // end
 
-    render() {
-        var firstCurrencyWalletId = 0;
-        var secondCurrencyWalletId = 0;
+    updateStateForDynamicData = () => {
+        let firstCurrencyWalletId = 0;
+        let secondCurrencyWalletId = 0;
+        let firstCurrencyBalance = 0;
+        let secondCurrencyBalance = 0;
+        let currentBuyPrice = this.state.currentBuyPrice;
+        let currentSellPrice = this.state.currentSellPrice;
 
         if (this.state.Wallet.length !== 0) {
             var secondCurrencyBal = this.state.Wallet.findIndex(wallet => wallet.CoinName === this.state.secondCurrency && wallet.IsDefaultWallet === 1);
             var firstCurrencyBal = this.state.Wallet.findIndex(wallet => wallet.CoinName === this.state.firstCurrency && wallet.IsDefaultWallet === 1);
 
             if (secondCurrencyBal !== -1) {
-                this.state.secondCurrencyBalance = this.state.Wallet[secondCurrencyBal].Balance
+                secondCurrencyBalance = this.state.Wallet[secondCurrencyBal].Balance
                 secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID
-            } else {
-                this.state.secondCurrencyBalance = 0
             }
 
             if (firstCurrencyBal !== -1) {
-                this.state.firstCurrencyBalance = this.state.Wallet[firstCurrencyBal].Balance
+                firstCurrencyBalance = this.state.Wallet[firstCurrencyBal].Balance
                 firstCurrencyWalletId = this.state.Wallet[firstCurrencyBal].AccWalletID
-
-            } else {
-                this.state.firstCurrencyBalance = 0
-
 
             }
         }
@@ -536,14 +481,25 @@ class Dashboard extends Component {
         if (this.state.currentMarket) {
             this.state.currentMarket.map(value => {
                 if (value.firstCurrency === this.state.firstCurrency) {
-                    this.state.currentBuyPrice = value.BuyPrice
-                        this.state.currentSellPrice = value.SellPrice
-
+                    currentBuyPrice = value.BuyPrice
+                    currentSellPrice = value.SellPrice
                 }
-                // return null
             });
         }
 
+        //setTimeout( () => {
+            this.setState({ 
+                firstCurrencyWalletId : firstCurrencyWalletId,
+                secondCurrencyWalletId : secondCurrencyWalletId,
+                secondCurrencyBalance : secondCurrencyBalance,
+                firstCurrencyBalance : firstCurrencyBalance,
+                currentBuyPrice : currentBuyPrice,
+                currentSellPrice : currentSellPrice
+            });
+        //},200);
+    }
+
+    render() {
         return (
             <Fragment>
 

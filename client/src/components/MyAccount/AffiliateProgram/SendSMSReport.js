@@ -66,9 +66,7 @@ class SendSMSReport extends Component {
     getSendSMSList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState({ data: newObj });
 
         //For Action API...

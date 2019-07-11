@@ -3,24 +3,18 @@
 import React from "react";
 import { Table, Row, Col } from "reactstrap";
 import { Card } from "reactstrap";
-
 //import section loader
 import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 //import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
-
 // import Action 
 import {
   getMarketTradeHistory,
 } from 'Actions/Trade';
-
 // import connect function for store
 import { connect } from "react-redux";
-
 import $ from 'jquery';
 
 class MarketTradeRow extends React.Component {
@@ -64,155 +58,90 @@ class MarketTrade extends React.Component {
 
   // This will invoke After component render
   componentWillMount() {
-
     this.isComponentActive = 1;
-
     // code changed by devang parekh for handling margin trading process
     if (this.props.hasOwnProperty('marginTrading') && this.props.marginTrading === 1) {
-
       // Call Actions For Get Market history List
       this.props.getMarketTradeHistory({ Pair: this.props.currencyPair, marginTrading: 1 });
       this.processForMarginTrading(); // call for intialize socket listners for margin trading
-
     } else {
-
       // Call Actions For Get Market history List
       this.props.getMarketTradeHistory({ Pair: this.props.currencyPair });
       this.processForNormalTrading();// call for intialize socket listners for normal trading
-
     }
-
     // code end (21-2-2019)
-
   }
 
   // code for handle signalr listners for normal trading
   processForNormalTrading() {
-
     this.props.hubConnection.on('RecieveLastPrice', (receivedMessage) => {
-
-      //console.log("Get Data from signalR  ",receivedMessage);
       if (this.isComponentActive === 1 && receivedMessage !== null) {
-
         try {
-
           const marketCap = JSON.parse(receivedMessage);
-
           if ((marketCap.EventTime && this.state.socketLastPriceData.length === 0) ||
             (this.state.socketLastPriceData.length !== 0 && marketCap.EventTime > this.state.socketLastPriceData.EventTime)) {
-
             if (this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 0) {
               this.setState({
                 lastPrice: marketCap.Data.LastPrice,
                 socketLastPriceData: marketCap
               })
             }
-
           }
-
-        } catch (error) {
-
-        }
-
+        } catch (error) {}
       }
-
     });
 
     this.props.hubConnection.on('RecieveOrderHistory', (receivedMessage) => {
-      //console.log("Get Data from signalR RecieveOrderHistory", receivedMessage);
-
       if (this.isComponentActive === 1 && receivedMessage !== null) {
         try {
-
           const receivedMessageData = JSON.parse(receivedMessage);
-
           if ((receivedMessageData.EventTime && this.state.socketData.length === 0) ||
             (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
-
             if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 0) {
-
               var orderHistory = $.extend(true, [], this.state.marketTradeHistory);
-
               orderHistory.unshift(receivedMessageData.Data)
-
               this.setState({ marketTradeHistory: orderHistory, socketData: receivedMessageData });
-
             }
-
           }
-
-        } catch (error) {
-          //console.log(error)
-        }
-
+        } catch (error) {}
       }
-
     });
-
   }
 
   // code for handle signalr listners for margin trading
   processForMarginTrading() {
-
     this.props.hubConnection.on('RecieveLastPrice', (receivedMessage) => {
-
-      //console.log("margin Get Data from signalR  ",receivedMessage);
       if (this.isComponentActive === 1 && receivedMessage !== null) {
-
         try {
-
           const marketCap = JSON.parse(receivedMessage);
-
           if ((marketCap.EventTime && this.state.socketLastPriceData.length === 0) ||
             (this.state.socketLastPriceData.length !== 0 && marketCap.EventTime > this.state.socketLastPriceData.EventTime)) {
-
             if (this.props.currencyPair === marketCap.Parameter && typeof marketCap.IsMargin !== 'undefined' && marketCap.IsMargin === 1) {
               this.setState({
                 lastPrice: marketCap.Data.LastPrice,
                 socketLastPriceData: marketCap
               })
             }
-
           }
-
-        } catch (error) {
-          //console.log("market tradelast price ",error)
-        }
-
+        } catch (error) {}
       }
-
     });
 
     this.props.hubConnection.on('RecieveOrderHistory', (receivedMessage) => {
-      //console.log("margin Get Data from signalR RecieveOrderHistory", receivedMessage);
-
       if (this.isComponentActive === 1 && receivedMessage !== null) {
         try {
           const receivedMessageData = JSON.parse(receivedMessage);
-
           if ((receivedMessageData.EventTime && this.state.socketData.length === 0) ||
             (this.state.socketData.length !== 0 && receivedMessageData.EventTime > this.state.socketData.EventTime)) {
-
             if (this.props.currencyPair === receivedMessageData.Parameter && typeof receivedMessageData.IsMargin !== 'undefined' && receivedMessageData.IsMargin === 1) {
-
               var orderHistory = $.extend(true, [], this.state.marketTradeHistory);
-
               orderHistory.unshift(receivedMessageData.Data)
-
               this.setState({ marketTradeHistory: orderHistory, socketData: receivedMessageData });
-
             }
-
           }
-
-        } catch (error) {
-          //console.log("market history ",error)
-        }
-
+        } catch (error) {}
       }
-
     });
-
   }
 
   componentWillUnmount() {
@@ -220,8 +149,7 @@ class MarketTrade extends React.Component {
   }
 
   componentWillReceiveProps(nextprops) {
-
-    if (nextprops.marketTradeHistory && nextprops.marketTradeHistory !== null) {
+    if (nextprops.marketTradeHistory.length > 0) {
       // set Market Trade History list if gets from API only
       this.setState({
         marketTradeHistory: nextprops.marketTradeHistory,
@@ -232,23 +160,17 @@ class MarketTrade extends React.Component {
     if (nextprops.currentMarketCap && nextprops.currentMarketCap.LastPrice && nextprops.currentMarketCap.LastPrice > 0) {
       this.setState({ lastPrice: nextprops.currentMarketCap.LastPrice })
     }
-
   }
 
   // Render Component for Market Trade History Order
   render() {
-
     const MarketTradeData = this.state.marketTradeHistory;
     var indexValue = 0;
     var marketTradeHistoryList = [];
     if (this.state.marketTradeHistory.length !== 0) {
-
       MarketTradeData.map((newBuyOrder, key) => {
-
         if (newBuyOrder.IsCancel === 0) { // code add by devang parekh (8-4-2019), as per discuss with ritaben for handle partial cancel order settle date issue (because of this issue order comes with first which is already settled priviously another day)
-
           marketTradeHistoryList.push(
-
             <MarketTradeRow
               price={newBuyOrder.Price}
               Amount={newBuyOrder.Amount}
@@ -260,13 +182,9 @@ class MarketTrade extends React.Component {
               lastPrice={this.state.lastPrice}
               SettledQty={newBuyOrder.SettledQty}
             />
-
           );
-
           indexValue++;
-
         }
-
       });
     }
     // code end
@@ -324,7 +242,6 @@ class MarketTrade extends React.Component {
                 <Table className="table m-0 p-0">
                   <tbody>{marketTradeHistoryList}</tbody>
                 </Table>
-
                 {this.state.marketTradeHistory.length === 0 && (
                   <Row className="justify-content-center m-0">
                     <Col
@@ -346,20 +263,15 @@ class MarketTrade extends React.Component {
 }
 
 const mapStateToProps = ({ marketTradeHistory, currentMarketCap, settings }) => {
-
   return {
     marketTradeHistory: marketTradeHistory.marketHistory,
     loading: marketTradeHistory.loading,
     currentMarketCap: currentMarketCap.currentMarketCap,
-    darkMode: settings.darkMode,
-
+    darkMode: settings.darkMode
   };
-
 }
 
 // connect action with store for dispatch
-export default connect(
-  mapStateToProps,
-  {
-    getMarketTradeHistory,
-  })(MarketTrade);
+export default connect(mapStateToProps,{
+  getMarketTradeHistory,
+})(MarketTrade);

@@ -12,7 +12,7 @@ import JbsCollapsibleCard from "Components/JbsCollapsibleCard/JbsCollapsibleCard
 // intl messages
 import IntlMessages from "Util/IntlMessages";
 
-import { ResetpasswordWdgt } from "Components/MyAccount";
+import { ResetPasswordWdgt } from "Components/MyAccount";
 
 export default class ResetPassword extends Component {
   render() {
@@ -37,7 +37,7 @@ export default class ResetPassword extends Component {
             <ColoredLine color="Orange" />
           </div>
 
-          <ResetpasswordWdgt />
+          <ResetPasswordWdgt />
         </JbsCollapsibleCard>
       </div>
     );

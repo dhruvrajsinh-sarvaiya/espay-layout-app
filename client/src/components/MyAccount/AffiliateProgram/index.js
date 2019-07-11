@@ -18,12 +18,6 @@ const SignupForm = Loadable({
     loading: MyLoadingComponent
 });
 
-//Promotion...
-const Promotion = Loadable({
-    loader: () => import("./Promotion"),
-    loading: MyLoadingComponent
-});
-
 //Commissoin Pattern...
 const CommissionPattern = Loadable({
     loader: () => import("./CommissionPattern"),
@@ -98,7 +92,6 @@ const AffiliateConfirmationWdgt = Loadable({
 
 export {
     SignupForm,
-    Promotion,
     CommissionPattern,
     SendMailReport,
     SendSMSReport,

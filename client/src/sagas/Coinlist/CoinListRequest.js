@@ -27,16 +27,16 @@ import {
  * Send coin list Request
  */
 const getCoinListRequestRequest = async () =>
-await api.get('/api/private/v1/coinListRequest')
-    .then(response => response)
-    .catch(error => error);	
+    await api.get('/api/private/v1/coinListRequest')
+        .then(response => response)
+        .catch(error => error);
 /**
  * Send coin list request request To Server API call
  */
 const addNEWCoinListRequestData = async (coinListdata) =>
-    await api.post('/api/private/v1/coinListRequest/addCoinListFieldsData', {coinListdata})
+    await api.post('/api/private/v1/coinListRequest/addCoinListFieldsData', { coinListdata })
         .then(response => response)
-        .catch(error => JSON.parse(JSON.stringify(error.response)));	
+        .catch(error => JSON.parse(JSON.stringify(error.response)));
 
 /**
  * Send Add Country Request To Server
@@ -49,25 +49,24 @@ const getCountryRequest = async (countrydata) => await api.get('/api/private/v1/
 function* getCoinListRequestAPI() {
     try {
         const response = yield call(getCoinListRequestRequest);
-        if (typeof response.data != 'undefined' && response.data.responseCode==0)
-        {
+        if (response.data !== undefined && response.data.responseCode === 0) {
             yield put(getCoinlistRequestSuccess(response.data));
-        }else{
+        } else {
             yield put(getCoinlistRequestFailure('Unable to Fetch Data.'));
         }
     } catch (error) {
         yield put(getCoinlistRequestFailure(error));
     }
 }
-	
+
 /**
  * Send coin list request form request To Server
  */
-function* addCoinListRequstServer({payload}) {
+function* addCoinListRequstServer({ payload }) {
     try {
         const response = yield call(addNEWCoinListRequestData, payload);
         //validate if data found in response 
-        if (typeof response.data != undefined && response.data.responseCode==0) {
+        if (response.data !== undefined && response.data.responseCode === 0) {
             yield put(addCoinListRequestSuccess(response.data));
         } else {
             yield put(addCoinListRequestFailure(response.data));
@@ -83,7 +82,7 @@ function* getCountryFromServer({ payload }) {
     try {
         const response = yield call(getCountryRequest, payload);
 
-        if (typeof response.data != 'undefined' && response.responseCode == 0) {
+        if (response.data !== undefined && response.responseCode === 0) {
             yield put(getCountrySuccess(response));
         } else {
             yield put(getCountryFailure(response));

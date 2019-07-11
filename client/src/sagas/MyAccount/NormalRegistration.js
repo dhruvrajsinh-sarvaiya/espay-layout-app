@@ -19,12 +19,10 @@ import {
 import { swaggerPostAPI } from 'Helpers/helpers';
 
 //Function for Normal Register
-function* normalRegisterAPI({payload}) {    
-    const response = yield call(swaggerPostAPI,'api/SignUp/register',payload);
-    // console.log('Request',payload);
-    // console.log('Response',response);
+function* normalRegisterAPI({ payload }) {
+    const response = yield call(swaggerPostAPI, 'api/SignUp/register', payload);
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(normalRegisterSuccess(response));
         } else {
             yield put(normalRegisterFailure(response));
@@ -35,10 +33,10 @@ function* normalRegisterAPI({payload}) {
 }
 
 //Function for Resend Confirmation Link
-function* resendConfirmationLinkAPI({payload}) {
-    const response = yield call(swaggerPostAPI,'api/SignUp/ReSendRegisterlink',payload);
+function* resendConfirmationLinkAPI({ payload }) {
+    const response = yield call(swaggerPostAPI, 'api/SignUp/ReSendRegisterlink', payload);
     try {
-        if(response.ReturnCode === 0) {
+        if (response.ReturnCode === 0) {
             yield put(resendConfirmationLinkSuccess(response));
         } else {
             yield put(resendConfirmationLinkFailure(response));

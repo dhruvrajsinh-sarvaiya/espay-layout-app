@@ -23,7 +23,7 @@ const topGainersData = [
 
 function* topGainersMethod() {
   try {
-    if (topGainersData !== "") {
+    if (topGainersData != "") {
       yield put(listTopGainersSuccess(topGainersData));
     } else {
       yield put(listTopGainersFailure(error));

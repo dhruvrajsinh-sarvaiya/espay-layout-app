@@ -14,7 +14,6 @@ const watchMessages = (socket, request) => eventChannel((emit) => {
     };
     socket.onmessage = (event) => {
         const msg = JSON.parse(event.data);
-        console.log(msg);
         emit(msg);
     };
     return () => {
@@ -34,7 +33,6 @@ function* webSocketAPI({ request_method, method, main_method, payload }) {
         r: main_method, //Main Method Section (Start to 0)
         o: payload
     }
-    console.log('Socket', request);
 
     const socketChannel = yield call(watchMessages, socket, request);
     const response = yield take(socketChannel);

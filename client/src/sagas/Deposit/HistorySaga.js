@@ -5,10 +5,7 @@
 */
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import AppConfig from 'Constants/AppConfig';
-const socketApiUrl = AppConfig.socketAPIUrl;
-import { swaggerGetAPI, redirectToLogin, loginErrCode, statusErrCodeList } from 'Helpers/helpers';
-const lgnErrCode = loginErrCode();
-const statusErrCode = statusErrCodeList();
+import { swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
 // import types for dispatch puropse
 import {
     GET_DEPOSIT_HISTORY
@@ -19,6 +16,7 @@ import {
     getDepositHistorySuccess,
     getDepositHistoryFailure
 } from 'Actions/Deposit';
+const lgnErrCode = loginErrCode();
 
 function* getDepositHistorySocket(payload) {
     var url = '';
@@ -41,7 +39,6 @@ function* getDepositHistorySocket(payload) {
                 yield put(getDepositHistoryFailure(responseFromSocket.ReturnMsg));
         }
     } catch (error) {
-        console.log(error);
         yield put(getDepositHistoryFailure(error));
     }
 

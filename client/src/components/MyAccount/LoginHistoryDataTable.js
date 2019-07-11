@@ -88,7 +88,7 @@ class LoginHistoryDataTable extends Component {
 		if (nextProps.data.ReturnCode === 1 || nextProps.data.ReturnCode === 9) {
 			var errMsg = nextProps.data.ErrorCode === 1 ? nextProps.data.ReturnMsg : <IntlMessages id={`apiErrCode.${nextProps.data.ErrorCode}`} />;
 			NotificationManager.error(errMsg);
-		} else if (Object.keys(nextProps.data).length > 0 && (typeof (nextProps.data.LoginHistoryList) !== 'undefined' || nextProps.data.LoginHistoryList.length > 0)) {
+		} else if (Object.keys(nextProps.data).length > 0 && nextProps.data.LoginHistoryList !== undefined && nextProps.data.LoginHistoryList.length > 0) {
 			this.setState({ list: nextProps.data.LoginHistoryList, totalCount: nextProps.data.TotalCount });
 		}
 	}
@@ -140,7 +140,7 @@ class LoginHistoryDataTable extends Component {
 		var newObj = Object.assign({}, this.state.datalist);
 		newObj['PageIndex'] = PageIndex > 0 ? PageIndex : this.state.datalist.PageIndex;
 		if (Page_Size > 0) {
-			newObj['Page_Size'] = Page_Size > 0 ? Page_Size : this.state.datalist.Page_Size;
+			newObj['Page_Size'] = Page_Size;
 		}
 		this.setState({ datalist: newObj });
 

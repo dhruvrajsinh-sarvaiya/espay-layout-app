@@ -54,7 +54,7 @@ class WithdrawMargin extends Component {
 	 */
 	toggleShowModal = () => {
 		this.setState({
-			showModal: !this.state.showModal,
+			showModal: this.state.showModal ? false : true,
 			notificationFlag: false,
 		});
 	};
@@ -64,7 +64,7 @@ class WithdrawMargin extends Component {
 	toggleShowConfirmModal = () => {
 		this.setState({
 			showConfirmModal: !this.state.showConfirmModal,
-			showModal: !this.state.showModal,
+			showModal: this.state.showModal ? false : true,
 			flag: false,
 		});
 	};

@@ -13,29 +13,27 @@ import {
 
 // initial state
 const INIT_STATE = {
-    regioncontent:[],
+    regioncontent: [],
     loading: false,
-    data:[],
+    data: [],
 };
 
-export default (state,action) => {
-	if (typeof state === 'undefined') {
+export default (state, action) => {
+    if (typeof state === 'undefined') {
         return INIT_STATE
     }
-    //console.log("regions",action.payload);
     switch (action.type) {
         // get Region List
         case GET_REGIONS:
-            return { ...state,loading:true,data:[]};
+            return { ...state, loading: true, data: [] };
 
         // get Region List success
         case GET_REGIONS_SUCCESS:
-            return { ...state, loading: false,data:[],regioncontent:action.payload};
+            return { ...state, loading: false, data: [], regioncontent: action.payload };
 
         // get Region List failure
         case GET_REGIONS_FAILURE:
-            //NotificationManager.error(action.payload)
-            return {...state, loading: false,data:action.payload};
+            return { ...state, loading: false, data: action.payload };
 
         default: return { ...state };
     }

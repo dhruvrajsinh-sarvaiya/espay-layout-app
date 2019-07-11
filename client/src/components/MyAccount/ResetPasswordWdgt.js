@@ -80,7 +80,7 @@ class ResetPasswordWdgt extends Component {
     }
 
     render() {
-        const { err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
+        const { password, confirmPassword, err_alert, err_msg, success_msg, success_alert, loading, errors } = this.state;
         return (
             <div className="forgotconfirmradius">
                 {success_msg && (
@@ -125,7 +125,7 @@ class ResetPasswordWdgt extends Component {
                                         type="password"
                                         tabIndex="1"
                                         name="password"
-                                        // value={password} //Added By Bharat Jograna
+                                        value={password} //Added By Bharat Jograna
                                         id="password"
                                         placeholder={placeholder}
                                         onChange={this.onChange}
@@ -153,7 +153,7 @@ class ResetPasswordWdgt extends Component {
                                         type="password"
                                         tabIndex="2"
                                         name="confirmPassword"
-                                        // value={confirmPassword} //Added By Bharat Jograna
+                                        value={confirmPassword} //Added By Bharat Jograna
                                         id="confirmPassword"
                                         placeholder={placeholder}
                                         onChange={this.onChange}

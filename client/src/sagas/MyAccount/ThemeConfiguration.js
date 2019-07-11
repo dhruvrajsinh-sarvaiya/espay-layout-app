@@ -24,7 +24,7 @@ const languages = [
  */
 function* getLanguageListMethod() {
   try {
-    if (languages !== "") {
+    if (languages != "") {
       yield put(getLanguageListSuccess(languages));
     } else {
       yield put(getLanguageListFailure(error));

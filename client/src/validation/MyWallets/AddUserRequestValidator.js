@@ -7,7 +7,6 @@
 import validator from 'validator';
 
 module.exports = function validateAddUserRequest(data) {
-    console.log(data);
     let errors = {};
     //validate email address
     if (validator.isEmpty(data.Email)) {

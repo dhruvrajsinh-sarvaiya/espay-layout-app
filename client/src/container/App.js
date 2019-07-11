@@ -88,13 +88,13 @@ const InitialPath = ({ Component, ...rest, authUser, location, match, path }) =>
 		return (
 			<Route
 				{...rest}
-				render={props => <Component {...props} />}
+				children={props => <Component {...props} />}
 			/>);
 	} else {
 		return (
 			<Route
 				{...rest}
-				render={props =>
+				children={props =>
 					authUser
 						? <Component {...props} />
 						: <Redirect
@@ -183,7 +183,7 @@ class App extends Component {
 					<Route path="/invite-confirm" component={UserConfirmationWdgt} /> {/* Added by Saloni Rathod */}
 					<Route path="/landingpage" component={LandingPage} />
 					<Route path="/welcome" component={landingcooldexPage} />
-					<Route path="/callback" render={(props) => { return <Callback {...props} /> }} />
+					<Route path="/callback" children={(props) => { return <Callback {...props} /> }} />
 					<Route path="/forgot-confirm" component={ForgotConfirmationWdgt} />
 					<Route path="/terms-of-service" component={TermsofService} />
 					<Route path="/maintenance" component={Maintainance} />

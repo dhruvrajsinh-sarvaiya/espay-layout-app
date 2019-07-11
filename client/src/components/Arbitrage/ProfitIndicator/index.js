@@ -15,15 +15,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import { injectIntl } from 'react-intl';
-
-import {
-    getArbitragePairList,
-    getAribitrageProfitIndicator
-} from "Actions/Arbitrage";
-
+import { getArbitragePairList, getAribitrageProfitIndicator } from "Actions/Arbitrage";
 import PairSelection from "../PairSelection";
 import AppConfig from 'Constants/AppConfig';
-
 import classnames from "classnames";
 
 // used for convert messages in different langauages Added by Tejas
@@ -80,13 +74,9 @@ class ProfitIndicator extends Component {
 
                     }
 
-                } catch (error) {
-                }
-
+                } catch (error) { }
             }
-
         });
-
     }
 
     componentWillUnmount() {
@@ -96,14 +86,12 @@ class ProfitIndicator extends Component {
             .catch((err) => { }
             );
         // end
-
         this.isComponentActive = 0;
-
     }
 
     componentWillReceiveProps(nextProps) {
 
-        if (nextProps.pairList.length && nextProps.pairList !== null && nextProps.pairList !== this.state.pairList) {
+        if (nextProps.pairList !== null && nextProps.pairList.length > 0 && nextProps.pairList !== this.state.pairList) {
 
             // set Currency list if gets from API only          
             this.setState({
@@ -111,11 +99,7 @@ class ProfitIndicator extends Component {
             });
 
         } else if (nextProps.pairList !== undefined && !nextProps.pairList.length) {
-
-            this.setState({
-                pairList: [],
-            });
-
+            this.setState({ pairList: [], });
         }
 
         if (nextProps.arbitrageProfitIndicatorData && nextProps.arbitrageProfitIndicatorData.ReturnCode !== undefined
@@ -130,13 +114,8 @@ class ProfitIndicator extends Component {
         } else if (nextProps.arbitrageProfitIndicatorData && nextProps.arbitrageProfitIndicatorData.ReturnCode !== undefined
             && nextProps.arbitrageProfitIndicatorData.ReturnCode === 0 && nextProps.arbitrageProfitIndicatorData.response
             && !Object.keys(nextProps.arbitrageProfitIndicatorData.response).length) {
-
-            this.setState({
-                profitIndicatorList: [],
-            });
-
+            this.setState({ profitIndicatorList: [] });
         }
-
     }
 
     changePair = (value) => {
@@ -149,7 +128,6 @@ class ProfitIndicator extends Component {
 
         this.setState({ pairName: value.PairName })
         this.props.getAribitrageProfitIndicator({ PairName: value.PairName });
-
     }
 
     handleChangeIndex(index) {
@@ -169,7 +147,6 @@ class ProfitIndicator extends Component {
                     fullBlock
                     customClasses="overflow-hidden"
                 >
-
                     <div className="row px-20 py-5 mt-20 profit_selector">
                         <div className="col-sm-3">
                             <PairSelection
@@ -225,11 +202,11 @@ class ProfitIndicator extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {profitIndicatorList.BUY.map(function (buyItem) {
-                                                return <tr>
+                                            {profitIndicatorList.BUY.map(function (buyItem, index) {
+                                                return <tr key={index}>
                                                     <th>{buyItem.ProviderName} ({buyItem.LTP})</th>
-                                                    {buyItem.Providers.map(function (buySubItem) {
-                                                        return <th className={buySubItem.Profit > 0 ? 'text-black-pro' : buySubItem.Profit < 0 ? 'text-black-profit' : ''}>{parseFloat(buySubItem.Profit).toFixed(2)}%</th>
+                                                    {buyItem.Providers.map(function (buySubItem, i) {
+                                                        return <th key={i} className={buySubItem.Profit > 0 ? 'text-black-pro' : buySubItem.Profit < 0 ? 'text-black-profit' : ''}>{parseFloat(buySubItem.Profit).toFixed(2)}%</th>
                                                     })}
                                                 </tr>
                                             })}
@@ -246,17 +223,17 @@ class ProfitIndicator extends Component {
                                         <thead>
                                             <tr>
                                                 <th>{this.state.pairName}</th>
-                                                {profitIndicatorList.SELL[0].Providers.map(function (item) {
-                                                    return <th>{item.ProviderName} ({item.LTP})</th>
+                                                {profitIndicatorList.SELL[0].Providers.map(function (item, i) {
+                                                    return <th key={i}>{item.ProviderName} ({item.LTP})</th>
                                                 })}
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {profitIndicatorList.SELL.map(function (sellItem) {
-                                                return <tr>
+                                            {profitIndicatorList.SELL.map(function (sellItem, index) {
+                                                return <tr key={index}>
                                                     <th>{sellItem.ProviderName} ({sellItem.LTP})</th>
-                                                    {sellItem.Providers.map(function (sellSubItem) {
-                                                        return <th className={sellSubItem.Profit > 0 ? 'text-black-pro' : sellSubItem.Profit < 0 ? 'text-black-profit' : ''}>{parseFloat(sellSubItem.Profit).toFixed(2)}%</th>
+                                                    {sellItem.Providers.map(function (sellSubItem, i) {
+                                                        return <th key={i} className={sellSubItem.Profit > 0 ? 'text-black-pro' : sellSubItem.Profit < 0 ? 'text-black-profit' : ''}>{parseFloat(sellSubItem.Profit).toFixed(2)}%</th>
                                                     })}
                                                 </tr>
 
@@ -271,8 +248,6 @@ class ProfitIndicator extends Component {
                         </SwipeableViews>
                     </div>
                 </JbsCollapsibleCard>
-
-
             </Fragment>
         );
     }

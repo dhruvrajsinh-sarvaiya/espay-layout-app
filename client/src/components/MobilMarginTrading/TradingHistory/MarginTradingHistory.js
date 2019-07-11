@@ -120,7 +120,7 @@ class MarginTradingHistory extends Component {
 				getTransactionHistory: 0,
 				transactionList: [],
 			})
-		} else if (this.state.getTransactionHistory && (nextprops.transactionList !== null || nextprops.transactionList.length > 0)) {
+		} else if (this.state.getTransactionHistory && nextprops.transactionList.length > 0) {
 			this.setState({
 				transactionList: nextprops.transactionList,
 				getTransactionHistory: 0
@@ -139,7 +139,6 @@ class MarginTradingHistory extends Component {
 	render() {
 
 		const intl = this.props.intl;
-		//intl.formatMessage({ id: 'sidebar.openOrders.tableHeading.tradeid'})
 		var pairs = []
 		if (this.state.pairList.length) {
 			this.state.pairList.map(value => {
@@ -276,11 +275,6 @@ class MarginTradingHistory extends Component {
 														<option value="1">{success}</option>
 													}
 												</IntlMessages>
-												{/* <IntlMessages id="sidebar.transactionHistory.filterLabel.status.open">
-												{ (open) =>
-													<option value="2">{open}</option>
-												}
-											</IntlMessages> */}
 												<IntlMessages id="sidebar.transactionHistory.filterLabel.status.cancel">
 													{(cancel) =>
 														<option value="9">{cancel}</option>

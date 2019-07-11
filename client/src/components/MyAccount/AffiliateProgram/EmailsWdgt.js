@@ -20,18 +20,17 @@ class EmailsWdgt extends Component {
             errors: {},
             loading: false,
             EmailList: '',
-            emaildata:'',
+            emaildata: '',
         };
         this.onChange = this.onChange.bind(this);
         this.resetData = this.resetData.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onSubmit = (event) => {
         event.preventDefault();
         var newObj = Object.assign({}, this.state.EmailList);
-        const { errors, isValid,emaildata } = emailvalidate(this.state.EmailList);
-        this.setState({ errors: errors,emaildata:emaildata });
+        const { errors, isValid, emaildata } = emailvalidate(this.state.EmailList);
+        this.setState({ errors: errors, emaildata: emaildata });
 
         if (isValid) {
             var myString = newObj.EmailList;
@@ -67,11 +66,11 @@ class EmailsWdgt extends Component {
     }
 
     render() {
-        const { errors,emaildata } = this.state;
+        const { errors, emaildata } = this.state;
         const { EmailList } = this.state.EmailList;
         return (
             <Fragment>
-                
+
                 <Form>
                     <FormGroup>
                         <Label for="EmailIds"><IntlMessages id="sidebar.enterEmailId" /><span className="text-danger">*</span></Label>
@@ -81,7 +80,7 @@ class EmailsWdgt extends Component {
                             }
                         </IntlMessages>
                         <h5 className="sml_notes mt-2"><IntlMessages id="sidebar.multiplEmailNote" /></h5>
-                        {errors.EmailList && <div className="text-danger text-left"><IntlMessages id={errors.EmailList} values={{emaildata:emaildata}} /></div>}
+                        {errors.EmailList && <div className="text-danger text-left"><IntlMessages id={errors.EmailList} values={{ emaildata: emaildata }} /></div>}
                     </FormGroup>
                     <FormGroup className=" text-left ">
                         <Button onClick={this.onSubmit} className="mr-10 perverbtn"><IntlMessages id="sidebar.btnSend" /></Button>

@@ -4,7 +4,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Joyride from "react-joyride";
-import $ from "jquery";
 import { connect } from "react-redux";
 
 // redux action

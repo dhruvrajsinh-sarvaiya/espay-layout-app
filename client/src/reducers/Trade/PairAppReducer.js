@@ -29,8 +29,8 @@ const INIT_STATE = {
 export default (state, action) => {
     if (typeof state === 'undefined') {
         return INIT_STATE;
-    }    
-    
+    }
+
     switch (action.type) {
 
         // get pair list
@@ -56,7 +56,6 @@ export default (state, action) => {
 
         // update pair list failure
         case UPDATE_PAIR_FAILURE:
-            console.log('UPDATE_PAIR_FAILURE', action.payload);
             return { ...state }
 
         // update pair list
@@ -84,7 +83,6 @@ export default (state, action) => {
         // update pair list failure
         case GET_TASK_FAILURE:
             return { ...state, success: false }
-
 
         default: return { ...state };
     }

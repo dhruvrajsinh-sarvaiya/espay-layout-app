@@ -4,12 +4,7 @@
     File Comment : Top Looser Grid
 */
 import React, { Fragment, Component } from 'react';
-import Slide from '@material-ui/core/Slide';
 import { GridLayout } from './Widgets';
-
-function Transition(props) {
-    return <Slide direction="up" {...props} />;
-}
 
 const gainerList = [
     {

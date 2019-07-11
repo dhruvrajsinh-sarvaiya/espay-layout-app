@@ -2,16 +2,12 @@
 
 import React from "react";
 import { Row, Col, Alert } from "reactstrap";
-
 //import section loader
 import JbsPropogateLoader from "Components/JbsPageLoader/JbsPropogateLoader";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
 // import Actions dor market cap list
 import { getMarketCapList } from "Actions/Trade";
-
 // import connect function for store
 import { connect } from "react-redux";
 
@@ -59,7 +55,6 @@ class CurrentMarket extends React.Component {
     // code for handle signalr listners for normal trading
     processForNormalTrading() {
         this.props.hubConnection.on("RecieveMarketData", (receivedMessage) => {
-            //console.log("Get Data from signalR  ",receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -88,7 +83,6 @@ class CurrentMarket extends React.Component {
         });
 
         this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
-            //console.log("Get Data from signalR  ",receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -121,7 +115,6 @@ class CurrentMarket extends React.Component {
     // code for handle signalr listners for margin trading
     processForMarginTrading() {
         this.props.hubConnection.on("RecieveMarketData", (receivedMessage) => {
-            //console.log("margin Get Data from signalR  ",receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -146,14 +139,11 @@ class CurrentMarket extends React.Component {
                             });
                         }
                     }
-                } catch (error) {
-                    //console.log("error market data",error)
-                }
+                } catch (error) { }
             }
         });
 
         this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
-            //console.log("margin Get Data from signalR  ",receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -208,7 +198,6 @@ class CurrentMarket extends React.Component {
 
     // Render Component for Current MArket List
     render() {
-
         var price = null;
 
         // get price and old price
@@ -228,15 +217,13 @@ class CurrentMarket extends React.Component {
 
         return (
             <div className="p-0 m-0">
-                {this.state.currentMarket ? (
+                {this.state.currentMarket.length > 0 ? (
                     <div className="row text-center m-0 p-0">
-                        {this.props.loading && (
-                            <JbsPropogateLoader loading={this.props.loading} />
-                        )}
+                        {this.props.loading && (<JbsPropogateLoader loading={this.props.loading} />)}
                         <Col xs={12} className="Mobilecurrentmarkettop">
                             <Row>
                                 <Col xs={6} className="mobileupdown">
-                                    {this.state.upDownBit ? (
+                                    {this.state.upDownBit !== null ? (
                                         <span className="text-center text-success">
                                             {parseFloat(price).toFixed(8)}{" "}
                                             <i className="ti-arrow-up" />
@@ -249,9 +236,7 @@ class CurrentMarket extends React.Component {
                                         )}
                                 </Col>
                                 <Col xs={6}>
-                                    <p>{
-                                        <IntlMessages id="trading.marketcap.label.24hchange" />
-                                    }
+                                    <p>{<IntlMessages id="trading.marketcap.label.24hchange" />}
                                     </p>
                                     <h3
                                         className={
@@ -274,9 +259,7 @@ class CurrentMarket extends React.Component {
                             <Row>
                                 <Col xs={4}>
                                     <p>
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hhigh" />
-                                        }
+                                        {<IntlMessages id="trading.marketcap.label.24hhigh" />}
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.High24 !==
@@ -290,9 +273,7 @@ class CurrentMarket extends React.Component {
                                 </Col>
                                 <Col xs={4}>
                                     <p>
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hlow" />
-                                        }
+                                        {<IntlMessages id="trading.marketcap.label.24hlow" />}
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.Low24 !==
@@ -305,9 +286,7 @@ class CurrentMarket extends React.Component {
                                 </Col>
                                 <Col xs={4}>
                                     <p>
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hvoulme" />
-                                        }
+                                        {<IntlMessages id="trading.marketcap.label.24hvoulme" />}
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.Volume24 !==
@@ -325,7 +304,7 @@ class CurrentMarket extends React.Component {
                         <Col md={12}>
                             <ul className="currentmarkettop">
                                 <li>
-                                    {this.state.upDownBit ? (
+                                    {this.state.upDownBit !== null ? (
                                         <span className="text-center text-success">
                                             {parseFloat(price).toFixed(8)}{" "}
                                             <i className="ti-arrow-up" /> <p />
@@ -341,9 +320,8 @@ class CurrentMarket extends React.Component {
                                 <li>
                                     <p>
                                         {" "}
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hchange" />
-                                        }{" "}
+                                        {<IntlMessages id="trading.marketcap.label.24hchange" />}
+                                        {" "}
                                     </p>
                                     <h3
                                         className={
@@ -364,9 +342,8 @@ class CurrentMarket extends React.Component {
                                 </li>
                                 <li>
                                     <p>
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hhigh" />
-                                        }{" "}
+                                        {<IntlMessages id="trading.marketcap.label.24hhigh" />}
+                                        {" "}
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.High24 !==
@@ -381,9 +358,8 @@ class CurrentMarket extends React.Component {
                                 <li>
                                     <p>
                                         {" "}
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hlow" />
-                                        }{" "}
+                                        {<IntlMessages id="trading.marketcap.label.24hlow" />}
+                                        {" "}
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.Low24 !==
@@ -396,9 +372,7 @@ class CurrentMarket extends React.Component {
                                 </li>
                                 <li>
                                     <p>
-                                        {
-                                            <IntlMessages id="trading.marketcap.label.24hvoulme" />
-                                        }
+                                        {<IntlMessages id="trading.marketcap.label.24hvoulme" />}
                                     </p>
                                     <h3>
                                         {this.state.currentMarket.Volume24 !==
@@ -417,9 +391,7 @@ class CurrentMarket extends React.Component {
                         <div>
                             <span>
                                 <Alert color="danger" className="text-center fs-32">
-                                    {
-                                        <IntlMessages id="trading.marketcap.label.nodata" />
-                                    }
+                                    {<IntlMessages id="trading.marketcap.label.nodata" />}
                                 </Alert>
                             </span>
                         </div>

@@ -69,9 +69,7 @@ class FacebookShareReport extends Component {
     getFacebookShareList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState({ data: newObj });
 
         //For Action API...
@@ -191,7 +189,7 @@ class FacebookShareReport extends Component {
                 {loading && <JbsSectionLoader />}
                 <JbsCollapsibleCard>
                     <div className="top-filter row">
-                    {/** Added By Bharat Jograna */}
+                        {/** Added By Bharat Jograna */}
                         <FormGroup className="col-md-2 col-sm-4">
                             <Label for="FromDate"><IntlMessages id="widgets.startDate" /><span className="text-danger">*</span></Label>
                             <Input type="date" name="FromDate" id="FromDate" placeholder="dd/mm/yyyy" value={FromDate} max={today} onChange={(e) => this.onChange(e)} />

@@ -118,9 +118,7 @@ class IPWhitelistWdgt extends Component {
 	IPWhitelist = (PageIndex, PageSize) => {
 		var newObj = Object.assign({}, this.state.datalist);
 		newObj['PageIndex'] = PageIndex > 0 ? PageIndex : this.state.datalist.PageIndex;
-		if (PageSize > 0) {
-			newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.datalist.PageSize;
-		}
+		newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
 		this.setState({ datalist: newObj });
 
 		//For Action API...
@@ -141,7 +139,7 @@ class IPWhitelistWdgt extends Component {
 				this.setState({ loading: true });
 				setTimeout(() => this.props.listIPWhitelist(this.state.datalist), 2000);
 			}
-		} else if (Object.keys(nextProps.data).length > 0 && (typeof (nextProps.data.IpList) !== 'undefined' || nextProps.data.IpList.length > 0)) {
+		} else if (Object.keys(nextProps.data).length > 0 && (nextProps.data.IpList) !== undefined && nextProps.data.IpList.length > 0) {
 			this.setState({ list: nextProps.data.IpList, totalCount: nextProps.data.TotalRow });
 		}
 	}

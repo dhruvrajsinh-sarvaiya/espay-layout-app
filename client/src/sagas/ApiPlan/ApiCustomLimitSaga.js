@@ -45,7 +45,7 @@ function* getCustomLimitsDetail({ payload }) {
         const response = yield call(swaggerGetAPI, 'api/APIConfiguration/GetUserAPICustomLimit/' + Data.SubscribeId, {}, headers);
 
         // set response if its available else set error message
-        if (response && response != null && response.ReturnCode === 0) {
+        if (response != null && response.ReturnCode === 0) {
             yield put(getCustomLimitsSuccess(response));
         } else {
             yield put(getCustomLimitsFailure(response));
@@ -69,7 +69,7 @@ function* setCustomLimitsDetail({ payload }) {
         const response = yield call(swaggerPostAPI, 'api/APIConfiguration/SetUserAPICustomLimit', payload.Data, headers);
 
         // set response if its available else set error message
-        if (response && response != null && response.ReturnCode === 0) {
+        if (response != null && response.ReturnCode === 0) {
             yield put(setCustomLimitsSuccess(response));
         } else {
             yield put(setCustomLimitsFailure(response));
@@ -93,7 +93,7 @@ function* updateCustomLimitsDetail({ payload }) {
         const response = yield call(swaggerPostAPI, 'api/APIConfiguration/UpdateUserAPICustomLimit', payload.Data, headers);
 
         // set response if its available else set error message
-        if (response && response != null && response.ReturnCode === 0) {
+        if (response != null && response.ReturnCode === 0) {
             yield put(updateCustomLimitsSuccess(response));
         } else {
             yield put(updateCustomLimitsFailure(response));
@@ -117,7 +117,7 @@ function* setDefaultCustomLimitsDetail({ payload }) {
         const response = yield call(swaggerGetAPI, 'api/APIConfiguration/SetDefaultAPILimits/' + Data.LimitId, {}, headers);
 
         // set response if its available else set error message
-        if (response && response != null && response.ReturnCode === 0) {
+        if (response != null && response.ReturnCode === 0) {
             yield put(setDefaultCustomLimitsSuccess(response));
         } else {
             yield put(setDefaultCustomLimitsFailure(response));

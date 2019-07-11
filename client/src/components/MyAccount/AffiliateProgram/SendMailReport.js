@@ -67,9 +67,7 @@ class SendMailReport extends Component {
     getSendMailList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState({ data: newObj });
 
         //For Action API...
@@ -101,20 +99,20 @@ class SendMailReport extends Component {
         this.setState({ errors: errors })
         if (isValid) {
             const currentDate = new Date().toISOString().slice(0, 10)
-			if (FromDate !== "" && ToDate !== "") {
-				this.setState({ showReset: true });
-				if (FromDate > currentDate) {
-					NotificationManager.error(<IntlMessages id="trading.openorders.startcurrentdate" />);
-				} else if (ToDate < FromDate) {
+            if (FromDate !== "" && ToDate !== "") {
+                this.setState({ showReset: true });
+                if (FromDate > currentDate) {
+                    NotificationManager.error(<IntlMessages id="trading.openorders.startcurrentdate" />);
+                } else if (ToDate < FromDate) {
 
-					NotificationManager.error(<IntlMessages id="trading.openorders.datediff" />);
-				} else if (ToDate > currentDate) {
-            	NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
-				} else {
+                    NotificationManager.error(<IntlMessages id="trading.openorders.datediff" />);
+                } else if (ToDate > currentDate) {
+                    NotificationManager.error(<IntlMessages id="trading.openorders.endcurrentdate" />);
+                } else {
                     this.getSendMailList(newObj.PageNo, newObj.PageSize);
                     this.setState({ showReset: true });
-				}
-			}
+                }
+            }
 
 
         }
@@ -123,14 +121,14 @@ class SendMailReport extends Component {
     onChange = (event) => {
         var newObj = Object.assign({}, this.state.data);
         newObj[event.target.name] = event.target.value;
-        this.setState({ data: newObj  });
+        this.setState({ data: newObj });
     }
 
     componentWillReceiveProps(nextProps) {
         this.setState({ loading: nextProps.loading });
         if (nextProps.emaillist.ReturnCode === 1 || nextProps.emaillist.ReturnCode === 9) {
             this.setState({ list: [] });
-        } 
+        }
         if (nextProps.emaillist.ReturnCode === 0) {
             this.setState({ list: nextProps.emaillist.Response, totalCount: nextProps.emaillist.TotalCount });
         }
@@ -190,7 +188,7 @@ class SendMailReport extends Component {
                     <div className="top-filter row">
                         <FormGroup className="col-md-2 col-sm-4">
                             <Label for="FromDate"><IntlMessages id="widgets.startDate" /><span className="text-danger">*</span></Label>
-                            <Input type="date" name="FromDate" id="FromDate" placeholder="dd/mm/yyyy" value={FromDate}  max={today} onChange={(e) => this.onChange(e)} />
+                            <Input type="date" name="FromDate" id="FromDate" placeholder="dd/mm/yyyy" value={FromDate} max={today} onChange={(e) => this.onChange(e)} />
                             {errors.FromDate && <div className="text-danger text-left"><IntlMessages id={errors.FromDate} /></div>}
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
@@ -200,7 +198,7 @@ class SendMailReport extends Component {
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">
                             <div className="btn_area">
-                                <Button  variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 rounded-0 border-0 text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
+                                <Button variant="raised" disabled={((FromDate === "" || ToDate === "") ? true : false)} className="mr-10 rounded-0 border-0 text-white perverbtn" onClick={() => this.applyFilter()}><IntlMessages id="widgets.apply" /></Button>
                                 {showReset && <Button className="btn-danger rounded-0 border-0 text-white" onClick={(e) => this.clearFilter()}><IntlMessages id="button.clear" /></Button>}
                             </div>
                         </FormGroup>
@@ -213,7 +211,7 @@ class SendMailReport extends Component {
                         options={options}
                         data={list.map((lst, key) => {
                             return [
-                                key + 1+(PageNo*PageSize),
+                                key + 1 + (PageNo * PageSize),
                                 lst.FirstName + " " + lst.LastName,
                                 lst.UserName,
                                 lst.UserEmail,

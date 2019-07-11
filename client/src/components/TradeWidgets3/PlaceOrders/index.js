@@ -6,28 +6,20 @@ import classnames from "classnames";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-
 // function for connect store
 import { connect } from "react-redux";
 
-
 //import  Limit Order type Component
 import LimitOrder from "./LimitOrders";
-
 //import Market Order type Component
 import MarketOrder from "./MarketOrder";
-
 //import Stop Limit Order type Component
 import StopLimitOrder from "./StopLimitOrder";
-
 // import spot Limit Order
 import SpotOrder from "./SpotOrder";
-
 // import for internationalization
 import IntlMessages from "Util/IntlMessages";
-
 import { findDOMNode } from "react-dom";
-
 import { Link } from "react-router-dom";
 
 class PlaceOrder extends Component {
@@ -61,15 +53,11 @@ class PlaceOrder extends Component {
     }
 
     handleChange = (event, value) => {
-        this.setState({
-            value: value,
-        });
+        this.setState({ value: value });
     };
     componentWillReceiveProps(nextprops) {
         if (nextprops.currencyPair !== this.props.currencyPair) {
-            this.setState({
-                value: 0,
-            });
+            this.setState({ value: 0 });
         }
     }
 
@@ -80,9 +68,7 @@ class PlaceOrder extends Component {
     };
 
     handleClose = () => {
-        this.setState({
-            open: false,
-        });
+        this.setState({ open: false });
     };
 
     handleClickButton = () => {
@@ -94,14 +80,6 @@ class PlaceOrder extends Component {
 
     render() {
         const darkMode = this.props.darkMode;
-        if (
-            this.state.firstCurrencyBalance === 0 &&
-            this.state.secondCurrencyBalance === 0
-        ) {
-            this.state.firstCurrencyBalance = this.props.firstCurrencyBalance;
-            this.state.secondCurrencyBalance = this.props.secondCurrencyBalance;
-        }
-        
         return (
             <Fragment>
                 <div className="rightplaceorder">
@@ -204,20 +182,12 @@ class PlaceOrder extends Component {
                                 {...this.props}
                                 info={this.props}
                                 state={this.state}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 bulkBuyOrder={this.props.bulkBuyOrder}
                                 bulkSellOrder={this.props.bulkSellOrder}
-                                firstCurrencyWalletId={
-                                    this.props.firstCurrencyWalletId
-                                }
-                                secondCurrencyWalletId={
-                                    this.props.secondCurrencyWalletId
-                                }
+                                firstCurrencyWalletId={this.props.firstCurrencyWalletId}
+                                secondCurrencyWalletId={this.props.secondCurrencyWalletId}
                                 takers={this.props.takersValue}
                                 makers={this.props.makersValue}
                                 handleChange={this.state.value}
@@ -230,20 +200,12 @@ class PlaceOrder extends Component {
                                 {...this.props}
                                 info={this.props.state}
                                 state={this.state}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 bulkBuyOrder={this.props.bulkBuyOrder}
                                 bulkSellOrder={this.props.bulkSellOrder}
-                                firstCurrencyWalletId={
-                                    this.props.firstCurrencyWalletId
-                                }
-                                secondCurrencyWalletId={
-                                    this.props.secondCurrencyWalletId
-                                }
+                                firstCurrencyWalletId={this.props.firstCurrencyWalletId}
+                                secondCurrencyWalletId={this.props.secondCurrencyWalletId}
                                 takers={this.props.takersValue}
                                 makers={this.props.makersValue}
                             />
@@ -255,20 +217,12 @@ class PlaceOrder extends Component {
                                 {...this.props}
                                 info={this.props.state}
                                 state={this.state}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 bulkBuyOrder={this.props.bulkBuyOrder}
                                 bulkSellOrder={this.props.bulkSellOrder}
-                                firstCurrencyWalletId={
-                                    this.props.firstCurrencyWalletId
-                                }
-                                secondCurrencyWalletId={
-                                    this.props.secondCurrencyWalletId
-                                }
+                                firstCurrencyWalletId={this.props.firstCurrencyWalletId}
+                                secondCurrencyWalletId={this.props.secondCurrencyWalletId}
                                 takers={this.props.takersValue}
                                 makers={this.props.makersValue}
                             />
@@ -280,20 +234,12 @@ class PlaceOrder extends Component {
                                 {...this.props}
                                 info={this.props.state}
                                 state={this.state}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 bulkBuyOrder={this.props.bulkBuyOrder}
                                 bulkSellOrder={this.props.bulkSellOrder}
-                                firstCurrencyWalletId={
-                                    this.props.firstCurrencyWalletId
-                                }
-                                secondCurrencyWalletId={
-                                    this.props.secondCurrencyWalletId
-                                }
+                                firstCurrencyWalletId={this.props.firstCurrencyWalletId}
+                                secondCurrencyWalletId={this.props.secondCurrencyWalletId}
                                 takers={this.props.takersValue}
                                 makers={this.props.makersValue}
                             />
@@ -305,11 +251,12 @@ class PlaceOrder extends Component {
     }
 }
 
-const mapStateToProps = ({
-    settings,
-    currency,
-    currentMarketCap ,
-}) => {
+PlaceOrder.defaultProps = {
+    firstCurrencyBalance : 0,
+    secondCurrencyBalance : 0
+}
+
+const mapStateToProps = ({ settings, currency, currentMarketCap }) => {
     const { darkMode } = settings;
     const { loading, buyOrderLoading, sellOrderLoading } = currency;
     const currentPrice = currentMarketCap.currentMarketCap;
@@ -324,8 +271,6 @@ const mapStateToProps = ({
         lastPriceBit,
     };
 };
+
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {}
-)(PlaceOrder);
+export default connect(mapStateToProps,{})(PlaceOrder);

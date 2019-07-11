@@ -7,15 +7,14 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 // async components
 import {
     AsyncFaqComponent,
-    AsyncLandingPageComponent,
-	//Addedby Kushal
-	AsyncAboutUsComponent,
+    //Addedby Kushal
+    AsyncAboutUsComponent,
     AsyncTermsOfServiceComponent,
-	AsyncPrivacyPolicyComponent,
-	AsyncLegalStatementComponent,
-	AsyncRefundPolicyComponent,
-	AsyncAPIComponent,
-	AsyncApplicationCenterComponent,
+    AsyncPrivacyPolicyComponent,
+    AsyncLegalStatementComponent,
+    AsyncRefundPolicyComponent,
+    AsyncAPIComponent,
+    AsyncApplicationCenterComponent,
     AsyncCoinListComponent,
     AsyncCoinInfoComponent,
     AsyncFeesComponent,
@@ -32,9 +31,8 @@ const Pages = ({ match }) => (
     <div className="content-wrapper">
         <Switch>
             <Redirect exact from={`${match.url}/`} to={`${match.url}/about-us`} />
-            <Route path={`${match.url}/landingpage`} component={AsyncLandingPageComponent} />
-			
-			<Route path={`${match.url}/about-us`} component={AsyncAboutUsComponent} />
+
+            <Route path={`${match.url}/about-us`} component={AsyncAboutUsComponent} />
             <Route path={`${match.url}/faq`} component={AsyncFaqComponent} />
             <Route path={`${match.url}/terms-of-service`} component={AsyncTermsOfServiceComponent} />
             <Route path={`${match.url}/privacy-policy`} component={AsyncPrivacyPolicyComponent} />

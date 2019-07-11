@@ -20,31 +20,15 @@ import {
 const MaringTrading = ({ match }) => (
     <Fragment>
         <Switch>
-            
-            <Route
-                path={`${match.url}/leverage-report`}
-                component={AsyncMarginLeverageReport}
-            />
-            <Route
-                path={`${match.url}/wallet`}
-                component={AsyncMarginTradingWalletComponent}
-            />
-            <Route
-                path={`${match.url}/ledger`}
-                component={AsyncMarginTradingWalletledgerComponent}
-            />
-			{/* added by devang parekh for margin trading history */}
-            <Route
-                path={`${match.url}/history`}
-                component={AsyncMarginTradingHistoryComponent}
-            />
+
+            <Route path={`${match.url}/leverage-report`} component={AsyncMarginLeverageReport} />
+            <Route path={`${match.url}/wallet`} component={AsyncMarginTradingWalletComponent} />
+            <Route path={`${match.url}/ledger`} component={AsyncMarginTradingWalletledgerComponent} />
+            {/* added by devang parekh for margin trading history */}
+            <Route path={`${match.url}/history`} component={AsyncMarginTradingHistoryComponent} />
             {/* added by parth andhariya 22-04-2019 */}
-            <Route
-                path={`${match.url}/profitlossReport`}
-                component={AsyncprofitlossComponent}
-            />
+            <Route path={`${match.url}/profitlossReport`} component={AsyncprofitlossComponent} />
             <Route path={`${match.url}/OpenPositionReport`} component={OpenPositionReport} />
-           
             <Route path={`${match.url}/`} component={AsyncMarginTradingComponent} />
         </Switch>
     </Fragment>

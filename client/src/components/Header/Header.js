@@ -67,14 +67,12 @@ class Header extends Component {
 					DayNightMode: localStorage.getItem('Thememode') !== 'undefined' ? localStorage.getItem('Thememode') : false,
 					DeviceId: getDeviceInfo(),
 					Mode: getMode(),
-					IPAddress: '', 
+					IPAddress: '',
 					HostName: getHostName()
 				}
 			}
 
-		} catch (e) {
-			console.log("Connection Initialize error", e)
-		}
+		} catch (e) { }
 	}
 
 	componentDidMount() {
@@ -160,9 +158,7 @@ class Header extends Component {
 
 			});
 
-		} catch (e) {
-			console.log("Start Connection error", e)
-		}
+		} catch (e) { }
 
 
 		this.state.chatHubConnection.onclose(e => {
@@ -292,7 +288,7 @@ class Header extends Component {
 						{(tradingMenu || horizontalMenu || agencyMenu) &&
 							<div className="site-logo">
 								<Link to="/app/dashboard/trading" className="logo-normal">
-									<img src={require('Assets/image/CoolDexLogo-tm.png')} className="img-fluid" alt="Cooldex-logo" alt="Cooldex-logo" width="150" />
+									<img src={require('Assets/image/CoolDexLogo-tm.png')} className="img-fluid" alt="Cooldex-logo" width="150" />
 								</Link>
 							</div>
 						}
@@ -345,7 +341,7 @@ class Header extends Component {
 								/>
 							</Tooltip>
 						</li>
-					
+
 						<LanguageProvider />
 						<User name={this.state.name} />
 						<Notifications hubConnection={this.props.location.state.hubConnection} />

@@ -58,7 +58,7 @@ function* getApiKeyListDetail({ payload }) {
 
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getApiKeyListSuccess(response));
     } else {
       yield put(getApiKeyListFailure(response));
@@ -84,7 +84,7 @@ function* getApiKeyByIDDetail({ payload }) {
 
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getApiKeyByIDSuccess(response));
     } else {
       yield put(getApiKeyByIDFailure(response));
@@ -110,7 +110,7 @@ function* addIPAddressDetail({ payload }) {
 
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(addIPAddressSuccess(response));
     } else {
       yield put(addIPAddressFailure(response));
@@ -136,7 +136,7 @@ function* updateApiKeyListDetail({ payload }) {
 
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(updateApiKeyListSuccess(response));
     } else {
       yield put(updateApiKeyListFailure(response));
@@ -161,7 +161,7 @@ function* generateApiKeyDetail({ payload }) {
     const response = yield call(swaggerPostAPI, 'api/APIConfiguration/GenerateAPIKey', Data.data, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(generateApiKeySuccess(response));
     } else {
       yield put(generateApiKeyFailure(response));
@@ -188,7 +188,7 @@ function* deleteApiKeyListDetail({ payload }) {
 
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(deleteApiKeySuccess(response));
     } else {
       yield put(deleteApiKeyFailure(response));
@@ -227,7 +227,7 @@ function* getIpWhiteListdataDetail({ payload }) {
 
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(getIpWhiteListdataSuccess(response));
     } else {
       yield put(getIpWhiteListdataFailure(response));
@@ -253,7 +253,7 @@ function* removeIPAddressDetail({ payload }) {
     const response = yield call(swaggerDeleteAPI, 'api/APIConfiguration/DeleteWhitelistIP/' + Data.IPId, {}, headers);
 
     // set response if its available else set error message
-    if (response && response != null && response.ReturnCode === 0) {
+    if (response != null && response.ReturnCode === 0) {
       yield put(removeIPAddressSuccess(response));
     } else {
       yield put(removeIPAddressFailure(response));

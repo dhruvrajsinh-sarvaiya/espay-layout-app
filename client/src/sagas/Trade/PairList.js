@@ -28,6 +28,7 @@ import {
     getMarketTradeHistorySuccess,
     getMarketTradeHistoryFailure,
     getFavouritePairListSuccess,
+    getFavouritePairListFailure,
     addToFavouritePairListSuccess,
     addToFavouritePairListFailure,
 } from 'Actions/Trade';
@@ -212,10 +213,10 @@ function* getFavouritePairRequest({ payload }) {
         } else if (response.statusCode === 200) {
             yield put(getFavouritePairListSuccess(response));
         } else {
-            yield put(getFavouritePairListSuccess(response));
+            yield put(getFavouritePairListFailure(response));
         }
     } catch (error) {
-        yield put(getFavouritePairListSuccess(error));
+        yield put(getFavouritePairListFailure(error));
     }
 
 }

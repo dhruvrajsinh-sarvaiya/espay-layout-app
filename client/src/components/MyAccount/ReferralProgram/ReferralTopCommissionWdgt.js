@@ -30,7 +30,7 @@ class ReferralTopCommissionWdgt extends Component {
     return (
       <Fragment>
         <div className="top_commission_blk row">
-          {topCommission &&
+          {topCommission.length > 0 &&
             topCommission.map((obj, index) => (
               <div className="col-md-4" key={index}>
                 <div className="card p-10">

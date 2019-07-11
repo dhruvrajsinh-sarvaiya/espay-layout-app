@@ -81,9 +81,7 @@ class SignupReport extends Component {
     getSignupList = (PageNo, PageSize) => {
         var newObj = Object.assign({}, this.state.data);
         newObj['PageNo'] = PageNo > 0 ? PageNo : this.state.data.PageNo;
-        if (PageSize > 0) {
-            newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
-        }
+        newObj['PageSize'] = PageSize > 0 ? PageSize : this.state.data.PageSize;
         this.setState({ data: newObj });
         //For Action API...
         var reqObj = newObj;
@@ -228,7 +226,7 @@ class SignupReport extends Component {
                             <Label for="SchemeType"><IntlMessages id="myaccount.schemeType" /></Label>
                             <Input type="select" name="SchemeType" id="SchemeType" value={SchemeType} onChange={(e) => this.onChange(e)} >
                                 <IntlMessages id="myaccount.selSchemeType">{schemeType => <option value="">{schemeType}</option>}</IntlMessages>
-                                {schemeList.map((sList, index) =>(<option value={sList.Id}>{sList.Value}</option>))}
+                                {schemeList.map((sList, index) => (<option key={index} value={sList.Id}>{sList.Value}</option>))}
                             </Input>
                         </FormGroup>
                         <FormGroup className="col-md-2 col-sm-4">

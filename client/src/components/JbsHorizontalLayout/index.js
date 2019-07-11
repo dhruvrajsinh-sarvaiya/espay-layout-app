@@ -177,16 +177,13 @@ class JbsHorizontalLayout extends Component {
 
                     });
 
-                    window.JbsHorizontalLayout.state.hubConnection.on("ReceiveSessionExpired", (notificationDetail) => {
+                    window.JbsHorizontalLayout.state.hubConnection.on("ReceiveSessionExpired", () => {
 
                         try {
 
-                            notificationDetail = JSON.parse(notificationDetail);
                             this.setState({ redirectToLogin: true });
 
-                        } catch (error) {
-
-                        }
+                        } catch (error) { }
 
                         setTimeout(function () {
                             redirectToLogin();

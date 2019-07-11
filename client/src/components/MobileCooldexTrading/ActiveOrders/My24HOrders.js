@@ -77,7 +77,7 @@ class My24HOrder extends React.Component {
 
   // This will Invoke when component will recieve Props or when props changed
   componentWillReceiveProps(nextprops) {
-    if (nextprops.activeMyOpenOrder && nextprops.activeMyOpenOrder !== null) {
+    if (nextprops.activeMyOpenOrder !== null) {
       // set Active My Open Order list if gets from API only
       this.setState({
         activeMyOpenOrder: nextprops.activeMyOpenOrder,
@@ -88,7 +88,7 @@ class My24HOrder extends React.Component {
 
   // Render Component for Active My Open Order
   render() {
-    
+
     // Iterate Array and store in a variable
     const activeMyOpenData = [];
     if (this.state.activeMyOpenOrder) {

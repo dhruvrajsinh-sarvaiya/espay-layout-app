@@ -3,19 +3,16 @@
  */
 import React, { Component } from 'react';
 import { Row, Col, Card } from 'reactstrap';
-
 import {
     getCurrencyList,
     getCurrentPrice,
     getMarketCapList,
     getActiveMyOpenOrderList,
-    getActiveOpenOrderList,
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,
     getHoldingList,
     getMarketTradeHistory,
-    //CHANGE_MARKET_TRADE_HISTORY_SOCKET,
     getTickersList,
     getPairList,
     changeBuyPairSocket,
@@ -24,12 +21,9 @@ import {
     getVolumeData,
     getMarketDepth
 } from 'Actions/Trade';
-
 import { getWallets } from 'Actions/Withdraw';
-
 // import connect for redux store
 import { connect } from 'react-redux';
-
 // import components for trading dashboard
 import {
     CurrentMarket,
@@ -45,9 +39,7 @@ import {
     InviteList,
     TokenValue,
 } from "Components/CooldexTrading";
-
 import AppConfig from 'Constants/AppConfig';
-
 import $ from 'jquery';
 
 // Component for trading dashboard
@@ -86,22 +78,15 @@ class cooldextradingDashbaord extends Component {
         }
         this.changeCurrencyPair = this.changeCurrencyPair.bind(this)
         this.changeSecondCurrency = this.changeSecondCurrency.bind(this)
-        this.setBuyOrders = this.setBuyOrders.bind(this)
-        this.setSellOrders = this.setSellOrders.bind(this)
     }
 
     // invoke before Compoent render
     componentWillMount() {
-
         const self = this;
         self.isComponentActive = 1;
-
         //load Currency List
         this.props.getPairList({});
-
-        self.state.hubConnection.on("RecieveTradeHistory", (tradeHistoryDetail) => {
-
-        });
+        self.state.hubConnection.on("RecieveTradeHistory", (tradeHistoryDetail) => {});
 
         self.state.hubConnection.onclose(e => {
             setTimeout(function () {
@@ -110,20 +95,15 @@ class cooldextradingDashbaord extends Component {
         });
 
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
-
             try {
-
                 walletBalance = JSON.parse(walletBalance);
                 if (self.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
-
                     if ((walletBalance.EventTime && self.state.socketBuyData.length == 0) ||
                         (self.state.socketBuyData.length !== 0 && walletBalance.EventTime >= self.state.socketBuyData.EventTime)) {
-
                         const walletCoinDetail = walletBalance.Data;
                         if (walletCoinDetail.CoinName !== '') {
                             var walletList = $.extend(true, [], self.state.Wallet);
                             walletList.map((value, key) => {
-
                                 if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID) {
                                     walletList[key].Balance = walletCoinDetail.Balance
                                 }
@@ -131,22 +111,14 @@ class cooldextradingDashbaord extends Component {
                                 if (value.CoinName === walletCoinDetail.CoinName && value.AccWalletID === walletCoinDetail.AccWalletID) {
                                     walletList[key].Balance = walletCoinDetail.Balance
                                 }
-
                             });
-
                             self.setState({ Wallet: walletList, socketBuyData: walletBalance })
                         }
-
                     }
-
                 }
-
-            } catch (error) {
-
-            }
-
+                this.updateStateForDynamicData();
+            } catch (error) {}
         });
-
     }
 
     // invoke After Compoent render
@@ -161,8 +133,7 @@ class cooldextradingDashbaord extends Component {
 
     // invoke when component recive props
     componentWillReceiveProps(nextprops) {
-
-        if (nextprops.pairList.length && nextprops.pairList !== null && nextprops.pairList !== this.state.pairList) {
+        if (nextprops.pairList !== null && nextprops.pairList.length && nextprops.pairList !== this.state.pairList) {
             // set Currency list if gets from API only          
             this.setState({
                 pairList: nextprops.pairList,
@@ -175,16 +146,12 @@ class cooldextradingDashbaord extends Component {
                 takersValue: nextprops.pairList[0].PairList[0].SellFees,
                 makersValue: nextprops.pairList[0].PairList[0].BuyFees,
             });
-
-
+            this.updateStateForDynamicData();
         } else {
-            this.setState({
-                showLoader: false
-            })
+            this.setState({ showLoader: false });
         }
 
-        if (nextprops.wallet && nextprops.wallet !== null) {
-
+        if (nextprops.hasOwnProperty('wallet')) {
             if (nextprops.wallet.length !== 0) {
                 nextprops.wallet.map(value => {
                     if (this.state.secondCurrency === value.CoinName) {
@@ -202,14 +169,9 @@ class cooldextradingDashbaord extends Component {
                     }
                 })
             }
-
-            this.setState({
-                Wallet: nextprops.wallet
-            })
+            this.setState({ Wallet: nextprops.wallet });
+            this.updateStateForDynamicData();
         }
-
-
-
     }
 
     // Function for OPen favourite pair list
@@ -226,9 +188,7 @@ class cooldextradingDashbaord extends Component {
             bulkBuyOrder.Total = total;
         }
 
-        this.setState({
-            bulkBuyOrder: bulkBuyOrder
-        })
+        this.setState({ bulkBuyOrder: bulkBuyOrder });
     }
 
     setSellOrders = (price, amount) => {
@@ -240,23 +200,18 @@ class cooldextradingDashbaord extends Component {
             bulkSellOrder.Total = total;
         }
 
-        this.setState({
-            bulkSellOrder: bulkSellOrder
-        })
+        this.setState({ bulkSellOrder: bulkSellOrder });
     }
 
     // function for change second currency 
     changeSecondCurrency(value) {
-
         if (this.state.secondCurrency !== value.Abbrevation || (this.state.displayFavourite && this.state.secondCurrency === value.Abbrevation)) {
-
             const pair = value.PairList[0].PairName
             const pairID = value.PairList[0].PairId
             const firstCurrency = value.PairList[0].Abbrevation
             const UpDownBit = value.PairList[0].UpDownBit
             const takers = value.PairList[0].SellFees
             const makers = value.PairList[0].BuyFees
-
             const OldBaseCurrency = this.state.secondCurrency;
             const oldPair = this.state.currencyPair;
             this.setState({
@@ -281,17 +236,13 @@ class cooldextradingDashbaord extends Component {
             this.props.getChartData({ Pair: pair, Interval: '1m' });
             this.props.getMarketTradeHistory({ Pair: pair });
             this.props.getMarketDepth({ Pair: pair })
-
         }
-
-
     }
 
     // function for change selected currency pair 
     changeCurrencyPair(value) {
         var pairs = '';
         if (value) {
-
             const oldPair = this.state.currencyPair;
             const pair = value.PairName
             const pairId = value.PairId
@@ -308,17 +259,13 @@ class cooldextradingDashbaord extends Component {
                 bulkBuyOrder: []
             })
             this.state.hubConnection.invoke('AddPairSubscription', pair, oldPair).catch(err => console.error("AddPairSubscription", err));
-
             const tempSecondCurrency = value.PairName.split('_')[1];
             if (this.state.displayFavourite && this.state.secondCurrency !== tempSecondCurrency) {
                 this.state.hubConnection.invoke('AddMarketSubscription', tempSecondCurrency, this.state.secondCurrency).catch(err => console.error("AddMarketSubscription", err))
-                this.setState({
-                    secondCurrency: tempSecondCurrency
-                });
+                this.setState({ secondCurrency: tempSecondCurrency });
             }
-
         } else {
-            this.setState({ currencyPair: pair })
+            this.setState({ currencyPair: pairs })
         }
 
         // call All methods that are use in child components
@@ -328,43 +275,53 @@ class cooldextradingDashbaord extends Component {
         this.props.getChartData({ Pair: pairs, Interval: '1m' });
         this.props.getMarketTradeHistory({ Pair: pairs });
         this.props.getMarketDepth({ Pair: pairs })
-
     }
 
-    render() {
-        var firstCurrencyWalletId = 0;
-        var secondCurrencyWalletId = 0;
+    updateStateForDynamicData = () => {
+        let firstCurrencyWalletId = 0;
+        let secondCurrencyWalletId = 0;
+        let firstCurrencyBalance = 0;
+        let secondCurrencyBalance = 0;
+        let currentBuyPrice = this.state.currentBuyPrice;
+        let currentSellPrice = this.state.currentSellPrice;
 
         if (this.state.Wallet.length !== 0) {
             var secondCurrencyBal = this.state.Wallet.findIndex(wallet => wallet.CoinName === this.state.secondCurrency && wallet.IsDefaultWallet == 1);
             var firstCurrencyBal = this.state.Wallet.findIndex(wallet => wallet.CoinName === this.state.firstCurrency && wallet.IsDefaultWallet == 1);
-
             if (secondCurrencyBal !== -1) {
-                this.state.secondCurrencyBalance = this.state.Wallet[secondCurrencyBal].Balance
+                secondCurrencyBalance = this.state.Wallet[secondCurrencyBal].Balance
                 secondCurrencyWalletId = this.state.Wallet[secondCurrencyBal].AccWalletID
-            } else {
-                this.state.secondCurrencyBalance = 0
             }
 
             if (firstCurrencyBal !== -1) {
-                this.state.firstCurrencyBalance = this.state.Wallet[firstCurrencyBal].Balance
+                firstCurrencyBalance = this.state.Wallet[firstCurrencyBal].Balance
                 firstCurrencyWalletId = this.state.Wallet[firstCurrencyBal].AccWalletID
-            } else {
-                this.state.firstCurrencyBalance = 0
             }
         }
 
         if (this.state.currentMarket) {
             this.state.currentMarket.map(value => {
                 if (value.firstCurrency == this.state.firstCurrency) {
-                    this.state.currentBuyPrice = value.BuyPrice
-                    this.state.currentSellPrice = value.SellPrice
+                    currentBuyPrice = value.BuyPrice
+                    currentSellPrice = value.SellPrice
                 }
             })
         }
 
-        return (
+        //setTimeout( () => {
+            this.setState({ 
+                firstCurrencyWalletId : firstCurrencyWalletId,
+                secondCurrencyWalletId : secondCurrencyWalletId,
+                secondCurrencyBalance : secondCurrencyBalance,
+                firstCurrencyBalance : firstCurrencyBalance,
+                currentBuyPrice : currentBuyPrice,
+                currentSellPrice : currentSellPrice
+            });
+        //},200);
+    }
 
+    render() {
+        return (
             <div className="ecom-dashboard-wrapper">
                 <Row>
                     <Col sm={3} md={3} lg={3}>
@@ -374,7 +331,6 @@ class cooldextradingDashbaord extends Component {
                                     {...this.props}
                                 />
                             </Card>
-
                             <Card className="cooldexmarkettrade">
                                 <PairList
                                     {...this.props}
@@ -406,7 +362,6 @@ class cooldextradingDashbaord extends Component {
                                 currencyPair={this.state.currencyPair}
                                 hubConnection={this.state.hubConnection}
                             />
-
                             <TradingChart
                                 {...this.props} state={this.state}
                                 firstCurrency={this.state.firstCurrency}
@@ -447,7 +402,6 @@ class cooldextradingDashbaord extends Component {
                                 />
                             </Card>
                             <Card className="activetrades">
-
                                 <BuySellTrade
                                     {...this.props}
                                     firstCurrency={this.state.firstCurrency}
@@ -466,7 +420,6 @@ class cooldextradingDashbaord extends Component {
                         </div>
                     </Col>
                 </Row>
-
                 <Row>
                     <Col sm={12} md={12} lg={12}>
                         <ActiveOrders
@@ -478,8 +431,6 @@ class cooldextradingDashbaord extends Component {
                             isShowHeader={1} />
                     </Col>
                 </Row>
-
-
                 <Row>
                     <Col sm={4}>
                         <div className="coinbasicmain">
@@ -515,7 +466,6 @@ class cooldextradingDashbaord extends Component {
                     </Col>
                 </Row>
             </div>
-
         )
     }
 }
@@ -528,12 +478,10 @@ const mapStateToProps = state => ({
     darkMode: state.settings.darkMode
 });
 
-
 export default connect(mapStateToProps, {
     getCurrencyList,
     getMarketCapList,
     getActiveMyOpenOrderList,
-    getActiveOpenOrderList,
     getBuyerOrderList,
     getSellerOrderList,
     getChartData,

@@ -1,45 +1,28 @@
 // component for Display Sell And Buy Trade  By Tejas Date:13/9/2018
 
 import React from "react";
-
 // import component buy trade
 import BuyTrade from "./BuyTrade";
-
 // intl messages
 import IntlMessages from "Util/IntlMessages";
-
-
 // import component Sell trade
 import SellTrade from "./SellTrade";
 // import connect function for store
 import { connect } from "react-redux";
-
 // import Action
 import {
     getSellerOrderList,
     getBuyerOrderList,
 } from 'Actions/Trade';
-
-import Typography from '@material-ui/core/Typography';
-
-import { Row,Col,Card} from "reactstrap";
-import Updownarrow  from '../../../assets/icon/updownarrow.png';
-import Uparrow  from '../../../assets/icon/uparrow.png';
-import downarrow  from '../../../assets/icon/downarrow.png';
+import { Row, Col, Card } from "reactstrap";
+import Updownarrow from '../../../assets/icon/updownarrow.png';
+import Uparrow from '../../../assets/icon/uparrow.png';
+import downarrow from '../../../assets/icon/downarrow.png';
 import $ from 'jquery';
 
-function TabContainer({ children }) {
-    return (
-        <Typography component="div" style={{ padding: 8 * 3 }}>
-            {children}
-        </Typography>
-    );
-  }
-
 class BuySellTrade extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
-
         this.state = {
             sectionReload: true,
             activeIndex: 0,
@@ -63,15 +46,13 @@ class BuySellTrade extends React.Component {
             LPSellerBook: [],
             socketLPSellData: [],
         };
-        this.changeOrderBook = this.changeOrderBook.bind(this);
     }
-
 
     handleChange(event, value) {
         this.setState({ activeIndex: value });
     }
 
-    changeOrderBook = (event,value) =>{
+    changeOrderBook = (event, value) => {
         //event.preventDefault();
         this.setState({
             ...this.state,
@@ -94,35 +75,26 @@ class BuySellTrade extends React.Component {
             this.props.getBuyerOrderList({ Pair: pair });
         }
         //end
-
     }
 
     componentWillMount() {
-
         // code changed by devang parekh 22-2-2019
-        if (
-            this.props.hasOwnProperty("marginTrading") &&
-            this.props.marginTrading === 1
-        ) {
+        if (this.props.hasOwnProperty("marginTrading") && this.props.marginTrading === 1) {
             this.processForMarginTrading();
         } else {
             this.processForNormalTrading();
         }
+        this.updateStateForDynamicData();
         //end
-
     }
 
     // code changed by devang parekh 22-2-2019
     // code for normal trading of binding buy/sell orders records
     processForNormalTrading() {
-
         // code added and change by devang parekh for handling Signalr listners
-
         this.isComponentActive = 1;
-
         // handling and store last price data
         this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
-            //console.log("Get Data from signalR  ",receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -131,7 +103,7 @@ class BuySellTrade extends React.Component {
                             this.state.socketLastPriceData.length === 0) ||
                         (this.state.socketLastPriceData.length > 0 &&
                             marketCap.EventTime >
-                                this.state.socketLastPriceData.EventTime)
+                            this.state.socketLastPriceData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -145,42 +117,38 @@ class BuySellTrade extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
 
         // ========== process for buyer book order updation from signalr ===========
         // RecieveBuyerBook and store into state and update
         this.props.hubConnection.on("RecieveBuyerBook", (receivedMessage) => {
-            //console.log("Get Data from signalR RecieveBuyerBook", receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const receivedMessageData = JSON.parse(receivedMessage);
-
                     if (
                         (receivedMessageData.EventTime &&
                             this.state.socketBuyData.length === 0) ||
                         (this.state.socketBuyData.length !== 0 &&
                             receivedMessageData.EventTime >=
-                                this.state.socketBuyData.EventTime)
+                            this.state.socketBuyData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair ===
-                                receivedMessageData.Parameter &&
+                            receivedMessageData.Parameter &&
                             typeof receivedMessageData.IsMargin !==
-                                "undefined" &&
+                            "undefined" &&
                             receivedMessageData.IsMargin === 0
                         ) {
                             const newData = receivedMessageData.Data;
-
                             if (parseFloat(newData.Price) !== 0) {
                                 var latestBuyOrders = $.extend(
                                     true,
                                     [],
                                     this.state.buyerOrder
                                 );
-
-                                latestBuyOrders.forEach(function(
+                                latestBuyOrders.forEach(function (
                                     buyOrder,
                                     index
                                 ) {
@@ -228,9 +196,7 @@ class BuySellTrade extends React.Component {
                             }
                         }
                     }
-                } catch (error) {
-                    // console.log(error);
-                }
+                } catch (error) { }
             }
         });
 
@@ -238,7 +204,6 @@ class BuySellTrade extends React.Component {
         this.props.hubConnection.on(
             "RecieveStopLimitBuyerBook",
             (receivedMessage) => {
-                //console.log("Get Data from signalR RecieveStopLimitBuyerBook",receivedMessage);
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const stopLimitBuyerBook = JSON.parse(receivedMessage);
@@ -247,15 +212,13 @@ class BuySellTrade extends React.Component {
                                 this.state.stopLimitBuyerBook.length === 0) ||
                             (this.state.stopLimitBuyerBook.length !== 0 &&
                                 stopLimitBuyerBook.EventTime >
-                                    this.state.stopLimitBuyerBook.EventTime)
+                                this.state.stopLimitBuyerBook.EventTime)
                         ) {
-                            //console.log("change last price ",marketCap.Data.LastPrice)
-
                             if (
                                 this.props.currencyPair ===
-                                    stopLimitBuyerBook.Parameter &&
+                                stopLimitBuyerBook.Parameter &&
                                 typeof stopLimitBuyerBook.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 stopLimitBuyerBook.IsMargin === 0
                             ) {
                                 this.setState({
@@ -263,7 +226,7 @@ class BuySellTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
             }
         );
@@ -273,27 +236,24 @@ class BuySellTrade extends React.Component {
         // ============== start code for recieve seller book from signalr ===============
         // get seller book on transaction update and store into state
         this.props.hubConnection.on("RecieveSellerBook", (receivedMessage) => {
-            //console.log("Get Data from signalR RecieveSellerBook", receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const receivedMessageData = JSON.parse(receivedMessage);
-
                     if (
                         (receivedMessageData.EventTime &&
                             this.state.socketSellData.length === 0) ||
                         (this.state.socketSellData.length !== 0 &&
                             receivedMessageData.EventTime >=
-                                this.state.socketSellData.EventTime)
+                            this.state.socketSellData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair ===
-                                receivedMessageData.Parameter &&
+                            receivedMessageData.Parameter &&
                             typeof receivedMessageData.IsMargin !==
-                                "undefined" &&
+                            "undefined" &&
                             receivedMessageData.IsMargin === 0
                         ) {
                             const newData = receivedMessageData.Data;
-
                             if (parseFloat(newData.Price) !== 0) {
                                 //var latestSellOrders = this.state.sellerOrder;
                                 var latestSellOrders = $.extend(
@@ -301,13 +261,11 @@ class BuySellTrade extends React.Component {
                                     [],
                                     this.state.sellerOrder
                                 );
-
                                 var findIndexPrice = latestSellOrders.findIndex(
                                     (sellerOrder) =>
                                         parseFloat(sellerOrder.Price) ===
                                         parseFloat(newData.Price)
                                 );
-
                                 if (findIndexPrice === -1) {
                                     if (parseFloat(newData.Amount) > 0) {
                                         latestSellOrders.push(newData);
@@ -324,7 +282,6 @@ class BuySellTrade extends React.Component {
                                         );
                                     }
                                 }
-
                                 this.setState({
                                     sellerOrder: latestSellOrders,
                                     socketSellData: receivedMessageData,
@@ -340,9 +297,7 @@ class BuySellTrade extends React.Component {
                             }
                         }
                     }
-                } catch (error) {
-                    //console.log("sell section error",error)
-                }
+                } catch (error) { }
             }
         });
 
@@ -350,23 +305,21 @@ class BuySellTrade extends React.Component {
         this.props.hubConnection.on(
             "RecieveStopLimitSellerBook",
             (receivedMessage) => {
-                //console.log("Get Data from signalR RecieveStopLimitSellerBook",receivedMessage);
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const stopLimitSellerBook = JSON.parse(receivedMessage);
-
                         if (
                             (stopLimitSellerBook.EventTime &&
                                 this.state.stopLimitSellerBook.length === 0) ||
                             (this.state.stopLimitSellerBook.length !== 0 &&
                                 stopLimitSellerBook.EventTime >
-                                    this.state.stopLimitSellerBook.EventTime)
+                                this.state.stopLimitSellerBook.EventTime)
                         ) {
                             if (
                                 this.props.currencyPair ===
-                                    stopLimitSellerBook.Parameter &&
+                                stopLimitSellerBook.Parameter &&
                                 typeof stopLimitSellerBook.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 stopLimitSellerBook.IsMargin === 0
                             ) {
                                 this.setState({
@@ -374,7 +327,7 @@ class BuySellTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
             }
         );
@@ -383,26 +336,23 @@ class BuySellTrade extends React.Component {
         this.props.hubConnection.on(
             "ReceiveBulkSellerBook",
             (receivedMessage) => {
-                //console.log("Get Data from signalR ReceiveBulkSellerBook", receivedMessage);
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const receivedMessageData = JSON.parse(receivedMessage);
-
                         if (
                             (receivedMessageData.EventTime &&
                                 this.state.socketLPSellData.length === 0) ||
                             (this.state.socketLPSellData.length !== 0 &&
                                 receivedMessageData.EventTime >=
-                                    this.state.socketLPSellData.EventTime)
+                                this.state.socketLPSellData.EventTime)
                         ) {
                             if (
                                 this.props.currencyPair ===
-                                    receivedMessageData.Parameter &&
+                                receivedMessageData.Parameter &&
                                 typeof receivedMessageData.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 receivedMessageData.IsMargin === 0
                             ) {
-                                //console.log("receivedMessageData.LP",receivedMessageData.LP,receivedMessageData.Data)
                                 var LPSellerBook = $.extend(
                                     true,
                                     [],
@@ -417,25 +367,19 @@ class BuySellTrade extends React.Component {
                             }
 
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
-                
             }
         );
-
         // ================ end code for seller order book process ==============================
     }
 
     // code for process of margin trading records buy/sell orders bind based on dashboard
     processForMarginTrading() {
-        
         // code added and change by devang parekh for handling Signalr listners
-
         this.isComponentActive = 1;
-
         // handling and store last price data
         this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
-            //console.log("margin Get Data from signalR",receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -444,7 +388,7 @@ class BuySellTrade extends React.Component {
                             this.state.socketLastPriceData.length === 0) ||
                         (this.state.socketLastPriceData.length > 0 &&
                             marketCap.EventTime >
-                                this.state.socketLastPriceData.EventTime)
+                            this.state.socketLastPriceData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair === marketCap.Parameter &&
@@ -458,54 +402,48 @@ class BuySellTrade extends React.Component {
                             });
                         }
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         });
 
         // ========== process for buyer book order updation from signalr ===========
         // RecieveBuyerBook and store into state and update
         this.props.hubConnection.on("RecieveBuyerBook", (receivedMessage) => {
-            //console.log("margin  Get Data from signalR RecieveBuyerBook", receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const receivedMessageData = JSON.parse(receivedMessage);
-
                     if (
                         (receivedMessageData.EventTime &&
                             this.state.socketBuyData.length === 0) ||
                         (this.state.socketBuyData.length !== 0 &&
                             receivedMessageData.EventTime >=
-                                this.state.socketBuyData.EventTime)
+                            this.state.socketBuyData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair ===
-                                receivedMessageData.Parameter &&
+                            receivedMessageData.Parameter &&
                             typeof receivedMessageData.IsMargin !==
-                                "undefined" &&
+                            "undefined" &&
                             receivedMessageData.IsMargin === 1
                         ) {
                             const newData = receivedMessageData.Data;
-
                             if (parseFloat(newData.Price) !== 0) {
                                 var latestBuyOrders = $.extend(
                                     true,
                                     [],
                                     this.state.buyerOrder
                                 );
-
-                                latestBuyOrders.forEach(function(
+                                latestBuyOrders.forEach(function (
                                     buyOrder,
                                     index
                                 ) {
                                     latestBuyOrders[index].UpDownBit = 0;
                                 });
-
                                 var findIndexPrice = latestBuyOrders.findIndex(
                                     (buyerOrder) =>
                                         parseFloat(buyerOrder.Price) ===
                                         parseFloat(newData.Price)
                                 );
-
                                 if (findIndexPrice === -1) {
                                     if (parseFloat(newData.Amount) > 0) {
                                         newData.UpDownBit = 1;
@@ -525,7 +463,6 @@ class BuySellTrade extends React.Component {
                                         );
                                     }
                                 }
-
                                 this.setState({
                                     buyerOrder: latestBuyOrders,
                                     socketBuyData: receivedMessageData,
@@ -541,9 +478,7 @@ class BuySellTrade extends React.Component {
                             }
                         }
                     }
-                } catch (error) {
-                    // console.log(error);
-                }
+                } catch (error) { }
             }
         });
 
@@ -551,7 +486,6 @@ class BuySellTrade extends React.Component {
         this.props.hubConnection.on(
             "RecieveStopLimitBuyerBook",
             (receivedMessage) => {
-                //console.log("margin Get Data from signalR RecieveStopLimitBuyerBook",receivedMessage);
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const stopLimitBuyerBook = JSON.parse(receivedMessage);
@@ -560,15 +494,13 @@ class BuySellTrade extends React.Component {
                                 this.state.stopLimitBuyerBook.length === 0) ||
                             (this.state.stopLimitBuyerBook.length !== 0 &&
                                 stopLimitBuyerBook.EventTime >
-                                    this.state.stopLimitBuyerBook.EventTime)
+                                this.state.stopLimitBuyerBook.EventTime)
                         ) {
-                            //console.log("change last price ",marketCap.Data.LastPrice)
-
                             if (
                                 this.props.currencyPair ===
-                                    stopLimitBuyerBook.Parameter &&
+                                stopLimitBuyerBook.Parameter &&
                                 typeof stopLimitBuyerBook.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 stopLimitBuyerBook.IsMargin === 1
                             ) {
                                 this.setState({
@@ -576,7 +508,7 @@ class BuySellTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
             }
         );
@@ -586,27 +518,24 @@ class BuySellTrade extends React.Component {
         // ============== start code for recieve seller book from signalr ===============
         // get seller book on transaction update and store into state
         this.props.hubConnection.on("RecieveSellerBook", (receivedMessage) => {
-            //console.log("margin Get Data from signalR RecieveSellerBook", receivedMessage);
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const receivedMessageData = JSON.parse(receivedMessage);
-
                     if (
                         (receivedMessageData.EventTime &&
                             this.state.socketSellData.length === 0) ||
                         (this.state.socketSellData.length !== 0 &&
                             receivedMessageData.EventTime >=
-                                this.state.socketSellData.EventTime)
+                            this.state.socketSellData.EventTime)
                     ) {
                         if (
                             this.props.currencyPair ===
-                                receivedMessageData.Parameter &&
+                            receivedMessageData.Parameter &&
                             typeof receivedMessageData.IsMargin !==
-                                "undefined" &&
+                            "undefined" &&
                             receivedMessageData.IsMargin === 1
                         ) {
                             const newData = receivedMessageData.Data;
-
                             if (parseFloat(newData.Price) !== 0) {
                                 //var latestSellOrders = this.state.sellerOrder;
                                 var latestSellOrders = $.extend(
@@ -614,13 +543,11 @@ class BuySellTrade extends React.Component {
                                     [],
                                     this.state.sellerOrder
                                 );
-
                                 var findIndexPrice = latestSellOrders.findIndex(
                                     (sellerOrder) =>
                                         parseFloat(sellerOrder.Price) ===
                                         parseFloat(newData.Price)
                                 );
-
                                 if (findIndexPrice === -1) {
                                     if (parseFloat(newData.Amount) > 0) {
                                         latestSellOrders.push(newData);
@@ -637,7 +564,6 @@ class BuySellTrade extends React.Component {
                                         );
                                     }
                                 }
-
                                 this.setState({
                                     sellerOrder: latestSellOrders,
                                     socketSellData: receivedMessageData,
@@ -653,9 +579,7 @@ class BuySellTrade extends React.Component {
                             }
                         }
                     }
-                } catch (error) {
-                    //console.log("sell section error",error)
-                }
+                } catch (error) { }
             }
         });
 
@@ -663,23 +587,21 @@ class BuySellTrade extends React.Component {
         this.props.hubConnection.on(
             "RecieveStopLimitSellerBook",
             (receivedMessage) => {
-                //console.log("margin Get Data from signalR RecieveStopLimitSellerBook",receivedMessage);
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const stopLimitSellerBook = JSON.parse(receivedMessage);
-
                         if (
                             (stopLimitSellerBook.EventTime &&
                                 this.state.stopLimitSellerBook.length === 0) ||
                             (this.state.stopLimitSellerBook.length !== 0 &&
                                 stopLimitSellerBook.EventTime >
-                                    this.state.stopLimitSellerBook.EventTime)
+                                this.state.stopLimitSellerBook.EventTime)
                         ) {
                             if (
                                 this.props.currencyPair ===
-                                    stopLimitSellerBook.Parameter &&
+                                stopLimitSellerBook.Parameter &&
                                 typeof stopLimitSellerBook.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 stopLimitSellerBook.IsMargin === 1
                             ) {
                                 this.setState({
@@ -687,7 +609,7 @@ class BuySellTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
             }
         );
@@ -696,26 +618,23 @@ class BuySellTrade extends React.Component {
         this.props.hubConnection.on(
             "ReceiveBulkSellerBook",
             (receivedMessage) => {
-                //console.log("margin Get Data from signalR ReceiveBulkSellerBook", receivedMessage);
                 if (this.isComponentActive === 1 && receivedMessage !== null) {
                     try {
                         const receivedMessageData = JSON.parse(receivedMessage);
-
                         if (
                             (receivedMessageData.EventTime &&
                                 this.state.socketLPSellData.length === 0) ||
                             (this.state.socketLPSellData.length !== 0 &&
                                 receivedMessageData.EventTime >=
-                                    this.state.socketLPSellData.EventTime)
+                                this.state.socketLPSellData.EventTime)
                         ) {
                             if (
                                 this.props.currencyPair ===
-                                    receivedMessageData.Parameter &&
+                                receivedMessageData.Parameter &&
                                 typeof receivedMessageData.IsMargin !==
-                                    "undefined" &&
+                                "undefined" &&
                                 receivedMessageData.IsMargin === 1
                             ) {
-                                //console.log("receivedMessageData.LP",receivedMessageData.LP,receivedMessageData.Data)
                                 var LPSellerBook = $.extend(
                                     true,
                                     [],
@@ -729,27 +648,23 @@ class BuySellTrade extends React.Component {
                                 });
                             }
                         }
-                    } catch (error) {}
+                    } catch (error) { }
                 }
             }
         );
-
         // ================ end code for seller order book process ==============================
     }
     // code end
 
     updateBuyerOrderBook(buyerOrderList) {
-        //console.log("buyerOrderList",buyerOrderList)
         this.setState({ buyerOrder: buyerOrderList });
     }
 
     updateSellerOrderBook(sellerOrderList) {
-        //console.log("sellerOrderList",sellerOrderList)
         this.setState({ sellerOrder: sellerOrderList });
     }
 
     componentWillUnmount() {
-        //this.setState({isComponentActive:0});
         this.isComponentActive = 0;
     }
 
@@ -763,7 +678,7 @@ class BuySellTrade extends React.Component {
             var stopLimitBuyerBook = [];
             stopLimitBuyerBook.Data = [];
 
-            nextprops.buyerOrder.map(function(buyOrderDetail, buyOrderIndex) {
+            nextprops.buyerOrder.map(function (buyOrderDetail, buyOrderIndex) {
                 if (
                     parseFloat(buyOrderDetail.Price) === 0 &&
                     parseFloat(buyOrderDetail.Amount) > 0
@@ -820,7 +735,7 @@ class BuySellTrade extends React.Component {
                 }
             });
 
-            sellerData.sort(function(a, b) {
+            sellerData.sort(function (a, b) {
                 return parseFloat(b.Price) - parseFloat(a.Price);
             });
 
@@ -853,10 +768,10 @@ class BuySellTrade extends React.Component {
         ) {
             this.setState({ lastPrice: nextprops.currentMarketCap.LastPrice });
         }
+        this.updateStateForDynamicData();
     }
 
-    // Render Component for Buy Sell Tables
-    render() {
+    updateStateForDynamicData = () => {
         const {
             buyerOrder,
             sellerOrder,
@@ -870,35 +785,20 @@ class BuySellTrade extends React.Component {
 
         var buyOrderDetail = $.extend(true, [], buyerOrder);
         var lastPriceBuyRecordDetail = $.extend(true, [], lastPriceBuyRecord);
-        var stopLimitBuyerBookList = $.extend(
-            true,
-            [],
-            stopLimitBuyerBook.Data
-        );
+        var stopLimitBuyerBookList = $.extend(true, [], stopLimitBuyerBook.Data);
 
-        //console.log("LastPrice ",lastPrice);
-        //console.log("LastPriceRecord ",lastPriceRecordDetail);
-        //console.log("buyOrderDetail ",buyOrderDetail);
-        if (
-            lastPrice > 0 &&
-            lastPriceBuyRecordDetail &&
-            lastPriceBuyRecordDetail.Amount > 0
-        ) {
+        if (lastPrice > 0 && lastPriceBuyRecordDetail && lastPriceBuyRecordDetail.Amount > 0) {
             var findLastPriceIndex = buyOrderDetail.findIndex(
-                (buyerOrder) =>
-                    parseFloat(buyerOrder.Price) === parseFloat(lastPrice)
+                (buyerOrder) => parseFloat(buyerOrder.Price) === parseFloat(lastPrice)
             );
-            //console.log("findLastPriceIndex",findLastPriceIndex);
+
             if (findLastPriceIndex === -1) {
                 lastPriceBuyRecordDetail.UpDownBit = 1;
                 lastPriceBuyRecordDetail.Price = lastPrice;
                 buyOrderDetail.push(lastPriceBuyRecordDetail);
             } else {
-                //console.log("findLastPriceIndex Amount",buyOrderDetail[findLastPriceIndex].Amount,lastPriceBuyRecordDetail.Amount);
                 buyOrderDetail[findLastPriceIndex].UpDownBit = 1;
-                buyOrderDetail[findLastPriceIndex].Amount =
-                    buyOrderDetail[findLastPriceIndex].Amount +
-                    lastPriceBuyRecordDetail.Amount;
+                buyOrderDetail[findLastPriceIndex].Amount = buyOrderDetail[findLastPriceIndex].Amount + lastPriceBuyRecordDetail.Amount;
             }
         }
 
@@ -906,58 +806,37 @@ class BuySellTrade extends React.Component {
             stopLimitBuyerBookList.map((stopLimitOrder, indexValue) => {
                 if (stopLimitOrder.IsAdd && stopLimitOrder.IsAdd === 1) {
                     var findStopLimitIndex = buyOrderDetail.findIndex(
-                        (buyerOrder) =>
-                            parseFloat(buyerOrder.Price) ===
-                            parseFloat(stopLimitOrder.Price)
+                        (buyerOrder) => parseFloat(buyerOrder.Price) === parseFloat(stopLimitOrder.Price)
                     );
-                    //console.log("findLastPriceIndex",findLastPriceIndex);
+
                     if (findStopLimitIndex === -1) {
                         stopLimitOrder.UpDownBit = 1;
                         buyOrderDetail.push(stopLimitOrder);
                     } else {
-                        //console.log("findLastPriceIndex Amount",buyOrderDetail[findLastPriceIndex].Amount,lastPriceRecordDetail.Amount);
                         buyOrderDetail[findStopLimitIndex].UpDownBit = 1;
-                        buyOrderDetail[findStopLimitIndex].Amount =
-                            buyOrderDetail[findStopLimitIndex].Amount +
-                            stopLimitOrder.Amount;
+                        buyOrderDetail[findStopLimitIndex].Amount = buyOrderDetail[findStopLimitIndex].Amount + stopLimitOrder.Amount;
                     }
                 }
             });
         }
 
-        this.state.tempBuyOrders = buyOrderDetail;
-
         var lastPriceSellRecordDetail = $.extend(true, [], lastPriceSellRecord);
         var sellOrderDetail = $.extend(true, [], sellerOrder);
-        var stopLimitSellerBookList = $.extend(
-            true,
-            [],
-            stopLimitSellerBook.Data
-        );
+        var stopLimitSellerBookList = $.extend(true, [], stopLimitSellerBook.Data);
         var LPSellerBookList = $.extend(true, [], LPSellerBook);
 
-        //console.log("LastPrice Sell",lastPrice);
-        //console.log("LastPriceRecord Sell",lastPriceSellRecordDetail);
-        //console.log("sellOrderDetail ",sellOrderDetail);
-        if (
-            lastPrice > 0 &&
-            lastPriceSellRecordDetail &&
-            lastPriceSellRecordDetail.Amount > 0
-        ) {
-            var findLastPriceIndex = sellOrderDetail.findIndex(
-                (sellerOrder) =>
-                    parseFloat(sellerOrder.Price) === parseFloat(lastPrice)
+        if (lastPrice > 0 && lastPriceSellRecordDetail && lastPriceSellRecordDetail.Amount > 0) {
+            var findLastPriceIndexVar = sellOrderDetail.findIndex(
+                (sellerOrder) => parseFloat(sellerOrder.Price) === parseFloat(lastPrice)
             );
 
-            if (findLastPriceIndex === -1) {
+            if (findLastPriceIndexVar === -1) {
                 lastPriceSellRecordDetail.UpDownBit = 1;
                 lastPriceSellRecordDetail.Price = lastPrice;
                 sellOrderDetail.push(lastPriceSellRecordDetail);
             } else {
-                sellOrderDetail[findLastPriceIndex].UpDownBit = 1;
-                sellOrderDetail[findLastPriceIndex].Amount =
-                    sellOrderDetail[findLastPriceIndex].Amount +
-                    lastPriceSellRecordDetail.Amount;
+                sellOrderDetail[findLastPriceIndexVar].UpDownBit = 1;
+                sellOrderDetail[findLastPriceIndexVar].Amount = sellOrderDetail[findLastPriceIndexVar].Amount + lastPriceSellRecordDetail.Amount;
             }
         }
 
@@ -965,56 +844,41 @@ class BuySellTrade extends React.Component {
             stopLimitSellerBookList.map((stopLimitOrder, indexValue) => {
                 if (stopLimitOrder.IsAdd && stopLimitOrder.IsAdd === 1) {
                     var findStopLimitIndex = sellOrderDetail.findIndex(
-                        (sellerOrder) =>
-                            parseFloat(sellerOrder.Price) ===
-                            parseFloat(stopLimitOrder.Price)
+                        (sellerOrder) => parseFloat(sellerOrder.Price) === parseFloat(stopLimitOrder.Price)
                     );
                     if (findStopLimitIndex === -1) {
                         stopLimitOrder.UpDownBit = 1;
                         sellOrderDetail.push(stopLimitOrder);
                     } else {
                         sellOrderDetail[findStopLimitIndex].UpDownBit = 1;
-                        sellOrderDetail[findStopLimitIndex].Amount =
-                            sellOrderDetail[findStopLimitIndex].Amount +
-                            stopLimitOrder.Amount;
+                        sellOrderDetail[findStopLimitIndex].Amount = sellOrderDetail[findStopLimitIndex].Amount + stopLimitOrder.Amount;
                     }
                 }
             });
         }
 
         if (LPSellerBookList && LPSellerBookList.length > 0) {
-            LPSellerBookList.forEach(function(LPSellerBook, index) {
+            LPSellerBookList.forEach(function (LPSellerBook, index) {
                 LPSellerBook.map((LPSellOrder, indexValue) => {
                     var findLPIndex = sellOrderDetail.findIndex(
-                        (sellerOrder) =>
-                            parseFloat(sellerOrder.Price) ===
-                            parseFloat(LPSellOrder.Price)
+                        (sellerOrder) => parseFloat(sellerOrder.Price) === parseFloat(LPSellOrder.Price)
                     );
-                    //console.log("findLastPriceIndex",findLastPriceIndex);
                     if (findLPIndex === -1) {
                         LPSellOrder.UpDownBit = 1;
                         sellOrderDetail.push(LPSellOrder);
                     } else {
-                        //console.log("findLastPriceIndex Amount",sellOrderDetail[findLastPriceIndex].Amount,lastPriceRecordDetail.Amount);
                         sellOrderDetail[findLPIndex].UpDownBit = 1;
-                        sellOrderDetail[findLPIndex].Amount =
-                            sellOrderDetail[findLPIndex].Amount +
-                            LPSellOrder.Amount;
+                        sellOrderDetail[findLPIndex].Amount = sellOrderDetail[findLPIndex].Amount + LPSellOrder.Amount;
                     }
                 });
             });
         }
 
-        this.state.tempSellOrders = sellOrderDetail;
+        this.setState({ tempBuyOrders : buyOrderDetail, tempSellOrders : sellOrderDetail });
+    }
 
-        if (
-            this.state.lastPrice !== "undefined" &&
-            this.state.lastPrice !== 0
-        ) {
-            var firstPrice = parseFloat(this.state.lastPrice).toFixed(8);
-        } else {
-            var firstPrice = parseFloat(0).toFixed(8);
-        }
+    // Render Component for Buy Sell Tables
+    render() {
         return (
             <div>
                 <Card>
@@ -1100,12 +964,8 @@ class BuySellTrade extends React.Component {
                                 firstCurrency={this.props.firstCurrency}
                                 secondCurrency={this.props.secondCurrency}
                                 currencyPair={this.props.currencyPair}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 displayTable={false}
                                 autoHeightMin={120}
                                 autoHeightMax={120}
@@ -1113,24 +973,17 @@ class BuySellTrade extends React.Component {
                                 setData={this.props.setBuyOrders}
                                 sellerOrderList={this.state.tempSellOrders}
                                 sellerOrderBit={this.props.sellerOrderBit}
-                                updateSellerOrderBook={
-                                    this.updateSellerOrderBook
-                                }
+                                updateSellerOrderBook={this.updateSellerOrderBook}
                                 lastPrice={this.state.firstPrice}
                             />
-
                             <BuyTrade
                                 {...this.props}
                                 firstCurrency={this.props.firstCurrency}
                                 UpDownBit={this.props.UpDownBit}
                                 secondCurrency={this.props.secondCurrency}
                                 currencyPair={this.props.currencyPair}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 hubConnection={this.props.hubConnection}
                                 setData={this.props.setSellOrders}
                                 displayTable={false}
@@ -1141,16 +994,8 @@ class BuySellTrade extends React.Component {
                                 updateBuyerOrderBook={this.updateBuyerOrderBook}
                                 lastPrice={this.state.lastPrice}
                             />
-                            {/* <Row className="groupbox">
-                  <Col sm={6}><IntlMessages id="trading.newTrading.buyselltrade.group" /> </Col>
-                  <Col sm={6} className="text-right pt-5">0.0000</Col>
-                  <Col sm={6} className="text-right"><Link to="/"><IntlMessages id="trading.newTrading.buyselltrade.more" /></Link></Col> 
-              </Row> */}
                         </div>
-                    ) : (
-                        ""
-                    )}
-
+                    ) : ("")}
                     {this.state.displayTable === 1 ? (
                         <div className="table-responsive-design tradingbuysell">
                             <BuyTrade
@@ -1159,12 +1004,8 @@ class BuySellTrade extends React.Component {
                                 UpDownBit={this.props.UpDownBit}
                                 secondCurrency={this.props.secondCurrency}
                                 currencyPair={this.props.currencyPair}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 hubConnection={this.props.hubConnection}
                                 displayTable={true}
                                 setData={this.props.setSellOrders}
@@ -1175,10 +1016,7 @@ class BuySellTrade extends React.Component {
                                 lastPrice={this.state.lastPrice}
                             />
                         </div>
-                    ) : (
-                        ""
-                    )}
-
+                    ) : ("")}
                     {this.state.displayTable === 2 ? (
                         <div className="table-responsive-design tradingbuysell">
                             <SellTrade
@@ -1186,39 +1024,26 @@ class BuySellTrade extends React.Component {
                                 firstCurrency={this.props.firstCurrency}
                                 secondCurrency={this.props.secondCurrency}
                                 currencyPair={this.props.currencyPair}
-                                firstCurrencyBalance={
-                                    this.props.firstCurrencyBalance
-                                }
-                                secondCurrencyBalance={
-                                    this.props.secondCurrencyBalance
-                                }
+                                firstCurrencyBalance={this.props.firstCurrencyBalance}
+                                secondCurrencyBalance={this.props.secondCurrencyBalance}
                                 hubConnection={this.props.hubConnection}
                                 setData={this.props.setBuyOrders}
                                 displayTable={true}
                                 autoHeightMin={260}
                                 autoHeightMax={260}
-                                updateSellerOrderBook={
-                                    this.updateSellerOrderBook
-                                }
+                                updateSellerOrderBook={this.updateSellerOrderBook}
                                 sellerOrderList={this.state.tempSellOrders}
                                 lastPrice={this.state.lastPrice}
                             />
                         </div>
-                    ) : (
-                        ""
-                    )}
+                    ) : ("")}
                 </Card>
             </div>
         );
     }
 }
 
-const mapStateToProps = ({
-    buyerOrder,
-    sellerOrder,
-    settings,
-    currentMarketCap,
-}) => {
+const mapStateToProps = ({buyerOrder, sellerOrder, settings, currentMarketCap}) => {
     return {
         buyerOrder: buyerOrder.buyerOrder,
         sellerOrder: sellerOrder.sellerOrder,
@@ -1229,10 +1054,7 @@ const mapStateToProps = ({
     };
 };
 
-export default connect(
-    mapStateToProps,
-    {
-        getBuyerOrderList,
-        getSellerOrderList,
-    }
-)(BuySellTrade);
+export default connect(mapStateToProps,{
+    getBuyerOrderList,
+    getSellerOrderList,
+})(BuySellTrade);

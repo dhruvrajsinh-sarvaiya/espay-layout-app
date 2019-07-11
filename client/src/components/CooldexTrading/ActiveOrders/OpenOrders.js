@@ -61,7 +61,6 @@ class OpenOrder extends React.Component {
 
     };
     this.openModal = this.openModal.bind(this);
-    this.openCancelAllModal = this.openCancelAllModal.bind(this);
     this.handleClose = this.handleClose.bind(this);
     this.cancelOrder = this.cancelOrder.bind(this);
   }
@@ -87,6 +86,7 @@ class OpenOrder extends React.Component {
                   isOrderType = true
                 }
               }
+              return [];
             })
 
           })

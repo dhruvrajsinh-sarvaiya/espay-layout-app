@@ -54,8 +54,8 @@ class AddExperience extends Component {
 
   onCheck(e) {
     this.setState({
-      disabled: !this.state.disabled,
-      current: !this.state.current
+      disabled: this.state.disabled ? false: true,
+      current: this.state.current ? false: true
     });
   }
 
@@ -152,7 +152,6 @@ class AddExperience extends Component {
 
 AddExperience.propTypes = {
   addExperience: PropTypes.func.isRequired,
-  profile: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
 

@@ -6,7 +6,6 @@ import { Table, Modal, ModalBody, ModalFooter, Button } from "reactstrap";
 
 // import For Display notification
 import { NotificationManager } from "react-notifications";
-
 import { Row, Col } from "reactstrap";
 
 // intl messages
@@ -25,8 +24,6 @@ import JbsSectionLoader from "Components/JbsPageLoader/JbsLoader";
 
 // import connect function
 import { connect } from "react-redux";
-
-import $ from 'jquery';
 
 const orderTypes = [
     { "type": "LIMIT", "ID": "1" },
@@ -57,7 +54,6 @@ class OpenOrder extends React.Component {
 
         };
         this.openModal = this.openModal.bind(this);
-        this.openCancelAllModal = this.openCancelAllModal.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.cancelOrder = this.cancelOrder.bind(this);
     }
@@ -83,6 +79,7 @@ class OpenOrder extends React.Component {
                                     isOrderType = true
                                 }
                             }
+                            return [];
                         })
 
                     })
@@ -629,9 +626,4 @@ const mapStateToProps = (state) => ({
 });
 
 // connect action with store for dispatch
-export default connect(
-    mapStateToProps,
-    {
-        doCancelOrder,
-    }
-)(OpenOrder);
+export default connect(mapStateToProps, { doCancelOrder })(OpenOrder);
