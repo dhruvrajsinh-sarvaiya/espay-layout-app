@@ -22,16 +22,11 @@ import {
   Input,
   Button
 } from "reactstrap";
-import {
-  getProgitLossList
-} from 'Actions/MarginTrading';
-import {
-  getCurrency,
-} from "Actions/Withdraw";
+import { getProgitLossList } from 'Actions/MarginTrading';
+import { getCurrency } from "Actions/Withdraw";
 import { getPairList } from "Actions/Trade";
-const transtyle = {
-  fontSize: "14px"
-}
+const transtyle = { fontSize: "14px" }
+
 // initial state
 const initState = {
   PageNo: 1,
@@ -43,23 +38,25 @@ const initState = {
   PairID: '',
   pairList: [],
   showReset: false,
-  collapse: false,
   DetailedData: {},
   start_row: 1,
 }
+
 class ProfitLossReport extends Component {
   constructor(props) {
     super(props);
     this.state = initState;
     this.handleChange = this.handleChange.bind(this);
   }
-// pagination handle change event
-handlePageChange = pageNumber => {
-  ProfitLossReport.PageNo = pageNumber - 1;
-  ProfitLossReport.PageSize = this.state.PageSize;
-  this.setState({ PageNo: pageNumber });
-  this.props.getProgitLossList(ProfitLossReport);
-};
+
+  // pagination handle change event
+  handlePageChange = pageNumber => {
+    ProfitLossReport.PageNo = pageNumber - 1;
+    ProfitLossReport.PageSize = this.state.PageSize;
+    this.setState({ PageNo: pageNumber });
+    this.props.getProgitLossList(ProfitLossReport);
+  };
+
   // apply filter
   applyFilter = () => {
     if (this.state.WalletTypeId !== '' || this.state.PairID !== '') {
@@ -87,13 +84,16 @@ handlePageChange = pageNumber => {
       pairList: [],
     });
   }
+
   /* on chane handler select search */
   onChangeSelectCurrency(e) {
     this.setState({ WalletTypeId: e.label, WalletTypeObj: { label: e.label } });
   }
+
   handleChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
+
   componentWillMount() {
     this.setState({ PageNo: 1 });
     this.props.getCurrency();
@@ -102,26 +102,25 @@ handlePageChange = pageNumber => {
       PageSize: this.state.PageSize,
     });
   }
+
   componentDidMount() {
-    this.props.getPairList({})
-    
+    this.props.getPairList({})    
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.pairList.length) {
-      this.setState({
-        pairList: nextProps.pairList
-      })
+      this.setState({ pairList: nextProps.pairList });
     }
+
     if (this.state.TotalCount != nextProps.TotalCount) {
       this.setState({ TotalCount: nextProps.TotalCount });
     }
   }
+
   //On collapse project description
   OnCollapseProject(item) {
-    this.setState({
-      DetailedData: item,
-      collapse: this.state.collapse ? false : true
-    });
+    this.setState({ DetailedData: item });
+    this.collapse = this.collapse ? false : true;
   }
 
   render() {
@@ -162,11 +161,9 @@ handlePageChange = pageNumber => {
                       <option value="">{labelSelect}</option>
                     }
                   </IntlMessages>
-
                   {pairs.map((currency, key) =>
                     <option key={key} value={currency.PairId}>{currency.PairName}</option>
                   )}
-
                 </Input>
               </div>
             </FormGroup>
@@ -178,7 +175,6 @@ handlePageChange = pageNumber => {
             </FormGroup>
           </div>
         </JbsCollapsibleCard>
-
         {this.props.loading && <JbsSectionLoader />}
         <JbsCollapsibleCard>
         <Card>
@@ -187,23 +183,18 @@ handlePageChange = pageNumber => {
               <tr>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.Id" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.ProfitAmount" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.AvgLandingBuy" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.AvgLandingSell" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "wallet.SettledQty" })}
-
                 </th>
                 <th width="13%">
                   {intl.formatMessage({ id: "table.CreatedDate" })}
@@ -277,26 +268,24 @@ class ProfitLossCollaps extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapse: false
+      // collapse: false
     };
+    this.collapse = false;
   }
 
   //On collapse project description
   OnCollapseProject() {
-    this.setState({
-      collapse: this.state.collapse ? false : true
-    });
+    // this.setState({ collapse: this.state.collapse ? false : true });
+    this.collapse = this.collapse ? false : true;
   }
   
   componentWillUnmount() {
-    this.setState({
-      collapse: false
-    })
+    this.collapse = false;
   }
+
   //redner for collapsible data
   render() {
     const { profitLossList, intl } = this.props;
-    const { collapse } = this.state;
     return (
       <Fragment >
         <tr>
@@ -311,12 +300,12 @@ class ProfitLossCollaps extends Component {
               href="javascript:void(0)"
               onClick={() => this.OnCollapseProject()}
             >
-              {collapse ? <i className="zmdi zmdi-chevron-up dropdown-icon mx-4" /> : <i className="zmdi zmdi-chevron-down dropdown-icon mx-4" />}
+              {this.collapse ? <i className="zmdi zmdi-chevron-up dropdown-icon mx-4" /> : <i className="zmdi zmdi-chevron-down dropdown-icon mx-4" />}
             </a>
           </div>
           </td>
         </tr>
-        {collapse && (
+        {this.collapse && (
           <Fragment>
             <tr>
               <td colSpan={8}>
@@ -370,6 +359,7 @@ class ProfitLossCollaps extends Component {
     );
   }
 }
+
 // map state to props
 const mapStateToProps = ({ ProfitLossReducer, withdrawApp, tradePairList }) => {
   const { profitLossList, loading, TotalCount } = ProfitLossReducer;
@@ -377,6 +367,7 @@ const mapStateToProps = ({ ProfitLossReducer, withdrawApp, tradePairList }) => {
   const { pairList } = tradePairList;
   return { profitLossList, loading, TotalCount, currencies, pairList };
 };
+
 export default connect(mapStateToProps, {
   getCurrency,
   getProgitLossList,

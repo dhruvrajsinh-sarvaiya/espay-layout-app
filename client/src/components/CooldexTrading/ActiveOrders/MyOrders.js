@@ -27,9 +27,9 @@ class MyOrder extends React.Component {
       showLoader: true,
       socketData: [],
       displayOtherPairs: false,
-      isComponentActive: 1,
       recentOrderBit: 0
     };
+    this.isComponentActive = 1;
   }
 
   // Handle Checkbox for display particular currency Data
@@ -40,7 +40,7 @@ class MyOrder extends React.Component {
   componentWillMount() {
     // Invoke When Get Response From Socket/SignalR
     this.props.hubConnection.on('RecieveRecentOrder', (openOrderDetail) => {
-      if (this.state.isComponentActive === 1 && openOrderDetail !== null) {
+      if (this.isComponentActive === 1 && openOrderDetail !== null) {
         try {
           const openOrderDetailData = JSON.parse(openOrderDetail);
           if ((openOrderDetailData.EventTime && this.state.socketData.length === 0) ||
@@ -69,7 +69,7 @@ class MyOrder extends React.Component {
   }
 
   componentWillUnmount() {
-    this.setState({ isComponentActive: 0 });
+    this.isComponentActive = 0;
   }
 
   // Used To Set State Data From Props
@@ -179,10 +179,10 @@ class MyOrder extends React.Component {
                       <td className="text-center">{value.PairName !== null ? value.PairName.replace('_', '/') : ''}</td>
                       <td
                         className={
-                          value.Type == "BUY" ? "text-success text-center" : "text-danger text-center"
+                          value.Type === "BUY" ? "text-success text-center" : "text-danger text-center"
                         }
                       >
-                        {value.Type == "BUY" ? <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" /> :
+                        {value.Type === "BUY" ? <IntlMessages id="sidebar.openOrders.filterLabel.type.buy" /> :
                           <IntlMessages id="sidebar.openOrders.filterLabel.type.sell" />}
                       </td>
                       <td className="text-center">

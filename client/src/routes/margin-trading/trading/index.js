@@ -99,14 +99,14 @@ class MarginTrading extends Component {
             currencyPairID: 10021001,
             socketBuyData: [],
             socketSellData: [],
-            hubConnection: this.props.location.state.hubConnection,
-            isComponentActive: 1,
+            hubConnection: this.props.location.state.hubConnection,            
             firstCurrencyMarginDetail: {},
             secondCurrencyMarginDetail: {},
             width: window.innerWidth, //Added by salim dt:15/05/2019,
             activeIndex: 0,
             open: false
         }
+        this.isComponentActive = 1;
         this.changeCurrencyPair = this.changeCurrencyPair.bind(this)
         this.changeSecondCurrency = this.changeSecondCurrency.bind(this)
     }
@@ -129,7 +129,7 @@ class MarginTrading extends Component {
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
             try {
                 walletBalance = JSON.parse(walletBalance);
-                if (self.state.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
+                if (self.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
                     if ((walletBalance.EventTime && self.state.socketBuyData.length == 0) ||
                         (self.state.socketBuyData.length !== 0 && walletBalance.EventTime >= self.state.socketBuyData.EventTime)) {
                         if (typeof walletBalance.IsMargin !== 'undefined' && walletBalance.IsMargin === 1) {
@@ -162,7 +162,7 @@ class MarginTrading extends Component {
     }
 
     componentWillUnmount() {
-        this.setState({ isComponentActive: 0 });
+        this.isComponentActive = 0;
         window.removeEventListener('resize', this.handleWindowSizeChange); //Added by salim dt:15/04/2019
     }
 

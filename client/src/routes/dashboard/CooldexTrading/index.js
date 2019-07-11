@@ -385,8 +385,8 @@ class cooldextradingDashbaord extends Component {
                                 bulkBuyOrder={this.state.bulkBuyOrder}
                                 bulkSellOrder={this.state.bulkSellOrder}
                                 hubConnection={this.state.hubConnection}
-                                firstCurrencyWalletId={firstCurrencyWalletId}
-                                secondCurrencyWalletId={secondCurrencyWalletId}
+                                firstCurrencyWalletId={this.state.firstCurrencyWalletId}
+                                secondCurrencyWalletId={this.state.secondCurrencyWalletId}
                                 takers={this.state.takersValue}
                                 makers={this.state.makersValue}
                             />

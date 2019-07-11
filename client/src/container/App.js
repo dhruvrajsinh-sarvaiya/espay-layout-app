@@ -57,25 +57,14 @@ const pageUrlArr = [
 	"/app/pages/helpcenter-info",
 	"/app/affiliate/commission-pattern"
 ];
-const pageUrlSecondArr = [
-	"/about-us",
-	"/contact-us",
-	"/application-center",
-	"/legal-statement",
-	"/terms-of-service",
-	"/privacy-policy",
-	"/fees",
-	"/faq",
-	"/refund-policy",
-	"/pages/helpcenter",
-	"/pages/helpcenter-info",
-	"/affiliate/commission-pattern"
-];
 
 /**
  * Initial Path To Check Whether User Is Logged In Or Not
  */
-const InitialPath = ({ Component, ...rest, authUser, location, match, path }) => {
+const InitialPath = (props) => {
+	const { Component, authUser, location, path } = props;
+	const rest = props;
+
 	/* added following condition for withdraw route confirmation screen */
 	if (location.pathname === `${path}/withdraw-confirmation` && !authUser) {
 		if (localStorage.getItem('RefNo') === null && localStorage.getItem('Bit') === null) {
@@ -130,7 +119,7 @@ class App extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.referralCodeFromURL.ReturnCode === 0 && typeof nextProps.referralCodeFromURL !== "undefined") {
+		if (nextProps.referralCodeFromURL !== "undefined" && nextProps.referralCodeFromURL.ReturnCode === 0) {
 			// code change by devang parekh for add extra param in sign up request (2-4-2019)
 			localStorage.setItem('ReferralCode', nextProps.referralCodeFromURL.ReferralCode + ',' + nextProps.referralCodeFromURL.ReferralServiceId + ',' + nextProps.referralCodeFromURL.ReferralChannelTypeId);
 		}
@@ -140,13 +129,10 @@ class App extends Component {
 		const { location, match, user } = this.props;
 		/* if regarding url load then its allow without login added by kushal parekh*/ //Added helpcenter routes 11-01-2019
 		if (location.pathname === '/') {
-			if (pageUrlSecondArr.indexOf(location.pathname) !== -1) {
+			if (user === null) {
+				return (<Redirect to={'/welcome'} />);
 			} else {
-				if (user === null) {
-					return (<Redirect to={'/welcome'} />);
-				} else {
-					return (<Redirect to={'/app/dashboard/trading'} />);
-				}
+				return (<Redirect to={'/app/dashboard/trading'} />);
 			}
 		}
 		//Added by salim
@@ -183,7 +169,7 @@ class App extends Component {
 					<Route path="/invite-confirm" component={UserConfirmationWdgt} /> {/* Added by Saloni Rathod */}
 					<Route path="/landingpage" component={LandingPage} />
 					<Route path="/welcome" component={landingcooldexPage} />
-					<Route path="/callback" children={(props) => { return <Callback {...props} /> }} />
+					<Route path="/callback" render={(props) => { return <Callback {...props} /> }} />
 					<Route path="/forgot-confirm" component={ForgotConfirmationWdgt} />
 					<Route path="/terms-of-service" component={TermsofService} />
 					<Route path="/maintenance" component={Maintainance} />

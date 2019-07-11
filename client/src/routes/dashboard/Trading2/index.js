@@ -67,9 +67,9 @@ class tradingDashbaord extends Component {
             currencyPairID: 10021001,
             socketBuyData: [],
             socketSellData: [],
-            hubConnection: this.props.location.state.hubConnection,
-            isComponentActive: 1
+            hubConnection: this.props.location.state.hubConnection
         }
+        this.isComponentActive = 1;
         this.changeCurrencyPair = this.changeCurrencyPair.bind(this)
         this.changeSecondCurrency = this.changeSecondCurrency.bind(this)
     }
@@ -91,7 +91,7 @@ class tradingDashbaord extends Component {
         self.state.hubConnection.on('RecieveWalletBal', (walletBalance) => {
             try {
                 walletBalance = JSON.parse(walletBalance);
-                if (self.state.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
+                if (self.isComponentActive === 1 && typeof walletBalance.Data !== 'undefined' && walletBalance.Data !== '') {
                     if ((walletBalance.EventTime && self.state.socketBuyData.length == 0) ||
                         (self.state.socketBuyData.length !== 0 && walletBalance.EventTime >= self.state.socketBuyData.EventTime)) {
                         const walletCoinDetail = walletBalance.Data;
@@ -122,7 +122,7 @@ class tradingDashbaord extends Component {
     }
 
     componentWillUnmount() {
-        this.setState({ isComponentActive: 0 });
+        this.isComponentActive = 0;
     }
 
     // invoke when component recive props
@@ -380,8 +380,8 @@ class tradingDashbaord extends Component {
                                                 bulkBuyOrder={this.state.bulkBuyOrder}
                                                 bulkSellOrder={this.state.bulkSellOrder}
                                                 hubConnection={this.state.hubConnection}
-                                                firstCurrencyWalletId={firstCurrencyWalletId}
-                                                secondCurrencyWalletId={secondCurrencyWalletId}
+                                                firstCurrencyWalletId={this.state.firstCurrencyWalletId}
+                                                secondCurrencyWalletId={this.state.secondCurrencyWalletId}
                                                 takers={this.state.takersValue}
                                                 makers={this.state.makersValue}
                                             />

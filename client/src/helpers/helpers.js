@@ -372,6 +372,7 @@ export const swaggerPostAPI = async (methodName, request, headers = {}) => {
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
         var responses = {};
+        responses.statusCode = responseData.status;
         try {
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
@@ -384,7 +385,6 @@ export const swaggerPostAPI = async (methodName, request, headers = {}) => {
         } catch (error) {
             responses = staticResponseObj(responseData.status);
         }
-        responses.statusCode = responseData.status;
         return responses;
     }
 }
@@ -462,6 +462,7 @@ export const swaggerGetAPI = async (methodName, request, headers = {}, isPassCoo
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
         var rsp = {};
+        rsp.statusCode = responseData.status;
         try {
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
@@ -473,7 +474,6 @@ export const swaggerGetAPI = async (methodName, request, headers = {}, isPassCoo
         } catch (error) {
             rsp = staticResponseObj(responseData.status);
         }
-        rsp.statusCode = responseData.status;
         return rsp;
     }
 }
@@ -549,8 +549,8 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
         const errCode = statusErrCode();
         const lgnErrCode = loginErrCode();
         var response = {};
+        response.statusCode = responseData.status;
         try {
-
             if (lgnErrCode.includes(responseData.status)) {
                 redirectToLogin();
             } else if (errCode.includes(responseData.status)) {
@@ -562,7 +562,6 @@ export const swaggerDeleteAPI = async (methodName, request, headers = {}) => {
         } catch (error) {
             response = staticResponseObj(responseData.status);
         }
-        response.statusCode = responseData.status;
         return response;
     }
 }

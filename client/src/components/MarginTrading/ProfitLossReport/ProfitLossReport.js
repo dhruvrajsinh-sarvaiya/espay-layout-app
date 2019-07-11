@@ -259,23 +259,22 @@ class ProfitLossCollaps extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapse: false
     };
+    this.collapse = false;
   }
 
   //On collapse project description
   OnCollapseProject() {
-    this.setState({ collapse: this.state.collapse ? false : true });
+    this.collapse = this.collapse ? false : true;
   }
   
   componentWillUnmount() {
-    this.setState({ collapse: false });
+    this.collapse = false;
   }
 
   //redner for collapsible data
   render() {
     const { profitLossList, intl } = this.props;
-    const { collapse } = this.state;
     return (
       <Fragment >
         <tr>
@@ -287,12 +286,12 @@ class ProfitLossCollaps extends Component {
           <td align="middle" style={transtyle}>{changeDateFormat(profitLossList.CreatedDate, 'YYYY-MM-DD HH:mm:ss', false)}</td>
           <td align="middle" style={transtyle}><div className="list-action">
             <a href="javascript:void(0)" onClick={() => this.OnCollapseProject()}>
-              {collapse ? <i className="zmdi zmdi-chevron-up dropdown-icon mx-4" /> : <i className="zmdi zmdi-chevron-down dropdown-icon mx-4" />}
+              {this.collapse ? <i className="zmdi zmdi-chevron-up dropdown-icon mx-4" /> : <i className="zmdi zmdi-chevron-down dropdown-icon mx-4" />}
             </a>
           </div>
           </td>
         </tr>
-        {collapse && (
+        {this.collapse && (
           <Fragment>
             <tr>
               <td colSpan={8}>

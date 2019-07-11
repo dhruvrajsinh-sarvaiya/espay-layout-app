@@ -10,9 +10,7 @@ import IntlMessages from "Util/IntlMessages";
 //import scroll bar
 import { Scrollbars } from "react-custom-scrollbars";
 // import Action 
-import {
-  getMarketTradeHistory,
-} from 'Actions/Trade';
+import { getMarketTradeHistory } from 'Actions/Trade';
 // import connect function for store
 import { connect } from "react-redux";
 import $ from 'jquery';
@@ -145,7 +143,7 @@ class MarketTrade extends React.Component {
   }
 
   componentWillUnmount() {
-    this.setState({ isComponentActive: 0 });
+    this.isComponentActive = 0;
   }
 
   componentWillReceiveProps(nextprops) {

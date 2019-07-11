@@ -145,7 +145,8 @@ class MarketTrade extends React.Component {
     }
 
     // code for handle signalr listners for margin trading
-    processForMarginTrading() {this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
+    processForMarginTrading() {
+        this.props.hubConnection.on("RecieveLastPrice", (receivedMessage) => {
             if (this.isComponentActive === 1 && receivedMessage !== null) {
                 try {
                     const marketCap = JSON.parse(receivedMessage);
@@ -208,7 +209,7 @@ class MarketTrade extends React.Component {
     }
 
     componentWillUnmount() {
-        this.setState({ isComponentActive: 0 });
+        this.isComponentActive = 0;
     }
 
     componentWillReceiveProps(nextprops) {
