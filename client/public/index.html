@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>  
+    <title>COOLDEX</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no"/>
+    <meta name="theme-color" content="#000000">
+    <link rel="shortcut icon" href="favicon.ico">    
+    <!-- Use For Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Use For Font awesome icon Added by salim dt:28-11-2018 -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <!-- Added by Kushal - 04-11-2018 -->
+    <script type="text/javascript">
+    const general = localStorage.getItem('general') !=='undefined' && localStorage.getItem('general') ? JSON.parse(localStorage.getItem('general')) : '';
+    var metatitle = general != null && general.locale && general.locale[localStorage.getItem('locale')] && general.locale[localStorage.getItem('locale')].meta_title ? general.locale[localStorage.getItem("locale")].meta_title : 'COOLDEX'; // metatitle
+    document.title = metatitle;
+    </script>
+     <!-- Added by Kushal - 04-11-2018 -->
+</head>
+<body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <!-- Added by Saloni Rathod to disable react dev tool -->
+    <script>
+        // before React is loaded
+        if (typeof window.__REACT_DEVTOOLS_GLOBAL_HOOK__ === 'object') {
+            __REACT_DEVTOOLS_GLOBAL_HOOK__.inject = function() {};
+        }
+    </script>
+    <div id="root"></div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'Heebo-Black';
+    src: url('fonts/Heebo-Black.eot?#iefix') format('embedded-opentype'),  
+    url('fonts/Heebo-Black.woff') format('woff'), 
+    url('fonts/Heebo-Black.ttf')  format('truetype'), 
+    url('fonts/Heebo-Black.svg#Heebo-Black') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  

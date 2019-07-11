@@ -1,0 +1,56 @@
+/* 
+    Developer : Nishant Vadgama
+    Date : 13-09-2018
+    FIle Comment : Deposit history action method's saga implementation
+*/
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import AppConfig from 'Constants/AppConfig';
+import { swaggerGetAPI, redirectToLogin, loginErrCode } from 'Helpers/helpers';
+// import types for dispatch puropse
+import {
+    GET_DEPOSIT_HISTORY
+} from 'Actions/types';
+
+// import functions from action
+import {
+    getDepositHistorySuccess,
+    getDepositHistoryFailure
+} from 'Actions/Deposit';
+const lgnErrCode = loginErrCode();
+
+function* getDepositHistorySocket(payload) {
+    var url = '';
+    var Request = payload.request;
+    var headers = { 'Authorization': AppConfig.authorizationToken }
+    if (Request.Coin == undefined)
+        url = 'api/Wallet/DepositHistoy/' + Request.FromDate + '/' + Request.ToDate;
+    else
+        url = 'api/Wallet/DepositHistoy/' + Request.FromDate + '/' + Request.ToDate + '?Coin=' + Request.Coin;
+    const responseFromSocket = yield call(swaggerGetAPI, url, Request, headers);
+    try {
+        // check response code
+        if (lgnErrCode.includes(responseFromSocket.statusCode)) {
+            //unauthorized or invalid token
+            redirectToLogin()
+        } else {
+            if (responseFromSocket.ReturnCode == 0)
+                yield put(getDepositHistorySuccess(responseFromSocket.Histories));
+            else
+                yield put(getDepositHistoryFailure(responseFromSocket.ReturnMsg));
+        }
+    } catch (error) {
+        yield put(getDepositHistoryFailure(error));
+    }
+
+}
+// dispatch action for get DepositHistory
+function* getDepositHistory() {
+    yield takeEvery(GET_DEPOSIT_HISTORY, getDepositHistorySocket)
+}
+
+// used for run multiple effect in parellel
+export default function* rootSaga() {
+    yield all([
+        fork(getDepositHistory)
+    ]);
+}

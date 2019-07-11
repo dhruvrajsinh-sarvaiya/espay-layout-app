@@ -1,0 +1,10 @@
+
+@font-face {
+  font-family: 'Heebo-Bold';
+  src: url('fonts/Heebo-Bold.eot?#iefix') format('embedded-opentype'),  
+  url('fonts/Heebo-Bold.woff') format('woff'),
+  url('fonts/Heebo-Bold.ttf')  format('truetype'),
+  url('fonts/Heebo-Bold.svg#Heebo-Bold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}

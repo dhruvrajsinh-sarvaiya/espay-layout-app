@@ -1,0 +1,705 @@
+import { isHtmlTag } from "Helpers/helpers";
+// Added by dhara gajera 8/1/2019 - start
+const Validator = require('validator');
+exports.validateCoinListRequestFormInput = function (data, coinListFields, userId) {
+
+    let errors = {};
+    if (data === undefined) {
+        errors.message = 'common.api.invalidrequest';
+    }
+    else if (coinListFields === undefined) {
+        errors.message = 'coinListRequestForm.error.common';
+    }
+    else if (userId === undefined || userId.length === 0 || Validator.isEmpty(userId + '', { ignore_whitespace: true })) {
+        errors.message = 'surveys.surveyform.error.userIdReq';
+    }
+    else {
+
+        // 1)CoinName 
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_name")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_name"))].status === 1) {
+
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_name"))].Isrequired === 1 && (data.coin_name === undefined || data.coin_name.length === 0 || Validator.isEmpty(data.coin_name + '', { ignore_whitespace: true }))) {
+                errors.coin_name = 'coinListRequestForm.error.CoinName';
+            }
+
+            if (data.coin_name !== undefined && data.coin_name !== "" && data.coin_name.length > 0 && isHtmlTag(data.coin_name)) {
+                errors.coin_name = 'my_account.err.scriptTag';
+            } else if (data.coin_name !== undefined && data.coin_name !== "" && data.coin_name.length > 0 && !Validator.isLength(data.coin_name + '', { min: 2, max: 100 })) {
+                errors.coin_name = 'coinListRequestForm.error.CoinNameLimit';
+            }
+        }
+
+        //2)CoinTicker
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_ticker")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_ticker"))].status === 1) {
+
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_ticker"))].Isrequired === 1 && (data.coin_ticker === undefined || data.coin_ticker.length === 0 || Validator.isEmpty(data.coin_ticker + '', { ignore_whitespace: true }))) {
+                errors.coin_ticker = 'coinListRequestForm.error.CoinTicker';
+            }
+
+            if (isHtmlTag(data.coin_ticker)) {
+                errors.coin_ticker = 'my_account.err.scriptTag';
+            }
+        }
+
+        //3)Date Of Issuance
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "date_of_issuance")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "date_of_issuance"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "date_of_issuance"))].Isrequired === 1 && (data.date_of_issuance === undefined || data.date_of_issuance.length === 0 || Validator.isEmpty(data.date_of_issuance + '', { ignore_whitespace: true }))) {
+                errors.date_of_issuance = 'coinListRequestForm.error.DateOfIssuance';
+            }
+
+            if (isHtmlTag(data.date_of_issuance)) {
+                errors.date_of_issuance = 'my_account.err.scriptTag';
+            }
+        }
+
+        //4)coin logo
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_logo")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_logo"))].status === 1) {
+
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_logo"))].Isrequired === 1 && (data.coin_logo === undefined || data.coin_logo.length === 0 || Validator.isEmpty(data.coin_logo + '', { ignore_whitespace: true }))) {
+                errors.coin_logo = 'coinListRequestForm.error.coinLogo';
+            }
+
+
+            if (isHtmlTag(data.coin_logo)) {
+                errors.coin_logo = 'my_account.err.scriptTag';
+            } else if (data.coin_logo !== undefined && data.coin_logo !== "" && data.coin_logo.length > 0 && !Validator.isURL(data.coin_logo + "", ['http', 'https'])) {
+                errors.coin_logo = 'coinListRequestForm.error.validUrl';
+            }
+        }
+
+        //5)coin_website
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_website")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_website"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_website"))].Isrequired === 1 && (data.coin_website === undefined || data.coin_website.length === 0 || Validator.isEmpty(data.coin_website + '', { ignore_whitespace: true }))) {
+                errors.coin_website = 'coinListRequestForm.error.coinWebsite';
+            }
+            if (isHtmlTag(data.coin_website)) {
+                errors.coin_website = 'my_account.err.scriptTag';
+            } else if (data.coin_website !== undefined && data.coin_website !== "" && data.coin_website.length > 0 && Validator.isEmpty(data.coin_website + '', { ignore_whitespace: true }) && !Validator.isURL(data.coin_website + "", ['http', 'https'])) {
+                errors.coin_website = 'coinListRequestForm.error.validUrl';
+            }
+        }
+
+        //6)website faq
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "website_faq")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "website_faq"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "website_faq"))].Isrequired === 1 && (data.website_faq === undefined || data.website_faq.length === 0 || Validator.isEmpty(data.website_faq + '', { ignore_whitespace: true }))) {
+                errors.website_faq = 'coinListRequestForm.error.websiteFaq';
+            }
+
+            if (isHtmlTag(data.website_faq)) {
+                errors.website_faq = 'my_account.err.scriptTag';
+            }
+        }
+
+        //7)Coin forum
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_forum")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_forum"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_forum"))].Isrequired === 1 && (data.coin_forum === undefined || data.coin_forum.length === 0 || Validator.isEmpty(data.coin_forum + '', { ignore_whitespace: true }))) {
+                errors.coin_forum = 'coinListRequestForm.error.coin_forum';
+            }
+
+            if (isHtmlTag(data.coin_forum)) {
+                errors.coin_forum = 'my_account.err.scriptTag';
+            }
+        }
+
+        //8)bitcoin_talk
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "bitcoin_talk")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "bitcoin_talk"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "bitcoin_talk"))].Isrequired === 1 && (data.bitcoin_talk === undefined || data.bitcoin_talk.length === 0 || Validator.isEmpty(data.bitcoin_talk + '', { ignore_whitespace: true }))) {
+                errors.bitcoin_talk = 'coinListRequestForm.error.bitcoin_talk';
+            }
+
+            if (isHtmlTag(data.bitcoin_talk)) {
+                errors.bitcoin_talk = 'my_account.err.scriptTag';
+            }
+        }
+
+        //9)Whitepaper business
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "whitepaper_business")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "whitepaper_business"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "whitepaper_business"))].Isrequired === 1 && (data.whitepaper_business === undefined || data.whitepaper_business.length === 0 || Validator.isEmpty(data.whitepaper_business + '', { ignore_whitespace: true }))) {
+                errors.whitepaper_business = 'coinListRequestForm.error.whitepaper_business';
+            }
+
+            if (isHtmlTag(data.whitepaper_business)) {
+                errors.whitepaper_business = 'my_account.err.scriptTag';
+            }
+        }
+
+        //10)Whitepaper business
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "whitepaper_technical")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "whitepaper_technical"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "whitepaper_technical"))].Isrequired === 1 && (data.whitepaper_technical === undefined || data.whitepaper_technical.length === 0 || Validator.isEmpty(data.whitepaper_technical + '', { ignore_whitespace: true }))) {
+                errors.whitepaper_technical = 'coinListRequestForm.error.whitepaper_technical';
+            }
+
+            if (isHtmlTag(data.whitepaper_technical)) {
+                errors.whitepaper_technical = 'my_account.err.scriptTag';
+            }
+        }
+
+        //11)stack_channel
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "stack_channel")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "stack_channel"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "stack_channel"))].Isrequired === 1 && (data.stack_channel === undefined || data.stack_channel.length === 0 || Validator.isEmpty(data.stack_channel + '', { ignore_whitespace: true }))) {
+                errors.stack_channel = 'coinListRequestForm.error.stack_channel';
+            }
+            if (isHtmlTag(data.stack_channel)) {
+                errors.stack_channel = 'my_account.err.scriptTag';
+            }
+        }
+
+        //12)official_gitHub_repository_link
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "official_gitHub_repository_link")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "official_gitHub_repository_link"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "official_gitHub_repository_link"))].Isrequired === 1 && (data.official_gitHub_repository_link === undefined || data.official_gitHub_repository_link.length === 0 || Validator.isEmpty(data.official_gitHub_repository_link + '', { ignore_whitespace: true }))) {
+                errors.official_gitHub_repository_link = 'coinListRequestForm.error.official_gitHub_repository_link';
+            }
+
+            if (isHtmlTag(data.official_gitHub_repository_link)) {
+                errors.official_gitHub_repository_link = 'my_account.err.scriptTag';
+            } else if (data.official_gitHub_repository_link !== undefined && data.official_gitHub_repository_link !== "" && data.official_gitHub_repository_link.length > 0 && !Validator.isURL(data.official_gitHub_repository_link + "", ['http', 'https'])) {
+                errors.official_gitHub_repository_link = 'coinListRequestForm.error.official_gitHub_repository_link_url';
+            }
+        }
+
+        //13)team contact
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "team_contact")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "team_contact"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "team_contact"))].Isrequired === 1 && (data.team_contact === undefined || data.team_contact.length === 0 || Validator.isEmpty(data.team_contact + '', { ignore_whitespace: true }))) {
+                errors.team_contact = 'coinListRequestForm.error.team_contact';
+            }
+
+            if (isHtmlTag(data.team_contact)) {
+                errors.team_contact = 'my_account.err.scriptTag';
+            }
+        }
+
+        //14)team_bio
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "team_bio")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "team_bio"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "team_bio"))].Isrequired === 1 && (data.team_bio === undefined || data.team_bio.length === 0 || Validator.isEmpty(data.team_bio + '', { ignore_whitespace: true }))) {
+                errors.team_bio = 'coinListRequestForm.error.team_bio';
+            }
+
+            if (isHtmlTag(data.team_bio)) {
+                errors.team_bio = 'my_account.err.scriptTag';
+            }
+        }
+
+        //15)headquarter_address
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "headquarter_address")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "headquarter_address"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "headquarter_address"))].Isrequired === 1 && (data.headquarter_address === undefined || data.headquarter_address.length === 0 || Validator.isEmpty(data.headquarter_address + '', { ignore_whitespace: true }))) {
+                errors.headquarter_address = 'coinListRequestForm.error.headquarter_address';
+            }
+
+            if (isHtmlTag(data.headquarter_address)) {
+                errors.headquarter_address = 'my_account.err.scriptTag';
+            }
+        }
+
+        //16)wallet_source_code
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "wallet_source_code")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "wallet_source_code"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "wallet_source_code"))].Isrequired === 1 && (data.wallet_source_code === undefined || data.wallet_source_code.length === 0 || Validator.isEmpty(data.wallet_source_code + '', { ignore_whitespace: true }))) {
+                errors.wallet_source_code = 'coinListRequestForm.error.walletSourceCode';
+            }
+            if (isHtmlTag(data.wallet_source_code)) {
+                errors.wallet_source_code = 'my_account.err.scriptTag';
+            } else if (data.wallet_source_code !== undefined && data.wallet_source_code !== "" && data.wallet_source_code != null && !Validator.isURL(data.wallet_source_code + "", ['http', 'https'])) {
+                errors.wallet_source_code = 'coinListRequestForm.error.validUrl';
+            }
+        }
+
+        //17)node_source_code
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "node_source_code")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "node_source_code"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "node_source_code"))].Isrequired === 1 && (data.node_source_code === undefined || data.node_source_code.length === 0 || Validator.isEmpty(data.node_source_code + '', { ignore_whitespace: true }))) {
+                errors.node_source_code = 'coinListRequestForm.error.nodeSourceCode';
+            }
+            if (isHtmlTag(data.node_source_code)) {
+                errors.node_source_code = 'my_account.err.scriptTag';
+            } else if (data.node_source_code !== undefined && data.node_source_code !== "" && data.node_source_code != null && !Validator.isURL(data.node_source_code + "", ['http', 'https'])) {
+                errors.node_source_code = 'coinListRequestForm.error.validUrl';
+            }
+        }
+
+        //18)official_blockchain_explorer_link
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "official_blockchain_explorer_link")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "official_blockchain_explorer_link"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "official_blockchain_explorer_link"))].Isrequired === 1 && (data.official_blockchain_explorer_link === undefined || data.official_blockchain_explorer_link.length === 0 || Validator.isEmpty(data.official_blockchain_explorer_link + '', { ignore_whitespace: true }))) {
+                errors.official_blockchain_explorer_link = 'coinListRequestForm.error.official_blockchain_explorer_link';
+            }
+
+            if (isHtmlTag(data.official_blockchain_explorer_link)) {
+                errors.official_blockchain_explorer_link = 'my_account.err.scriptTag';
+            } else if (!Validator.isURL(data.official_blockchain_explorer_link + "", ['http', 'https'])) {
+                errors.official_blockchain_explorer_link = 'coinListRequestForm.error.official_gitHub_repository_link_url';
+            }
+        }
+
+        //19)max_coin_supply
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "max_coin_supply")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "max_coin_supply"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "max_coin_supply"))].Isrequired === 1 && (data.max_coin_supply === undefined || data.max_coin_supply.length === 0 || Validator.isEmpty(data.max_coin_supply + '', { ignore_whitespace: true }))) {
+                errors.max_coin_supply = 'coinListRequestForm.error.max_coin_supply';
+            }
+
+            if (isHtmlTag(data.max_coin_supply)) {
+                errors.max_coin_supply = 'my_account.err.scriptTag';
+            }
+        }
+
+        //20)tx_Fee_for_transaction
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "tx_Fee_for_transaction")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "tx_Fee_for_transaction"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "tx_Fee_for_transaction"))].Isrequired === 1 && (data.tx_Fee_for_transaction === undefined || data.tx_Fee_for_transaction.length === 0 || Validator.isEmpty(data.tx_Fee_for_transaction + '', { ignore_whitespace: true }))) {
+                errors.tx_Fee_for_transaction = 'coinListRequestForm.error.tx_Fee_for_transaction';
+            }
+
+            if (isHtmlTag(data.tx_Fee_for_transaction)) {
+                errors.tx_Fee_for_transaction = 'my_account.err.scriptTag';
+            }
+        }
+
+        //21)social_media_links
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "social_media_links")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "social_media_links"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "social_media_links"))].Isrequired === 1 && (data.social_media_links === undefined && data.social_media_links == null || Validator.isEmpty(data.social_media_links + '', { ignore_whitespace: true }))) {
+                errors.social_media_links = 'coinListRequestForm.error.socialMediaLinks';
+            }
+            if (isHtmlTag(data.social_media_links)) {
+                errors.social_media_links = 'my_account.err.scriptTag';
+            } else if (data.social_media_links !== undefined && data.social_media_links !== "" && data.social_media_links != null && !Validator.isURL(data.social_media_links + "", ['http', 'https'])) {
+                errors.social_media_links = 'coinListRequestForm.error.validUrl';
+            }
+        }
+
+        //22)code_review_audit_trusted_community
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "code_review_audit_trusted_community")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "code_review_audit_trusted_community"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "code_review_audit_trusted_community"))].Isrequired === 1 && (data.code_review_audit_trusted_community === undefined || data.code_review_audit_trusted_community.length === 0 || Validator.isEmpty(data.code_review_audit_trusted_community + '', { ignore_whitespace: true }))) {
+                errors.code_review_audit_trusted_community = 'coinListRequestForm.error.code_review_audit_trusted_community';
+            }
+
+            if (isHtmlTag(data.code_review_audit_trusted_community)) {
+                errors.code_review_audit_trusted_community = 'my_account.err.scriptTag';
+            }
+        }
+
+        //23)deployment_process
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "deployment_process")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "deployment_process"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "deployment_process"))].Isrequired === 1 && (data.deployment_process === undefined || data.deployment_process.length === 0 || Validator.isEmpty(data.deployment_process + '', { ignore_whitespace: true }))) {
+                errors.deployment_process = 'coinListRequestForm.error.deployment_process';
+            }
+
+            if (isHtmlTag(data.deployment_process)) {
+                errors.deployment_process = 'my_account.err.scriptTag';
+            }
+        }
+
+        //24)premined_coin_amount
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "premined_coin_amount")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "premined_coin_amount"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "premined_coin_amount"))].Isrequired === 1 && (data.premined_coin_amount === undefined || data.premined_coin_amount.length === 0 || Validator.isEmpty(data.premined_coin_amount + '', { ignore_whitespace: true }))) {
+                errors.premined_coin_amount = 'coinListRequestForm.error.premined_coin_amount';
+            }
+
+            if (isHtmlTag(data.premined_coin_amount)) {
+                errors.premined_coin_amount = 'my_account.err.scriptTag';
+            } else if (data.premined_coin_amount !== undefined && data.premined_coin_amount !== "" && data.premined_coin_amount.length > 0 && !Validator.isNumeric(data.premined_coin_amount + "")) {
+                errors.premined_coin_amount = 'my_account.err.fieldNum';
+            }
+        }
+
+        //25)premined_coin_in_escrow
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "premined_coin_in_escrow")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "premined_coin_in_escrow"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "premined_coin_in_escrow"))].Isrequired === 1 && (data.premined_coin_in_escrow === undefined || data.premined_coin_in_escrow.length === 0 || Validator.isEmpty(data.premined_coin_in_escrow + '', { ignore_whitespace: true }))) {
+                errors.premined_coin_in_escrow = 'coinListRequestForm.error.premined_coin_in_escrow';
+            }
+
+            if (isHtmlTag(data.premined_coin_in_escrow)) {
+                errors.premined_coin_in_escrow = 'my_account.err.scriptTag';
+            }
+        }
+
+        //26)number_of_addresses_coins_were_distributed
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "number_of_addresses_coins_were_distributed")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "number_of_addresses_coins_were_distributed"))].status === 1) {
+
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "number_of_addresses_coins_were_distributed"))].Isrequired === 1 && (data.number_of_addresses_coins_were_distributed === undefined || data.number_of_addresses_coins_were_distributed.length === 0 || Validator.isEmpty(data.number_of_addresses_coins_were_distributed + '', { ignore_whitespace: true }))) {
+                errors.number_of_addresses_coins_were_distributed = 'coinListRequestForm.error.number_of_addresses_coins_were_distributed';
+            }
+
+            if (isHtmlTag(data.number_of_addresses_coins_were_distributed)) {
+                errors.number_of_addresses_coins_were_distributed = 'my_account.err.scriptTag';
+            }
+        }
+
+        //27)segwit_exhibition
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "segwit_exhibition")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "segwit_exhibition"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "segwit_exhibition"))].Isrequired === 1 && (data.segwit_exhibition === undefined || data.segwit_exhibition.length === 0 || Validator.isEmpty(data.segwit_exhibition + '', { ignore_whitespace: true }))) {
+                errors.segwit_exhibition = 'coinListRequestForm.error.segwit_exhibition';
+            }
+            if (isHtmlTag(data.segwit_exhibition)) {
+                errors.segwit_exhibition = 'my_account.err.scriptTag';
+            }
+        }
+
+        //28)blockspeed
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "blockspeed")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "blockspeed"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "blockspeed"))].Isrequired === 1 && (data.blockspeed === undefined || data.blockspeed.length === 0 || Validator.isEmpty(data.blockspeed + '', { ignore_whitespace: true }))) {
+                errors.blockspeed = 'coinListRequestForm.error.blockspeed';
+            }
+
+            if (isHtmlTag(data.blockspeed)) {
+                errors.blockspeed = 'my_account.err.scriptTag';
+            }
+        }
+
+        //29)core_algorithm
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "core_algorithm")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "core_algorithm"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "core_algorithm"))].Isrequired === 1 && (data.core_algorithm === undefined || data.core_algorithm.length === 0 || Validator.isEmpty(data.core_algorithm + '', { ignore_whitespace: true }))) {
+                errors.core_algorithm = 'coinListRequestForm.error.core_algorithm';
+            }
+
+            if (isHtmlTag(data.core_algorithm)) {
+                errors.core_algorithm = 'my_account.err.scriptTag';
+            }
+        }
+
+        //30)amount_raised_during_pre_ico
+        if ((coinListFields.findIndex(coinListformField => (coinListformField.key === "amount_raised_during_pre_ico")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "amount_raised_during_pre_ico"))].status === 1)) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "core_algorithm"))].Isrequired === 1 && (data.amount_raised_during_pre_ico === undefined || data.amount_raised_during_pre_ico === null)) {
+                errors.amount_raised_during_pre_ico = 'my_account.err.amount_raised_during_pre_ico';
+            }
+            if (isHtmlTag(data.amount_raised_during_pre_ico)) {
+                errors.amount_raised_during_pre_ico = 'my_account.err.scriptTag';
+            } else if (data.amount_raised_during_pre_ico !== undefined && data.amount_raised_during_pre_ico !== "" && data.amount_raised_during_pre_ico != null && !Validator.isNumeric(data.amount_raised_during_pre_ico + "")) {
+                errors.amount_raised_during_pre_ico = 'my_account.err.fieldNum';
+            }
+        }
+
+        //31)Advisory
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "Advisory")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "Advisory"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "Advisory"))].Isrequired === 1 && (data.advisory === undefined || data.advisory.length === 0 || Validator.isEmpty(data.advisory + '', { ignore_whitespace: true }))) {
+                errors.advisory = 'coinListRequestForm.error.Advisory';
+            }
+
+            if (isHtmlTag(data.advisory)) {
+                errors.advisory = 'my_account.err.scriptTag';
+            }
+        }
+
+        //32)number_of_blocks_mined
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "number_of_blocks_mined")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "number_of_blocks_mined"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "number_of_blocks_mined"))].Isrequired === 1 && (data.number_of_blocks_mined === undefined || data.number_of_blocks_mined.length === 0 || Validator.isEmpty(data.number_of_blocks_mined + '', { ignore_whitespace: true }))) {
+                errors.number_of_blocks_mined = 'coinListRequestForm.error.number_of_blocks_mined';
+            }
+
+            if (isHtmlTag(data.number_of_blocks_mined)) {
+                errors.number_of_blocks_mined = 'my_account.err.scriptTag';
+            }
+        }
+
+        //33)dev_language
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "dev_language")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "dev_language"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "dev_language"))].Isrequired === 1 && (data.dev_language === undefined || data.dev_language.length === 0 || Validator.isEmpty(data.dev_language + '', { ignore_whitespace: true }))) {
+                errors.dev_language = 'coinListRequestForm.error.dev_language';
+            }
+
+            if (isHtmlTag(data.dev_language)) {
+                errors.dev_language = 'my_account.err.scriptTag';
+            }
+        }
+
+        //34)erc_20_compliant
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "erc_20_compliant")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "erc_20_compliant"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "erc_20_compliant"))].Isrequired === 1 && (data.erc_20_compliant === undefined || data.erc_20_compliant.length === 0 || Validator.isEmpty(data.erc_20_compliant + '', { ignore_whitespace: true }))) {
+                errors.erc_20_compliant = 'coinListRequestForm.error.erc_20_compliant';
+            }
+
+            if (isHtmlTag(data.erc_20_compliant)) {
+                errors.erc_20_compliant = 'my_account.err.scriptTag';
+            }
+        }
+
+        //35)difficulty
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "difficulty")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "difficulty"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "difficulty"))].Isrequired === 1 && (data.difficulty === undefined || data.difficulty.length === 0 || Validator.isEmpty(data.difficulty + '', { ignore_whitespace: true }))) {
+                errors.difficulty = 'coinListRequestForm.error.difficulty';
+            }
+
+            if (isHtmlTag(data.difficulty)) {
+                errors.difficulty = 'my_account.err.scriptTag';
+            }
+        }
+
+        //36)wallet
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "wallet")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "wallet"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "wallet"))].Isrequired === 1 && (data.wallet === undefined || data.wallet.length === 0 || Validator.isEmpty(data.wallet + '', { ignore_whitespace: true }))) {
+                errors.wallet = 'coinListRequestForm.error.wallet';
+            }
+
+            if (isHtmlTag(data.wallet)) {
+                errors.wallet = 'my_account.err.scriptTag';
+            }
+        }
+
+        //37)usual_cost
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "usual_cost")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "usual_cost"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "usual_cost"))].Isrequired === 1 && (data.usual_cost === undefined || data.usual_cost.length === 0 || Validator.isEmpty(data.usual_cost + '', { ignore_whitespace: true }))) {
+                errors.usual_cost = 'coinListRequestForm.error.usual_cost';
+            }
+            if (isHtmlTag(data.usual_cost)) {
+                errors.usual_cost = 'my_account.err.scriptTag';
+            }
+        }
+
+        //38)if_this_coin_is_a_security
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "if_this_coin_is_a_security")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "if_this_coin_is_a_security"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "if_this_coin_is_a_security"))].Isrequired === 1 && (data.if_this_coin_is_a_security === undefined || data.if_this_coin_is_a_security.length === 0 || Validator.isEmpty(data.if_this_coin_is_a_security + '', { ignore_whitespace: true }))) {
+                errors.if_this_coin_is_a_security = 'coinListRequestForm.error.if_this_coin_is_a_security';
+            }
+
+            if (isHtmlTag(data.if_this_coin_is_a_security)) {
+                errors.if_this_coin_is_a_security = 'my_account.err.scriptTag';
+            }
+        }
+
+        //39)coin_type
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_type")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_type"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_type"))].Isrequired === 1 && (data.coin_type === undefined || data.coin_type.length === 0 || Validator.isEmpty(data.coin_type + '', { ignore_whitespace: true }))) {
+                errors.coin_type = 'coinListRequestForm.error.coinType';
+            }
+
+            if (isHtmlTag(data.coin_type)) {
+                errors.coin_type = 'my_account.err.scriptTag';
+            }
+        }
+
+        //40)coin_description
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_description")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_description"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_description"))].Isrequired === 1 && (data.coin_description === undefined || data.coin_description.length === 0 || Validator.isEmpty(data.coin_description + '', { ignore_whitespace: true }))) {
+                errors.coin_description = 'coinListRequestForm.error.coinDescription';
+            }
+
+            if (isHtmlTag(data.coin_description)) {
+                errors.coin_description = 'my_account.err.scriptTag';
+            }
+        }
+
+        //41)coin_short_name
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_short_name")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_short_name"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_short_name"))].Isrequired === 1 && (data.coin_short_name === undefined || data.coin_short_name.length === 0 || Validator.isEmpty(data.coin_short_name + '', { ignore_whitespace: true }))) {
+                errors.coin_short_name = 'coinListRequestForm.error.coin_short_name';
+            }
+
+            if (isHtmlTag(data.coin_short_name)) {
+                errors.coin_short_name = 'my_account.err.scriptTag';
+            }
+        }
+
+        //42)coin_address
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_address")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_address"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "coin_address"))].Isrequired === 1 && (data.coin_address === undefined || data.coin_address.length === 0 || Validator.isEmpty(data.coin_address + '', { ignore_whitespace: true }))) {
+                errors.coin_address = 'coinListRequestForm.error.coinAddress';
+            }
+
+            if (isHtmlTag(data.coin_address)) {
+                errors.coin_address = 'my_account.err.scriptTag';
+            }
+        }
+
+        //43)decimal
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "decimal")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "decimal"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "decimal"))].Isrequired === 1 && (data.decimal === undefined || data.decimal.length === 0 || Validator.isEmpty(data.decimal + '', { ignore_whitespace: true }))) {
+                errors.decimal = 'coinListRequestForm.error.decimal';
+            }
+            if (isHtmlTag(data.decimal)) {
+                errors.decimal = 'my_account.err.scriptTag';
+            }
+        }
+
+        //44)total_supply
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "total_supply")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "total_supply"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "total_supply"))].Isrequired === 1 && (data.total_supply === undefined || data.total_supply.length === 0 || Validator.isEmpty(data.total_supply + '', { ignore_whitespace: true }))) {
+                errors.total_supply = 'coinListRequestForm.error.totalSupply';
+            }
+            if (isHtmlTag(data.total_supply)) {
+                errors.total_supply = 'my_account.err.scriptTag';
+            }
+        }
+
+        //45)circulating_supply
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "circulating_supply")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "circulating_supply"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "circulating_supply"))].Isrequired === 1 && (data.circulating_supply === undefined || data.circulating_supply.length === 0 || Validator.isEmpty(data.circulating_supply + '', { ignore_whitespace: true }))) {
+                errors.circulating_supply = 'coinListRequestForm.error.circulatingSupply';
+            }
+
+            if (isHtmlTag(data.circulating_supply)) {
+                errors.circulating_supply = 'my_account.err.scriptTag';
+            }
+        }
+
+        //46)first_name
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "first_name")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "first_name"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "first_name"))].Isrequired === 1 && (data.first_name === undefined || data.first_name.length === 0 || Validator.isEmpty(data.first_name + '', { ignore_whitespace: true }))) {
+                errors.first_name = 'coinListRequestForm.error.firstName';
+            }
+            if (data.first_name !== undefined && data.first_name !== "" && data.first_name.length > 0 && isHtmlTag(data.first_name)) {
+                errors.first_name = 'my_account.err.scriptTag';
+            } else if (data.first_name !== undefined && data.first_name !== "" && data.first_name.length > 0 && !Validator.isAlpha(data.first_name + "")) {
+                errors.first_name = 'coinListRequestForm.error.validAlpha';
+            }
+        }
+
+        //47)last_name
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "last_name")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "last_name"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "last_name"))].Isrequired === 1 && (data.last_name === undefined || data.last_name.length === 0 || Validator.isEmpty(data.last_name + '', { ignore_whitespace: true }))) {
+                errors.last_name = 'coinListRequestForm.error.last_name';
+            }
+            if (isHtmlTag(data.last_name)) {
+                errors.last_name = 'my_account.err.scriptTag';
+            } else if (data.last_name !== undefined && data.last_name !== "" && data.last_name != null && !Validator.isAlpha(data.last_name + "")) {
+                errors.last_name = 'coinListRequestForm.error.validAlpha';
+            }
+        }
+
+        //48)address
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "address")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "address"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "address"))].Isrequired === 1 && (data.address === undefined || data.address.length === 0 || Validator.isEmpty(data.address + '', { ignore_whitespace: true }))) {
+                errors.address = 'coinListRequestForm.error.Address';
+            }
+
+            if (isHtmlTag(data.address)) {
+                errors.address = 'my_account.err.scriptTag';
+            }
+        }
+
+        //49)address_line_2
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "address_line_2")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "address_line_2"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "address_line_2"))].Isrequired === 1 && (data.address_line_2 === undefined || data.address_line_2.length === 0 || Validator.isEmpty(data.address_line_2 + '', { ignore_whitespace: true }))) {
+                errors.address_line_2 = 'coinListRequestForm.error.address_line_2';
+            }
+
+            if (isHtmlTag(data.address_line_2)) {
+                errors.address_line_2 = 'my_account.err.scriptTag';
+            }
+        }
+
+        //50)city
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "city")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "city"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "city"))].Isrequired === 1 && (data.city === undefined || data.city.length === 0 || Validator.isEmpty(data.city + '', { ignore_whitespace: true }))) {
+                errors.city = 'coinListRequestForm.error.city';
+            }
+
+            if (isHtmlTag(data.city)) {
+                errors.city = 'my_account.err.scriptTag';
+            }
+        }
+
+        //51)state
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "state")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "state"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "state"))].Isrequired === 1 && (data.state === undefined || data.state.length === 0 || Validator.isEmpty(data.state + '', { ignore_whitespace: true }))) {
+                errors.state = 'coinListRequestForm.error.state';
+            }
+
+            if (isHtmlTag(data.state)) {
+                errors.state = 'my_account.err.scriptTag';
+            }
+        }
+
+        //52)postalCode
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "postalCode")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "postalCode"))].status === 1) {
+
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "postalCode"))].Isrequired === 1 && (data.postalCode === undefined || data.postalCode.length === 0 || Validator.isEmpty(data.postalCode + '', { ignore_whitespace: true }))) {
+                errors.postalCode = 'coinListRequestForm.error.postalCode';
+            }
+            if (data.postalCode !== undefined && data.postalCode !== "" && data.postalCode.length > 0 && !Validator.isNumeric(data.postalCode + "")) {
+                errors.postalCode = 'coinListRequestForm.error.postalCodeNumber';
+            }
+        }
+
+        //53)country
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "country")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "country"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "country"))].Isrequired === 1 && (data.country === undefined || data.country.length === 0 || Validator.isEmpty(data.country + '', { ignore_whitespace: true }))) {
+                errors.country = 'coinListRequestForm.error.country';
+            }
+
+            if (isHtmlTag(data.country)) {
+                errors.country = 'my_account.err.scriptTag';
+            }
+        }
+
+        //54)phone
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "phone")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "phone"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "phone"))].Isrequired === 1 && (data.phone === undefined || data.phone == null || Validator.isEmpty(data.phone + '', { ignore_whitespace: true }))) {
+                errors.phone = 'coinListRequestForm.error.phone';
+            }
+            if (isHtmlTag(data.phone)) {
+                errors.phone = 'my_account.err.scriptTag';
+            } else if (data.phone !== undefined && data.phone !== "" && data.phone != null && !Validator.isNumeric(data.phone + "")) {
+                errors.phone = 'my_account.err.fieldNum';
+            }
+        }
+
+        //55)email
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "email")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "email"))].status === 1) {
+
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "email"))].Isrequired === 1 && (data.email === undefined || data.email.length === 0 || Validator.isEmpty(data.email + '', { ignore_whitespace: true }))) {
+                errors.email = 'coinListRequestForm.error.email';
+            }
+            if (isHtmlTag(data.email)) {
+                errors.email = 'my_account.err.scriptTag';
+            } else if (data.email !== undefined && data.email !== "" && data.email.length > 0 && !Validator.isEmail(data.email)) {
+                errors.email = 'coinListRequestForm.error.emailValidation';
+            }
+        }
+
+        //56)project_name
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "project_name")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "project_name"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "project_name"))].Isrequired === 1 && (data.project_name === undefined || data.project_name.length > 0 || Validator.isEmpty(data.project_name + '', { ignore_whitespace: true }))) {
+                errors.project_name = 'coinListRequestForm.error.project_name';
+            }
+
+            if (isHtmlTag(data.project_name)) {
+                errors.project_name = 'my_account.err.scriptTag';
+            }
+        }
+
+        //57)project_website_link
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "project_website_link")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "project_website_link"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "project_website_link"))].Isrequired === 1 && (data.project_website_link === undefined || data.project_website_link == null || Validator.isEmpty(data.project_website_link + '', { ignore_whitespace: true }))) {
+                errors.project_website_link = 'coinListRequestForm.error.projectWebsiteLink';
+            }
+
+            if (isHtmlTag(data.project_website_link)) {
+                errors.project_website_link = 'my_account.err.scriptTag';
+            } else if (data.project_website_link !== undefined && data.project_website_link !== "" && data.project_website_link != null && !Validator.isURL(data.project_website_link + "", ['http', 'https'])) {
+                errors.project_website_link = 'coinListRequestForm.error.official_gitHub_repository_link_url';
+            }
+        }
+
+        //58)do_you_have_an_active_community
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "do_you_have_an_active_community")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "do_you_have_an_active_community"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "do_you_have_an_active_community"))].Isrequired === 1 && (data.do_you_have_an_active_community === undefined || data.do_you_have_an_active_community.length === 0 || Validator.isEmpty(data.do_you_have_an_active_community + '', { ignore_whitespace: true }))) {
+                errors.do_you_have_an_active_community = 'coinListRequestForm.error.doYouHaveActiveCommunity';
+            }
+
+            if (isHtmlTag(data.do_you_have_an_active_community)) {
+                errors.do_you_have_an_active_community = 'my_account.err.scriptTag';
+            }
+        }
+
+        //59)information_on_how_funds_were_raised
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "information_on_how_funds_were_raised")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "information_on_how_funds_were_raised"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "information_on_how_funds_were_raised"))].Isrequired === 1 && (data.information_on_how_funds_were_raised === undefined || data.information_on_how_funds_were_raised.length === 0 || Validator.isEmpty(data.information_on_how_funds_were_raised + '', { ignore_whitespace: true }))) {
+                errors.information_on_how_funds_were_raised = 'coinListRequestForm.error.information_on_how_funds_were_raised';
+            }
+
+            if (isHtmlTag(data.information_on_how_funds_were_raised)) {
+                errors.information_on_how_funds_were_raised = 'my_account.err.scriptTag';
+            }
+        }
+
+        //60)current_listing_on_other_exchanges
+        if (coinListFields.findIndex(coinListformField => (coinListformField.key === "current_listing_on_other_exchanges")) !== -1 && coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "current_listing_on_other_exchanges"))].status === 1) {
+            if (coinListFields[coinListFields.findIndex(coinListformField => (coinListformField.key === "current_listing_on_other_exchanges"))].Isrequired === 1 && (data.current_listing_on_other_exchanges === undefined || data.current_listing_on_other_exchanges.length === 0 || Validator.isEmpty(data.current_listing_on_other_exchanges + '', { ignore_whitespace: true }))) {
+                errors.current_listing_on_other_exchanges = 'coinListRequestForm.error.currentListingOtherExchanges';
+            }
+            if (isHtmlTag(data.current_listing_on_other_exchanges)) {
+                errors.current_listing_on_other_exchanges = 'my_account.err.scriptTag';
+            }
+        }
+    }
+    return {
+        errors,
+        isValid: Object.keys(errors).length > 0 ? false : true
+    };
+};
+
+// Added by dhara gajera - end
