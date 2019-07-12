@@ -1,6 +1,0 @@
-projectKey=sonar-codeclean-front-app
-serverUrl=http://localhost:9000
-serverVersion=7.8.0.26217
-dashboardUrl=http://localhost:9000/dashboard?id=sonar-codeclean-front-app
-ceTaskId=AWvQW-BVRzNZP4En_7Qc
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWvQW-BVRzNZP4En_7Qc
