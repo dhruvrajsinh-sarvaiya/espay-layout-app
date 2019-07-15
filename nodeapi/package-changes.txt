@@ -1,0 +1,29 @@
+10-3-2018 : for jwt token
+
+install jsonwebtoken
+install rand-token
+
+For INT-32
+----------
+npm install mongoose-int32
+
+For Fileupload
+--------------
+npm install express-fileupload
+
+For request
+--------------
+npm install request
+
+For Webpush Notification 
+------------------------
+npm i web-push
+npm i q
+
+For security package
+--------------------
+npm i express-rate-limit
+npm i rate-limit-mongo
+npm i helmet
+npm i sanitize-html
+npm i ddos

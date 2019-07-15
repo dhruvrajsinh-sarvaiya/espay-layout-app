@@ -1,0 +1,8 @@
+==================generateToken Response 08-05-2019 12:49:58==== 
+
+{"data":{"ipAddress":"127.0.0.1","tokenData":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVhIjoiTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV09XNjQ7IHJ2OjY3LjApIEdlY2tvLzIwMTAwMTAxIEZpcmVmb3gvNjcuMCIsImJyb3dzZXIiOnsibmFtZSI6IkZpcmVmb3giLCJ2ZXJzaW9uIjoiNjcuMCIsIm1ham9yIjoiNjcifSwiZW5naW5lIjp7Im5hbWUiOiJHZWNrbyIsInZlcnNpb24iOiI2Ny4wIn0sIm9zIjp7Im5hbWUiOiJXaW5kb3dzIiwidmVyc2lvbiI6IjEwIn0sImRldmljZSI6e30sImNwdSI6eyJhcmNoaXRlY3R1cmUiOiJhbWQ2NCJ9LCJjb2xvckRlcHRoIjoyNCwicGl4ZWxEZXB0aCI6MjQsIndpZHRoIjoxNTM2LCJoZWlnaHQiOjg2NH0sImlhdCI6MTU1NzI5OTk5OCwiZXhwIjoxNTU3MzAzNTk4fQ.9jzqcgDMhliZ1WJM8ItYo1s2PHohSGIMKASrMCXxQAg","refreshToken":"pMLSeTEMI5nvf93faNJg5BV6MXGYEhBhbthDTVQYQ6kndlx8FI7auY88CgHLCuN2DFxQGnrlrT3pn4ADoZIOrIXhyAp0CEuDI3SEluaLxuzIRttJZP5gnxfWI4demOd0p1ijJSWj1qEXfNOPSFmvOOhguWbeIr5yDaKqN7LQ3v0lwpht1TocjlbT9NRiwWhX8bhD5tydvJmoVXQH7tREBuxZK3277e3lEFyVvAwh0c8NbwZLpTMQJ56dbVVTJRHt"}}}
+
+==================ListNews Response 08-05-2019 12:50:00==== 
+
+{"responseCode":0,"isError":false,"message":"","data":[]}
+
