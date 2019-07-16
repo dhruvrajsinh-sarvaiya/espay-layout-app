@@ -1,1 +1,0 @@
-link ../../../FirebaseCore/Firebase/Core/Public/FIRApp.h
