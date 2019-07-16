@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CoolDex</string>
+    <string name="facebook_app_id">1070670509781494</string>
+    <string name="fb_login_protocol_scheme">fb1070670509781494</string>
+    <string name="appwidget_text">REACT NATIVE WIDGET</string>
+    <string name="add_widget">Add widget</string>
+
+    <!--<string name="app_name">NewStackApp</string>-->
+    <!--<string name="fb_app_id">170445797174890</string>-->
+    <!--<string name="fb_login_protocol_scheme">fb170445797174890</string>-->
+
+</resources>
