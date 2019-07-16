@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- for RN fetch blob library -->
+    <external-path
+        name="external_files"
+        path="." />
+    <files-path
+        name="files-path"
+        path="." /> <!-- Used to access into application data files -->
+        
+    <!-- for react native share library -->
+    <external-path name="myexternalimages" path="Download/" />
+</paths>
