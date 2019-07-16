@@ -1,1 +1,0 @@
-link ../../../FirebaseAnalyticsInterop/Interop/Analytics/Public/FIRInteropParameterNames.h
