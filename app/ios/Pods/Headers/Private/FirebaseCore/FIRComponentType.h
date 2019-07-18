@@ -1,1 +1,0 @@
-link ../../../FirebaseCore/Firebase/Core/Private/FIRComponentType.h
